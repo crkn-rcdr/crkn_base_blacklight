@@ -1,4 +1,4 @@
-# CRKN Canadiana Blacklight
+# CRKN Blacklight
 
 CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and discovery over MARC records, backed by Solr and integrated with IIIF (manifest + content search) endpoints, using [Mirador](https://github.com/ProjectMirador/mirador) viewer for IIIF Manifest Display.
 
@@ -103,63 +103,13 @@ curl -X POST -H "Content-Type: application/json" "http://localhost:8983/solr/bla
 ```
 
 ### Production Solr Setup (CRKN)
-
-For CRKN production, Solr runs outside of Docker Compose. High-level steps:
-
+For CRKN production, Solr runs in a docker container. The data dir needs to be a volume.
+High-level steps:
 1. SSH to the Solr container.
-1. Create the `blacklight_marc` core and `conf` directory.
-1. Copy the default configset.
-1. Replace `solrconfig.xml` and `managed-schema.xml` with the versions from this repo.
-1. Restart Solr.
-
-Commands:
-
-```bash
-sudo cat /home/bitnami/bitnami_credentials
-ssh -i ~/.ssh/<id file>.pem <user>@4.229.225.26
-sudo mkdir /opt/bitnami/solr/server/solr/blacklight_marc_demo
-sudo mkdir /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf
-sudo cp -r /opt/bitnami/solr/server/solr/configsets/_default/conf/* /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf/
-cd /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf/
-sudo rm solrconfig.xml
-sudo vi solrconfig.xml
-sudo rm managed-schema.xml
-sudo vi managed-schema.xml
-```
-
-Ensure the following users and permissions are configured in `security.json`:
-
-```json
-{
-  "authorization": {
-    "class": "solr.RuleBasedAuthorizationPlugin",
-    "permissions": [
-      {
-        "name": "read",
-        "role": [
-          "admin",
-          "public"
-        ]
-      },
-      {
-        "name": "all",
-        "role": "admin"
-      }
-    ],
-    "user-role": {
-      "admin": "admin",
-      "public": "public",
-      "manager": "admin"
-    }
-  }
-}
-```
-
-Restart Solr to apply the changes:
-
-```bash
-sudo /opt/bitnami/ctlscript.sh restart solr
-```
+2. Create the `blacklight_marc` core and `conf` directory.
+3. Copy the default configset.
+4. Replace `solrconfig.xml` and `managed-schema.xml` with the versions from this repo.
+5. Restart Solr.
 
 ## Project Map
 
@@ -216,3 +166,4 @@ Notes:
 - Blacklight Workshop: https://workshop.projectblacklight.org/
 - IIIF overview: https://iiif.io/
 - IIIF Content Search API v2: https://iiif.io/api/search/2.0/
+- Debugging Rails: https://guides.rubyonrails.org/debugging_rails_applications.html
