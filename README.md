@@ -1,133 +1,218 @@
-# README
-A docker compose demo that will allow you to spin up a test instance of blacklight v8.8 (marc) in a flash.
+# CRKN Canadiana Blacklight
 
-# Ruby version
-3.4.1
+CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and discovery over MARC records, backed by Solr and integrated with IIIF (manifest + content search) endpoints, using [Mirador](https://github.com/ProjectMirador/mirador) viewer for IIIF Manifest Display.
 
-# System dependencies
-Docker, Docker-compose
+## Quick Start (Docker, recommended)
 
-# Services 
-Blacklight and Blacklight Marc depend on an apache solr Search Engine. For more information, see their [docs](https://github.com/crkn-rcdr/crkn_base_blacklight/blob/master/README.md#docs).
-  
-# Configuration
+1. Install Docker Desktop.
+1. Copy `.env.example` to `.env`.
+1. Fill in the values in `.env`.
+1. Optional: create a master key if you plan to use encrypted credentials.
+   ```bash
+   ruby -rsecurerandom -e 'puts SecureRandom.hex(64)'
+   ```
+   Save that value to `config/master.key` or export it as `RAILS_MASTER_KEY`.
+1. Run the app.
+   ```bash
+   docker compose up --build --force-recreate
+   ```
 
-This repo is configured to pull and run solr through docker compose, and has the data folder mapped as a volume, which will allow the solr index to be created automatically for you, and will persist the information in the index for development or production needs.
+The app will be available at `http://localhost:3000`.
 
-Generate a master key:
+Note: Docker Compose only runs the Rails app. You must provide a Solr core and update `config/blacklight.yml` if needed.
 
-`ruby -rsecurerandom -e 'puts SecureRandom.hex(64)'`
+## Docker Desktop + WSL2 (Windows + Ubuntu)
 
-Save that key to ./config/master.key
+These steps set up Docker Desktop to build containers in Ubuntu on WSL2.
 
-For CRKN in production, we are using a solr instance running independantly from this docker compose. To configure the Solr instance to work with the Blacklight container, I sshed onto the Solr server, and performed the following:
+1. Install Docker Desktop (Windows).
+1. Ensure Docker Desktop uses the WSL2 engine: Docker Desktop -> Settings -> General -> check `Use the WSL 2 based engine`.
+1. Install WSL + Ubuntu in PowerShell (Admin).
+   ```powershell
+   wsl --install -d Ubuntu
+   ```
 
-`sudo cat /home/bitnami/bitnami_credentials`
+1. Reboot if prompted.
+1. Launch Ubuntu from the Start menu or run `wsl`.
+1. Update Ubuntu packages.
+   ```bash
+   sudo apt update
+   sudo apt upgrade -y
+   ```
 
-Connect to the solr vm:
+1. In Ubuntu, navigate to the repo and build.
+   ```bash
+   cd /mnt/c/Users/BrittnyLapierre/Documents/github/crkn_canadiana_blacklight
+   docker compose build
+   ```
 
-`ssh -i ~/.ssh/<id file>.pem <user>@4.229.225.26`
+## Quick Start (Local Ruby)
 
-Created the blacklight_marc_demo core config directory:
+1. Install Ruby 3.4.1 and Bundler.
+1. Install Node.js and Yarn 4.2.2 (Corepack).
+1. Run `bundle install`.
+1. Run `yarn install`.
+1. Copy `.env.example` to `.env` and fill in values.
+1. Run `bin/rails server`.
 
-`sudo mkdir /opt/bitnami/solr/server/solr/blacklight_marc_demo &&sudo mkdir /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf`
+Optional: run `bin/vite dev` in another terminal for faster frontend rebuilds.
 
-Copied the default configs to my new core:
+You can also run `bin/setup` to install dependencies.
 
-`sudo cp -r /opt/bitnami/solr/server/solr/configsets/_default/conf/* /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf/`
+## Configuration and Secrets (.env)
 
-Went into the new core's config directory:
+`.env` is loaded in development and test via `dotenv-rails`.
 
-`cd /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf/`
+Required variables:
 
-Removed the default solr config:
+- `IIIF_MANIFEST_BASE` - Base URL for IIIF manifests.
+- `IIIF_CONTENT_SEARCH_BASE` - Base URL for IIIF Content Search.
+- `RAILS_ENV` - Use `development` for local work.
+- `SECRET_KEY_BASE` - Needed for production-like use. Generate with `bin/rails secret`.
 
-`sudo rm solrconfig.xml`
+Optional variables for Swift-backed download links:
 
-Pasted the solrconfig from this repo into a new solrconfig file:
+- `CAP_PASS` - HMAC key used to sign Swift URLs.
+- `SWIFT_AUTH_URL`
+- `SWIFT_USERNAME`
+- `SWIFT_PASSWORD`
+- `SWIFT_PREAUTH_URL`
 
-`sudo vi solrconfig.xml`
+Do not commit `.env`.
 
-Removed the default solr schema:
+## Solr
 
-`sudo rm managed-schema.xml`
+Blacklight requires a Solr core for search. Configure the connection in `config/blacklight.yml`.
 
-Pasted the solr schema from this repo into a new solr schema file:
+Local options:
 
-`sudo vi managed-schema.xml`
+- Point `config/blacklight.yml` to an existing Solr core.
+- Run your own Solr and use the config in `data/data/blacklight_marc/conf`.
 
-Went to the solr server directory:
+Index a MARC record:
 
-`cd /opt/bitnami/solr/server/solr`
-
-Ensured the following users and permissions were configured:
-
-`sudo vi security.json`
+```bash
+rake solr:marc:index MARC_FILE=marc-file-name-here.mrc
 ```
+
+Clear the Solr index:
+
+```bash
+curl -X POST -H "Content-Type: application/json" "http://username:password@host/solr/blacklight_marc_demo/update?commit=true" -d '{ "delete": {"query":"*:*"} }'
+curl -X POST -H "Content-Type: application/json" "http://localhost:8983/solr/blacklight_marc_demo/update?commit=true" -d '{ "delete": {"query":"*:*"} }'
+```
+
+### Production Solr Setup (CRKN)
+
+For CRKN production, Solr runs outside of Docker Compose. High-level steps:
+
+1. SSH to the Solr container.
+1. Create the `blacklight_marc` core and `conf` directory.
+1. Copy the default configset.
+1. Replace `solrconfig.xml` and `managed-schema.xml` with the versions from this repo.
+1. Restart Solr.
+
+Commands:
+
+```bash
+sudo cat /home/bitnami/bitnami_credentials
+ssh -i ~/.ssh/<id file>.pem <user>@4.229.225.26
+sudo mkdir /opt/bitnami/solr/server/solr/blacklight_marc_demo
+sudo mkdir /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf
+sudo cp -r /opt/bitnami/solr/server/solr/configsets/_default/conf/* /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf/
+cd /opt/bitnami/solr/server/solr/blacklight_marc_demo/conf/
+sudo rm solrconfig.xml
+sudo vi solrconfig.xml
+sudo rm managed-schema.xml
+sudo vi managed-schema.xml
+```
+
+Ensure the following users and permissions are configured in `security.json`:
+
+```json
 {
   "authorization": {
-    "class":"solr.RuleBasedAuthorizationPlugin",
-    "permissions":[
+    "class": "solr.RuleBasedAuthorizationPlugin",
+    "permissions": [
       {
-        "name":"read",
-        "role":[
+        "name": "read",
+        "role": [
           "admin",
           "public"
-        ],
+        ]
       },
       {
-        "name":"all",
-        "role":"admin",
+        "name": "all",
+        "role": "admin"
       }
     ],
-    "user-role":{
-      "admin":"admin",
-      "public":"public",
-      "manager":"admin"
+    "user-role": {
+      "admin": "admin",
+      "public": "public",
+      "manager": "admin"
     }
   }
 }
 ```
 
-Restarted solr to apply the changes:
+Restart Solr to apply the changes:
 
-`sudo /opt/bitnami/ctlscript.sh restart solr`
+```bash
+sudo /opt/bitnami/ctlscript.sh restart solr
+```
 
-# Developing Locally
-Ensure docker and docker compose are installed. Then, enter the directory in your terminal, and run:
+## Project Map
 
-`docker compose up --build --force-recreate -d`
+- `app/controllers/catalog_controller.rb` - Search UI entry point.
+- `app/controllers/downloads_controller.rb` - IIIF and Swift-backed download links.
+- `app/models/search_builder.rb` - Solr query construction.
+- `app/models/solr_document.rb` - Solr document mapping.
+- `app/models/marc_indexer.rb` - MARC indexing.
+- `config/blacklight.yml` - Solr connection settings.
+- `config/initializers/blacklight.rb` - Blacklight configuration.
+- `config/initializers/canadiana_endpoints.rb` - IIIF endpoint configuration.
+- `data/data/blacklight_marc/conf` - Solr schema and config.
+- `deployImage.sh` - Build and push deployment image.
 
-# Deployment Instructions
-Run the following to push the image to docker hub:
+## Development
 
-`docker tag crkn_canadiana_blacklight-web brilap/crkn-demo`
+Run the container:
+```bash
+docker compose up
+```
 
-`docker push brilap/crkn-demo`
+Common in-container commands:
 
-Then restart the web app on [Azure](https://portal.azure.com/#@crkn.ca/resource/subscriptions/1bf1b056-be1d-4b1c-991f-2f154caf3061/resourceGroups/CRKN-demo-test/providers/Microsoft.Web/sites/canadiana-beta/appServices) to pull the new docker image.
+- `bin/rails server` - Start the app.
+- `bin/rails console` - Interactive Rails console.
+- `bin/rails routes` - List routes and controllers.
+- `bin/rails test` - Run tests.
+- `bin/vite dev` - Run the Vite dev server.
 
-# Docs
-See Blacklight Wiki and Tutorials:
-- https://github.com/projectblacklight/blacklight/wiki/
-- https://workshop.projectblacklight.org/
+## Deployment (CRKN Servers)
 
-To index a marc record from the terminal, you can enter the container on Docker Desktop (or through the docker exec command in your terminal) and run: 
+We deploy to CRKN internal servers using `./deployImage.sh`, which builds and pushes the image to the internal Docker registry.
 
-`rake solr:marc:index MARC_FILE=marc-file-name-here.mrc`
+Prereqs:
 
-A quick command to clear the solr index is:
+- Docker Desktop installed and running (Linux containers).
+- VPN connected (OpenVPN), if required for registry access.
+- Registry credentials from 1Password (item: `docker.c7a.ca`).
 
-`curl -X POST -H 'Content-Type: application/json' 'http://username:password@host/solr/blacklight_marc_demo/update?commit=true' -d '{ "delete": {"query":"*:*"} }'`
-`curl -X POST -H 'Content-Type: application/json' 'http://localhost:8983/solr/blacklight_marc_demo/update?commit=true' -d '{ "delete": {"query":"*:*"} }'`
+Deploy:
 
-I ran these commands and saved the app directory as a mapped volume, so you shouldn't have to:
+```bash
+./deployImage.sh
+```
 
-`rails generate --asset-delivery-mode=importmap-rails blacklight_range_limit:install`
+Notes:
 
-`RAILS_ENV=production rails vite:build`
+- The script tags the image with a UTC timestamp and optional branch suffix.
+- The script prints a link to create a Systems-Administration issue. Create it and include the image tag.
 
+## Docs
 
-
-
-
+- Blacklight Wiki: https://github.com/projectblacklight/blacklight/wiki/
+- Blacklight Workshop: https://workshop.projectblacklight.org/
+- IIIF overview: https://iiif.io/
+- IIIF Content Search API v2: https://iiif.io/api/search/2.0/
