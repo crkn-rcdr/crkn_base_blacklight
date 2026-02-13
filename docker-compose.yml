@@ -16,3 +16,8 @@ services:
       - ./db:/app/db
       - ./config:/app/config
       - ./public:/app/public
+      - ./vite.config.js:/app/vite.config.js
+      - node_modules:/app/node_modules
+    command: sh -lc "if [ -f package.json ]; then yarn install --immutable; fi; bundle exec rails server -b 0.0.0.0 -p 3000"
+volumes:
+  node_modules:

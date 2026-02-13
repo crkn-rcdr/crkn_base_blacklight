@@ -67,10 +67,9 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+  config.hosts << "localhost:3000"
   config.hosts << 'canadiana-beta.azurewebsites.net'
   config.hosts << "canadiana-beta.ca:3000"
   config.hosts << "canadiana-demo.azurewebsites.net"
   config.hosts << "canadiana-demo.ca:3000"
-  # Allow web-console from Docker bridge
-  config.web_console.permissions = ['127.0.0.1', '172.18.0.0/16']
 end

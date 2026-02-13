@@ -1,0 +1,13 @@
+.git
+.gitignore
+.bundle
+.env
+.env.*
+.DS_Store
+.yarn
+log
+tmp
+storage
+coverage
+node_modules
+vendor/bundle

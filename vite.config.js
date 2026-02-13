@@ -20,10 +20,6 @@ export default defineConfig({
     ...safeRubyPlugins,
     vue()
   ],
-  build: {
-    manifest: true,
-    outDir: 'public/assets'
-  },
   resolve: {
     alias: {
       'vue': 'vue/dist/vue.esm-bundler',
