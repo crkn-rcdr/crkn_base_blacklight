@@ -19,7 +19,7 @@ fi
 
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 
-if [ "${BRANCH}" = "main" ]; then
+if [ "${BRANCH}" = "master" ]; then
   IMAGEEXT="";
 else
   IMAGEEXT="-${BRANCH}"

@@ -31,7 +31,7 @@ class CatalogController < ApplicationController
     # ----- FACETS -----
 
     # Publication year (range)
-    config.add_facet_field 'pub_date_si',
+    config.add_facet_field 'pub_date_ssim',
                            label: ->(_c) { I18n.t('blacklight.metadata.date_range.label') },
                            range: {
                              num_segments: 10,
@@ -96,7 +96,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'title_ssm',  label: ->(_f, _c) { I18n.t('blacklight.metadata.title.label') }, helper_method: :format_text
     config.add_index_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
     config.add_index_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
-    config.add_index_field 'pub_date_si', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
+    config.add_index_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
     config.add_index_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
     config.add_index_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
     config.add_index_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
@@ -114,7 +114,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'ark', label: ->(_f, _c) { I18n.t('blacklight.metadata.persistent_url.label') }, helper_method: :value_link
     config.add_show_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
     config.add_show_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
-    config.add_show_field 'pub_date_si', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
+    config.add_show_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
     config.add_show_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
     config.add_show_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
     config.add_show_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
@@ -149,9 +149,9 @@ class CatalogController < ApplicationController
     end
 
     # ----- SORTS -----
-    config.add_sort_field 'relevance',        sort: 'score desc, pub_date_si desc', label: ->(_c) { I18n.t('blacklight.sort.relevance.label') }
-    config.add_sort_field 'year-desc',        sort: 'pub_date_si desc',              label: ->(_c) { I18n.t('blacklight.sort.year_desc.label') }
-    config.add_sort_field 'year-asc',         sort: 'pub_date_si asc',               label: ->(_c) { I18n.t('blacklight.sort.year_asc.label') }
+    config.add_sort_field 'relevance',        sort: 'score desc', label: ->(_c) { I18n.t('blacklight.sort.relevance.label') }
+    config.add_sort_field 'year-desc',        sort: 'pub_date_ssim desc',              label: ->(_c) { I18n.t('blacklight.sort.year_desc.label') }
+    config.add_sort_field 'year-asc',         sort: 'pub_date_ssim asc',               label: ->(_c) { I18n.t('blacklight.sort.year_asc.label') }
     config.add_sort_field 'date-added-desc',  sort: 'date_added desc',               label: ->(_c) { I18n.t('blacklight.sort.date_added_desc.label') }
     config.add_sort_field 'date-added-asc',   sort: 'date_added asc',                label: ->(_c) { I18n.t('blacklight.sort.date_added_asc.label') }
 
