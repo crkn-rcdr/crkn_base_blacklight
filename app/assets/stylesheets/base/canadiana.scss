@@ -897,6 +897,11 @@ footer.bg-dark {
   animation-direction: reverse;
 }
 
+.members-marquee-row:hover .members-marquee-track,
+.members-marquee-row:focus-within .members-marquee-track {
+  animation-play-state: paused;
+}
+
 .member-logo {
   flex: 0 0 auto;
   min-width: clamp(8.5rem, 14vw, 14rem);
@@ -1626,10 +1631,19 @@ footer.bg-dark {
   height: auto;
   aspect-ratio: 4 / 3;
   display: block;
+  position: relative;
   border-radius: 30px;
   border: 0;
   overflow: hidden;
   background: #f6f7f8;
+}
+
+.home-page .featured-item__viewer:not(.is-active) .openseadragon-container {
+  pointer-events: none;
+}
+
+.home-page .featured-item__activate {
+  display: none !important;
 }
 
 .home-page .featured-item__meta {
@@ -1921,7 +1935,6 @@ footer.bg-dark {
   padding: 0 !important;
   display: block;
   background: #fff !important;
-  border-bottom: 1px solid #d5d9de;
 }
 
 .topbar-utility {
@@ -2587,8 +2600,8 @@ footer.bg-dark {
   background: #50af00;
   padding-top: clamp(2rem, 2.8vw, 3.3rem);
   padding-bottom: clamp(2rem, 2.8vw, 3.3rem);
-  padding-left: var(--home-shell-gutter);
-  padding-right: clamp(1.3rem, 2.2vw, 2.6rem);
+  padding-left: clamp(1.3rem, 2.2vw, 2.6rem);
+  padding-right: var(--home-shell-gutter);
 }
 
 .home-page .home-explore .section-title,
@@ -2607,13 +2620,13 @@ footer.bg-dark {
   font-weight: 400;
   margin-bottom: .95rem;
   opacity: 1;
-  font-size: clamp(1.1rem, 1.4vw, 1.65rem);
+  font-size: clamp(1.12rem, 1.35vw, 1.6rem);
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__copy h3 {
   max-width: 24ch;
   margin-bottom: 1.45rem;
-  font-size: clamp(2rem, 2.65vw, 3.15rem);
+  font-size: clamp(2rem, 2.85vw, 3.25rem);
   line-height: 1.14;
 }
 
@@ -2637,7 +2650,7 @@ footer.bg-dark {
   color: #2f3b46;
   border-radius: 999px 0 0 999px;
   padding: 0 2.2rem 0 1rem;
-  font-size: 1rem;
+  font-size: 1.02rem;
   box-shadow: none;
 }
 
@@ -2652,7 +2665,7 @@ footer.bg-dark {
   border: 0;
   border-radius: 0;
   padding: 0 1rem;
-  font-size: 1.08rem;
+  font-size: 1.1rem;
   color: #2c3b45;
   box-shadow: none;
 }
@@ -2709,6 +2722,12 @@ footer.bg-dark {
 }
 
 @media (max-width: 1200px) {
+  .home-page .home-collection-band--canadiana .home-collection-band__copy,
+  .home-page .home-collection-band--heritage .home-collection-band__copy {
+    padding-left: var(--home-shell-gutter);
+    padding-right: var(--home-shell-gutter);
+  }
+
   .home-page .home-heritage-intro-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -2723,14 +2742,27 @@ footer.bg-dark {
     grid-template-columns: 1fr;
   }
 
-  .home-page .home-collection-band--heritage .home-collection-band__copy {
-    padding-left: var(--home-shell-gutter);
-    padding-right: clamp(1.1rem, 3vw, 1.75rem);
-  }
-
   .home-page .home-collection-band--heritage .home-collection-band__image {
     min-height: 420px;
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1700px) {
+  .home-page .home-collection-band--heritage .home-collection-band__copy h3 {
+    font-size: clamp(2.35rem, 2.35vw, 4.05rem);
+  }
+
+  .home-page .home-collection-band--heritage .band-search-select {
+    font-size: 1.08rem;
+  }
+
+  .home-page .home-collection-band--heritage .band-search-input {
+    font-size: 1.2rem;
+  }
+
+  .home-page .home-collection-band--heritage .band-search-form .btn {
+    font-size: 1.2rem;
   }
 }
 
@@ -2761,8 +2793,10 @@ footer.bg-dark {
 }
 
 
-.base-first-row > section {
-  padding: 0 !important;
+.blacklight-pages-home { 
+  .base-first-row > section {
+    padding: 0 !important;
+  }
 }
 
 .canadiana-walkthrough, .home-explore-canadiana {

@@ -1,3 +1,4 @@
+<% activate_zoom_label = I18n.locale.to_s.start_with?('fr') ? 'Cliquer pour activer le zoom' : 'Click to activate zoom' %>
 <div class="home-featured-grid home-featured-grid--records" id="featured-items-list">
   <% if records.present? %>
     <% records.each do |record| %>
@@ -5,7 +6,9 @@
         <div
           class="card-img-top featured-item__viewer"
           id="<%= viewer_id_for(record) %>"
-          data-ark-id="<%= ark_identifier_for(record) %>"></div>
+          data-ark-id="<%= ark_identifier_for(record) %>">
+          <button type="button" class="featured-item__activate"><%= activate_zoom_label %></button>
+        </div>
         <div class="featured-item__meta">
           <h3>
             <a href="<%= record_link(record) %>"><%= title_for(record) %></a>
@@ -27,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const hasOpenSeadragon = typeof OpenSeadragon !== "undefined";
   const grid = document.getElementById("featured-items-list");
   if (!grid) return;
+  let activeViewerState = null;
 
   const manifestCanvases = (manifest) => {
     if (Array.isArray(manifest?.items) && manifest.items.length) return manifest.items;
@@ -47,10 +51,41 @@ document.addEventListener("DOMContentLoaded", function () {
     return null;
   };
 
+  const deactivateViewer = (state) => {
+    if (!state) return;
+    const { viewer, container, overlay } = state;
+    try {
+      viewer.setMouseNavEnabled(false);
+    } catch (_error) {}
+    container.classList.remove("is-active");
+    if (overlay) overlay.hidden = false;
+  };
+
+  const activateViewer = (viewer, container, overlay) => {
+    if (activeViewerState && activeViewerState.viewer !== viewer) {
+      deactivateViewer(activeViewerState);
+    }
+
+    try {
+      viewer.setMouseNavEnabled(true);
+    } catch (_error) {}
+    container.classList.add("is-active");
+    if (overlay) overlay.hidden = true;
+    activeViewerState = { viewer, container, overlay };
+  };
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!activeViewerState) return;
+    if (activeViewerState.container.contains(event.target)) return;
+    deactivateViewer(activeViewerState);
+    activeViewerState = null;
+  }, true);
+
   document.querySelectorAll(".featured-item__viewer[data-ark-id]").forEach((container) => {
     const arkId = (container.dataset.arkId || "").trim();
     if (!arkId || container.dataset.osdReady === '1') return;
     container.dataset.osdReady = "1";
+    const overlay = container.querySelector(".featured-item__activate");
 
     (async function () {
       const manifestUrl = `https://crkn-iiif-api.azurewebsites.net/manifest/${arkId}`;
@@ -74,10 +109,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }).filter(Boolean);
 
         if (!tileSources.length || !hasOpenSeadragon) {
+          if (overlay) overlay.hidden = true;
           return;
         }
 
-        OpenSeadragon({
+        const viewer = OpenSeadragon({
           element: container,
           prefixUrl: "/assets/",
           sequenceMode: true,
@@ -89,8 +125,27 @@ document.addEventListener("DOMContentLoaded", function () {
           showFullPageControl: false,
           defaultZoomLevel: 1.1
         });
+        if (!viewer) return;
+
+        viewer.setMouseNavEnabled(false);
+        container.classList.remove("is-active");
+        if (overlay) {
+          overlay.hidden = false;
+          overlay.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            activateViewer(viewer, container, overlay);
+          });
+        }
+
+        container.addEventListener("pointerdown", (event) => {
+          if (container.classList.contains("is-active")) return;
+          if (overlay && overlay.contains(event.target)) return;
+          activateViewer(viewer, container, overlay);
+        });
       } catch (error) {
         console.error("Failed to load manifest or initialize OpenSeadragon for", container.id, error);
+        if (overlay) overlay.hidden = true;
       }
     })();
   });
