@@ -43,7 +43,8 @@
 
     <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config) %>
 
-    <main id="main-container" class="<%= container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
+    <% is_home_page = controller_name == 'pages' && action_name == 'home' %>
+    <main id="main-container" class="<%= is_home_page ? 'canadiana-main' : container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
       <%= content_for(:container_header) %>
 
       <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>

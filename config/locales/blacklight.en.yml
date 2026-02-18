@@ -10,7 +10,7 @@ en:
       range_end_short: End
       range_html: "%{begin_value} – %{end_value}"
     members:
-      title: Canadiana is made possible by CRKN members
+      title: Canadiana is made possible by CRKN member libraries
       subtitle: CRKN is a Canadian community of libraries, archives, and institutions across Canada
       category_aria: Member category tabs
       institutional: Institutional Members
