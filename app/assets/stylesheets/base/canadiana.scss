@@ -741,14 +741,16 @@ footer.bg-dark {
 
 .members-section .text-muted.small {
   color: #58636e !important;
-  font-size: .98rem;
+  font-size: clamp(1.07rem, 1.35vw, 1.62rem) !important;
+  line-height: 1.55;
 }
 
 .members-blurb {
   color: #1f2f3a;
-  font-size: clamp(1rem, 1.35vw, 1.08rem);
+  font-size: clamp(1.07rem, 1.35vw, 1.62rem);
   line-height: 1.55;
-  max-width: 1200px;
+  max-width: none;
+  width: 100%;
 }
 
 .members-controls {
@@ -1691,6 +1693,13 @@ footer.bg-dark {
 .home-page .home-statement p,
 .home-page .home-statement li {
   color: #2d3d40;
+  font-size: var(--home-body-copy-size);
+  line-height: var(--home-body-copy-leading);
+}
+
+.home-page .home-statement .section-lede {
+  font-size: var(--home-body-copy-size);
+  line-height: var(--home-body-copy-leading);
 }
 
 .home-page .home-statement ul {
@@ -1699,6 +1708,10 @@ footer.bg-dark {
 
 .home-page .members-section {
   margin-top: 0;
+}
+
+.home-page .members-header {
+  max-width: 100%;
 }
 
 @media (max-width: 1100px) {
@@ -2266,8 +2279,8 @@ footer.bg-dark {
 .home-page .home-intro--canadiana .section-lede {
   max-width: 90ch;
   color: #1f2328;
-  font-size: clamp(1.07rem, 1.35vw, 1.62rem);
-  line-height: 1.55;
+  font-size: var(--home-body-copy-size);
+  line-height: var(--home-body-copy-leading);
   margin-bottom: 1rem;
 }
 
@@ -2300,6 +2313,8 @@ footer.bg-dark {
 
 .home-page {
   --home-shell-gutter: 26px;
+  --home-body-copy-size: clamp(1.07rem, 1.35vw, 1.62rem);
+  --home-body-copy-leading: 1.55;
 }
 
 @media (min-width: 1880px) {
