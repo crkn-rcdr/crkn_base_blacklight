@@ -73,6 +73,15 @@ i {
 #collection-items-list .card {
     padding: 0;
 }
+#collection-items-list .collection-item__viewer {
+    position: relative;
+}
+#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container {
+    pointer-events: none;
+}
+#collection-items-list .collection-item__activate {
+    display: none !important;
+}
 
 .page-sidebar {
     .endnote, .refworks {
