@@ -363,7 +363,6 @@ footer a {
 }
 footer.bg-dark {
     background-color: black !important;
-    margin-top: 3rem !important;
     grid-area: footer;
 }
 #main-container {
@@ -715,10 +714,10 @@ footer.bg-dark {
 /* Members section */
 .members-section {
   position: relative;
-  background: #f1f3f4;
+  background: white !important;
   padding: clamp(2.25rem, 4vw, 3rem) 0 clamp(2.5rem, 4.8vw, 3.35rem);
   margin-top: 0;
-  border-top: 1px solid rgba(0,0,0,.06);
+  border-top: none;
   overflow: hidden;
 }
 .members-section > .canadiana-shell,
@@ -1282,7 +1281,7 @@ footer.bg-dark {
 
 .home-page .home-intro--heritage {
   background: #fff;
-  border-top: 1px solid rgba(0,0,0,.06);
+  border-top: none;
 }
 
 .home-page .home-intro-logo {
@@ -1496,7 +1495,9 @@ footer.bg-dark {
   border-radius: 18px;
   overflow: hidden;
   min-height: 305px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.10);
+  box-shadow: none;
+  border: 1px solid rgba(19, 38, 40, .08);
+  background: #fff;
 }
 
 .home-page .home-split-grid--slider .home-split-card {
@@ -1519,7 +1520,8 @@ footer.bg-dark {
 }
 
 .home-page .home-split-card--green .home-split-card__content {
-  background: linear-gradient(140deg, #47a900 0%, #5fc000 100%);
+  background:
+    linear-gradient(148deg, #218f25 0%, #41ae1d 42%, #67c314 100%);
 }
 
 .home-page .home-split-card__title {
@@ -1654,8 +1656,8 @@ footer.bg-dark {
 
 .home-page .home-statement {
   background: #fff;
-  border-top: 1px solid rgba(0,0,0,.06);
-  border-bottom: 1px solid rgba(0,0,0,.06);
+  border-top: none;
+  border-bottom: none;
 }
 
 .home-page .home-statement p,
@@ -2222,8 +2224,8 @@ footer.bg-dark {
 .home-page .home-intro--canadiana {
   padding-top: clamp(3rem, 4.2vw, 4.25rem);
   padding-bottom: clamp(2.7rem, 3.9vw, 3.65rem);
-  background: #f0f1f2;
-  border-top: 1px solid rgba(0, 0, 0, .06);
+  background: white;
+  border-top: none;
   border-bottom: 1px solid rgba(0, 0, 0, .08);
 }
 
@@ -2266,6 +2268,7 @@ footer.bg-dark {
 
 .home-page .home-collection-band--canadiana {
   padding-bottom: 2rem;
+  background: white;
 }
 
 .home-page {
@@ -2515,7 +2518,7 @@ footer.bg-dark {
 /* Heritage intro + Heritage search band refinement */
 .home-page .home-intro--heritage {
   background: #f0f1f2;
-  border-top: 1px solid rgba(0, 0, 0, .06);
+  border-top: none;
   border-bottom: 1px solid rgba(0, 0, 0, .08);
   padding-top: clamp(2.8rem, 4vw, 3.9rem);
   padding-bottom: clamp(2.6rem, 3.8vw, 3.45rem);
@@ -2760,4 +2763,8 @@ footer.bg-dark {
 
 .base-first-row > section {
   padding: 0 !important;
+}
+
+.canadiana-walkthrough, .home-explore-canadiana {
+  background: white;
 }
