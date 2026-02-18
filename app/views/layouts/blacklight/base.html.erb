@@ -49,7 +49,7 @@
 
       <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>
 
-      <div class="row">
+      <div class="row base-first-row">
         <%= content_for?(:content) ? yield(:content) : yield %>
       </div>
     </main>

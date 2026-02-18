@@ -347,7 +347,7 @@
   ] %>
   <% featured_page = params[:featured_page].to_i %>
   <% featured_page = 1 if featured_page < 1 %>
-  <% featured_component = FeaturedItemsComponent.new(items: featured_items, page: featured_page, per_page: 6) %>
+  <% featured_component = FeaturedItemsComponent.new(items: featured_items, page: featured_page, per_page: 8) %>
   <% show_featured_pagination = featured_component.show_pagination? %>
   <% if show_featured_pagination %>
     <% base_featured_params = params.to_unsafe_h.except('featured_page', :featured_page) %>
@@ -413,4 +413,3 @@
 
   <%= render(MembersComponent.new) %>
 </div>
-

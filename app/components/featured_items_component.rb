@@ -1,7 +1,7 @@
 class FeaturedItemsComponent < ViewComponent::Base
   attr_reader :page, :per_page, :total_items, :total_pages
 
-  def initialize(items:, page: 1, per_page: 6)
+  def initialize(items:, page: 1, per_page: 8)
     @items = normalize_items(items)
     @page = [page.to_i, 1].max
     @per_page = [per_page.to_i, 1].max
