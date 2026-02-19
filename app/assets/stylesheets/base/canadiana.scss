@@ -873,19 +873,21 @@ footer.bg-dark {
 
 .members-marquee-wrap {
   display: grid;
-  gap: clamp(1.2rem, 2.3vw, 2.1rem);
-  margin-top: 1.45rem;
+  gap: clamp(2.35rem, 3.6vw, 3.8rem);
+  margin-top: clamp(2.2rem, 3.2vw, 3.1rem);
 }
 
 .members-marquee-row {
   overflow: hidden;
+  margin-top: 25px;
+  margin-bottom:25px;
   -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 4%, #000 96%, rgba(0,0,0,0) 100%);
   mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 4%, #000 96%, rgba(0,0,0,0) 100%);
 }
 
 .members-marquee-track {
-  --marquee-pad: 1.8rem;
-  --logo-gap: clamp(1.9rem, 3vw, 3.15rem);
+  --marquee-pad: 1.2rem;
+  --logo-gap: clamp(1.45rem, 2.3vw, 2.55rem);
   display: flex;
   align-items: center;
   gap: var(--logo-gap);
@@ -906,7 +908,7 @@ footer.bg-dark {
 
 .member-logo {
   flex: 0 0 auto;
-  min-width: clamp(8.5rem, 14vw, 14rem);
+  min-width: clamp(8.25rem, 12.6vw, 12.3rem);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -926,7 +928,7 @@ footer.bg-dark {
 }
 
 .member-logo.is-long {
-  min-width: clamp(11rem, 19vw, 17.2rem);
+  min-width: clamp(10.25rem, 16.2vw, 15.25rem);
   justify-content: flex-start;
 }
 
@@ -987,6 +989,11 @@ footer.bg-dark {
 }
 
 @media (max-width: 991px) {
+  .members-marquee-wrap {
+    gap: clamp(1.7rem, 5vw, 2.4rem);
+    margin-top: 1.6rem;
+  }
+
   .members-controls {
     align-items: stretch;
   }
@@ -997,12 +1004,12 @@ footer.bg-dark {
   }
 
   .members-marquee-track {
-    --marquee-pad: 1rem;
-    --logo-gap: clamp(1.2rem, 3vw, 2rem);
+    --marquee-pad: .75rem;
+    --logo-gap: clamp(1.05rem, 2.8vw, 1.65rem);
   }
 
   .member-logo {
-    min-width: clamp(8rem, 20vw, 10.5rem);
+    min-width: clamp(7.5rem, 18vw, 9.4rem);
   }
 
   .member-logo__text {
@@ -1010,7 +1017,7 @@ footer.bg-dark {
   }
 
   .member-logo.is-long {
-    min-width: clamp(9.5rem, 28vw, 13rem);
+    min-width: clamp(8.7rem, 24vw, 11.1rem);
   }
 
   .member-logo.is-long .member-logo__text {
@@ -1146,12 +1153,12 @@ footer.bg-dark {
   font-size: clamp(2.15rem, 4.2vw, 3.65rem);
   line-height: 1.05;
   margin: 0 0 .9rem;
-  max-width: 13ch;
+  //max-width: 13ch;
 }
 
 .home-page .home-hero-copy {
   font-size: clamp(1rem, 1.55vw, 1.12rem);
-  max-width: 64ch;
+  //max-width: 64ch;
   margin: 0;
   color: rgba(255,255,255,.94);
 }
@@ -1530,7 +1537,7 @@ footer.bg-dark {
 .home-page .home-split-grid--slider .home-split-card {
   flex: 0 0 auto;
   width: calc(100vw - 10rem);
-  max-width: 560px;
+  max-width: 615px;
   scroll-snap-align: start;
 }
 
@@ -1854,7 +1861,7 @@ footer.bg-dark {
 }
 
 .home-page .home-hero h1 {
-  max-width: 14.5ch;
+  //max-width: 14.5ch;
   margin-bottom: 1rem;
   font-size: clamp(2.9rem, 5vw, 5.3rem);
   line-height: 1.06;
@@ -1863,7 +1870,7 @@ footer.bg-dark {
 .home-page .home-hero-copy {
   margin-top: 0;
   margin-bottom: 0;
-  max-width: 31ch;
+  //max-width: 31ch;
   color: rgba(255,255,255,.92);
   font-size: clamp(1.13rem, 1.7vw, 2.02rem);
   line-height: 1.5;
@@ -2247,7 +2254,7 @@ footer.bg-dark {
 
   .home-page .home-hero-copy {
     font-size: 1rem;
-    max-width: 42ch;
+    //max-width: 42ch;
   }
 
   .home-page .hero-secondary-actions {
@@ -2830,4 +2837,14 @@ footer.bg-dark {
 
 .canadiana-walkthrough, .home-explore-canadiana {
   background: white;
+}
+
+
+.home-featured, .home-statement, .members-section, .home-explore {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.members-section, .home-explore  {
+  padding-bottom: 10rem !important;
 }
