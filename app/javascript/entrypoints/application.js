@@ -702,15 +702,24 @@ function initExploreSliders() {
 
     slider.dataset.sliderInit = '1';
 
-    const calcStep = () => {
-      const card = track.querySelector('.home-split-card');
-      if (!card) return viewport.clientWidth * 0.9;
-      const styles = window.getComputedStyle(track);
-      const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
-      return Math.max(120, card.getBoundingClientRect().width + gap);
-    };
-
     const maxScroll = () => Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    const snapPoints = () => {
+      const cards = Array.from(track.querySelectorAll('.home-split-card'));
+      const max = maxScroll();
+      if (!cards.length) return [0, max];
+
+      const viewportRect = viewport.getBoundingClientRect();
+      const points = cards.map((card) => {
+        const rect = card.getBoundingClientRect();
+        const left = rect.left - viewportRect.left + viewport.scrollLeft;
+        return Math.max(0, Math.min(max, left));
+      });
+
+      points.push(0, max);
+
+      return Array.from(new Set(points.map((point) => Math.round(point))))
+        .sort((a, b) => a - b);
+    };
 
     const updateControls = () => {
       const max = maxScroll();
@@ -722,8 +731,21 @@ function initExploreSliders() {
     };
 
     const scrollByStep = (dir) => {
-      viewport.scrollBy({ left: dir * calcStep(), behavior: 'smooth' });
-      window.setTimeout(updateControls, 250);
+      const points = snapPoints();
+      const left = viewport.scrollLeft;
+      const epsilon = 6;
+      let target = left;
+
+      if (dir > 0) {
+        target = points.find((point) => point > left + epsilon);
+        if (target === undefined) target = maxScroll();
+      } else {
+        const previousPoints = points.filter((point) => point < left - epsilon);
+        target = previousPoints.length ? previousPoints[previousPoints.length - 1] : 0;
+      }
+
+      viewport.scrollTo({ left: target, behavior: 'smooth' });
+      window.setTimeout(updateControls, 320);
     };
 
     prev.addEventListener('click', () => scrollByStep(-1));

@@ -722,9 +722,8 @@ footer.bg-dark {
 }
 .members-section > .canadiana-shell,
 .members-section > .container {
-  max-width: 1880px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .members-header {
@@ -771,8 +770,10 @@ footer.bg-dark {
 
 .members-segmented .btn {
   border: 0 !important;
-  padding: .48rem .98rem;
-  font-size: .92rem;
+  padding: .68rem 1.45rem;
+  min-height: 52px;
+  font-size: clamp(1.02rem, 1.05vw, 1.2rem);
+  line-height: 1.15;
   font-weight: 600;
   color: #202a33;
   background: transparent;
@@ -794,21 +795,21 @@ footer.bg-dark {
 .members-filters .chip {
   border: 1px solid #dfe3e7;
   border-radius: 999px;
-  min-height: 34px;
-  min-width: 42px;
-  padding: .25rem .72rem;
+  min-height: 46px;
+  min-width: 56px;
+  padding: .42rem 1rem;
   background: #eceff2;
   color: #48535e;
-  font-weight: 600;
-  font-size: .9rem;
+  font-weight: 650;
+  font-size: clamp(.98rem, .92vw, 1.1rem);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .35rem;
+  gap: .45rem;
 }
 
 .members-filters .chip .bi {
-  font-size: .92rem;
+  font-size: 1.05rem;
 }
 
 .members-filters .chip.active {
@@ -841,14 +842,15 @@ footer.bg-dark {
   color: #a3acb4;
   display: inline-flex;
   align-items: center;
-  padding: .25rem .4rem .25rem .7rem;
+  padding: .35rem .52rem .35rem .82rem;
 }
 
 .members-search .form-control {
   border: 0 !important;
   box-shadow: none !important;
-  height: 38px;
-  padding: .25rem .5rem;
+  height: 46px;
+  padding: .35rem .62rem;
+  font-size: 1.02rem;
   background: transparent;
 }
 
@@ -857,7 +859,7 @@ footer.bg-dark {
 }
 
 .members-search .btn-clear-search {
-  height: 38px !important;
+  height: 46px !important;
   border: 0 !important;
   border-radius: 0;
   background: transparent !important;
@@ -989,6 +991,30 @@ footer.bg-dark {
 }
 
 @media (max-width: 991px) {
+  .members-segmented .btn {
+    padding: .56rem 1.06rem;
+    min-height: 46px;
+    font-size: .98rem;
+  }
+
+  .members-filters .chip {
+    min-height: 40px;
+    min-width: 50px;
+    padding: .33rem .84rem;
+    font-size: .94rem;
+    gap: .35rem;
+  }
+
+  .members-filters .chip .bi {
+    font-size: .95rem;
+  }
+
+  .members-search .form-control,
+  .members-search .btn-clear-search {
+    height: 42px !important;
+    font-size: .96rem;
+  }
+
   .members-marquee-wrap {
     gap: clamp(1.7rem, 5vw, 2.4rem);
     margin-top: 1.6rem;
@@ -1525,10 +1551,10 @@ footer.bg-dark {
 
 .home-page .home-split-card {
   display: grid;
-  grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+  grid-template-columns: minmax(0, 46%) minmax(0, 54%);
   border-radius: 18px;
   overflow: hidden;
-  min-height: 305px;
+  min-height: clamp(340px, 24vw, 495px);
   box-shadow: none;
   border: 1px solid rgba(19, 38, 40, .08);
   background: #fff;
@@ -1536,13 +1562,13 @@ footer.bg-dark {
 
 .home-page .home-split-grid--slider .home-split-card {
   flex: 0 0 auto;
-  width: calc(100vw - 10rem);
-  max-width: 615px;
+  width: clamp(660px, 54vw, 920px);
+  max-width: none;
   scroll-snap-align: start;
 }
 
 .home-page .home-split-card__content {
-  padding: 1.1rem 1rem 1rem;
+  padding: clamp(1.35rem, 2.1vw, 2rem) clamp(1.15rem, 1.6vw, 1.65rem) clamp(1.15rem, 1.7vw, 1.55rem);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -1559,20 +1585,20 @@ footer.bg-dark {
 }
 
 .home-page .home-split-card__title {
-  font-size: clamp(1.82rem, 2.65vw, 2.42rem);
-  line-height: 1.08;
+  font-size: clamp(2.2rem, 2.9vw, 3.2rem);
+  line-height: 1.05;
   margin: 0 0 .55rem;
 }
 
 .home-page .home-split-card__text {
   margin: 0;
-  line-height: 1.48;
-  font-size: .92rem;
+  line-height: 1.44;
+  font-size: clamp(1rem, 1.08vw, 1.24rem);
   color: rgba(255,255,255,.96);
 }
 
 .home-page .home-split-card__actions {
-  margin-top: .85rem;
+  margin-top: 1.05rem;
 }
 
 .home-page .home-split-card__cta {
@@ -1581,7 +1607,8 @@ footer.bg-dark {
   background: #fff;
   color: #176973;
   font-weight: 700;
-  padding: .34rem .82rem;
+  padding: .5rem 1.05rem;
+  font-size: clamp(1rem, 1.02vw, 1.16rem);
   box-shadow: 0 4px 12px rgba(0,0,0,.14);
 }
 
@@ -1591,7 +1618,7 @@ footer.bg-dark {
 }
 
 .home-page .home-split-card__media {
-  min-height: 305px;
+  min-height: clamp(340px, 24vw, 495px);
 }
 
 .home-page .home-split-card__media img {
@@ -1737,11 +1764,11 @@ footer.bg-dark {
   }
 
   .home-page .home-split-grid--slider .home-split-card {
-    width: calc(100vw - 8.5rem);
+    width: calc(100vw - 7.2rem);
   }
 
   .home-page .home-split-card__title {
-    font-size: 1.7rem;
+    font-size: 1.95rem;
   }
 }
 
@@ -1837,18 +1864,18 @@ footer.bg-dark {
 /* Layout shell + header + hero alignment to mockup */
 .canadiana-shell {
   width: 100%;
-  max-width: 1720px;
+  //max-width: 1720px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 26px;
-  padding-right: 26px;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .home-page .site-section > .canadiana-shell,
 .home-page .home-collection-band > .canadiana-shell,
 .home-page .home-hero > .canadiana-shell,
 .home-page .members-section > .canadiana-shell {
-  max-width: 1880px;
+  //max-width: 1880px;
 }
 
 .home-page .home-search-wrap {
@@ -2131,15 +2158,15 @@ footer.bg-dark {
 
 @media (max-width: 1499px) {
   .canadiana-shell {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
   }
 
   .home-page .home-hero > .canadiana-shell,
   .home-page .site-section > .canadiana-shell,
   .home-page .home-collection-band > .canadiana-shell,
   .home-page .members-section > .canadiana-shell {
-    max-width: 1380px;
+    //max-width: 1380px;
   }
 
   .topbar-main {
@@ -2366,8 +2393,8 @@ footer.bg-dark {
 .home-page .home-collection-band--canadiana .home-collection-band__copy {
   padding-top: clamp(2.2rem, 3vw, 3.5rem);
   padding-bottom: clamp(2.2rem, 3vw, 3.5rem);
-  padding-left: var(--home-shell-gutter);
-  padding-right: clamp(1.3rem, 2.2vw, 2.8rem);
+  padding-left: 5vw;
+  padding-right: 5vw;
   background: #358896;
 }
 
@@ -2636,8 +2663,8 @@ footer.bg-dark {
   background: #50af00;
   padding-top: clamp(2rem, 2.8vw, 3.3rem);
   padding-bottom: clamp(2rem, 2.8vw, 3.3rem);
-  padding-left: clamp(1.3rem, 2.2vw, 2.6rem);
-  padding-right: var(--home-shell-gutter);
+  padding-left: 5vw;
+  padding-right: 5vw;
 }
 
 .home-page .home-explore .section-title,
@@ -2736,8 +2763,6 @@ footer.bg-dark {
 .home-page .home-collection-band--heritage .home-collection-band__image {
   min-height: 560px;
   background: #020202;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
 }
 
@@ -2760,8 +2785,8 @@ footer.bg-dark {
 @media (max-width: 1200px) {
   .home-page .home-collection-band--canadiana .home-collection-band__copy,
   .home-page .home-collection-band--heritage .home-collection-band__copy {
-    padding-left: var(--home-shell-gutter);
-    padding-right: var(--home-shell-gutter);
+    padding-left: 5vw;
+    padding-right: 5vw;
   }
 
   .home-page .home-heritage-intro-grid {
@@ -2847,4 +2872,13 @@ footer.bg-dark {
 
 .members-section, .home-explore  {
   padding-bottom: 10rem !important;
+}
+
+.exhibit {
+  width:100%;
+  height:100%;
+}
+
+.exhibition-viewer > div, .exhibition-viewer > div > div {
+  height: 100% !important;
 }
