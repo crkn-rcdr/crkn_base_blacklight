@@ -18,9 +18,11 @@
     --accent-green: var(--brand-green);
     --accent-teal: var(--brand-teal);
     --accent-blue: #1096ac;
+    --bs-font-sans-serif: 'Roboto';
+    --bs-font-monospace: 'Roboto';
 }
 /* Global typography */
-html, body { font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif; }
+html, body { font-family: 'Roboto' }
 body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .btn { --bs-btn-border-radius: 999px; }
 .navbar {
@@ -1141,7 +1143,7 @@ footer.bg-dark {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 200;
   margin: 0 0 .65rem;
   opacity: .92;
 }
@@ -1172,7 +1174,7 @@ footer.bg-dark {
 }
 
 .home-page .home-hero h1 {
-  font-size: clamp(2.15rem, 4.2vw, 3.65rem);
+  font-size: clamp(2.15rem, 4.2vw, 3.5rem);
   line-height: 1.05;
   margin: 0 0 .9rem;
   //max-width: 13ch;
@@ -1338,8 +1340,8 @@ footer.bg-dark {
 
 .home-page .home-collection-band__copy .home-inline-link {
   color: rgba(255,255,255,.95);
-  font-weight: 700;
-  text-decoration: none;
+  font-weight: normal;
+  text-decoration: underline;
 }
 
 .home-page .home-collection-band__copy .home-inline-link:hover {
@@ -1584,6 +1586,7 @@ footer.bg-dark {
   font-size: clamp(2.2rem, 2.9vw, 3.2rem);
   line-height: 1.05;
   margin: 0 0 .55rem;
+  font-weight: 200;
 }
 
 .home-page .home-split-card__text {
@@ -1601,7 +1604,7 @@ footer.bg-dark {
   border-radius: 999px;
   border: 0;
   background: #fff;
-  color: #176973;
+  color: black;
   font-weight: 700;
   padding: .5rem 1.05rem;
   font-size: clamp(1rem, 1.02vw, 1.16rem);
@@ -1609,8 +1612,7 @@ footer.bg-dark {
 }
 
 .home-page .home-split-card__cta:hover {
-  background: #f2fbfc;
-  color: #14535c;
+  color: #333333;
 }
 
 .home-page .home-split-card__media {
@@ -1886,7 +1888,7 @@ footer.bg-dark {
 .home-page .home-hero h1 {
   //max-width: 14.5ch;
   margin-bottom: 1rem;
-  font-size: clamp(2.9rem, 5vw, 5.3rem);
+  font-size: clamp(2.9rem, 5vw, 3.5rem);
   line-height: 1.06;
 }
 
@@ -2404,14 +2406,14 @@ footer.bg-dark {
 .home-page .home-collection-band--canadiana .home-eyebrow {
   text-transform: none;
   letter-spacing: 0;
-  font-weight: 400;
+  font-weight: 200;
   margin-bottom: 1rem;
   font-size: clamp(1.12rem, 1.35vw, 1.6rem);
   opacity: 1;
 }
 
 .home-page .home-collection-band--canadiana .home-collection-band__copy h3 {
-  max-width: 20ch;
+  //max-width: 20ch;
   margin-bottom: 1.7rem;
   font-size: clamp(2rem, 2.85vw, 3.25rem);
   line-height: 1.12;
@@ -2673,7 +2675,7 @@ footer.bg-dark {
 .home-page .home-statement .section-title {
   color: #131b22;
   margin-bottom: 1rem;
-  font-size: clamp(2rem, 3vw, 3.1rem);
+  font-size: clamp(2rem, 2.85vw, 3.25rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
@@ -2681,14 +2683,14 @@ footer.bg-dark {
 .home-page .home-collection-band--heritage .home-eyebrow {
   text-transform: none;
   letter-spacing: 0;
-  font-weight: 400;
+  font-weight: 200;
   margin-bottom: .95rem;
   opacity: 1;
   font-size: clamp(1.12rem, 1.35vw, 1.6rem);
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__copy h3 {
-  max-width: 24ch;
+  //max-width: 24ch;
   margin-bottom: 1.45rem;
   font-size: clamp(2rem, 2.85vw, 3.25rem);
   line-height: 1.14;
@@ -2831,7 +2833,7 @@ footer.bg-dark {
 @media (max-width: 768px) {
   .home-page .home-collection-band--heritage .home-collection-band__copy h3 {
     font-size: clamp(1.58rem, 7vw, 2.05rem);
-    max-width: 24ch;
+    //max-width: 24ch;
   }
 
   .home-page .home-collection-band--heritage .band-search-form--heritage {
@@ -2875,6 +2877,10 @@ footer.bg-dark {
   padding-bottom: 10rem !important;
 }
 
+.home-statement, .members-section {
+  padding-top: 0 !important;
+}
+
 .exhibit {
   width:100%;
   height:100%;
@@ -2882,4 +2888,10 @@ footer.bg-dark {
 
 .exhibition-viewer > div, .exhibition-viewer > div > div {
   height: 100% !important;
+}
+
+@media (min-width: 1200px) { 
+  .home-page .home-collection-band__panel {
+    max-height: 495px;
+  }
 }
