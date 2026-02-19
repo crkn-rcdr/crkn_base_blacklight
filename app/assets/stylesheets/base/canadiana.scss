@@ -2306,7 +2306,6 @@ footer.bg-dark {
 }
 
 .home-page .home-intro--canadiana .section-lede {
-  max-width: 90ch;
   color: #1f2328;
   font-size: var(--home-body-copy-size);
   line-height: var(--home-body-copy-leading);
@@ -2506,7 +2505,6 @@ footer.bg-dark {
   }
 
   .home-page .home-intro--canadiana .section-lede {
-    max-width: 100ch;
     font-size: clamp(1.12rem, 1.2vw, 1.72rem);
   }
 
@@ -2610,7 +2608,6 @@ footer.bg-dark {
 }
 
 .home-page .home-heritage-intro-copy .section-lede {
-  max-width: 83ch;
   font-size: clamp(1.05rem, 1.3vw, 1.56rem);
   line-height: 1.58;
   margin-bottom: 1rem;
