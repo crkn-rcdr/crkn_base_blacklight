@@ -2171,10 +2171,18 @@ footer.bg-dark {
   .topbar-main-inner {
     min-height: 138px;
     gap: 1.7rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 98% !important;
+  }
+
+  .topbar-utility-inner {
+    padding-left: 1rem;
+    padding-right: 1.5rem;
   }
 
   .topbar-main .navbar-brand.navbar-logo {
-    width: 300px !important;
+    width: 255px !important;
     height: 97px !important;
   }
 
