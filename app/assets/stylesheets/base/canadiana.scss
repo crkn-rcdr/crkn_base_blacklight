@@ -349,7 +349,7 @@ footer a {
     backdrop-filter: saturate(140%) blur(8px);
     -webkit-backdrop-filter: saturate(140%) blur(8px);
     color: white;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+    //border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 .navbar a {
     color: var(--theme-primary) !important;
@@ -1093,7 +1093,7 @@ footer.bg-dark {
   background: #fff !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border-bottom: 1px solid rgba(0,0,0,.08);
+  //border-bottom: 1px solid rgba(0,0,0,.08);
   color: #1f2a2c;
   padding-top: .5rem;
   padding-bottom: .55rem;
@@ -1115,7 +1115,7 @@ footer.bg-dark {
 }
 
 .home-page {
-  background: #edf1f3;
+  background: white;
   color: #122225;
 }
 
@@ -1149,6 +1149,7 @@ footer.bg-dark {
 }
 
 .home-page .home-hero {
+  //border-radius: 28px;
   position: relative;
   overflow: hidden;
   padding: clamp(1.8rem, 3.7vw, 3.4rem) 0 clamp(1.6rem, 3vw, 2.6rem);
@@ -1166,9 +1167,34 @@ footer.bg-dark {
     radial-gradient(circle at 20% 25%, rgba(255,255,255,.18), transparent 34%),
     radial-gradient(circle at 84% 15%, rgba(255,255,255,.16), transparent 30%);
   pointer-events: none;
+  z-index: 0;
 }
 
+/*
+.home-page .home-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 228px;
+  background: #ffffff;
+  -webkit-mask-image: radial-gradient(130% 190px at 50% 0, transparent 99%, #000 100%);
+  mask-image: radial-gradient(130% 190px at 50% 0, transparent 99%, #000 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  pointer-events: none;
+  z-index: 0;
+}*/
+
 .home-page .home-hero > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .home-hero > .canadiana-shell {
   position: relative;
   z-index: 1;
 }
@@ -1237,6 +1263,14 @@ footer.bg-dark {
 
 .home-page .home-search .btn-clear-search {
   height: 48px !important;
+}
+
+@media (max-width: 991px) {
+  .home-page .home-hero::after {
+    height: 176px;
+    -webkit-mask-image: radial-gradient(150% 150px at 50% 0, transparent 99%, #000 100%);
+    mask-image: radial-gradient(150% 150px at 50% 0, transparent 99%, #000 100%);
+  }
 }
 
 .home-page .hero-quick-links {
@@ -1314,7 +1348,7 @@ footer.bg-dark {
   padding-top: 2.15rem;
   padding-bottom: 2.05rem;
   background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,.05);
+  //border-bottom: 1px solid rgba(0,0,0,.05);
 }
 
 .home-page .home-intro--heritage {
@@ -1882,7 +1916,7 @@ footer.bg-dark {
 
 .home-page .home-hero {
   padding-top: clamp(3.2rem, 5.7vw, 5.15rem);
-  padding-bottom: clamp(2.4rem, 4.6vw, 4.1rem);
+  padding-bottom:  clamp(3.2rem, 5.7vw, 5.15rem);//8rem;
 }
 
 .home-page .home-hero h1 {
@@ -2091,13 +2125,13 @@ footer.bg-dark {
 }
 
 .topbar-main {
-  min-height: 164px;
+  min-height: 122px;
   background: #fff;
 }
 
 .topbar-main-inner {
   width: 100%;
-  min-height: 164px;
+  min-height: 125px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2181,11 +2215,11 @@ footer.bg-dark {
   }
 
   .topbar-main {
-    min-height: 138px;
+    min-height: 122px;
   }
 
   .topbar-main-inner {
-    min-height: 138px;
+    min-height: 125px;
     gap: 1.7rem;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -2195,6 +2229,7 @@ footer.bg-dark {
   .topbar-utility-inner {
     padding-left: 1rem;
     padding-right: 1.5rem;
+    //padding-top: 1rem;
   }
 
   .topbar-main .navbar-brand.navbar-logo {
@@ -2213,7 +2248,7 @@ footer.bg-dark {
   }
 
   .topbar-main-inner {
-    min-height: 116px;
+    min-height: 125px;
   }
 
   .topbar-main .navbar-brand.navbar-logo {
@@ -2259,7 +2294,7 @@ footer.bg-dark {
   }
 
   .topbar-main-inner {
-    min-height: 88px;
+    min-height: 125px;
     flex-wrap: wrap;
     gap: .8rem;
     padding-top: .6rem;
@@ -2319,7 +2354,7 @@ footer.bg-dark {
   padding-bottom: clamp(2.7rem, 3.9vw, 3.65rem);
   background: white;
   border-top: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  //border-bottom: 1px solid rgba(0, 0, 0, .08);
 }
 
 .home-page .home-intro--canadiana .section-title {
@@ -2612,7 +2647,7 @@ footer.bg-dark {
 .home-page .home-intro--heritage {
   background: #f0f1f2;
   border-top: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
+  //border-bottom: 1px solid rgba(0, 0, 0, .08);
   padding-top: clamp(2.8rem, 4vw, 3.9rem);
   padding-bottom: clamp(2.6rem, 3.8vw, 3.45rem);
 }
@@ -2778,7 +2813,6 @@ footer.bg-dark {
 
 .home-page .home-collection-band--heritage .home-collection-band__image {
   min-height: 560px;
-  background: #020202;
   gap: 0;
 }
 
@@ -2907,4 +2941,25 @@ footer.bg-dark {
   .home-page .home-collection-band__panel {
     max-height: 495px;
   }
+  
+  .home-page .home-collection-band--heritage .home-collection-band__copy, .home-page .home-collection-band--canadiana .home-collection-band__copy {
+    max-height: 495px;
+  }
+
+  .home-page .home-collection-band--canadiana {
+    position: relative;
+  }
+}
+
+.home-collection-band__panel {
+  //border-radius: 28px !important;
+}
+.heritage-bg,  .home-collection-band--heritage {
+  background: #f0f1f2 !important;
+}
+.site-section.home-intro.home-intro--heritage {
+  border-radius: 28px 28px 0 0;
+}
+.heritage-bg.site-section.home-explore {
+  border-radius: 0 0 35px 35px;
 }
