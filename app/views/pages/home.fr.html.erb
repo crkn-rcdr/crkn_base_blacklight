@@ -11,10 +11,10 @@
           </p>
 
           <div class="hero-primary-actions">
-            <a class="btn hero-primary-btn" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">
+            <a class="btn hero-primary-btn" href="/#search-canadiana">
               Rechercher dans la collection Canadiana
             </a>
-            <a class="btn hero-primary-btn" href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+            <a class="btn hero-primary-btn" href="/#search-heritage">
               Rechercher dans la collection H&eacute;ritage
             </a>
           </div>
@@ -37,7 +37,7 @@
             <p class="mb-2">Pages num&eacute;ris&eacute;es disponibles en ligne</p>
             <p class="mb-0">
               Contenu fourni par les
-              <a href="<%= I18n.t('links.URL_CRKN') %>" target="_blank" rel="noopener">biblioth&egrave;ques membres du RCDR</a>
+              <a href="/#members-section">biblioth&egrave;ques membres du RCDR</a>
               et
               <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Biblioth&egrave;que et Archives Canada</a>.
             </p>
@@ -63,7 +63,7 @@
     </div>
   </section>
 
-  <section class="home-collection-band home-collection-band--teal home-collection-band--canadiana">
+  <section id="search-canadiana" class="home-collection-band home-collection-band--teal home-collection-band--canadiana">
     <div class="canadiana-shell">
       <div class="home-collection-band__panel">
         <div class="home-collection-band__copy">
@@ -205,7 +205,7 @@
     </div>
   </section>
 
-  <section class="home-collection-band home-collection-band--green home-collection-band--reverse home-collection-band--heritage">
+  <section  id="search-heritage" class="home-collection-band home-collection-band--green home-collection-band--reverse home-collection-band--heritage">
     <div class="canadiana-shell">
       <div class="home-collection-band__panel">
         <div class="home-collection-band__copy">
