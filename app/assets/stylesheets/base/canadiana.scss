@@ -720,11 +720,6 @@ footer.bg-dark {
   border-top: none;
   overflow: hidden;
 }
-.members-section > .canadiana-shell,
-.members-section > .container {
-  margin-left: 10%;
-  margin-right: 10%;
-}
 
 .members-header {
   margin-bottom: 1rem;
@@ -2518,8 +2513,8 @@ footer.bg-dark {
   .home-page .home-collection-band--canadiana .home-collection-band__copy {
     padding-top: clamp(2.6rem, 2.8vw, 4.3rem);
     padding-bottom: clamp(2.6rem, 2.8vw, 4.3rem);
-    padding-left: var(--home-shell-gutter);
-    padding-right: clamp(1.5rem, 2.4vw, 3.1rem);
+    padding-left: 5vw;
+    padding-right: 5vw;
   }
 
   .home-page .home-collection-band--canadiana .home-collection-band__copy h3 {
