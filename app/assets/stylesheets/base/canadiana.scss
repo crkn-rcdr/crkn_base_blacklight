@@ -2045,26 +2045,39 @@ footer.bg-dark {
   width: 28px;
   height: 28px;
   margin: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #050607;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
   opacity: 1;
 }
 
 .topbar .bluesky {
-  background-image: url("/assets/bluesky-color.svg") !important;
+  background-image: none !important;
+  -webkit-mask-image: url("/assets/bluesky-color.svg");
+  mask-image: url("/assets/bluesky-color.svg");
 }
 
 .topbar .facebook {
-  background-image: url("/assets/facebook-color.svg") !important;
+  background-image: none !important;
+  -webkit-mask-image: url("/assets/facebook-color.svg");
+  mask-image: url("/assets/facebook-color.svg");
 }
 
 .topbar .linkedin {
-  background-image: url("/assets/linkedin-color.svg") !important;
+  background-image: none !important;
+  -webkit-mask-image: url("/assets/linkedin-color.svg");
+  mask-image: url("/assets/linkedin-color.svg");
 }
 
 .topbar .sm-icon.instagram {
   background-image: none;
+  background-color: transparent;
+  -webkit-mask-image: none;
+  mask-image: none;
   color: #050607 !important;
   display: inline-flex;
   align-items: center;
