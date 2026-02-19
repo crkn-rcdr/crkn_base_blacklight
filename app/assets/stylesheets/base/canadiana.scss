@@ -731,6 +731,7 @@ footer.bg-dark {
   line-height: 1.08;
   color: #11161c;
   letter-spacing: -0.02em;
+  margin-bottom: 1rem !important;
 }
 
 .members-section .text-muted.small {
@@ -1139,7 +1140,7 @@ footer.bg-dark {
 .home-page .home-eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 700;
   margin: 0 0 .65rem;
   opacity: .92;
@@ -1994,13 +1995,13 @@ footer.bg-dark {
 }
 
 .topbar-utility {
-  min-height: 70px;
+  min-height: 55px;
   background: #e4e6e8;
 }
 
 .topbar-utility-inner {
   width: 100%;
-  min-height: 70px;
+  min-height: 55px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
