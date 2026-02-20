@@ -44,9 +44,10 @@
           <div class="members-marquee-row <%= 'is-reverse' if row_reverse?(row_idx) %>">
             <div class="members-marquee-track" style="--marquee-duration: <%= row_duration(row_idx) %>s;">
               <% (row + row).each_with_index do |member, idx| %>
+                <% logo_src = logo_asset(member['name']) %>
                 <% wordmark = logo_text(member['name']) %>
                 <% duplicate = idx >= row.length %>
-                <% logo_classes = ['member-logo', logo_style(member['name']), ('is-long' if wordmark.length > 13)].compact.join(' ') %>
+                <% logo_classes = ['member-logo', logo_style(member['name']), ('has-image' if logo_src.present?), ('is-long' if logo_src.blank? && wordmark.length > 13)].compact.join(' ') %>
                 <% logo_attrs = {
                   class: logo_classes,
                   data: {
@@ -60,11 +61,21 @@
 
                 <% if member['url'].present? %>
                   <a <%= tag.attributes(logo_attrs.merge(href: member['url'], target: '_blank', rel: 'noopener', aria: { label: t('blacklight.members.visit_site_aria', name: member['name']) })) %>>
-                    <span class="member-logo__text"><%= wordmark %></span>
+                    <% if logo_src.present? %>
+                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
+                      <span class="visually-hidden"><%= member['name'] %></span>
+                    <% else %>
+                      <span class="member-logo__text"><%= wordmark %></span>
+                    <% end %>
                   </a>
                 <% else %>
                   <span <%= tag.attributes(logo_attrs) %>>
-                    <span class="member-logo__text"><%= wordmark %></span>
+                    <% if logo_src.present? %>
+                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
+                      <span class="visually-hidden"><%= member['name'] %></span>
+                    <% else %>
+                      <span class="member-logo__text"><%= wordmark %></span>
+                    <% end %>
                   </span>
                 <% end %>
               <% end %>

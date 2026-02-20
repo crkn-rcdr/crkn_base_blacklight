@@ -917,6 +917,29 @@ footer.bg-dark {
   padding: .05rem 0;
 }
 
+.member-logo.has-image {
+  min-width: clamp(10rem, 14.8vw, 16.8rem);
+  min-height: clamp(3.5rem, 5vw, 5.5rem);
+  justify-content: center;
+  padding: .15rem 0;
+}
+
+.member-logo__image {
+  display: block;
+  width: clamp(9.5rem, 15vw, 20rem);
+  height: auto;
+  max-width: 100%;
+  max-height: clamp(3.5rem, 5vw, 5.5rem);
+  object-fit: contain;
+  object-position: center;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.member-logo.has-image .member-logo__text {
+  display: none;
+}
+
 .member-logo__text {
   display: block;
   white-space: nowrap;
@@ -1034,6 +1057,17 @@ footer.bg-dark {
 
   .member-logo {
     min-width: clamp(7.5rem, 18vw, 9.4rem);
+  }
+
+  .member-logo.has-image {
+    min-width: clamp(8.75rem, 23vw, 12.2rem);
+    min-height: clamp(2.9rem, 7vw, 4rem);
+  }
+
+  .member-logo__image {
+    width: clamp(8.4rem, 20vw, 12.5rem);
+    max-width: 100%;
+    max-height: clamp(2.9rem, 7vw, 4rem);
   }
 
   .member-logo__text {
