@@ -2952,6 +2952,28 @@ footer.bg-dark {
   .topbar-main-inner {
     min-height: 155px;
     margin-top: 10px;
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
+}
+
+@media (min-width: 1500px) { 
+  .home-page .home-collection-band__panel {
+    max-height: 100%;
+  }
+  
+  .home-page .home-collection-band--heritage .home-collection-band__copy, .home-page .home-collection-band--canadiana .home-collection-band__copy {
+    max-height: 100%;
+  }
+
+  .home-page .home-collection-band--canadiana {
+    position: relative;
+  }
+  .topbar-main-inner {
+    min-height: fit-content;
+    margin-top: 10px;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
   }
 }
 
