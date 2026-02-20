@@ -267,7 +267,7 @@
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/monog.jpg" alt="Histoire familiale et communautaire" loading="lazy">
+                <img src="/assets/genealogy.jpg" alt="Histoire familiale et communautaire" loading="lazy">
               </div>
             </article>
 
@@ -282,7 +282,7 @@
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/monog.jpg" alt="Histoire autochtone" loading="lazy">
+                <img src="/assets/indigenous_history.jpg" alt="Histoire autochtone" loading="lazy">
               </div>
             </article>
 
@@ -297,7 +297,7 @@
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/govpubs.jpg" alt="Documents gouvernementaux" loading="lazy">
+                <img src="/assets/government_documents.jpg" alt="Documents gouvernementaux" loading="lazy">
               </div>
             </article>
 
@@ -312,7 +312,7 @@
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/govpubs.jpg" alt="Histoire militaire" loading="lazy">
+                <img src="/assets/military_history.jpg" alt="Histoire militaire" loading="lazy">
               </div>
             </article>
 
@@ -327,7 +327,7 @@
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/monog.jpg" alt="Documents marquants" loading="lazy">
+                <img src="/assets/landmark_papers.jpg" alt="Documents marquants" loading="lazy">
               </div>
             </article>
 
@@ -342,13 +342,11 @@
 
   <% featured_items = [
     { id: 'oon.00001_198410', ark: 'https://n2t.net/ark:/69429/m0z31ng4pk4n', title: 'Science Dimension', description: 'Explorez des documents du Nord et du patrimoine documentaire associe.' },
-    { id: 'oon.00001_198308', ark: 'https://n2t.net/ark:/69429/m07h1dj5g10g', title: '[Systeme topographique national, 1:50 000 : Canada : Heart\'s Content, Terre-Neuve]', description: 'Ressources topographiques et cartographiques de partout au Canada.' },
-    { id: 'oocihm.N_00093_19080327', ark: 'https://n2t.net/ark:/69429/m0ft8df6mj3b', title: 'Acadia athenaeum : The Acadia athenaeum', description: 'Publications universitaires et etudiantes issues des collections historiques.' },
-    { id: 'oon.00001_197710', ark: 'https://n2t.net/ark:/69429/m0ns0ks6qt7p', title: 'Herzberg Institute of Astrophysics', description: 'Publications scientifiques et documents de recherche astronomique.' },
-    { id: 'sru.00004_196007', ark: 'https://n2t.net/ark:/69429/m0862b858k6w', title: 'Chinese immigration records: Sample Chinese immigration certificates : C-13421', description: 'Sources primaires preservees par des institutions partenaires.' },
-    { id: 'oocihm.N_00761_18720503', ark: 'https://n2t.net/ark:/69429/m0s46h132195', title: 'Joseph Howe fonds : C-1845', description: 'Manuscrits d\'archives sur l\'histoire sociale et politique du Canada.' },
-    { id: 'oocihm.N_00208_19100315', ark: 'https://n2t.net/ark:/69429/m0bk16m34n32', title: 'The Evening Telegram : Vol. 32, No. 62 (March 15, 1910)', description: 'Periodiques historiques et information communautaire d\'archives regionales.' },
-    { id: 'oocihm.N_00367_18811007', ark: 'https://n2t.net/ark:/69429/m0v40js9k267', title: 'The Toronto World : Vol. II, No. 223 (October 7, 1881)', description: 'Publications en serie documentant la vie sociale et culturelle.' }
+    { id: 'qmma.16524', ark: 'https://n2t.net/ark:/69429/m0ww76t0nq7v', title: '[Systeme topographique national, 1:50 000 : Canada : Heart\'s Content, Terre-Neuve]', description: 'Ressources topographiques et cartographiques de partout au Canada.' },
+    { id: 'nswa.00001_192612', ark: 'https://n2t.net/ark:/69429/m2025000011pw36', title: 'Acadia athenaeum : The Acadia athenaeum', description: 'Publications universitaires et etudiantes issues des collections historiques.' },
+    { id: 'oocihm.lac_reel_t1741', ark: 'https://n2t.net/ark:/69429/m07h1dj5927j', title: 'Herzberg Institute of Astrophysics', description: 'Publications scientifiques et documents de recherche astronomique.', start_page: 1734 },
+    { id: 'oocihm.lac_reel_c13421', ark: 'https://n2t.net/ark:/69429/m0nv9959cv8t', title: 'Chinese immigration records: Sample Chinese immigration certificates : C-13421', description: 'Sources primaires preservees par des institutions partenaires.', start_page: 54 },
+    { id: 'oocihm.lac_reel_c1845', ark: 'https://n2t.net/ark:/69429/m0x05x63bt10', title: 'Joseph Howe fonds : C-1845', description: 'Manuscrits d\'archives sur l\'histoire sociale et politique du Canada.', start_page: 9 }
   ] %>
   <% featured_page = params[:featured_page].to_i %>
   <% featured_page = 1 if featured_page < 1 %>

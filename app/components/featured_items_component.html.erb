@@ -6,7 +6,8 @@
         <div
           class="card-img-top featured-item__viewer"
           id="<%= viewer_id_for(record) %>"
-          data-ark-id="<%= ark_identifier_for(record) %>">
+          data-ark-id="<%= ark_identifier_for(record) %>"
+          data-start-page="<%= start_page_for(record) %>">
           <button type="button" class="featured-item__activate"><%= activate_zoom_label %></button>
         </div>
         <div class="featured-item__meta">
@@ -93,8 +94,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const response = await fetch(manifestUrl);
         const manifest = await response.json();
         const canvases = manifestCanvases(manifest);
-        const firstCanvas = canvases[0];
-        const size = canvasSize(firstCanvas);
+        const requestedStartPage = Number(container.dataset.startPage || "1");
+        const startPageIndex = Number.isFinite(requestedStartPage)
+          ? Math.max(Math.floor(requestedStartPage), 1) - 1
+          : 0;
+        const boundedCanvasIndex = Math.min(startPageIndex, Math.max(canvases.length - 1, 0));
+        const ratioCanvas = canvases[boundedCanvasIndex] || canvases[0];
+        const size = canvasSize(ratioCanvas);
         if (size) {
           const ratio = size.width / size.height;
           container.dataset.ratio = String(ratio);
@@ -107,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const lastTwoParts = parts.slice(-2).join("/");
           return `https://image-tor.canadiana.ca/iiif/2/${encodeURIComponent(lastTwoParts)}/info.json`;
         }).filter(Boolean);
+        const boundedStartPage = Math.min(startPageIndex, Math.max(tileSources.length - 1, 0));
 
         if (!tileSources.length || !hasOpenSeadragon) {
           if (overlay) overlay.hidden = true;
@@ -123,9 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
           showHomeControl: false,
           showZoomControl: false,
           showFullPageControl: false,
+          initialPage: boundedStartPage,
           defaultZoomLevel: 1.1
         });
         if (!viewer) return;
+        if (boundedStartPage > 0) {
+          viewer.addOnceHandler("open", () => viewer.goToPage(boundedStartPage));
+        }
 
         viewer.setMouseNavEnabled(false);
         container.classList.remove("is-active");

@@ -333,14 +333,12 @@ archival records from across Canada</h1>
   </section>
 
   <% featured_items = [
-    { id: 'oon.00001_198410', ark: 'https://n2t.net/ark:/69429/m0z31ng4pk4n', title: 'Science Dimension', description: 'Explore records from the North and related documentary heritage.' },
-    { id: 'oon.00001_198308', ark: 'https://n2t.net/ark:/69429/m07h1dj5g10g', title: '[National Topographic System, 1:50,000 : Canada : Heart\'s Content, Newfoundland]', description: 'Topographic and regional mapping resources from across Canada.' },
-    { id: 'oocihm.N_00093_19080327', ark: 'https://n2t.net/ark:/69429/m0ft8df6mj3b', title: 'Acadia athenaeum : The Acadia athenaeum', description: 'University and student publications from historical collections.' },
-    { id: 'oon.00001_197710', ark: 'https://n2t.net/ark:/69429/m0ns0ks6qt7p', title: 'Herzberg Institute of Astrophysics', description: 'Scientific publications and astronomical research materials.' },
-    { id: 'sru.00004_196007', ark: 'https://n2t.net/ark:/69429/m0862b858k6w', title: 'Chinese immigration records: Sample Chinese immigration certificates : C-13421', description: 'Primary-source records preserved through partner institutions.' },
-    { id: 'oocihm.N_00761_18720503', ark: 'https://n2t.net/ark:/69429/m0s46h132195', title: 'Joseph Howe fonds : C-1845', description: 'Archival manuscripts documenting Canada\'s social and political history.' },
-    { id: 'oocihm.N_00208_19100315', ark: 'https://n2t.net/ark:/69429/m0bk16m34n32', title: 'The Evening Telegram : Vol. 32, No. 62 (March 15, 1910)', description: 'Historic periodicals and community reporting from regional archives.' },
-    { id: 'oocihm.N_00367_18811007', ark: 'https://n2t.net/ark:/69429/m0v40js9k267', title: 'The Toronto World : Vol. II, No. 223 (October 7, 1881)', description: 'Serialized publications documenting social and cultural life.' }
+    { id: 'oon.00001_198410', ark: 'https://n2t.net/ark:/69429/m0z31ng4pk4n', start_page: 1, title: 'Science Dimension', description: 'Explore records from the North and related documentary heritage.' },
+    { id: 'qmma.16524', ark: 'https://n2t.net/ark:/69429/m0ww76t0nq7v', title: '[National Topographic System, 1:50,000 : Canada : Heart\'s Content, Newfoundland]', description: 'Topographic and regional mapping resources from across Canada.' },
+    { id: 'nswa.00001_192612', ark: 'https://n2t.net/ark:/69429/m2025000011pw36', title: 'Acadia athenaeum : The Acadia athenaeum', description: 'University and student publications from historical collections.' },
+    { id: 'oocihm.lac_reel_t1741', ark: 'https://n2t.net/ark:/69429/m07h1dj5927j', title: 'Herzberg Institute of Astrophysics', description: 'Scientific publications and astronomical research materials.', start_page: 1734 },
+    { id: 'oocihm.lac_reel_c13421', ark: 'https://n2t.net/ark:/69429/m0nv9959cv8t', title: 'Chinese immigration records: Sample Chinese immigration certificates : C-13421', description: 'Primary-source records preserved through partner institutions.', start_page: 54 },
+    { id: 'oocihm.lac_reel_c1845', ark: 'https://n2t.net/ark:/69429/m0x05x63bt10', title: 'Joseph Howe fonds : C-1845', description: 'Archival manuscripts documenting Canada\'s social and political history.', start_page: 9 }
   ] %>
   <% featured_page = params[:featured_page].to_i %>
   <% featured_page = 1 if featured_page < 1 %>

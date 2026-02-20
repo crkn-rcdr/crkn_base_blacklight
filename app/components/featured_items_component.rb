@@ -45,18 +45,42 @@ class FeaturedItemsComponent < ViewComponent::Base
   end
 
   def record_link(record)
-    "/catalog/#{record['id']}?lang=#{I18n.locale}"
+    ark_url_for(record) || "/catalog/#{record['id']}?lang=#{I18n.locale}"
   end
 
   def viewer_id_for(record)
     "featured-osd-#{record['id'].to_s.gsub(/[^a-zA-Z0-9_-]/, '-')}"
   end
 
+  def start_page_for(record)
+    item = @items_by_id[record['id']] || {}
+    page = item[:start_page].to_i
+    page.positive? ? page : 1
+  end
+
   def ark_identifier_for(record)
-    Array(record['ark']).first.to_s.sub('https://n2t.net/ark:/', '')
+    normalize_ark_identifier(Array(record['ark']).first.to_s)
   end
 
   private
+
+  def ark_url_for(record)
+    ark = Array(record['ark']).first.to_s.strip
+    return nil if ark.blank?
+    return ark if ark.start_with?('http://', 'https://')
+
+    identifier = normalize_ark_identifier(ark)
+    return nil if identifier.blank?
+
+    "https://n2t.net/ark:/#{identifier}"
+  end
+
+  def normalize_ark_identifier(value)
+    value.to_s.strip
+      .sub(%r{\Ahttps?://n2t\.net/ark:/}i, '')
+      .sub(%r{\Aark:/}i, '')
+      .sub(%r{\A/+}, '')
+  end
 
   def load_records_for_page
     page_items = @items.slice((@page - 1) * @per_page, @per_page).to_a
@@ -77,17 +101,21 @@ class FeaturedItemsComponent < ViewComponent::Base
       if item.is_a?(Hash)
         id = (item[:id] || item['id']).to_s.strip
         next if id.blank?
+        raw_page = item[:start_page] || item['start_page']
+        start_page = raw_page.to_i
+        start_page = nil unless start_page.positive?
 
         {
           id: id,
           ark: (item[:ark] || item['ark']).to_s.strip.presence,
           title: (item[:title] || item['title']).to_s.strip.presence,
-          description: (item[:description] || item['description']).to_s.strip.presence
+          description: (item[:description] || item['description']).to_s.strip.presence,
+          start_page: start_page
         }
       else
         id = item.to_s.strip
         next if id.blank?
-        { id: id, ark: nil, title: nil, description: nil }
+        { id: id, ark: nil, title: nil, description: nil, start_page: nil }
       end
     end
   end
