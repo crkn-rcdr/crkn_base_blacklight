@@ -45,6 +45,7 @@
             <div class="members-marquee-track" style="--marquee-duration: <%= row_duration(row_idx) %>s;">
               <% (row + row).each_with_index do |member, idx| %>
                 <% logo_src = logo_asset(member['name']) %>
+                <% member_href = member_url(member) %>
                 <% wordmark = logo_text(member['name']) %>
                 <% duplicate = idx >= row.length %>
                 <% logo_classes = ['member-logo', logo_style(member['name']), ('has-image' if logo_src.present?), ('is-long' if logo_src.blank? && wordmark.length > 13)].compact.join(' ') %>
@@ -59,8 +60,8 @@
                 <% logo_attrs[:tabindex] = -1 if duplicate %>
                 <% logo_attrs[:'aria-hidden'] = true if duplicate %>
 
-                <% if member['url'].present? %>
-                  <a <%= tag.attributes(logo_attrs.merge(href: member['url'], target: '_blank', rel: 'noopener', aria: { label: t('blacklight.members.visit_site_aria', name: member['name']) })) %>>
+                <% if member_href.present? %>
+                  <a <%= tag.attributes(logo_attrs.merge(href: member_href, target: '_blank', rel: 'noopener', aria: { label: t('blacklight.members.visit_site_aria', name: member['name']) })) %>>
                     <% if logo_src.present? %>
                       <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
                       <span class="visually-hidden"><%= member['name'] %></span>

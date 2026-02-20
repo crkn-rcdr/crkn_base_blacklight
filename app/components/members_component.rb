@@ -84,6 +84,96 @@ class MembersComponent < ViewComponent::Base
     'Yukon University' => 'members/yukon-university.png'
   }.freeze
 
+  MEMBER_URLS = {
+    'Acadia University' => 'https://www2.acadiau.ca/',
+    'Algoma University' => 'https://algomau.ca/',
+    'Athabasca University' => 'https://www.athabascau.ca/',
+    'Bibliotheque et Archives nationales du Quebec' => 'https://www.banq.qc.ca/',
+    "Bishop's University" => 'https://www.ubishops.ca/',
+    'Brandon University' => 'https://www.brandonu.ca/',
+    'Brock University' => 'https://brocku.ca/',
+    'Cape Breton University' => 'https://www.cbu.ca/',
+    'Capilano University' => 'https://www.capilanou.ca/',
+    'Carleton University' => 'https://carleton.ca/',
+    'Concordia University' => 'https://www.concordia.ca/',
+    'Concordia University of Edmonton' => 'https://www.concordia.ab.ca/',
+    'Dalhousie University' => 'https://www.dal.ca/',
+    'Ecole Polytechnique de Montreal' => 'https://www.polymtl.ca/',
+    "Ecole nationale d'administration publique (UQ)" => 'https://www.enap.ca/',
+    'Ecole de technologie superieure (UQ)' => 'https://www.etsmtl.ca/',
+    'HEC Montreal' => 'https://www.hec.ca/',
+    'Institut national de la recherche scientifique (UQ)' => 'https://inrs.ca/',
+    'Kwantlen Polytechnic University' => 'https://www.kpu.ca/',
+    'Lakehead University' => 'https://www.lakeheadu.ca/',
+    'Laurentian University' => 'https://laurentian.ca/',
+    'Library and Archives Canada' => 'https://library-archives.canada.ca/',
+    'Library of Parliament' => 'https://lop.parl.ca/',
+    'MacEwan University' => 'https://www.macewan.ca/',
+    'McGill University' => 'https://www.mcgill.ca/',
+    'McMaster University' => 'https://www.mcmaster.ca/',
+    'Memorial University of Newfoundland' => 'https://www.mun.ca/',
+    'Mount Allison University' => 'https://www.mta.ca/',
+    'Mount Royal University' => 'https://www.mtroyal.ca/',
+    'Mount Saint Vincent University' => 'https://www.msvu.ca/',
+    'National Research Council Canada' => 'https://nrc.canada.ca/',
+    'Nipissing University' => 'https://www.nipissingu.ca/',
+    'NOSM University' => 'https://www.nosm.ca/',
+    'Nova Scotia College of Art and Design University' => 'https://nscad.ca/',
+    'OCAD University' => 'https://www.ocadu.ca/',
+    'Ontario Tech University' => 'https://ontariotechu.ca/',
+    'OurDigitalWorld' => 'https://ourdigitalworld.net/',
+    "Queen's University" => 'https://www.queensu.ca/',
+    'Research and Development Institute for the Agri-environment' => 'https://www.irda.qc.ca/',
+    'Royal Military College of Canada' => 'https://www.rmc-cmr.ca/',
+    'Royal Roads University' => 'https://www.royalroads.ca/',
+    "Saint Mary's University" => 'https://www.smu.ca/',
+    'Simon Fraser University' => 'https://www.sfu.ca/',
+    'St. Francis Xavier University' => 'https://www.stfx.ca/',
+    'Tele-universite du Quebec' => 'https://teluq.ca/',
+    "The King's University" => 'https://www.kingsu.ca/',
+    'Thompson Rivers University' => 'https://www.tru.ca/',
+    'Toronto Metropolitan University' => 'https://www.torontomu.ca/',
+    'Toronto Public Library' => 'https://www.tpl.ca/',
+    'Trent University' => 'https://www.trentu.ca/',
+    'Trinity Western University' => 'https://www.twu.ca/',
+    'Universite Laval' => 'https://www.ulaval.ca/',
+    'Universite Sainte-Anne' => 'https://www.usainteanne.ca/',
+    'Universite de Hearst' => 'https://www.uhearst.ca/',
+    'Universite de Moncton' => 'https://www.umoncton.ca/',
+    'Universite de Montreal' => 'https://www.umontreal.ca/',
+    'Universite de Sherbrooke' => 'https://www.usherbrooke.ca/',
+    "Universite de l'Ontario francais" => 'https://uontario.ca/',
+    'Universite du Quebec a Chicoutimi' => 'https://www.uqac.ca/',
+    'Universite du Quebec a Montreal' => 'https://uqam.ca/',
+    'Universite du Quebec a Rimouski' => 'https://www.uqar.ca/',
+    'Universite du Quebec a Trois-Rivieres' => 'https://www.uqtr.ca/',
+    'Universite du Quebec en Abitibi-Temiscamingue' => 'https://www.uqat.ca/',
+    'Universite du Quebec en Outaouais' => 'https://uqo.ca/',
+    'University of Alberta' => 'https://www.ualberta.ca/',
+    'University of British Columbia' => 'https://www.ubc.ca/',
+    'University of Calgary' => 'https://www.ucalgary.ca/',
+    'University of Guelph' => 'https://www.uoguelph.ca/',
+    'University of Lethbridge' => 'https://www.ulethbridge.ca/',
+    'University of Manitoba' => 'https://umanitoba.ca/',
+    'University of New Brunswick' => 'https://www.unb.ca/',
+    'University of Northern British Columbia' => 'https://www.unbc.ca/',
+    'University of Ottawa' => 'https://www.uottawa.ca/',
+    'University of Prince Edward Island' => 'https://www.upei.ca/',
+    'University of Regina' => 'https://www.uregina.ca/',
+    'University of Saskatchewan' => 'https://www.usask.ca/',
+    'University of Toronto' => 'https://www.utoronto.ca/',
+    'University of Victoria' => 'https://www.uvic.ca/',
+    'University of Waterloo' => 'https://uwaterloo.ca/',
+    'University of Windsor' => 'https://www.uwindsor.ca/',
+    'University of Winnipeg' => 'https://www.uwinnipeg.ca/',
+    'University of the Fraser Valley' => 'https://www.ufv.ca/',
+    'Vancouver Island University' => 'https://www.viu.ca/',
+    'Western University' => 'https://www.uwo.ca/',
+    'Wilfrid Laurier University' => 'https://www.wlu.ca/',
+    'York University' => 'https://www.yorku.ca/',
+    'Yukon University' => 'https://www.yukonu.ca/'
+  }.freeze
+
   LOGO_WORDMARKS = {
     'University of Victoria' => 'UVIC',
     'University of Ottawa' => 'uOttawa',
@@ -160,6 +250,13 @@ class MembersComponent < ViewComponent::Base
 
   def logo_asset(name)
     LOGO_ASSETS[normalize_name(name)]
+  end
+
+  def member_url(member)
+    explicit = member['url'].to_s.strip
+    return explicit if explicit.present?
+
+    MEMBER_URLS[normalize_name(member['name'])]
   end
 
   private
