@@ -78,7 +78,7 @@ archival records from across Canada</h1>
               <option value="tx_gen">Full text</option>
             </select>
             <label class="visually-hidden" for="canadiana-band-q">Search the Canadiana Collection</label>
-            <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Car|Maps|Newspapers|Government records|Magazines|Communities">
+            <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Sessional Papers of the Dominon of Canada|The Toronto World|大漢公報 (Chinese Times)|The Dawn of Tomorrow|Anne of the Island">
             <button type="submit" class="btn btn-primary btn-sm">Search</button>
           </form>
 
@@ -215,8 +215,15 @@ archival records from across Canada</h1>
               <option value="tx_gen">Full text</option>
             </select>
             <label class="visually-hidden" for="heritage-band-q">Search the Heritage Collection</label>
-            <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Felt hats in|Genealogy|Military history|Land records|Indigenous affairs|Census records">
-            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Lower Canada Land Grants|War Diaries, 1939-1945|Passenger Lists|Chinese immigration records|Parish registers: New Brunswick">
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              disabled
+              aria-disabled="true"
+              title="Coming soon: Heritage search is not available yet.">
+              Search (Coming soon)
+            </button>
           </form>
 
           <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>

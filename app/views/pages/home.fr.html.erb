@@ -81,7 +81,7 @@
               <option value="tx_gen">Texte int&eacute;gral</option>
             </select>
             <label class="visually-hidden" for="canadiana-band-q">Rechercher dans la collection Canadiana</label>
-            <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Rechercher..." data-typed-placeholder-phrases="Cartes|Journaux|G&eacute;n&eacute;alogie|Documents gouvernementaux|Magazines|Communaut&eacute;s">
+            <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Rechercher..." data-typed-placeholder-phrases="Sessional Papers of the Dominon of Canada|The Toronto World|大漢公報 (Chinese Times)|The Dawn of Tomorrow|Anne of the Island">
             <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
           </form>
 
@@ -223,8 +223,15 @@
               <option value="tx_gen">Texte int&eacute;gral</option>
             </select>
             <label class="visually-hidden" for="heritage-band-q">Rechercher dans la collection H&eacute;ritage</label>
-            <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Rechercher..." data-typed-placeholder-phrases="Chapeaux de feutre dans|G&eacute;n&eacute;alogie|Affaires autochtones|Histoire militaire|Titres fonciers|Recensements">
-            <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
+            <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Rechercher..." data-typed-placeholder-phrases="Concessions de terres du Bas-Canada|Journaux de guerre, 1939-1945|Listes de passagers|Dossiers d&apos;immigration chinoise|Registres paroissiaux : Nouveau-Brunswick">
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              disabled
+              aria-disabled="true"
+              title="Bient&ocirc;t disponible : la recherche H&eacute;ritage n&apos;est pas encore accessible.">
+              Chercher (Bient&ocirc;t disponible)
+            </button>
           </form>
 
           <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>

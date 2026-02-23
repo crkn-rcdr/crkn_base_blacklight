@@ -2512,15 +2512,17 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--canadiana .band-search-select {
-  flex: 0 0 185px;
-  max-width: 185px;
+  flex: 0 0 auto;
+  width: fit-content;
+  min-width: 7.3rem;
+  max-width: 9.6rem;
   height: 56px;
   border: 0;
   border-right: 1px solid #d5dbe0;
   background: transparent;
   color: #2f3b46;
   border-radius: 999px 0 0 999px;
-  padding: 0 2.3rem 0 1.1rem;
+  padding: 0 1.9rem 0 .95rem;
   font-size: 1.02rem;
   box-shadow: none;
 }
@@ -2536,7 +2538,7 @@ footer.bg-dark {
   border: 0;
   border-radius: 0;
   padding: 0 1.05rem;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: #2c3b45;
   box-shadow: none;
 }
@@ -2618,8 +2620,9 @@ footer.bg-dark {
   }
 
   .home-page .home-collection-band--canadiana .band-search-select {
-    flex-basis: 200px;
-    max-width: 200px;
+    width: fit-content;
+    min-width: 7.8rem;
+    max-width: 10rem;
     height: 62px;
     font-size: 1.08rem;
   }
@@ -2789,15 +2792,17 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--heritage .band-search-select {
-  flex: 0 0 170px;
-  max-width: 170px;
+  flex: 0 0 auto;
+  width: fit-content;
+  min-width: 7.3rem;
+  max-width: 9.6rem;
   height: 56px;
   border: 0;
   border-right: 1px solid #d5dbe0;
   background: transparent;
   color: #2f3b46;
   border-radius: 999px 0 0 999px;
-  padding: 0 2.2rem 0 1rem;
+  padding: 0 1.9rem 0 .95rem;
   font-size: 1.02rem;
   box-shadow: none;
 }
@@ -2813,7 +2818,7 @@ footer.bg-dark {
   border: 0;
   border-radius: 0;
   padding: 0 1rem;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: #2c3b45;
   box-shadow: none;
 }
@@ -2833,6 +2838,15 @@ footer.bg-dark {
   font-weight: 600;
   font-size: 1.1rem;
   line-height: 1;
+  white-space: nowrap;
+}
+
+.home-page .home-collection-band--heritage .band-search-form .btn[disabled] {
+  flex-basis: 248px;
+  max-width: 248px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1rem;
 }
 
 .home-page .home-collection-band--heritage .band-search-form .btn:hover,
@@ -2899,6 +2913,9 @@ footer.bg-dark {
   }
 
   .home-page .home-collection-band--heritage .band-search-select {
+    width: fit-content;
+    min-width: 7.8rem;
+    max-width: 10rem;
     font-size: 1.08rem;
   }
 
@@ -2908,6 +2925,12 @@ footer.bg-dark {
 
   .home-page .home-collection-band--heritage .band-search-form .btn {
     font-size: 1.2rem;
+  }
+
+  .home-page .home-collection-band--heritage .band-search-form .btn[disabled] {
+    flex-basis: 280px;
+    max-width: 280px;
+    font-size: 1.08rem;
   }
 }
 
