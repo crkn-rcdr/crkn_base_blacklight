@@ -1,10 +1,10 @@
 load_defaults: 8.8.2
 development:
   adapter: solr
-  url: "http://public:hdwi389e8d!ds@4.229.225.26/solr/blacklight_marc_demo"
+  url: "<%= ENV.fetch('SOLR_URL') %>"
 test: &test
   adapter: solr
-  url: "http://public:hdwi389e8d!ds@4.229.225.26/solr/blacklight_marc_demo"
+  url: "<%= ENV.fetch('SOLR_URL') %>"
 production:
   adapter: solr
-  url: "http://public:hdwi389e8d!ds@4.229.225.26/solr/blacklight_marc_demo"
+  url: "<%= ENV.fetch('SOLR_URL') %>"

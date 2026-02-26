@@ -1,9 +1,19 @@
+<% activate_zoom_label = I18n.locale.to_s.start_with?('fr') ? 'Cliquer pour activer le zoom' : 'Click to activate zoom' %>
 <div class="row align-items-start" id="collection-items-list">
   <% if @collection_items.present? %>
     <% @collection_items.each do |collection_item| %>
       <% if collection_item['is_issue']&.first == "Yes" %>
+        <% viewer_id = "osd-#{collection_item['id'].to_s.gsub(/[^a-zA-Z0-9_-]/, '-')}" %>
+        <% ark_value = Array(collection_item['ark']).first.to_s.strip %>
+        <% ark_id = ark_value.sub('https://n2t.net/ark:/', '') %>
         <div class="card" style="width: 300px; margin: 0 1.4rem 1rem 0;">
-        <div class="card-img-top" id="osd-<%= collection_item['id'] %>" style="height: 330px; border-bottom:none; margin-bottom: 0;"></div>
+        <div
+          class="card-img-top collection-item__viewer"
+          id="<%= viewer_id %>"
+          data-ark-id="<%= ark_id %>"
+          style="height: 330px; border-bottom:none; margin-bottom: 0;">
+          <button type="button" class="collection-item__activate"><%= activate_zoom_label %></button>
+        </div>
           <div class="card-body">
             <% if collection_item['subtitle_tsim'] %>
               <h5 class="card-title">
@@ -81,26 +91,71 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  <% Array(@collection_items).each do |item| %>
-    <% next unless item['is_issue']&.first == "Yes" %>
-    <% ark_value = Array(item['ark']).first.to_s.strip %>
-    <% next if ark_value.empty? %>
-    (async function () {
-      const arkId = "<%= ark_value.sub('https://n2t.net/ark:/', '') %>";
-      const manifestUrl = `https://crkn-iiif-api.azurewebsites.net/manifest/${arkId}`;
-      const containerId = "osd-<%= item['id'] %>";
-      const container = document.getElementById(containerId);
-      if (!container) return;
+  const hasOpenSeadragon = typeof OpenSeadragon !== "undefined";
+  const list = document.getElementById("collection-items-list");
+  if (!list || !hasOpenSeadragon) return;
 
+  let activeViewerState = null;
+
+  const manifestCanvases = (manifest) => {
+    if (Array.isArray(manifest?.items) && manifest.items.length) return manifest.items;
+    const v2 = manifest?.sequences?.[0]?.canvases;
+    return Array.isArray(v2) ? v2 : [];
+  };
+
+  const deactivateViewer = (state) => {
+    if (!state) return;
+    const { viewer, container, overlay } = state;
+    try {
+      viewer.setMouseNavEnabled(false);
+    } catch (_error) {}
+    container.classList.remove("is-active");
+    if (overlay) overlay.hidden = false;
+  };
+
+  const activateViewer = (viewer, container, overlay) => {
+    if (activeViewerState && activeViewerState.viewer !== viewer) {
+      deactivateViewer(activeViewerState);
+    }
+    try {
+      viewer.setMouseNavEnabled(true);
+    } catch (_error) {}
+    container.classList.add("is-active");
+    if (overlay) overlay.hidden = true;
+    activeViewerState = { viewer, container, overlay };
+  };
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!activeViewerState) return;
+    if (activeViewerState.container.contains(event.target)) return;
+    deactivateViewer(activeViewerState);
+    activeViewerState = null;
+  }, true);
+
+  list.querySelectorAll(".collection-item__viewer[data-ark-id]").forEach((container) => {
+    const arkId = (container.dataset.arkId || "").trim();
+    if (!arkId || container.dataset.osdReady === "1") return;
+    container.dataset.osdReady = "1";
+
+    const overlay = container.querySelector(".collection-item__activate");
+
+    (async function () {
+      const manifestUrl = `https://crkn-iiif-api.azurewebsites.net/manifest/${arkId}`;
       try {
         const response = await fetch(manifestUrl);
         const manifest = await response.json();
-        const canvases = manifest.items || [];
-        const tileSources = canvases.map(canvas => {
-          const parts = canvas.id.split('/');
-          const lastTwoParts = parts.slice(-2).join('/');
+        const canvases = manifestCanvases(manifest);
+        const tileSources = canvases.map((canvas) => {
+          const canvasId = String(canvas.id || canvas["@id"] || "");
+          const parts = canvasId.split("/");
+          const lastTwoParts = parts.slice(-2).join("/");
           return `https://image-tor.canadiana.ca/iiif/2/${encodeURIComponent(lastTwoParts)}/info.json`;
-        });
+        }).filter(Boolean);
+
+        if (!tileSources.length) {
+          if (overlay) overlay.hidden = true;
+          return;
+        }
 
         const viewer = OpenSeadragon({
           element: container,
@@ -115,11 +170,30 @@ document.addEventListener("DOMContentLoaded", function () {
           defaultZoomLevel: 1.1
         });
 
+        if (!viewer) return;
 
-      } catch (e) {
-        console.error("Failed to load manifest or initialize OpenSeadragon for", containerId, e);
+        viewer.setMouseNavEnabled(false);
+        container.classList.remove("is-active");
+
+        if (overlay) {
+          overlay.hidden = false;
+          overlay.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            activateViewer(viewer, container, overlay);
+          });
+        }
+
+        container.addEventListener("pointerdown", (event) => {
+          if (container.classList.contains("is-active")) return;
+          if (overlay && overlay.contains(event.target)) return;
+          activateViewer(viewer, container, overlay);
+        });
+      } catch (error) {
+        console.error("Failed to load manifest or initialize OpenSeadragon for", container.id, error);
+        if (overlay) overlay.hidden = true;
       }
     })();
-  <% end %>
+  });
 });
 </script>

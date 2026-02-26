@@ -10,7 +10,7 @@ fr:
       range_end_short: Fin
       range_html: " %{begin_value} – %{end_value}"
     members:
-      title: Canadiana existe grâce aux membres du RCDR
+      title: Canadiana existe grâce aux bibliothèques membres du RCDR
       subtitle: Le RCDR est une communauté canadienne de bibliothèques, d’archives et d’institutions d’un océan à l’autre
       category_aria: Onglets de catégories de membres
       institutional: Membres institutionnels

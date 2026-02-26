@@ -90,6 +90,6 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.hosts << 'canadiana-beta.azurewebsites.net'
-  config.hosts << 'canadiana-demo.azurewebsites.net'
+  config.hosts << ENV.fetch("BLACKLIGHT_HOST_IP")
+  config.hosts << ENV.fetch("BLACKLIGHT_HOST_ADDR")
 end

@@ -1,25 +1,20 @@
-<section class="members-section" aria-labelledby="members-title">
-  <div class="container">
-    <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-2">
-      <div>
-        <h2 id="members-title" class="section-title mb-1"><%= t('blacklight.members.title') %></h2>
-        <p class="text-muted small mb-1"><%= t('blacklight.members.subtitle') %></p>
-        <p class="mb-0 members-blurb">
-          <%= t('blacklight.members.blurb_html', count: (@institutional.size + @associate.size)) %>
-        </p>
-      </div>
+<section id="members-section" class="members-section" aria-labelledby="members-title">
+  <div class="canadiana-shell">
+    <header class="members-header">
+      <h2 id="members-title" class="section-title"><%= t('blacklight.members.title') %></h2>
+      <!--p class="text-muted small mb-1"><%= t('blacklight.members.subtitle') %></p-->
+      <p class="mb-0 members-blurb">
+        <%= t('blacklight.members.blurb_html', count: (@institutional.size + @associate.size)) %>
+      </p>
+    </header>
+
+    <div class="members-controls">
       <div class="members-tabs members-segmented btn-group" role="tablist" aria-label="<%= t('blacklight.members.category_aria') %>">
         <button type="button" class="btn btn-outline-secondary btn-sm active" data-members-tab="institutional"><%= t('blacklight.members.institutional') %></button>
         <button type="button" class="btn btn-outline-secondary btn-sm" data-members-tab="associate"><%= t('blacklight.members.associate') %></button>
       </div>
-    </div>
 
-    <div class="members-filters d-flex flex-wrap align-items-center gap-2 mb-3">
-      <button type="button" class="chip chip-filter active" data-province="all"><i class="bi bi-mortarboard" aria-hidden="true"></i> <%= t('blacklight.members.all') %></button>
-      <% @provinces.each do |prov| %>
-        <button type="button" class="chip chip-filter" data-province="<%= prov %>"><%= prov %></button>
-      <% end %>
-      <div class="ms-auto members-search">
+      <div class="members-search">
         <div class="input-group input-group-sm">
           <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
           <label for="members-filter-input" class="visually-hidden"><%= t('blacklight.members.search_label') %></label>
@@ -32,42 +27,67 @@
       </div>
     </div>
 
-    <div class="members-grid" data-members-group="institutional">
-      <% @institutional.each do |m| %>
-        <% card = capture do %>
-          <div class="member-avatar" aria-hidden="true"><span><%= m['name'][0] %></span></div>
-          <h3 class="member-name"><%= m['name'] %></h3>
-          <span class="badge rounded-pill member-province"><%= m['province'] %></span>
-        <% end %>
-        <% if m['url'].present? %>
-          <a class="member-card is-link" href="<%= m['url'] %>" target="_blank" rel="noopener" data-province="<%= m['province'] %>" aria-label="<%= t('blacklight.members.visit_site_aria', name: m['name']) %>">
-            <%= card %>
-          </a>
-        <% else %>
-          <article class="member-card" data-province="<%= m['province'] %>" tabindex="0">
-            <%= card %>
-          </article>
-        <% end %>
+    <div class="members-filters d-flex flex-wrap align-items-center gap-2 mb-3">
+      <button type="button" class="chip chip-filter active" data-province="all">
+        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+        <span><%= t('blacklight.members.all') %></span>
+      </button>
+      <% @provinces.each do |prov| %>
+        <button type="button" class="chip chip-filter" data-province="<%= prov %>"><%= prov %></button>
       <% end %>
     </div>
 
-    <div class="members-grid d-none" data-members-group="associate">
-      <% @associate.each do |m| %>
-        <% card = capture do %>
-          <div class="member-avatar" aria-hidden="true"><span><%= m['name'][0] %></span></div>
-          <h3 class="member-name"><%= m['name'] %></h3>
-          <span class="badge rounded-pill member-province"><%= m['province'] %></span>
+    <% { institutional: @institutional_rows, associate: @associate_rows }.each do |group_name, rows| %>
+      <div class="members-marquee-wrap <%= 'd-none' if group_name != :institutional %>" data-members-group="<%= group_name %>">
+        <% rows.each_with_index do |row, row_idx| %>
+          <% next if row.blank? %>
+          <div class="members-marquee-row <%= 'is-reverse' if row_reverse?(row_idx) %>">
+            <div class="members-marquee-track" style="--marquee-duration: <%= row_duration(row_idx) %>s;">
+              <% (row + row).each_with_index do |member, idx| %>
+                <% logo_src = logo_asset(member['name']) %>
+                <% member_href = member_url(member) %>
+                <% wordmark = logo_text(member['name']) %>
+                <% duplicate = idx >= row.length %>
+                <% logo_classes = ['member-logo', logo_style(member['name']), ('has-image' if logo_src.present?), ('is-long' if logo_src.blank? && wordmark.length > 13)].compact.join(' ') %>
+                <% logo_attrs = {
+                  class: logo_classes,
+                  data: {
+                    province: member['province'],
+                    member_name: search_key(member['name']),
+                    member_clone: duplicate
+                  }
+                } %>
+                <% logo_attrs[:tabindex] = -1 if duplicate %>
+                <% logo_attrs[:'aria-hidden'] = true if duplicate %>
+
+                <% if member_href.present? %>
+                  <a <%= tag.attributes(logo_attrs.merge(href: member_href, target: '_blank', rel: 'noopener', aria: { label: t('blacklight.members.visit_site_aria', name: member['name']) })) %>>
+                    <% if logo_src.present? %>
+                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
+                      <span class="visually-hidden"><%= member['name'] %></span>
+                    <% else %>
+                      <span class="member-logo__text"><%= wordmark %></span>
+                    <% end %>
+                  </a>
+                <% else %>
+                  <span <%= tag.attributes(logo_attrs) %>>
+                    <% if logo_src.present? %>
+                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
+                      <span class="visually-hidden"><%= member['name'] %></span>
+                    <% else %>
+                      <span class="member-logo__text"><%= wordmark %></span>
+                    <% end %>
+                  </span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         <% end %>
-        <% if m['url'].present? %>
-          <a class="member-card is-link" href="<%= m['url'] %>" target="_blank" rel="noopener" data-province="<%= m['province'] %>" aria-label="<%= t('blacklight.members.visit_site_aria', name: m['name']) %>">
-            <%= card %>
-          </a>
-        <% else %>
-          <article class="member-card" data-province="<%= m['province'] %>" tabindex="0">
-            <%= card %>
-          </article>
-        <% end %>
-      <% end %>
+      </div>
+    <% end %>
+
+    <div class="members-empty-state d-none" data-members-empty>
+      <p class="mb-0 text-muted"><%= t('blacklight.search.pagination_info.no_items_found', entry_name: t('blacklight.entry_name.default.other')) %></p>
     </div>
   </div>
 </section>

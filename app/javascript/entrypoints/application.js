@@ -262,10 +262,87 @@ function enhanceSearchBar(rootSelector) {
   input.setAttribute('aria-describedby', [input.getAttribute('aria-describedby'), helpId].filter(Boolean).join(' '));
 }
 
+function parseTypedPlaceholderPhrases(input) {
+  const raw = input?.dataset?.typedPlaceholderPhrases;
+  if (!raw) return [];
+  return raw.split('|').map((phrase) => phrase.trim()).filter(Boolean);
+}
+
+function attachTypedPlaceholder(input) {
+  if (!input || input.dataset.typedPlaceholderReady === 'true') return;
+  const phrases = parseTypedPlaceholderPhrases(input);
+  if (!phrases.length) return;
+
+  input.dataset.typedPlaceholderReady = 'true';
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    input.setAttribute('placeholder', phrases[0]);
+    return;
+  }
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let timerId = null;
+
+  const typeSpeed = 85;
+  const deleteSpeed = 42;
+  const holdDelay = 1250;
+  const betweenDelay = 280;
+  const idleDelay = 260;
+
+  const step = () => {
+    if (!document.body.contains(input)) return;
+
+    if (input === document.activeElement || input.value.length > 0) {
+      timerId = window.setTimeout(step, idleDelay);
+      return;
+    }
+
+    const phrase = phrases[phraseIndex];
+
+    if (!isDeleting) {
+      charIndex += 1;
+      input.setAttribute('placeholder', phrase.slice(0, charIndex));
+      if (charIndex >= phrase.length) {
+        isDeleting = true;
+        timerId = window.setTimeout(step, holdDelay);
+        return;
+      }
+      timerId = window.setTimeout(step, typeSpeed);
+      return;
+    }
+
+    charIndex -= 1;
+    input.setAttribute('placeholder', phrase.slice(0, charIndex));
+    if (charIndex <= 0) {
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      timerId = window.setTimeout(step, betweenDelay);
+      return;
+    }
+    timerId = window.setTimeout(step, deleteSpeed);
+  };
+
+  timerId = window.setTimeout(step, 450);
+
+  input.addEventListener('blur', () => {
+    if (!timerId) timerId = window.setTimeout(step, idleDelay);
+  });
+}
+
+function initTypedPlaceholders() {
+  document.querySelectorAll('input.js-typed-placeholder').forEach((input) => {
+    attachTypedPlaceholder(input);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   enhanceSearchBar('.navbar-search');
   enhanceSearchBar('.home-search');
+  initTypedPlaceholders();
 });
+document.addEventListener('turbo:load', initTypedPlaceholders);
 
 // Page search: fetch IIIF search + manifest on the client so the Rails render doesn't block
 function getMetaContent(name) {
@@ -512,68 +589,172 @@ document.addEventListener('click', (e) => {
 });
 
 // Members section interactions: tabs, province chips, name filter
-document.addEventListener('DOMContentLoaded', () => {
-  const section = document.querySelector('.members-section');
-  if (!section) return;
+function normalizeMemberFilterValue(value = '') {
+  return String(value)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
 
-  const tabs = section.querySelectorAll('[data-members-tab]');
-  const grids = section.querySelectorAll('.members-grid');
-  const filterChips = section.querySelectorAll('.chip-filter');
-  const input = section.querySelector('#members-filter-input');
-  const clearBtn = section.querySelector('.btn-clear-members');
+function initMembersSection() {
+  const sections = document.querySelectorAll('.members-section');
+  sections.forEach((section) => {
+    if (section.dataset.membersInit === '1') return;
+    section.dataset.membersInit = '1';
 
-  let activeGroup = 'institutional';
-  let activeProvince = 'all';
-  let text = '';
+    const tabs = section.querySelectorAll('[data-members-tab]');
+    const groups = section.querySelectorAll('[data-members-group]');
+    const filterChips = section.querySelectorAll('.chip-filter');
+    const input = section.querySelector('#members-filter-input');
+    const clearBtn = section.querySelector('.btn-clear-members');
+    const emptyState = section.querySelector('[data-members-empty]');
 
-  function applyFilters() {
-    grids.forEach(grid => {
-      grid.classList.toggle('d-none', grid.dataset.membersGroup !== activeGroup);
-      if (grid.dataset.membersGroup === activeGroup) {
-        grid.querySelectorAll('.member-card').forEach(card => {
-          const prov = card.dataset.province || '';
-          const name = card.querySelector('.member-name')?.textContent?.toLowerCase() || '';
-          const provOk = activeProvince === 'all' || prov === activeProvince;
-          const textOk = text === '' || name.includes(text);
-          card.style.display = (provOk && textOk) ? '' : 'none';
+    let activeGroup = 'institutional';
+    let activeProvince = 'all';
+    let text = '';
+
+    const applyFilters = () => {
+      let hasVisibleItems = false;
+
+      groups.forEach((group) => {
+        const isActiveGroup = group.dataset.membersGroup === activeGroup;
+        group.classList.toggle('d-none', !isActiveGroup);
+        if (!isActiveGroup) return;
+
+        group.querySelectorAll('.members-marquee-row').forEach((row) => {
+          let rowHasVisibleItem = false;
+
+          row.querySelectorAll('.member-logo').forEach((logo) => {
+            const prov = logo.dataset.province || '';
+            const name = logo.dataset.memberName || '';
+            const isClone = logo.dataset.memberClone === 'true';
+            const provinceMatch = activeProvince === 'all' || prov === activeProvince;
+            const textMatch = text === '' || name.includes(text);
+            const isVisible = provinceMatch && textMatch;
+
+            logo.classList.toggle('is-filtered-out', !isVisible);
+            if (isVisible && !isClone) rowHasVisibleItem = true;
+          });
+
+          row.classList.toggle('d-none', !rowHasVisibleItem);
+          if (rowHasVisibleItem) hasVisibleItems = true;
         });
-      }
+      });
+
+      if (emptyState) emptyState.classList.toggle('d-none', hasVisibleItems);
+    };
+
+    tabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabs.forEach((item) => item.classList.remove('active'));
+        btn.classList.add('active');
+        activeGroup = btn.dataset.membersTab || 'institutional';
+        applyFilters();
+      });
     });
-  }
 
-  tabs.forEach(btn => btn.addEventListener('click', () => {
-    tabs.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeGroup = btn.dataset.membersTab;
-    applyFilters();
-  }));
+    filterChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        filterChips.forEach((item) => item.classList.remove('active'));
+        chip.classList.add('active');
+        activeProvince = chip.dataset.province || 'all';
+        applyFilters();
+      });
+    });
 
-  filterChips.forEach(chip => chip.addEventListener('click', () => {
-    filterChips.forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    activeProvince = chip.dataset.province;
-    applyFilters();
-  }));
-
-  if (input) {
-    // initialize clear visibility
-    if (clearBtn) clearBtn.hidden = input.value.length === 0;
-    input.addEventListener('input', () => {
-      text = input.value.trim().toLowerCase();
+    if (input) {
       if (clearBtn) clearBtn.hidden = input.value.length === 0;
-      applyFilters();
-    });
-  }
+      input.addEventListener('input', () => {
+        text = normalizeMemberFilterValue(input.value);
+        if (clearBtn) clearBtn.hidden = input.value.length === 0;
+        applyFilters();
+      });
+    }
 
-  if (clearBtn && input) {
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      text = '';
-      clearBtn.hidden = true;
-      input.focus();
-      applyFilters();
-    });
-  }
+    if (clearBtn && input) {
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        text = '';
+        clearBtn.hidden = true;
+        input.focus();
+        applyFilters();
+      });
+    }
 
-  applyFilters();
-});
+    applyFilters();
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initMembersSection);
+
+// Home explore sliders: horizontal scroll with prev/next controls
+function initExploreSliders() {
+  const sliders = document.querySelectorAll('[data-slider="explore"]');
+  sliders.forEach((slider) => {
+    if (slider.dataset.sliderInit === '1') return;
+
+    const viewport = slider.querySelector('[data-slider-viewport]');
+    const track = slider.querySelector('[data-slider-track]');
+    const prev = slider.querySelector('[data-slider-prev]');
+    const next = slider.querySelector('[data-slider-next]');
+    if (!viewport || !track || !prev || !next) return;
+
+    slider.dataset.sliderInit = '1';
+
+    const maxScroll = () => Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+    const snapPoints = () => {
+      const cards = Array.from(track.querySelectorAll('.home-split-card'));
+      const max = maxScroll();
+      if (!cards.length) return [0, max];
+
+      const viewportRect = viewport.getBoundingClientRect();
+      const points = cards.map((card) => {
+        const rect = card.getBoundingClientRect();
+        const left = rect.left - viewportRect.left + viewport.scrollLeft;
+        return Math.max(0, Math.min(max, left));
+      });
+
+      points.push(0, max);
+
+      return Array.from(new Set(points.map((point) => Math.round(point))))
+        .sort((a, b) => a - b);
+    };
+
+    const updateControls = () => {
+      const max = maxScroll();
+      const left = viewport.scrollLeft;
+      const canScroll = max > 4;
+      slider.classList.toggle('is-static', !canScroll);
+      prev.disabled = !canScroll || left <= 4;
+      next.disabled = !canScroll || left >= (max - 4);
+    };
+
+    const scrollByStep = (dir) => {
+      const points = snapPoints();
+      const left = viewport.scrollLeft;
+      const epsilon = 6;
+      let target = left;
+
+      if (dir > 0) {
+        target = points.find((point) => point > left + epsilon);
+        if (target === undefined) target = maxScroll();
+      } else {
+        const previousPoints = points.filter((point) => point < left - epsilon);
+        target = previousPoints.length ? previousPoints[previousPoints.length - 1] : 0;
+      }
+
+      viewport.scrollTo({ left: target, behavior: 'smooth' });
+      window.setTimeout(updateControls, 320);
+    };
+
+    prev.addEventListener('click', () => scrollByStep(-1));
+    next.addEventListener('click', () => scrollByStep(1));
+    viewport.addEventListener('scroll', updateControls, { passive: true });
+    window.addEventListener('resize', updateControls);
+
+    updateControls();
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initExploreSliders);

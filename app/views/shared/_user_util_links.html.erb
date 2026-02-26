@@ -1,82 +1,10 @@
-<div>
-  <ul class="nav-list nav-list-upper">
-    <li>
-      <a href="<%= t('links.URL_TERMS') %>"><%= t('labels.L_TERMS') %></a>
-    </li>
-    <% content_lang = request.get_header('HTTP_CONTENT_LANGUAGE') || I18n.locale.to_s %>
-    <li>
-      <% en_url = request.path + "?" + request.query_parameters.merge(lang: 'en').to_query %>
-      <% fr_url = request.path + "?" + request.query_parameters.merge(lang: 'fr').to_query %>
-      <% if content_lang == 'fr' %>
-        <%= link_to "English", en_url %> | <b>Français</b>
-      <% else %>
-        <b>English</b> | <%= link_to "Français", fr_url %>
-      <% end %>
-    </li>
-    <li>
-      <a class="sm-icon facebook" href="https://www.facebook.com/CRKNRCDR/">
-        <span class="visually-hidden">Facebook</span>
-      </a>
-      <a class="sm-icon bluesky" href="https://bsky.app/profile/crkn-rcdr.bsky.social">
-        <span class="visually-hidden">Bluesky</span>
-      </a>
-      <a class="sm-icon linkedin" href="https://www.linkedin.com/mwlite/company/canadian-research-knowledge-network">
-        <span class="visually-hidden">LinkedIn</span>
-      </a>
-    </li>
-  </ul>
-  <ul class="nav-list">
-    <%= render_nav_actions do |config, action|%>
-      <li><%= action %></li>
-    <% end %>
-
-    <% if has_user_authentication_provider? %>
-      <% if current_user %>
-      <li>
-        <%= link_to t('blacklight.header_links.logout'), destroy_user_session_path%>
-      </li>
-      <% unless current_user.to_s.blank? -%>
-      <li>
-        <%= link_to current_user, edit_user_registration_path%>
-      </li>
-      <% end %>
-      <% else %>
-      <li>
-        <%= link_to t('blacklight.header_links.login'), new_user_session_path%>
-      </li>
-      <% end %>
-    <% end %>
-
-    <li>
-      <a href="<%= I18n.t('links.URL_ABOUT') %>">
-        <%= I18n.t('labels.L_ABOUT') %>
-      </a>
-    </li>
-    <li>
-      <a href="<%= I18n.t('links.URL_HERITAGE') %>">
-        <%= I18n.t('labels.L_HERITAGE') %>
-      </a>
-    </li>
-    <li>
-      <a href="<%= I18n.t('links.URL_CRKN') %>">
-        <%= I18n.t('labels.L_CRKN_SHORT') %>
-      </a>
-    </li>
-    <li>
-      <a href="<%= I18n.t('links.URL_NEW') %>">
-        <%= I18n.t('labels.L_NEW') %>
-      </a>
-    </li>
-    <li>
-      <a target="_blank" href="<%= I18n.t('links.URL_CITATION_GUIDE') %>">
-        <%= I18n.t('labels.L_CITE') %>
-      </a>
-    </li>
-    <li>
-      <a href="<%= I18n.t('links.URL_CONTACT') %>">
-        <%= I18n.t('labels.L_CONTACT') %>
-      </a>
-    </li>
-
-  </ul>
-</div>
+<% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<ul class="nav-list nav-list-main">
+  <li><a href="<%= I18n.t('links.URL_ABOUT') %>"><%= is_fr ? 'À propos' : 'About' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_NEW') %>"><%= is_fr ? 'Nouveautés à venir' : 'New & Upcoming Content' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
+  <li><a href="<%= what_is_iiif_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_CITATION_GUIDE') %>" target="_blank" rel="noopener"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_CRKN') %>" target="_blank" rel="noopener"><%= is_fr ? 'État du système' : 'System Status' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_CONTACT') %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
+</ul>

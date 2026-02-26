@@ -1,0 +1,164 @@
+<% activate_zoom_label = I18n.locale.to_s.start_with?('fr') ? 'Cliquer pour activer le zoom' : 'Click to activate zoom' %>
+<div class="home-featured-grid home-featured-grid--records" id="featured-items-list">
+  <% if records.present? %>
+    <% records.each do |record| %>
+      <article class="featured-item featured-item--record">
+        <div
+          class="card-img-top featured-item__viewer"
+          id="<%= viewer_id_for(record) %>"
+          data-ark-id="<%= ark_identifier_for(record) %>"
+          data-start-page="<%= start_page_for(record) %>">
+          <button type="button" class="featured-item__activate"><%= activate_zoom_label %></button>
+        </div>
+        <div class="featured-item__meta">
+          <h3>
+            <a href="<%= record_link(record) %>"><%= title_for(record) %></a>
+          </h3>
+          <% description = description_for(record) %>
+          <% if description.present? %>
+            <p><%= description %></p>
+          <% end %>
+        </div>
+      </article>
+    <% end %>
+  <% else %>
+    <p><%= t('blacklight.search.zero_results.title', default: 'No featured items found') %></p>
+  <% end %>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const hasOpenSeadragon = typeof OpenSeadragon !== "undefined";
+  const grid = document.getElementById("featured-items-list");
+  if (!grid) return;
+  let activeViewerState = null;
+
+  const manifestCanvases = (manifest) => {
+    if (Array.isArray(manifest?.items) && manifest.items.length) return manifest.items;
+    const v2 = manifest?.sequences?.[0]?.canvases;
+    return Array.isArray(v2) ? v2 : [];
+  };
+
+  const canvasSize = (canvas) => {
+    const directWidth = Number(canvas?.width || canvas?.['@width']);
+    const directHeight = Number(canvas?.height || canvas?.['@height']);
+    if (directWidth > 0 && directHeight > 0) return { width: directWidth, height: directHeight };
+
+    const body = canvas?.items?.[0]?.items?.[0]?.body || canvas?.images?.[0]?.resource;
+    const bodyWidth = Number(body?.width || body?.['@width']);
+    const bodyHeight = Number(body?.height || body?.['@height']);
+    if (bodyWidth > 0 && bodyHeight > 0) return { width: bodyWidth, height: bodyHeight };
+
+    return null;
+  };
+
+  const deactivateViewer = (state) => {
+    if (!state) return;
+    const { viewer, container, overlay } = state;
+    try {
+      viewer.setMouseNavEnabled(false);
+    } catch (_error) {}
+    container.classList.remove("is-active");
+    if (overlay) overlay.hidden = false;
+  };
+
+  const activateViewer = (viewer, container, overlay) => {
+    if (activeViewerState && activeViewerState.viewer !== viewer) {
+      deactivateViewer(activeViewerState);
+    }
+
+    try {
+      viewer.setMouseNavEnabled(true);
+    } catch (_error) {}
+    container.classList.add("is-active");
+    if (overlay) overlay.hidden = true;
+    activeViewerState = { viewer, container, overlay };
+  };
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!activeViewerState) return;
+    if (activeViewerState.container.contains(event.target)) return;
+    deactivateViewer(activeViewerState);
+    activeViewerState = null;
+  }, true);
+
+  document.querySelectorAll(".featured-item__viewer[data-ark-id]").forEach((container) => {
+    const arkId = (container.dataset.arkId || "").trim();
+    if (!arkId || container.dataset.osdReady === '1') return;
+    container.dataset.osdReady = "1";
+    const overlay = container.querySelector(".featured-item__activate");
+
+    (async function () {
+      const manifestUrl = `https://crkn-iiif-api.azurewebsites.net/manifest/${arkId}`;
+      try {
+        const response = await fetch(manifestUrl);
+        const manifest = await response.json();
+        const canvases = manifestCanvases(manifest);
+        const requestedStartPage = Number(container.dataset.startPage || "1");
+        const startPageIndex = Number.isFinite(requestedStartPage)
+          ? Math.max(Math.floor(requestedStartPage), 1) - 1
+          : 0;
+        const boundedCanvasIndex = Math.min(startPageIndex, Math.max(canvases.length - 1, 0));
+        const ratioCanvas = canvases[boundedCanvasIndex] || canvases[0];
+        const size = canvasSize(ratioCanvas);
+        if (size) {
+          const ratio = size.width / size.height;
+          container.dataset.ratio = String(ratio);
+          container.style.aspectRatio = `${size.width} / ${size.height}`;
+        }
+
+        const tileSources = canvases.map((canvas) => {
+          const canvasId = String(canvas.id || canvas["@id"] || "");
+          const parts = canvasId.split("/");
+          const lastTwoParts = parts.slice(-2).join("/");
+          return `https://image-tor.canadiana.ca/iiif/2/${encodeURIComponent(lastTwoParts)}/info.json`;
+        }).filter(Boolean);
+        const boundedStartPage = Math.min(startPageIndex, Math.max(tileSources.length - 1, 0));
+
+        if (!tileSources.length || !hasOpenSeadragon) {
+          if (overlay) overlay.hidden = true;
+          return;
+        }
+
+        const viewer = OpenSeadragon({
+          element: container,
+          prefixUrl: "/assets/",
+          sequenceMode: true,
+          tileSources: tileSources,
+          immediateRender: true,
+          showReferenceStrip: false,
+          showHomeControl: false,
+          showZoomControl: false,
+          showFullPageControl: false,
+          initialPage: boundedStartPage,
+          defaultZoomLevel: 1.1
+        });
+        if (!viewer) return;
+        if (boundedStartPage > 0) {
+          viewer.addOnceHandler("open", () => viewer.goToPage(boundedStartPage));
+        }
+
+        viewer.setMouseNavEnabled(false);
+        container.classList.remove("is-active");
+        if (overlay) {
+          overlay.hidden = false;
+          overlay.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            activateViewer(viewer, container, overlay);
+          });
+        }
+
+        container.addEventListener("pointerdown", (event) => {
+          if (container.classList.contains("is-active")) return;
+          if (overlay && overlay.contains(event.target)) return;
+          activateViewer(viewer, container, overlay);
+        });
+      } catch (error) {
+        console.error("Failed to load manifest or initialize OpenSeadragon for", container.id, error);
+        if (overlay) overlay.hidden = true;
+      }
+    })();
+  });
+});
+</script>
