@@ -90,6 +90,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.hosts << ENV.fetch("BLACKLIGHT_HOST_IP")
-  config.hosts << ENV.fetch("BLACKLIGHT_HOST_ADDR")
+  [ENV["BLACKLIGHT_HOST_IP"], ENV["BLACKLIGHT_HOST_ADDR"]].each do |host|
+    config.hosts << host if host.present?
+  end
 end
