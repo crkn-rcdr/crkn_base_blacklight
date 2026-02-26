@@ -1,10 +1,10 @@
 load_defaults: 8.8.2
 development:
   adapter: solr
-  url: "<%= ENV.fetch('SOLR_URL') %>"
+  url: "<%= ENV['SOLR_URL'] %>"
 test: &test
   adapter: solr
-  url: "<%= ENV.fetch('SOLR_URL') %>"
+  url: "<%= ENV['SOLR_URL'] %>"
 production:
   adapter: solr
-  url: "<%= ENV.fetch('SOLR_URL') %>"
+  url: "<%= ENV['SOLR_URL'] %>"
