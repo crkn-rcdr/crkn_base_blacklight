@@ -3,7 +3,7 @@
 echo
 echo "Building..."
 
-docker compose build --pull
+docker compose -f docker-compose.prod.yml build
 
 if [ "$?" -ne "0" ]; then
   exit $?

@@ -88,9 +88,6 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  # Do not dump schema after migrations.
-  config.active_record.dump_schema_after_migration = false
-  [ENV["BLACKLIGHT_HOST_IP"], ENV["BLACKLIGHT_HOST_ADDR"]].each do |host|
-    config.hosts << host if host.present?
-  end
+  config.hosts << ENV["BLACKLIGHT_HOST_IP"]
+  config.hosts << ENV["BLACKLIGHT_HOST_ADDR"]
 end
