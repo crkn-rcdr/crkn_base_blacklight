@@ -205,15 +205,71 @@ button i {
 }
 #download-toolbar {
     margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+}
+#download-toolbar .download-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    align-items: center;
 }
 #download-toolbar .btn {
-    font-size: 0.95rem;
-    padding: 0.45rem 0.9rem;
+    font-size: 0.84rem;
+    padding: 0.28rem 0.62rem;
     border-radius: 999px;
-    line-height: 1.2;
+    line-height: 1.1;
+    min-height: 2.35rem;
+    justify-content: flex-start;
+    white-space: nowrap;
+    gap: 0.45rem !important;
 }
 #download-toolbar .btn i {
-    font-size: 1rem;
+    font-size: 0.92rem;
+}
+#download-toolbar .download-icon-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 4.25rem;
+    justify-content: flex-start;
+    flex: 0 0 4.25rem;
+}
+#download-toolbar .download-kind {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    min-width: 2.6rem;
+    padding: 0.06rem 0.35rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.22);
+    background-color: #f2f5f7;
+    color: #1f2937;
+    font-size: 0.64rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+#download-toolbar .download-label {
+    display: inline-flex;
+    align-items: center;
+}
+@media (max-width: 1200px) {
+    #download-toolbar .download-actions {
+        flex-wrap: wrap;
+    }
+}
+#btn-download-img .download-kind {
+    background-color: #e9f5ff;
+}
+#btn-download-page .download-kind {
+    background-color: #eef6ee;
+}
+#btn-download-full .download-kind {
+    background-color: #fff2e8;
 }
 #download-toolbar .btn.disabled,
 #download-toolbar .btn[aria-disabled="true"] {
@@ -259,6 +315,56 @@ button i {
 }
 .btn-outline-custom:hover {
     background-color: rgba(0, 0, 0, 0.175);
+}
+
+/* Catalog show: keep toolbox/download controls visually consistent */
+.blacklight-catalog-show {
+    --catalog-btn-outline: #bfc5cc;
+}
+
+.blacklight-catalog-show .btn-outline-custom,
+.blacklight-catalog-show .copy-link-btn {
+    border: 1px solid var(--catalog-btn-outline) !important;
+}
+
+.blacklight-catalog-show .toolbox-card .toolbox-actions .btn {
+    min-height: 2.35rem;
+    padding: 0.28rem 0.62rem !important;
+    font-size: 0.84rem !important;
+    line-height: 1.1;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem !important;
+}
+
+/* Hover treatment requested: white background + underlined text */
+.blacklight-catalog-show .btn-outline-custom:hover,
+.blacklight-catalog-show .copy-link-btn:hover {
+    background-color: #fff !important;
+    border-color: var(--catalog-btn-outline) !important;
+    border-style: solid !important;
+}
+
+.blacklight-catalog-show .btn-outline-custom:hover,
+.blacklight-catalog-show .copy-link-btn:hover,
+.blacklight-catalog-show .btn-outline-custom:hover span,
+.blacklight-catalog-show .copy-link-btn:hover span {
+    text-decoration: underline !important;
+}
+
+.blacklight-catalog-show .btn-outline-custom:focus-visible,
+.blacklight-catalog-show .copy-link-btn:focus-visible,
+.blacklight-catalog-show .btn-outline-custom.disabled,
+.blacklight-catalog-show .btn-outline-custom[aria-disabled="true"] {
+    border-color: var(--catalog-btn-outline) !important;
+}
+
+/* Mirador WCAG AA: increase selected view-label contrast on light top bar */
+#my-mirador nav[aria-label="Window navigation"] .MuiToggleButton-root.Mui-selected .view-label,
+#my-mirador nav[aria-label="Window navigation"] .MuiToggleButton-root.Mui-selected .bi,
+#my-mirador nav[aria-label="Window navigation"] .MuiToggleButton-root.Mui-selected .MuiSvgIcon-root {
+    color: #00695c !important;
 }
 
 .card, .card-img-top {

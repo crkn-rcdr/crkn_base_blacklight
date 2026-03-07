@@ -2104,12 +2104,19 @@ footer.bg-dark {
 }
 
 .topbar-language-switch a {
-  color: #2d4f53 !important;
-  text-decoration: none;
+  color: #1d2b3a !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
 }
 
 .topbar-language-switch strong {
   color: #1d808b;
+  font-weight: 700;
+}
+
+.topbar-language-switch [aria-current="true"] {
+  color: #0f1216;
   font-weight: 700;
 }
 
@@ -2492,7 +2499,7 @@ footer.bg-dark {
   padding-bottom: clamp(2.2rem, 3vw, 3.5rem);
   padding-left: 5vw;
   padding-right: 5vw;
-  background: #358896;
+  background: #2f7a86;
 }
 
 .home-page .home-collection-band--canadiana .home-eyebrow {
@@ -2502,6 +2509,7 @@ footer.bg-dark {
   margin-bottom: 1rem;
   font-size: clamp(1.12rem, 1.35vw, 1.6rem);
   opacity: 1;
+  color: #f5f9fa;
 }
 
 .home-page .home-collection-band--canadiana .home-collection-band__copy h3 {
@@ -2573,7 +2581,7 @@ footer.bg-dark {
 }
 
 .home-page .home-inline-link--history {
-  color: #e7f5f8;
+  color: #f5f9fa;
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: 500;
@@ -2754,7 +2762,7 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__copy {
-  background: #50af00;
+  background: #367a00;
   padding-top: clamp(2rem, 2.8vw, 3.3rem);
   padding-bottom: clamp(2rem, 2.8vw, 3.3rem);
   padding-left: 5vw;
@@ -2778,6 +2786,7 @@ footer.bg-dark {
   margin-bottom: .95rem;
   opacity: 1;
   font-size: clamp(1.12rem, 1.35vw, 1.6rem);
+  color: #f5f9fa;
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__copy h3 {
@@ -2785,6 +2794,7 @@ footer.bg-dark {
   margin-bottom: 1.45rem;
   font-size: clamp(2rem, 2.85vw, 3.25rem);
   line-height: 1.14;
+  color: #fff;
 }
 
 .home-page .home-collection-band--heritage .band-search-form--heritage {
@@ -2859,6 +2869,11 @@ footer.bg-dark {
 
 .home-page .home-collection-band--heritage .home-inline-link--history {
   color: #edf8eb;
+}
+
+.home-page .home-collection-band--heritage .home-inline-link--history:hover,
+.home-page .home-collection-band--heritage .home-inline-link--history:focus {
+  color: #fff;
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__image {

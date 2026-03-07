@@ -32,6 +32,29 @@ console.log("mirador", Mirador)
 let pageViewer = document.getElementById("my-mirador")
 if(pageViewer) {
     let language = document.documentElement.lang || "en";
+    const workspaceLabel = language.startsWith('fr') ? 'Espace de travail' : 'Workspace';
+
+    const demoteMiradorMainLandmark = () => {
+      const nestedMain = pageViewer.querySelector('main.mirador-viewer');
+      if (!nestedMain) return;
+
+      const replacement = document.createElement('div');
+      Array.from(nestedMain.attributes).forEach(({ name, value }) => {
+        replacement.setAttribute(name, value);
+      });
+
+      replacement.removeAttribute('role');
+      replacement.setAttribute('role', 'region');
+      if (!replacement.hasAttribute('aria-label') && !replacement.hasAttribute('aria-labelledby')) {
+        replacement.setAttribute('aria-label', workspaceLabel);
+      }
+
+      while (nestedMain.firstChild) {
+        replacement.appendChild(nestedMain.firstChild);
+      }
+      nestedMain.replaceWith(replacement);
+    };
+
     const documentId = pageViewer.getAttribute("data-docid")
     let contentSearch = {}
     //let canvasIndex = 0
@@ -183,6 +206,13 @@ if(pageViewer) {
     }
     let miradorViewer = Mirador.viewer(mconfig);
     console.log("miradorViewer", miradorViewer)
+
+    demoteMiradorMainLandmark();
+    const miradorLandmarkObserver = new MutationObserver(() => {
+      demoteMiradorMainLandmark();
+    });
+    miradorLandmarkObserver.observe(pageViewer, { childList: true, subtree: true });
+    window.addEventListener('beforeunload', () => miradorLandmarkObserver.disconnect(), { once: true });
 
     miradorViewer.store.subscribe((e) => {
       console.log("m?", e)
