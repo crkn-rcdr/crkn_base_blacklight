@@ -19,43 +19,55 @@
       <span><%= t('blacklight.tools.copy_manifest_link') %></span>
     <% end %>
 
-    <% crop_href = has_manifest ? "https://mcgrawcenter.github.io/croppingtool/?manifest=#{manifest_url}" : '#' %>
     <% crop_classes = ["btn", "btn-outline-custom", "btn-md", "d-inline-flex", "align-items-center", "gap-2", "fs-6", (has_manifest ? nil : "disabled")] %>
-    <%= link_to crop_href,
-                { class: crop_classes.compact.join(' '),
-                  title: t('blacklight.tools.crop_tooltip'),
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  tabindex: (has_manifest ? nil : -1),
-                  aria: (has_manifest ? {} : { disabled: true }) } do %>
-      <i class="bi bi-crop fs-5" aria-hidden="true"></i>
-      <%= t('blacklight.tools.crop_image') %>
+    <% if has_manifest %>
+      <%= link_to "https://mcgrawcenter.github.io/croppingtool/?manifest=#{manifest_url}",
+                  { class: crop_classes.compact.join(' '),
+                    title: t('blacklight.tools.crop_tooltip'),
+                    target: "_blank",
+                    rel: "noopener noreferrer" } do %>
+        <i class="bi bi-crop fs-5" aria-hidden="true"></i>
+        <%= t('blacklight.tools.crop_image') %>
+      <% end %>
+    <% else %>
+      <span class="<%= crop_classes.compact.join(' ') %>" role="link" aria-disabled="true" title="<%= t('blacklight.tools.crop_tooltip') %>">
+        <i class="bi bi-crop fs-5" aria-hidden="true"></i>
+        <%= t('blacklight.tools.crop_image') %>
+      </span>
     <% end %>
 
-    <% pdf_href = has_manifest ? "https://pdiiif.jbaiter.de/?manifest=#{manifest_url}" : '#' %>
     <% pdf_classes = ["btn", "btn-outline-custom", "btn-md", "d-inline-flex", "align-items-center", "gap-2", "fs-6", (has_manifest ? nil : "disabled")] %>
-    <%= link_to pdf_href,
-                { class: pdf_classes.compact.join(' '),
-                  title: t('blacklight.tools.pdf_tooltip'),
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  tabindex: (has_manifest ? nil : -1),
-                  aria: (has_manifest ? {} : { disabled: true }) } do %>
-      <i class="bi bi-filetype-pdf fs-5" aria-hidden="true"></i>
-      <%= t('blacklight.tools.generate_pdf') %>
+    <% if has_manifest %>
+      <%= link_to "https://pdiiif.jbaiter.de/?manifest=#{manifest_url}",
+                  { class: pdf_classes.compact.join(' '),
+                    title: t('blacklight.tools.pdf_tooltip'),
+                    target: "_blank",
+                    rel: "noopener noreferrer" } do %>
+        <i class="bi bi-filetype-pdf fs-5" aria-hidden="true"></i>
+        <%= t('blacklight.tools.generate_pdf') %>
+      <% end %>
+    <% else %>
+      <span class="<%= pdf_classes.compact.join(' ') %>" role="link" aria-disabled="true" title="<%= t('blacklight.tools.pdf_tooltip') %>">
+        <i class="bi bi-filetype-pdf fs-5" aria-hidden="true"></i>
+        <%= t('blacklight.tools.generate_pdf') %>
+      </span>
     <% end %>
 
-    <% edit_href = has_manifest ? "https://manifest-editor.digirati.services/share?iiif-content=#{manifest_url}" : '#' %>
     <% edit_classes = ["btn", "btn-outline-custom", "btn-md", "d-inline-flex", "align-items-center", "gap-2", "fs-6", (has_manifest ? nil : "disabled")] %>
-    <%= link_to edit_href,
-                { class: edit_classes.compact.join(' '),
-                  title: t('blacklight.tools.edit_manifest_tooltip'),
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  tabindex: (has_manifest ? nil : -1),
-                  aria: (has_manifest ? {} : { disabled: true }) } do %>
-      <i class="bi bi-pencil-square fs-5" aria-hidden="true"></i>
-      <%= t('blacklight.tools.edit_manifest_copy') %>
+    <% if has_manifest %>
+      <%= link_to "https://manifest-editor.digirati.services/share?iiif-content=#{manifest_url}",
+                  { class: edit_classes.compact.join(' '),
+                    title: t('blacklight.tools.edit_manifest_tooltip'),
+                    target: "_blank",
+                    rel: "noopener noreferrer" } do %>
+        <i class="bi bi-pencil-square fs-5" aria-hidden="true"></i>
+        <%= t('blacklight.tools.edit_manifest_copy') %>
+      <% end %>
+    <% else %>
+      <span class="<%= edit_classes.compact.join(' ') %>" role="link" aria-disabled="true" title="<%= t('blacklight.tools.edit_manifest_tooltip') %>">
+        <i class="bi bi-pencil-square fs-5" aria-hidden="true"></i>
+        <%= t('blacklight.tools.edit_manifest_copy') %>
+      </span>
     <% end %>
   </div>
 

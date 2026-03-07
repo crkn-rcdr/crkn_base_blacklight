@@ -2,28 +2,29 @@
   <% current_lang = I18n.locale.to_s.start_with?('fr') ? 'fr' : 'en' %>
   <% en_url = request.path + "?" + request.query_parameters.merge(lang: 'en').to_query %>
   <% fr_url = request.path + "?" + request.query_parameters.merge(lang: 'fr').to_query %>
+  <% menu_toggle_label = current_lang == 'fr' ? 'Afficher ou masquer le menu de navigation' : 'Toggle navigation menu' %>
 
   <div class="topbar-utility">
     <div class="canadiana-shell topbar-utility-inner">
       <ul class="topbar-utility-list">
         <li class="topbar-language-switch">
           <% if current_lang == 'fr' %>
-            <%= link_to 'EN', en_url %> | <strong>FR</strong>
+            <%= link_to 'EN', en_url, lang: 'en' %> | <span aria-current="true" lang="fr">FR</span>
           <% else %>
-            <strong>EN</strong> | <%= link_to 'FR', fr_url %>
+            <span aria-current="true" lang="en">EN</span> | <%= link_to 'FR', fr_url, lang: 'fr' %>
           <% end %>
         </li>
         <li class="topbar-socials">
-          <a class="sm-icon bluesky" href="https://bsky.app/profile/crkn-rcdr.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky">
+          <a class="sm-icon bluesky" href="https://bsky.app/profile/crkn-rcdr.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
             <span class="visually-hidden">Bluesky</span>
           </a>
-          <a class="sm-icon facebook" href="https://www.facebook.com/CRKNRCDR/" target="_blank" rel="noopener" aria-label="Facebook">
+          <a class="sm-icon facebook" href="https://www.facebook.com/CRKNRCDR/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
             <span class="visually-hidden">Facebook</span>
           </a>
-          <a class="sm-icon linkedin" href="https://www.linkedin.com/mwlite/company/canadian-research-knowledge-network" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <a class="sm-icon linkedin" href="https://www.linkedin.com/mwlite/company/canadian-research-knowledge-network" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <span class="visually-hidden">LinkedIn</span>
           </a>
-          <a class="sm-icon instagram" href="https://www.instagram.com/crkn.rcdr/" target="_blank" rel="noopener" aria-label="Instagram">
+          <a class="sm-icon instagram" href="https://www.instagram.com/crkn.rcdr/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <i class="bi bi-instagram" aria-hidden="true"></i>
             <span class="visually-hidden">Instagram</span>
           </a>
@@ -35,7 +36,7 @@
   <div class="topbar-main">
     <div class="canadiana-shell topbar-main-inner">
       <%= logo_link %>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-bs-toggle="collapse" data-target="#user-util-collapse" data-bs-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="<%= menu_toggle_label %>">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-lg-end topbar-main-collapse" id="user-util-collapse">

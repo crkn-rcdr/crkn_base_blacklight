@@ -1,10 +1,10 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
-<ul class="nav-list nav-list-main">
+<ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
   <li><a href="<%= I18n.t('links.URL_ABOUT') %>"><%= is_fr ? 'À propos' : 'About' %></a></li>
   <li><a href="<%= I18n.t('links.URL_NEW') %>"><%= is_fr ? 'Nouveautés à venir' : 'New & Upcoming Content' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
   <li><a href="<%= what_is_iiif_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_CITATION_GUIDE') %>" target="_blank" rel="noopener"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_CRKN') %>" target="_blank" rel="noopener"><%= is_fr ? 'État du système' : 'System Status' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_CITATION_GUIDE') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_CRKN') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'État du système' : 'System Status' %></a></li>
   <li><a href="<%= I18n.t('links.URL_CONTACT') %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
 </ul>

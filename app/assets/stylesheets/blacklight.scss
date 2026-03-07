@@ -83,6 +83,30 @@ i {
     display: none !important;
 }
 
+/* Collection page: tighten prev/next control pill spacing */
+#collection-items-list .openseadragon-canvas + div {
+    top: auto !important;
+    bottom: 8px !important;
+    margin: 0.25rem 0.35rem !important;
+    gap: 6px !important;
+}
+#collection-items-list .openseadragon-canvas + div > div:last-child {
+    padding: 4px 8px !important;
+    gap: 2px !important;
+}
+#collection-items-list .openseadragon-canvas + div div[title="Previous page"],
+#collection-items-list .openseadragon-canvas + div div[title="Next page"] {
+    margin: 0 !important;
+}
+
+
+#collection-items-list .card .openseadragon-canvas+div>div:last-child>div, 
+.home-featured-grid .openseadragon-container>div:nth-child(2)>div:nth-child(2)> div {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
 .page-sidebar {
     .endnote, .refworks {
         display: none; /* TODO: find how to disable in src code */
@@ -116,11 +140,6 @@ button i {
         max-width: 220px;
     }
 }
-/* When sidebar is collapsed, slide it out to the left */
-#toggle-menu:not(.show) {
-    transform: translateX(-100%);
-}
-
 /* Ensure main content adjusts */
 #doc-main {
     transition: margin-left 0.3s ease-in-out;
@@ -169,8 +188,6 @@ button i {
         margin-bottom: .75rem;
         overflow: visible !important; /* remove inner scrolling on mobile */
     }
-    /* When collapsed, hide the details card entirely */
-    #toggle-menu.collapse:not(.show) { display: none !important; }
     #doc-main { margin: 0 !important; padding: 0 !important; width: 100%; }
     /* viewer height on small screens */
     #doc-main #my-mirador, .mirador-osd-container { min-height: 60vh; width: 100% !important; }
@@ -179,37 +196,12 @@ button i {
         width: 100% !important;
     }
 
-    /* Hide collapse toggle buttons on mobile */
-    #toggle-doc-metadata1,
-    #toggle-doc-metadata2,
-    #toggle-doc-metadata3 { display: none !important; }
 }
 
 /* Strong mobile overrides placed at end to beat earlier rules */
 @media (max-width: 768px) {
   #document-togglable-content #toggle-menu { height: auto !important; overflow: visible !important; }
   .blacklight-catalog-show .document-main-section { max-width: 100% !important; }
-}
-#toggle-doc-metadata2[aria-expanded="true"], #toggle-doc-metadata3[aria-expanded="true"] {
-    display:none !important;
-}
-
-#toggle-doc-metadata2, #toggle-doc-metadata3 {
-    /*position: absolute;
-    z-index: 1000;
-    left: -70px;
-    top:0.2rem;*/
-    display: flex;
-    align-items: center;
-    margin-left: 0.1rem;
-    margin-bottom: 0rem;
-    span {
-        margin-left:0.5rem;
-    }
-}
-#toggle-doc-metadata3 {
-    margin-left: 0.5rem;
-    margin-bottom: 0.5rem;
 }
 #download-toolbar {
     margin-bottom: 0.5rem;
@@ -300,7 +292,6 @@ button i {
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: none;
         transition: background-color .12s ease, box-shadow .12s ease, transform .06s ease, color .12s ease;
-        outline: none;
 
         &::before {
             content: "";
@@ -450,4 +441,27 @@ button i {
 }
 .members-section .chip-filter {
     display: flex !important;
+}
+
+/* Final spacing overrides: collection card page-nav pills */
+#collection-items-list .card .openseadragon-canvas + div {
+    top: auto !important;
+    bottom: 6px !important;
+    margin: 0.2rem 0.3rem !important;
+    gap: 4px !important;
+}
+#collection-items-list .card .openseadragon-canvas + div > div:last-child {
+    padding: 6px !important;
+    gap: 1px !important;
+    border-radius: 999px !important;
+}
+#collection-items-list .card .openseadragon-canvas + div div[title="Previous page"],
+#collection-items-list .card .openseadragon-canvas + div div[title="Next page"] {
+    width: 32px !important;
+    height: 30px !important;
+    margin: 0 !important;
+}
+
+#my-mirador div.MuiToggleButtonGroup-root.MuiToggleButtonGroup-horizontal.mui-lbxqhe-MuiToggleButtonGroup-root > button.MuiButtonBase-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal.MuiToggleButton-root.MuiToggleButton-sizeSmall.MuiToggleButton-standard.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal.MuiToggleButtonGroup-middleButton.mui-1hfzhaz-MuiButtonBase-root-MuiToggleButton-root {
+    display: none;
 }

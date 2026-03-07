@@ -86,7 +86,7 @@ archival records from across Canada</h1>
         </div>
         <div class="home-collection-band__image">
           
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit" title="Canadiana collection slideshow preview" loading="lazy"></iframe>
 
         </div>
       </div>
@@ -182,7 +182,7 @@ archival records from across Canada</h1>
   <section class="site-section home-intro home-intro--heritage">
     <div class="canadiana-shell home-heritage-intro-grid">
       <div class="home-heritage-intro-copy">
-        <h2 class="section-title">Heritage Collection</h2>
+        <h2 class="section-title">Héritage Collection</h2>
         <p class="section-lede">
         The Héritage collection is a partnership with <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Library and Archives Canada</a> (LAC) to digitize and make accessible the rich resources of archival microfilm held by LAC. With more than 37 million pages of primary-source documents, Héritage chronicles Canada and its peoples from the 1600s to the 1980s. Héritage is an unparalleled resource supporting researchers and communities across Canada.
         </p>
@@ -214,14 +214,14 @@ archival records from across Canada</h1>
               <option value="subject_tsim">Subject</option>
               <option value="tx_gen">Full text</option>
             </select>
-            <label class="visually-hidden" for="heritage-band-q">Search the Heritage Collection</label>
+            <label class="visually-hidden" for="heritage-band-q">Search the Héritage Collection</label>
             <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Lower Canada Land Grants|War Diaries, 1939-1945|Passenger Lists|Chinese immigration records|Parish registers: New Brunswick">
             <button
               type="submit"
               class="btn btn-primary btn-sm"
               disabled
               aria-disabled="true"
-              title="Coming soon: Heritage search is not available yet.">
+              title="Coming soon: Héritage search is not available yet.">
               Search (Coming soon)
             </button>
           </form>
@@ -230,7 +230,7 @@ archival records from across Canada</h1>
         </div>
         <div class="home-collection-band__image">
           
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit" title="Heritage collection slideshow preview" loading="lazy"></iframe>
      
         </div>
       </div>
@@ -368,22 +368,24 @@ archival records from across Canada</h1>
         <h2 class="section-title">Featured Content</h2>
         <% if show_featured_pagination %>
           <div class="home-featured-nav">
-            <a
-              class="home-slider__nav home-featured-nav__icon <%= 'is-disabled' if prev_featured_disabled %>"
-              href="<%= prev_featured_disabled ? '#' : url_for(prev_featured_params) %>"
-              aria-label="Previous featured items"
-              aria-disabled="<%= prev_featured_disabled %>"
-              <%= 'tabindex="-1"' if prev_featured_disabled %>>
-              <i class="bi bi-chevron-left" aria-hidden="true"></i>
-            </a>
-            <a
-              class="home-slider__nav home-featured-nav__icon <%= 'is-disabled' if next_featured_disabled %>"
-              href="<%= next_featured_disabled ? '#' : url_for(next_featured_params) %>"
-              aria-label="Next featured items"
-              aria-disabled="<%= next_featured_disabled %>"
-              <%= 'tabindex="-1"' if next_featured_disabled %>>
-              <i class="bi bi-chevron-right" aria-hidden="true"></i>
-            </a>
+            <% if prev_featured_disabled %>
+              <span class="home-slider__nav home-featured-nav__icon is-disabled" aria-hidden="true">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </span>
+            <% else %>
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(prev_featured_params) %>" aria-label="Previous featured items">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </a>
+            <% end %>
+            <% if next_featured_disabled %>
+              <span class="home-slider__nav home-featured-nav__icon is-disabled" aria-hidden="true">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </span>
+            <% else %>
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(next_featured_params) %>" aria-label="Next featured items">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </a>
+            <% end %>
           </div>
         <% end %>
       </div>

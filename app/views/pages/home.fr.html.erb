@@ -89,7 +89,7 @@
         </div>
         <div class="home-collection-band__image">
 
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit" title="Apercu du diaporama de la collection Canadiana" loading="lazy"></iframe>
 
         </div>
       </div>
@@ -238,7 +238,7 @@
         </div>
         <div class="home-collection-band__image">
 
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit" title="Apercu du diaporama de la collection Heritage" loading="lazy"></iframe>
 
         </div>
       </div>
@@ -376,22 +376,24 @@
         <h2 class="section-title">Contenu vedette</h2>
         <% if show_featured_pagination %>
           <div class="home-featured-nav">
-            <a
-              class="home-slider__nav home-featured-nav__icon <%= 'is-disabled' if prev_featured_disabled %>"
-              href="<%= prev_featured_disabled ? '#' : url_for(prev_featured_params) %>"
-              aria-label="Contenu vedette pr&eacute;c&eacute;dent"
-              aria-disabled="<%= prev_featured_disabled %>"
-              <%= 'tabindex="-1"' if prev_featured_disabled %>>
-              <i class="bi bi-chevron-left" aria-hidden="true"></i>
-            </a>
-            <a
-              class="home-slider__nav home-featured-nav__icon <%= 'is-disabled' if next_featured_disabled %>"
-              href="<%= next_featured_disabled ? '#' : url_for(next_featured_params) %>"
-              aria-label="Contenu vedette suivant"
-              aria-disabled="<%= next_featured_disabled %>"
-              <%= 'tabindex="-1"' if next_featured_disabled %>>
-              <i class="bi bi-chevron-right" aria-hidden="true"></i>
-            </a>
+            <% if prev_featured_disabled %>
+              <span class="home-slider__nav home-featured-nav__icon is-disabled" aria-hidden="true">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </span>
+            <% else %>
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(prev_featured_params) %>" aria-label="Contenu vedette precedent">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </a>
+            <% end %>
+            <% if next_featured_disabled %>
+              <span class="home-slider__nav home-featured-nav__icon is-disabled" aria-hidden="true">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </span>
+            <% else %>
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(next_featured_params) %>" aria-label="Contenu vedette suivant">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </a>
+            <% end %>
           </div>
         <% end %>
       </div>

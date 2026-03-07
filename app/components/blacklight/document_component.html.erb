@@ -50,12 +50,9 @@
         <div id="document-togglable-content" class="container-fluid">
           <div class="row flex-nowrap">
             <!-- Sidebar -->
-            <div id="toggle-menu" class="col collapse collapse-horizontal show">
+            <div id="toggle-menu" class="col">
               <div class="document-sidebar-header">
                 <h3><%= t('labels.L_SERIAL_RECORD') %></h3>
-                <button id="toggle-doc-metadata1" class="btn btn-outline-custom" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-menu" aria-expanded="true" aria-controls="toggle-menu">
-                    <i class="bi bi-arrow-left"></i>
-                </button>
               </div>
               <div>  
               
@@ -90,19 +87,15 @@
                   <div class="mt-2 d-flex gap-2 flex-wrap" id="download-toolbar"
                        data-docid="<%= @document._source['id'] %>"
                        data-arkpath="<%= @document._source['ark'].to_s.gsub('https://n2t.net/ark:/','') %>">
-                   
-                      <button id="toggle-doc-metadata2" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-menu" aria-expanded="true" aria-controls="toggle-menu">
-                          <i class="bi bi-layout-sidebar fs-5" aria-hidden="true"></i><span><%= t('labels.L_RECORD') %></span>
-                      </button>
-                    <a id="btn-download-img" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener" aria-disabled="true">
+                    <a id="btn-download-img" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
                       <i class="bi bi-image fs-5" aria-hidden="true"></i>
                       <%= t('blacklight.tools.download_image_aria') %>
                     </a>
-                    <a id="btn-download-page" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener" aria-disabled="true">
+                    <a id="btn-download-page" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
                       <i class="bi bi-file-earmark-arrow-down fs-5" aria-hidden="true"></i>
                       <%= t('blacklight.tools.download_page_pdf_aria') %>
                     </a>
-                    <a id="btn-download-full" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener" aria-disabled="true">
+                    <a id="btn-download-full" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
                       <i class="bi bi-filetype-pdf fs-5" aria-hidden="true"></i>
                       <%= t('blacklight.tools.download_full_pdf_aria') %>
                     </a>
@@ -216,15 +209,12 @@
                   <div id="my-mirador" data-docid="<%= @document._source['ark'] %>"></div>
                   
                 <% else %>
-                  <img src="/assets/404.webp" class="not-found-icon"/>
+                  <img src="/assets/404.webp" class="not-found-icon" alt="Item image unavailable" />
                   <p>Sorry, there was a problem loading the images for this item.</p>
                 <% end %>
 
                 <%= render(::IiifComponent.new(document: @document, term: params[:q])) %>
               <% else %>
-              <button id="toggle-doc-metadata3" class="btn btn-outline-custom" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-menu" aria-expanded="true" aria-controls="toggle-menu">
-                  <i class="bi bi-layout-sidebar"></i><span><%= t('labels.L_SERIAL_RECORD') %></span>
-              </button>
                 <%= render CollectionItemsComponent.new(
                   documentId: params[:id],
                   page: params[:page] || 1,

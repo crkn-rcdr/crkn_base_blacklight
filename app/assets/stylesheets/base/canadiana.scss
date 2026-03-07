@@ -18,12 +18,27 @@
     --accent-green: var(--brand-green);
     --accent-teal: var(--brand-teal);
     --accent-blue: #1096ac;
+    --a11y-focus-ring: #005fcc;
     --bs-font-sans-serif: 'Roboto';
     --bs-font-monospace: 'Roboto';
 }
 /* Global typography */
 html, body { font-family: 'Roboto' }
 body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Consistent keyboard-visible focus treatment across templates and components */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 3px solid var(--a11y-focus-ring) !important;
+  outline-offset: 2px;
+}
 .btn { --bs-btn-border-radius: 999px; }
 .navbar {
     --bs-navbar-padding-y: 1rem 0;
@@ -208,7 +223,6 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 .home-search .input-group .btn-primary:focus,
 .home-search .input-group .btn-primary:focus-visible,
 .home-search .input-group .btn-primary:active {
-    outline: none !important;
     box-shadow: none !important; /* remove bootstrap focus ring that looks like an outline */
 }
 /* Unified clear (x) button styling across home + catalog search */
@@ -1481,10 +1495,6 @@ footer.bg-dark {
   border-radius: 999px;
 }
 
-.home-page .band-search-form input[type="search"]:focus {
-  outline: none;
-}
-
 .home-page .band-search-form .btn {
   border-radius: 999px;
   white-space: nowrap;
@@ -2527,10 +2537,6 @@ footer.bg-dark {
   box-shadow: none;
 }
 
-.home-page .home-collection-band--canadiana .band-search-select:focus {
-  outline: none;
-}
-
 .home-page .home-collection-band--canadiana .band-search-input {
   flex: 1 1 auto;
   min-width: 0;
@@ -2805,10 +2811,6 @@ footer.bg-dark {
   padding: 0 1.9rem 0 .95rem;
   font-size: 1.02rem;
   box-shadow: none;
-}
-
-.home-page .home-collection-band--heritage .band-search-select:focus {
-  outline: none;
 }
 
 .home-page .home-collection-band--heritage .band-search-input {

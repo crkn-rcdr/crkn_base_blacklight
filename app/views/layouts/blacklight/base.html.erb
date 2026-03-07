@@ -1,5 +1,6 @@
-<!DOCTYPE html lang="<%= I18n.locale %>">
-<%= content_tag :html, class: 'no-js', **html_tag_attributes do %>
+<!DOCTYPE html>
+<% html_attrs = html_tag_attributes.merge(lang: I18n.locale.to_s) %>
+<%= content_tag :html, class: 'no-js', **html_attrs do %>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

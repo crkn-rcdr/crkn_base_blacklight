@@ -610,8 +610,8 @@ function initMembersSection() {
     const clearBtn = section.querySelector('.btn-clear-members');
     const emptyState = section.querySelector('[data-members-empty]');
 
-    let activeGroup = 'institutional';
-    let activeProvince = 'all';
+    let activeGroup = section.querySelector('[data-members-tab].active')?.dataset.membersTab || 'institutional';
+    let activeProvince = section.querySelector('.chip-filter.active')?.dataset.province || 'all';
     let text = '';
 
     const applyFilters = () => {
@@ -620,6 +620,7 @@ function initMembersSection() {
       groups.forEach((group) => {
         const isActiveGroup = group.dataset.membersGroup === activeGroup;
         group.classList.toggle('d-none', !isActiveGroup);
+        group.setAttribute('aria-hidden', isActiveGroup ? 'false' : 'true');
         if (!isActiveGroup) return;
 
         group.querySelectorAll('.members-marquee-row').forEach((row) => {
@@ -645,21 +646,52 @@ function initMembersSection() {
       if (emptyState) emptyState.classList.toggle('d-none', hasVisibleItems);
     };
 
+    const activateTab = (btn) => {
+      tabs.forEach((item) => {
+        const selected = item === btn;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-selected', selected ? 'true' : 'false');
+        item.setAttribute('tabindex', selected ? '0' : '-1');
+      });
+      activeGroup = btn.dataset.membersTab || 'institutional';
+      applyFilters();
+    };
+
     tabs.forEach((btn) => {
       btn.addEventListener('click', () => {
-        tabs.forEach((item) => item.classList.remove('active'));
-        btn.classList.add('active');
-        activeGroup = btn.dataset.membersTab || 'institutional';
-        applyFilters();
+        activateTab(btn);
+      });
+      btn.addEventListener('keydown', (event) => {
+        const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        const tabArray = Array.from(tabs);
+        const currentIndex = tabArray.indexOf(btn);
+        let nextIndex = currentIndex;
+        if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabArray.length;
+        if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabArray.length - 1;
+        const nextTab = tabArray[nextIndex];
+        if (!nextTab) return;
+        activateTab(nextTab);
+        nextTab.focus();
       });
     });
 
+    const activateProvince = (chip) => {
+      filterChips.forEach((item) => {
+        const selected = item === chip;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+      activeProvince = chip.dataset.province || 'all';
+      applyFilters();
+    };
+
     filterChips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        filterChips.forEach((item) => item.classList.remove('active'));
-        chip.classList.add('active');
-        activeProvince = chip.dataset.province || 'all';
-        applyFilters();
+        activateProvince(chip);
       });
     });
 
@@ -682,7 +714,11 @@ function initMembersSection() {
       });
     }
 
-    applyFilters();
+    const selectedTab = section.querySelector('[data-members-tab].active') || tabs[0];
+    if (selectedTab) activateTab(selectedTab);
+    const selectedProvince = section.querySelector('.chip-filter.active') || filterChips[0];
+    if (selectedProvince) activateProvince(selectedProvince);
+    else applyFilters();
   });
 }
 
