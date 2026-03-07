@@ -2992,6 +2992,73 @@ footer.bg-dark {
   height:100%;
 }
 
+/* Force homepage embeds to a fixed width to avoid iframe scrollbars */
+.home-page .home-collection-band__image {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.home-page .home-collection-band__image .exhibit {
+  display: block;
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 1201px) {
+  .home-page .home-collection-band--canadiana .home-collection-band__panel {
+    grid-template-columns: minmax(0, 1fr) 440px;
+  }
+
+  .home-page .home-collection-band--heritage .home-collection-band__panel,
+  .home-page .home-collection-band--heritage.home-collection-band--reverse .home-collection-band__panel {
+    grid-template-columns: 440px minmax(0, 1fr);
+  }
+
+  .home-page .home-collection-band--canadiana .home-collection-band__panel,
+  .home-page .home-collection-band--heritage .home-collection-band__panel,
+  .home-page .home-collection-band--heritage.home-collection-band--reverse .home-collection-band__panel,
+  .home-page .home-collection-band--canadiana .home-collection-band__copy,
+  .home-page .home-collection-band--heritage .home-collection-band__copy {
+    max-height: 495px;
+  }
+
+  .home-page .home-collection-band--canadiana .home-collection-band__image,
+  .home-page .home-collection-band--heritage .home-collection-band__image {
+    width: 440px;
+    min-width: 440px;
+    max-width: 440px;
+  }
+
+  .home-page .home-collection-band__image iframe.exhibit {
+    width: 440px !important;
+    min-width: 440px !important;
+    max-width: 440px !important;
+    height: 560px !important;
+    min-height: 560px !important;
+    display: block;
+    flex: 0 0 440px;
+  }
+
+  .home-page .home-collection-band--canadiana .band-search-form,
+  .home-page .home-collection-band--heritage .band-search-form--heritage {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .home-page .home-collection-band__image iframe.exhibit {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 420px !important;
+    min-height: 420px !important;
+    flex: 1 1 auto;
+  }
+}
+
 .exhibition-viewer > div, .exhibition-viewer > div > div {
   height: 100% !important;
 }
