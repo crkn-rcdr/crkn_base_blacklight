@@ -160,6 +160,16 @@ Notes:
 - The script tags the image with a UTC timestamp and optional branch suffix.
 - The script prints a link to create a Systems-Administration issue. Create it and include the image tag.
 
+### Azure-Compatible Docker Build
+
+For Azure App Service / Azure Web App for Containers, build as Linux `amd64`.
+
+Build and push in one step:
+
+```bash
+docker buildx build --platform linux/amd64 -t brilap/crkn-demo:latest --push .
+```
+
 ## Docs
 
 - Blacklight Wiki: https://github.com/projectblacklight/blacklight/wiki/

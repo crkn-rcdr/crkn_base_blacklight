@@ -31,11 +31,12 @@ en:
       prev_hit_aria: Go to previous match
       next_hit_aria: Go to next match
     tools:
-      download_image_aria: Download current image
-      download_page_pdf_aria: Download current image as PDF
-      download_full_pdf_aria: Download full searchable PDF
+      download_label: Downloads
+      download_image_aria: Download image
+      download_page_pdf_aria: Download page PDF
+      download_full_pdf_aria: Download full PDF
       download_unavailable: Not available for this page.
-      download_checking: Checking availability of download options...
+      download_checking: Checking download availability...
       toolbox_title: Toolbox
       title: Tools
       subtitle: Export, edit, or share this item
@@ -415,6 +416,7 @@ en:
     URL_PARL_SENATE: "https://www.sencanada.ca/en"
     URL_PARL_VISIT: "https://visit.parl.ca/"
     URL_PARL_HELP: "/search-tips"
+    URL_SYSTEM: "https://www.crkn-rcdr.ca/en/status"
     URL_TERMS: "http://www.canadiana.ca/terms"
     URL_CITATION_GUIDE: "https://www.crkn-rcdr.ca/en/canadiana-citation-guide"
     URL_CITATION_GUIDE_HERITAGE: "https://library-archives.canada.ca/eng/services/public/using-lac-material/crediting-citing-material/Pages/credit-citing-material.aspx"

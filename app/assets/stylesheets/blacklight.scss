@@ -63,7 +63,7 @@ i {
 /* Make show page content span full page width (mobile only; see block at bottom) */
 @media only screen and (max-width: 1024px) {
     .document-main-section {
-        max-width: 66vw !important;
+        max-width: 100vw !important;
     }
 }
 
@@ -121,7 +121,7 @@ i {
     overflow-y: visible;   /* let nested content flow naturally */
     transform: translateX(0); 
     transition: transform 0.3s ease-in-out;
-    max-width: 350px;
+    max-width: 276px;
     /*border: 1px solid rgba(0, 0, 0, 0.175);*/
     background-color: #fff; /* to cover content underneath */
     z-index: 1020;          /* keep above main content when sliding */
@@ -137,7 +137,13 @@ button i {
 
 @media (max-width: 1350px) {
     #toggle-menu {
-        max-width: 220px;
+        max-width: 276px;
+    }
+}
+
+@media (max-width: 1140px) {
+    #toggle-menu {
+        max-width: 276px;
     }
 }
 /* Ensure main content adjusts */
@@ -257,6 +263,101 @@ button i {
     display: inline-flex;
     align-items: center;
 }
+
+/* Sidebar layout for catalog-show downloads */
+#toggle-menu #download-toolbar {
+    margin-top: 1rem;
+    width: 100%;
+    border-top: 0;
+    padding-top: 0;
+}
+
+#toggle-menu #download-toolbar .download-toolbar-title {
+    margin: 1em 0 0;
+    color: inherit;
+    font-size: inherit;
+    font-weight: bold;
+    letter-spacing: normal;
+    line-height: inherit;
+}
+
+#toggle-menu #download-toolbar .download-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.55rem;
+}
+
+#toggle-menu #download-toolbar .sidebar-download-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.62rem !important;
+    min-height: 2.9rem;
+    padding: 0.5rem 0.72rem;
+    border-radius: 999px;
+    border: 1px solid #bec7d2 !important;
+    background: #fff;
+    color: #1f2730;
+    line-height: 1.2;
+    text-align: left;
+    white-space: normal;
+}
+
+#toggle-menu #download-toolbar .sidebar-download-btn:hover,
+#toggle-menu #download-toolbar .sidebar-download-btn:focus {
+    background-color: #f6f9fc !important;
+    border-color: #a5b2c2 !important;
+    text-decoration: none !important;
+}
+
+#toggle-menu #download-toolbar .sidebar-download-btn:hover span,
+#toggle-menu #download-toolbar .sidebar-download-btn:focus span {
+    text-decoration: none !important;
+}
+
+#toggle-menu #download-toolbar .download-icon-group {
+    min-width: 4.95rem;
+    flex: 0 0 4.95rem;
+    gap: 0.34rem;
+}
+
+#toggle-menu #download-toolbar .download-icon-group i {
+    color: #3b4450;
+    font-size: 1.28rem !important;
+}
+
+#toggle-menu #download-toolbar .download-kind {
+    width: 2.95rem;
+    min-width: 2.95rem;
+    padding: 0.08rem 0.34rem;
+    font-size: 0.68rem;
+    border-color: rgba(67, 80, 93, 0.32);
+    letter-spacing: 0.02em;
+}
+
+#toggle-menu #download-toolbar .download-label {
+    font-size: 0.93rem;
+    font-weight: 600;
+    line-height: 1.24;
+    color: #25303a;
+}
+
+#toggle-menu #download-toolbar #download-status {
+    margin-top: 0.2rem;
+    padding-left: 0.2rem;
+    color: #5a6572 !important;
+}
+
+#toggle-menu #download-toolbar .sidebar-download-btn.disabled,
+#toggle-menu #download-toolbar .sidebar-download-btn[aria-disabled="true"] {
+    background-color: #f4f6f8;
+    border-color: #c8d0da !important;
+}
+
 @media (max-width: 1200px) {
     #download-toolbar .download-actions {
         flex-wrap: wrap;

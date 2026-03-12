@@ -1535,6 +1535,52 @@ footer.bg-dark {
   flex: 0 0 auto;
 }
 
+.home-page .home-walkthrough.canadiana-walkthrough a {
+  color: #0f5962;
+}
+
+.home-page .home-walkthrough.heritage-bg a {
+  color: #275900;
+}
+
+.home-page .home-walkthrough.canadiana-walkthrough .home-walkthrough__icon {
+  color: #1f6d79;
+}
+
+.home-page .home-walkthrough.heritage-bg .home-walkthrough__icon {
+  color: #367a00;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .home-page .home-walkthrough.canadiana-walkthrough a {
+    background: linear-gradient(135deg, #0f5962 0%, #1f6d79 58%, #2b7e89 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .home-page .home-walkthrough.heritage-bg a {
+    background: linear-gradient(135deg, #275900 0%, #367a00 58%, #2e6800 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.home-page .home-walkthrough.canadiana-walkthrough a:focus-visible {
+  outline: 2px solid #0f5962;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.home-page .home-walkthrough.heritage-bg a:focus-visible {
+  outline: 2px solid #275900;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 .home-page .home-walkthrough a:hover {
   text-decoration: underline;
 }
@@ -1617,6 +1663,52 @@ footer.bg-dark {
 .home-page .home-slider.is-static .home-slider__nav {
   opacity: 0;
   pointer-events: none;
+}
+
+/* Section-specific browse slider arrows */
+.home-page .home-explore .home-slider__nav {
+  background: var(--home-canadiana-search-bg);
+  border: 0;
+  padding: 0;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .26);
+}
+
+.home-page .home-explore .home-slider__nav .bi {
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  margin: 0;
+  transform: translateY(0);
+}
+
+.home-page .home-explore.heritage-bg .home-slider__nav {
+  background: var(--home-heritage-search-bg);
+}
+
+.home-page .home-explore .home-slider__nav:hover,
+.home-page .home-explore .home-slider__nav:focus-visible {
+  transform: translateY(-1px);
+  filter: brightness(1.08) saturate(1.05);
+}
+
+.home-page .home-explore .home-slider__nav:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(12, 63, 70, .35), 0 8px 18px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .26);
+}
+
+.home-page .home-explore.heritage-bg .home-slider__nav:focus-visible {
+  box-shadow: 0 0 0 4px rgba(23, 53, 0, .35), 0 8px 18px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .26);
+}
+
+.home-page .home-explore .home-slider__nav:disabled {
+  opacity: .42;
+  filter: saturate(.7);
 }
 
 .home-page .home-split-grid--slider {
@@ -2446,13 +2538,15 @@ footer.bg-dark {
 
 .home-page .home-collection-band--canadiana {
   padding-bottom: 2rem;
-  background: white;
+  background: var(--home-canadiana-search-bg);
 }
 
 .home-page {
   --home-shell-gutter: 26px;
   --home-body-copy-size: clamp(1.07rem, 1.35vw, 1.62rem);
   --home-body-copy-leading: 1.55;
+  --home-canadiana-search-bg: linear-gradient(135deg, #1b626c 0%, #2f7a86 58%, #236b76 100%);
+  --home-heritage-search-bg: linear-gradient(135deg, #285d00 0%, #367a00 58%, #2f6a00 100%);
 }
 
 @media (min-width: 1880px) {
@@ -2499,7 +2593,7 @@ footer.bg-dark {
   padding-bottom: clamp(2.2rem, 3vw, 3.5rem);
   padding-left: 5vw;
   padding-right: 5vw;
-  background: #2f7a86;
+  background: transparent;
 }
 
 .home-page .home-collection-band--canadiana .home-eyebrow {
@@ -2597,7 +2691,7 @@ footer.bg-dark {
   min-height: 560px;
   background: #d9d9d9;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -2625,7 +2719,6 @@ footer.bg-dark {
   }
 
   .home-page .home-collection-band--canadiana .home-collection-band__copy h3 {
-    max-width: 23ch;
     font-size: clamp(2.35rem, 2.35vw, 4.05rem);
   }
 
@@ -2665,13 +2758,13 @@ footer.bg-dark {
 
   .home-page .home-collection-band--canadiana .home-collection-band__image {
     min-height: 420px;
+    height: 420px;
   }
 }
 
 @media (max-width: 768px) {
   .home-page .home-collection-band--canadiana .home-collection-band__copy h3 {
     font-size: clamp(1.58rem, 7vw, 2.05rem);
-    max-width: 24ch;
   }
 
   .home-page .home-collection-band--canadiana .band-search-form {
@@ -2751,6 +2844,7 @@ footer.bg-dark {
 
 .home-page .home-collection-band--heritage {
   padding-bottom: 2rem;
+  background: var(--home-heritage-search-bg) !important;
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__panel,
@@ -2762,7 +2856,7 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--heritage .home-collection-band__copy {
-  background: #367a00;
+  background: transparent;
   padding-top: clamp(2rem, 2.8vw, 3.3rem);
   padding-bottom: clamp(2rem, 2.8vw, 3.3rem);
   padding-left: 5vw;
@@ -2920,6 +3014,7 @@ footer.bg-dark {
 
   .home-page .home-collection-band--heritage .home-collection-band__image {
     min-height: 420px;
+    height: 420px;
     grid-template-columns: 1fr;
   }
 }
@@ -2984,7 +3079,8 @@ footer.bg-dark {
   }
 }
 
-.canadiana-walkthrough, .home-explore-canadiana {
+.home-page .canadiana-walkthrough,
+.home-page .home-explore-canadiana {
   background: white;
 }
 
@@ -3129,4 +3225,130 @@ footer.bg-dark {
 }
 .heritage-bg.site-section.home-explore {
   border-radius: 0 0 35px 35px;
+}
+
+/* Canadiana search band: match inset media card layout */
+.home-page .home-collection-band--canadiana .home-collection-band__panel {
+  background: var(--home-canadiana-search-bg);
+}
+
+.home-page .home-collection-band--canadiana .home-collection-band__image,
+.home-page .home-collection-band--heritage .home-collection-band__image {
+  overflow: hidden !important;
+  align-items: flex-start;
+}
+
+.home-page .home-collection-band--canadiana .home-collection-band__image iframe.exhibit,
+.home-page .home-collection-band--heritage .home-collection-band__image iframe.exhibit {
+  height: 560px !important;
+  min-height: 560px !important;
+  max-height: 560px !important;
+  display: block;
+}
+
+@media (min-width: 1201px) {
+  .home-page {
+    --home-band-panel-height: 560px;
+    --home-band-exhibit-width: 435px;
+    --home-band-exhibit-height: 495px;
+    --home-band-exhibit-frame-height: 560px;
+  }
+
+  .home-page .home-collection-band--canadiana .home-collection-band__panel {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    max-height: none !important;
+    min-height: var(--home-band-panel-height);
+    height: var(--home-band-panel-height);
+  }
+
+  .home-page .home-collection-band--canadiana .home-collection-band__copy {
+    background: transparent;
+    max-height: none !important;
+    min-height: var(--home-band-panel-height);
+    height: var(--home-band-panel-height);
+  }
+
+  .home-page .home-collection-band--canadiana .home-collection-band__image {
+    margin: 20px auto;
+    border-radius: 25px;
+    max-height: var(--home-band-exhibit-height);
+    min-height: var(--home-band-exhibit-height);
+    height: var(--home-band-exhibit-height) !important;
+    overflow: hidden !important;
+    background: #d9d9d9;
+    width: var(--home-band-exhibit-width) !important;
+    min-width: var(--home-band-exhibit-width) !important;
+    max-width: var(--home-band-exhibit-width) !important;
+    align-self: center;
+    justify-self: center;
+    align-items: flex-start;
+  }
+
+  .home-page .home-collection-band--canadiana .home-collection-band__image iframe.exhibit {
+    width: var(--home-band-exhibit-width) !important;
+    min-width: var(--home-band-exhibit-width) !important;
+    max-width: var(--home-band-exhibit-width) !important;
+    height: var(--home-band-exhibit-frame-height) !important;
+    min-height: var(--home-band-exhibit-frame-height) !important;
+    max-height: var(--home-band-exhibit-frame-height) !important;
+    overflow: hidden !important;
+  }
+}
+
+/* Heritage search band: mirror inset media card layout with left exhibit */
+.home-page .home-collection-band--heritage .home-collection-band__panel,
+.home-page .home-collection-band--heritage.home-collection-band--reverse .home-collection-band__panel {
+  background: var(--home-heritage-search-bg);
+}
+
+@media (min-width: 1201px) {
+  .home-page .home-collection-band--heritage .home-collection-band__panel,
+  .home-page .home-collection-band--heritage.home-collection-band--reverse .home-collection-band__panel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    max-height: none !important;
+    min-height: var(--home-band-panel-height);
+    height: var(--home-band-panel-height);
+  }
+
+  .home-page .home-collection-band--heritage .home-collection-band__copy {
+    background: transparent;
+    max-height: none !important;
+    min-height: var(--home-band-panel-height);
+    height: var(--home-band-panel-height);
+  }
+
+  .home-page .home-collection-band--heritage .home-collection-band__image {
+    margin: 20px auto;
+    border-radius: 25px;
+    max-height: var(--home-band-exhibit-height);
+    min-height: var(--home-band-exhibit-height);
+    height: var(--home-band-exhibit-height) !important;
+    overflow: hidden !important;
+    background: #d9d9d9;
+    width: var(--home-band-exhibit-width) !important;
+    min-width: var(--home-band-exhibit-width) !important;
+    max-width: var(--home-band-exhibit-width) !important;
+    align-self: center;
+    justify-self: center;
+    align-items: flex-start;
+  }
+
+  .home-page .home-collection-band--heritage .home-collection-band__image iframe.exhibit {
+    width: var(--home-band-exhibit-width) !important;
+    min-width: var(--home-band-exhibit-width) !important;
+    max-width: var(--home-band-exhibit-width) !important;
+    height: var(--home-band-exhibit-frame-height) !important;
+    min-height: var(--home-band-exhibit-frame-height) !important;
+    max-height: var(--home-band-exhibit-frame-height) !important;
+    overflow: hidden !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .home-page {
+    --home-band-exhibit-width: 520px;
+    --home-band-exhibit-height: 592px;
+    --home-band-exhibit-frame-height: 657px;
+    --home-band-panel-height: 632px;
+  }
 }
