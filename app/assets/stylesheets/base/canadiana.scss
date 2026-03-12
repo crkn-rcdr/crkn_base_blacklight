@@ -2545,8 +2545,8 @@ footer.bg-dark {
   --home-shell-gutter: 26px;
   --home-body-copy-size: clamp(1.07rem, 1.35vw, 1.62rem);
   --home-body-copy-leading: 1.55;
-  --home-canadiana-search-bg: linear-gradient(135deg, #1b626c 0%, #2f7a86 58%, #236b76 100%);
-  --home-heritage-search-bg: linear-gradient(135deg, #285d00 0%, #367a00 58%, #2f6a00 100%);
+  --home-canadiana-search-bg: linear-gradient(135deg, #388e9a 0%, #2f7a86 58%, #236b76 100%);
+  --home-heritage-search-bg: linear-gradient(135deg, #43880f 0%, #367a00 58%, #2f6a00 100%);
 }
 
 @media (min-width: 1880px) {
@@ -3414,18 +3414,9 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--canadiana-clean .home-collection-band__copy h3 {
-  color: #1f6a74;
-  background-image: linear-gradient(
-    100deg,
-    #1a5a63 0%,
-    #236d78 48%,
-    #2f8792 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: clamp(1.95rem, 3.2vw, 3.85rem);
-  line-height: 1.12;
+  color: #1f6570;
+  font-size: clamp(2.05rem, 3.35vw, 4.05rem);
+  line-height: 1.1;
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 1.45rem;
@@ -3554,7 +3545,7 @@ footer.bg-dark {
 
 @media (max-width: 768px) {
   .home-page .home-collection-band--canadiana-clean .home-collection-band__copy h3 {
-    font-size: clamp(1.7rem, 8vw, 2.25rem);
+    font-size: clamp(1.9rem, 8.5vw, 2.7rem);
     max-width: none;
   }
 
@@ -3677,9 +3668,10 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--heritage-clean .home-collection-band__copy h3 {
-  color: #05080c;
-  font-size: clamp(1.65rem, 2.7vw, 3.2rem);
-  line-height: 1.14;
+  color: #2a5d00;
+  font-size: clamp(2.05rem, 3.35vw, 4.05rem);
+  line-height: 1.1;
+  font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 1.45rem;
   max-width: none;
@@ -3724,26 +3716,39 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn {
-  flex: 0 0 17rem;
-  max-width: 11rem;
+  flex: 0 0 auto;
+  min-width: 20rem;
+  max-width: none;
   height: 4.25rem;
   border: 0;
   border-radius: 999px;
   background: #2f6a00;
   color: #fff;
+  padding: 0 1.45rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: clamp(1.05rem, 1.12vw, 1.32rem);
   font-weight: 700;
 }
 
 .home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn[disabled] {
   opacity: 1;
-  background: #2f6a00;
-  color: #fff;
+  background: #5f7f43;
+  color: #ecf3e5;
+  cursor: not-allowed;
+  filter: saturate(70%);
 }
 
 .home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn:hover,
 .home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn:focus {
   background: #285900;
+}
+
+.home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn[disabled]:hover,
+.home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn[disabled]:focus {
+  background: #5f7f43;
 }
 
 .home-page .home-collection-band--heritage-clean .home-inline-link--history {
@@ -3775,7 +3780,7 @@ footer.bg-dark {
 
 @media (max-width: 768px) {
   .home-page .home-collection-band--heritage-clean .home-collection-band__copy h3 {
-    font-size: clamp(1.7rem, 8vw, 2.25rem);
+    font-size: clamp(1.9rem, 8.5vw, 2.7rem);
     max-width: none;
   }
 
