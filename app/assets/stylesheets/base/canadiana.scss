@@ -3708,9 +3708,9 @@ footer.bg-dark {
 
 .home-page .home-collection-band--heritage-clean .band-search-select {
   flex: 0 0 7rem;
-  width: 7rem;
-  min-width: 7rem;
-  max-width: 7rem;
+  width: 8rem;
+  min-width: 8rem;
+  max-width: 8rem;
   height: 4.25rem;
   border: 0;
   border-right: 1px solid #d5dbe0;
@@ -3837,5 +3837,155 @@ footer.bg-dark {
   .home-page .home-collection-band--heritage-clean .home-collection-band__image {
     --heritage-clean-exhibit-viewport-height: 475px;
     --heritage-clean-exhibit-frame-height: 540px;
+  }
+}
+
+/* Home page sequence hierarchy pass (spacing + type only; no background overrides) */
+.home-page {
+  --home-sequence-gap-xl: clamp(4.8rem, 7.2vw, 7.25rem);
+  --home-sequence-gap-lg: clamp(3.4rem, 5.1vw, 5.2rem);
+  --home-sequence-gap-md: clamp(2.2rem, 3.3vw, 3.25rem);
+  --home-sequence-gap-sm: clamp(1.2rem, 2vw, 1.9rem);
+}
+
+.home-page .home-intro--canadiana-clean,
+.home-page .home-intro--heritage-clean {
+  padding-top: var(--home-sequence-gap-lg);
+  padding-bottom: var(--home-sequence-gap-sm);
+}
+
+.home-page .home-collection-band--canadiana-clean,
+.home-page .home-collection-band--heritage-clean {
+  padding-top: var(--home-sequence-gap-sm);
+  padding-bottom: var(--home-sequence-gap-md);
+}
+
+.home-page .home-intro--canadiana-clean .section-title,
+.home-page .home-intro--heritage-clean .section-title {
+  font-size: clamp(2.45rem, 3.75vw, 4.1rem);
+  line-height: 1.07;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.home-page .home-intro--canadiana-clean .section-lede,
+.home-page .home-intro--heritage-clean .section-lede {
+  font-size: clamp(1.08rem, 1.28vw, 1.52rem);
+  line-height: 1.6;
+  max-width: 72ch;
+  margin-bottom: 0;
+}
+
+.home-page .home-collection-band--canadiana-clean .home-collection-band__copy h3,
+.home-page .home-collection-band--heritage-clean .home-collection-band__copy h3 {
+  margin-bottom: clamp(1.25rem, 2vw, 1.85rem);
+}
+
+.home-page .home-walkthrough {
+  padding-top: var(--home-sequence-gap-sm) !important;
+  padding-bottom: var(--home-sequence-gap-md) !important;
+}
+
+.home-page .home-walkthrough a {
+  font-size: clamp(1.2rem, 1.6vw, 2rem);
+  line-height: 1.24;
+}
+
+.home-page .home-walkthrough .home-walkthrough__icon {
+  font-size: clamp(2rem, 2.45vw, 2.95rem);
+}
+
+.home-page .home-explore,
+.home-page .home-featured,
+.home-page .members-section {
+  padding-top: var(--home-sequence-gap-lg) !important;
+  padding-bottom: var(--home-sequence-gap-lg) !important;
+}
+
+.home-page .home-explore.home-explore-canadiana,
+.home-page .home-explore.heritage-bg {
+  padding-top: var(--home-sequence-gap-sm) !important;
+}
+
+.home-page .home-statement {
+  padding-top: var(--home-sequence-gap-lg) !important;
+  padding-bottom: var(--home-sequence-gap-md) !important;
+}
+
+.home-page .home-featured .section-title,
+.home-page .home-statement .section-title,
+.home-page .members-section .section-title {
+  font-size: clamp(2.45rem, 3.55vw, 3.95rem);
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  margin-bottom: clamp(1.15rem, 2vw, 1.9rem);
+}
+
+.home-page .home-explore .section-title {
+  font-size: clamp(2rem, 2.85vw, 3.15rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-bottom: clamp(0.95rem, 1.5vw, 1.45rem);
+}
+
+.home-page .home-featured-head {
+  margin-bottom: clamp(1.25rem, 2.1vw, 2rem);
+}
+
+.home-page .home-statement .canadiana-shell > *:not(.section-title) {
+  max-width: 72ch;
+}
+
+.home-page .home-statement p {
+  margin-bottom: 1.05rem;
+}
+
+.home-page .home-statement ul {
+  margin: 1.05rem 0 1.25rem;
+  padding-left: 1.15rem;
+}
+
+.home-page .home-statement li + li {
+  margin-top: 0.55rem;
+}
+
+.home-page .members-header {
+  max-width: 110ch;
+}
+
+.home-page .members-header .text-muted.small {
+  max-width: 72ch;
+}
+
+@media (max-width: 992px) {
+  .home-page .home-explore,
+  .home-page .home-featured,
+  .home-page .home-statement,
+  .home-page .members-section {
+    padding-top: var(--home-sequence-gap-md) !important;
+    padding-bottom: var(--home-sequence-gap-md) !important;
+  }
+
+  .home-page .home-intro--canadiana-clean .section-title,
+  .home-page .home-intro--heritage-clean .section-title,
+  .home-page .home-featured .section-title,
+  .home-page .home-statement .section-title,
+  .home-page .members-section .section-title {
+    font-size: clamp(2rem, 7vw, 2.9rem);
+  }
+
+  .home-page .home-explore.home-explore-canadiana,
+  .home-page .home-explore.heritage-bg {
+    padding-top: var(--home-sequence-gap-sm) !important;
+  }
+
+  .home-page .home-explore .section-title {
+    font-size: clamp(1.75rem, 5.8vw, 2.45rem);
+  }
+
+  .home-page .home-statement .canadiana-shell > *:not(.section-title),
+  .home-page .members-header,
+  .home-page .members-header .text-muted.small {
+    max-width: 100%;
   }
 }
