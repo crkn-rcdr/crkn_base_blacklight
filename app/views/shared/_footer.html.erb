@@ -1,24 +1,52 @@
-<footer class="mt-auto bg-dark text-white" role="contentinfo">
-  <div class="container-fluid">
-    <div class="row py-3 small">
-      <p class="col-lg text-center">
-        <a href="https://www.canadiana.ca/?usrlang=en">
-          <img src="/assets/canadiana-logo-inverted.svg" alt="Canadiana" height="50">
+<footer class="mt-auto bg-dark text-white site-footer" role="contentinfo">
+  <div class="container-fluid site-footer__inner">
+    <div class="site-footer__top">
+      <div class="site-footer__brand site-footer__brand--crkn">
+        <a href="<%= I18n.t('links.URL_CRKN') %>" aria-label="Canadian Research Knowledge Network">
+          <%= image_tag 'crkn-logo-inverted.svg', alt: 'Canadian Research Knowledge Network', loading: 'lazy' %>
         </a>
-      </p>
-      <p class="col-lg-5 text-center">
-        <a href="https://www.canadiana.ca/terms">Terms of Service</a>
-        <br>
-        &copy; <%= Time.current.year %> Canadian Research Knowledge Network
-        <a href="https://www.crkn-rcdr.ca/en/contact-us" aria-label="Contact Us">
-          <img src="/assets/phone.svg" alt="" aria-hidden="true">
+      </div>
+
+      <div class="site-footer__center">
+        <address class="site-footer__address">
+          <strong>Canadian Research Knowledge Network</strong>
+          1309 Carling Ave<br>
+          PO Box 35155 Westgate<br>
+          Ottawa, ON K1Z 1A2<br>
+          t. 613.907.7040
+        </address>
+
+        <nav class="site-footer__actions" aria-label="Footer actions">
+          <a class="site-footer__btn" href="<%= I18n.t('links.URL_CONTACT') %>">Contact Us</a>
+          <a class="site-footer__btn" href="https://www.crkn-rcdr.ca/en/newsletter-sign-up" target="_blank" rel="noopener">Newsletter Sign Up</a>
+          <a class="site-footer__btn" href="https://www.crkn-rcdr.ca/en/digitization-services" target="_blank" rel="noopener">Digitization Services</a>
+        </nav>
+      </div>
+
+      <div class="site-footer__brand site-footer__brand--canadiana">
+        <a href="<%= I18n.t('links.URL_CANADIANA') %>" aria-label="Canadiana">
+          <%= image_tag 'canadiana-logo-inverted.svg', alt: 'Canadiana', loading: 'lazy' %>
         </a>
+      </div>
+    </div>
+
+    <div class="site-footer__ack">
+      <p>
+        CRKN respectfully acknowledges that its offices are located on the traditional, unceded territory of the Algonquin
+        Anishinaabe People. We also recognize that our member institutions are situated across the land now known as Canada,
+        and we extend our respect and gratitude to all First Nations, M&eacute;tis, and Inuit communities.
       </p>
-      <p class="col-lg text-center">
-        <a href="https://www.crkn-rcdr.ca/en" class="d-inline-block">
-          <img src="/assets/crkn-logo-inverted.svg" alt="Canadian Research Knowledge Network" height="50">
-        </a>
+      <p>
+        Through our work, particularly with the Canadiana and H&eacute;ritage collections, we are committed to acknowledging
+        colonial injustices, supporting First Nation, Inuit, and M&eacute;tis data sovereignty, and working in partnership
+        with communities. We strive to engage in respectful practices that honour community protocols and uphold the right of
+        Indigenous Peoples to determine how materials related to their heritage are governed.
       </p>
+    </div>
+
+    <div class="site-footer__meta">
+      <a href="<%= I18n.t('links.URL_TERMS') %>">Terms of Service</a>
+      <span>&copy; <%= Time.current.year %> Canadian Research Knowledge Network</span>
     </div>
   </div>
 </footer>

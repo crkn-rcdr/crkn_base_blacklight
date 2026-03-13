@@ -48,18 +48,21 @@
   </section>
 
   <section class="site-section home-intro home-intro--canadiana-clean">
-    <div class="canadiana-shell">
-      <h2 class="section-title">Collection Canadiana</h2>
-      <p class="section-lede">
-        Environ 31&nbsp;millions de pages de publications montrent comment les connaissances, les histoires et l&apos;information
-        ont &eacute;t&eacute; partag&eacute;es au fil du temps. Cette collection comprend des livres, journaux, magazines, documents
-        gouvernementaux, cartes et plus encore, de 1500 &agrave; aujourd&apos;hui. Le contenu Canadiana provient en grande partie de
-        la s&eacute;rie de microfiches de l&apos;Institut canadien de microreproductions historiques (ICMH).
-      </p>
-      <a class="home-inline-link home-inline-link--arrow" href="/about/monographs?lang=<%= I18n.locale %>">
-        En savoir plus
-        <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
-      </a>
+    <div class="canadiana-shell home-canadiana-intro-grid">
+      <div class="home-canadiana-intro-copy">
+        <h2 class="section-title">Collection Canadiana</h2>
+        <p class="section-lede">
+          Environ 31&nbsp;millions de pages de publications montrent comment les connaissances, les histoires et l&apos;information
+          ont &eacute;t&eacute; partag&eacute;es au fil du temps. Cette collection comprend des livres, journaux, magazines, documents
+          gouvernementaux, cartes et plus encore, de 1500 &agrave; aujourd&apos;hui. Le contenu Canadiana provient en grande partie de
+          la s&eacute;rie de microfiches de l&apos;Institut canadien de microreproductions historiques (ICMH).
+        </p>
+        <a class="home-inline-link home-inline-link--arrow" href="/about/monographs?lang=<%= I18n.locale %>">
+          En savoir plus
+          <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
+        </a>
+      </div>
+      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, view_text: 'Voir la page' } %>
     </div>
   </section>
 
@@ -86,6 +89,12 @@
           </form>
 
           <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>
+          <div class="home-walkthrough-inline canadiana-walkthrough">
+            <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
+              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+              Guide rapide&nbsp;: comment utiliser la recherche de la collection Canadiana
+            </a>
+          </div>
         </div>
         <div class="home-collection-band__image">
 
@@ -93,15 +102,6 @@
 
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="site-section home-walkthrough canadiana-walkthrough py-0">
-    <div class="canadiana-shell">
-      <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
-        <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-        Guide rapide&nbsp;: comment utiliser la recherche de la collection Canadiana
-      </a>
     </div>
   </section>
 
@@ -200,7 +200,7 @@
         </a>
       </div>
       <div class="home-heritage-logo-card" aria-hidden="true">
-        <img class="home-heritage-logo" src="/assets/canada-wordmark.svg" alt="Symbole du gouvernement du Canada" loading="lazy">
+        <img class="home-heritage-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
       </div>
     </div>
   </section>
@@ -235,6 +235,12 @@
           </form>
 
           <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>
+          <div class="home-walkthrough-inline heritage-bg">
+            <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+              Guide rapide&nbsp;: comment utiliser la recherche de la collection H&eacute;ritage
+            </a>
+          </div>
         </div>
         <div class="home-collection-band__image">
 
@@ -242,15 +248,6 @@
 
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="site-section home-walkthrough heritage-bg py-0">
-    <div class="canadiana-shell">
-      <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
-        <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-        Guide rapide&nbsp;: comment utiliser la recherche de la collection H&eacute;ritage
-      </a>
     </div>
   </section>
 
@@ -403,27 +400,33 @@
 
   <section class="site-section home-statement">
     <div class="canadiana-shell">
-      <h2 class="section-title">D&eacute;claration sur les contenus et descriptions probl&eacute;matiques dans Canadiana</h2>
-      <p class="section-lede">
-        Les collections Canadiana renferment des documents cr&eacute;&eacute;s sur cinq si&egrave;cles qui racontent une histoire
-        du Canada incompl&egrave;te, souvent d&eacute;form&eacute;e et parfois pr&eacute;judiciable. Le contenu, les m&eacute;tadonn&eacute;es et
-        les descriptions de ressources contiennent un langage qui refl&egrave;te les pr&eacute;jug&eacute;s, les normes et les perspectives
-        de l&apos;&eacute;poque o&ugrave; ils ont &eacute;t&eacute; cr&eacute;&eacute;s.
-      </p>
-      <ul>
-        <li>soutenir et participer activement aux efforts visant &agrave; moderniser les normes internationales de description afin qu&apos;elles soient inclusives et respectueuses</li>
-        <li>remplacer le langage inappropri&eacute; dans les m&eacute;tadonn&eacute;es et descriptions de ressources issues de pratiques de catalogage ant&eacute;rieures</li>
-      </ul>
-      <p>
-        Il s&apos;agit d&apos;un processus continu. Si vous voyez des ressources au langage ou au contenu inappropri&eacute;s,
-        veuillez remplir notre
-        <a href="https://www.crkn-rcdr.ca/sites/crkn/files/2021-09/Final%20-%20Review%20Request%20Process%20for%20the%20Canadiana%20Collection%20-%20FR.pdf" target="_blank" rel="noopener">
-          formulaire de demande de r&eacute;vision
-        </a>.
-      </p>
+      <div class="home-statement-layout">
+        <article class="home-statement-card">
+          <h2 class="section-title">D&eacute;claration sur les contenus et descriptions probl&eacute;matiques dans Canadiana</h2>
+          <p class="section-lede">
+            Les collections Canadiana renferment des documents cr&eacute;&eacute;s sur cinq si&egrave;cles qui racontent une histoire
+            du Canada incompl&egrave;te, souvent d&eacute;form&eacute;e et parfois pr&eacute;judiciable. Le contenu, les m&eacute;tadonn&eacute;es et
+            les descriptions de ressources contiennent un langage qui refl&egrave;te les pr&eacute;jug&eacute;s, les normes et les perspectives
+            de l&apos;&eacute;poque o&ugrave; ils ont &eacute;t&eacute; cr&eacute;&eacute;s.
+          </p>
+          <ul>
+            <li>soutenir et participer activement aux efforts visant &agrave; moderniser les normes internationales de description afin qu&apos;elles soient inclusives et respectueuses</li>
+            <li>remplacer le langage inappropri&eacute; dans les m&eacute;tadonn&eacute;es et descriptions de ressources issues de pratiques de catalogage ant&eacute;rieures</li>
+          </ul>
+          <p>
+            Il s&apos;agit d&apos;un processus continu. Si vous voyez des ressources au langage ou au contenu inappropri&eacute;s.
+          </p>
+          <a class="home-statement-cta" href="https://www.crkn-rcdr.ca/sites/crkn/files/2021-09/Final%20-%20Review%20Request%20Process%20for%20the%20Canadiana%20Collection%20-%20FR.pdf" target="_blank" rel="noopener">
+            Formulaire de demande de r&eacute;vision
+            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+          </a>
+        </article>
+        <aside class="home-statement-media">
+          <img src="<%= asset_path('statement.png') %>" alt="Personne consultant des documents d&apos;archives &agrave; une table de travail" loading="lazy">
+        </aside>
+      </div>
     </div>
   </section>
 
   <%= render(MembersComponent.new) %>
 </div>
-

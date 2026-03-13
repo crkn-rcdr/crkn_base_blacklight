@@ -1,0 +1,126 @@
+<% stack_count = local_assigns.fetch(:count, 12) %>
+<% view_text = local_assigns[:view_text].presence || (I18n.locale.to_s.start_with?('fr') ? 'Voir la page' : 'View item') %>
+<% canadiana_stack_records = canadiana_stack_cards(stack_count) %>
+<% canadiana_stack_records_for_js = canadiana_stack_records.map { |card| card.merge(image_url: asset_path(card[:image])) } %>
+<% initial_front = canadiana_stack_records_for_js[0] %>
+<% initial_middle = canadiana_stack_records_for_js[1] || initial_front %>
+<% initial_back = canadiana_stack_records_for_js[2] || initial_front %>
+
+<aside class="home-canadiana-stack" data-canadiana-stack>
+  <script type="application/json" data-canadiana-stack-data><%= raw(json_escape(canadiana_stack_records_for_js.to_json)) %></script>
+
+  <div class="home-canadiana-stack__deck">
+    <figure class="home-canadiana-stack__card home-canadiana-stack__card--back" data-stack-card="back">
+      <img data-stack-img="back" src="<%= initial_back[:image_url] %>" alt="" loading="lazy">
+    </figure>
+    <figure class="home-canadiana-stack__card home-canadiana-stack__card--middle" data-stack-card="middle">
+      <img data-stack-img="middle" src="<%= initial_middle[:image_url] %>" alt="" loading="lazy">
+    </figure>
+    <figure class="home-canadiana-stack__card home-canadiana-stack__card--front" data-stack-card="front">
+      <img data-stack-img="front" src="<%= initial_front[:image_url] %>" alt="" loading="lazy">
+    </figure>
+  </div>
+
+  <div class="home-canadiana-stack__actions">
+    <a class="home-canadiana-stack__view-btn" data-stack-link href="<%= initial_front[:url] %>" target="_blank" rel="noopener" aria-label="<%= view_text %>" title="<%= view_text %>">
+      <span class="home-canadiana-stack__view-btn-text"><%= view_text %></span>
+      <i class="bi bi-arrow-right" aria-hidden="true"></i>
+    </a>
+  </div>
+</aside>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    const script = document.currentScript;
+    if (!script) return;
+
+    const stack = script.previousElementSibling;
+    if (!stack || !stack.matches('[data-canadiana-stack]')) return;
+    if (stack.dataset.stackInlineInit === '1') return;
+    stack.dataset.stackInlineInit = '1';
+
+    const dataNode = stack.querySelector('[data-canadiana-stack-data]');
+    if (!dataNode) return;
+
+    let cards = [];
+    try {
+      cards = JSON.parse(dataNode.textContent || '[]');
+    } catch (_error) {
+      return;
+    }
+
+    cards = cards.filter((card) => (
+      card &&
+      typeof card.image_url === 'string' &&
+      card.image_url.length > 0 &&
+      typeof card.url === 'string' &&
+      card.url.length > 0
+    ));
+
+    if (!cards.length) return;
+
+    const deck = stack.querySelector('.home-canadiana-stack__deck');
+    const frontImg = stack.querySelector('[data-stack-img="front"]');
+    const middleImg = stack.querySelector('[data-stack-img="middle"]');
+    const backImg = stack.querySelector('[data-stack-img="back"]');
+    const link = stack.querySelector('[data-stack-link]');
+
+    const deckCards = cards.slice(0, 3);
+    while (deckCards.length < 3) {
+      deckCards.push(deckCards[deckCards.length - 1] || cards[0]);
+    }
+
+    const length = deckCards.length;
+    let visibleCards = [deckCards[0], deckCards[1], deckCards[2]];
+    let isAnimating = false;
+
+    const setImage = (img, card) => {
+      if (!img || !card) return;
+      img.src = card.image_url;
+      img.alt = card.label ? `Canadiana card ${card.label}` : 'Canadiana card';
+    };
+
+    const update = () => {
+      const front = visibleCards[0];
+      const middle = visibleCards[1];
+      const back = visibleCards[2];
+
+      setImage(frontImg, front);
+      setImage(middleImg, middle);
+      setImage(backImg, back);
+
+      if (link && front) {
+        link.href = front.url;
+        if (front.label) {
+          link.setAttribute('aria-label', `Open ${front.label}`);
+        }
+      }
+
+    };
+
+    const moveToNext = () => {
+      if (length < 2) return;
+      if (isAnimating) return;
+      isAnimating = true;
+      if (deck) deck.classList.add('is-shuffling');
+      const previous = visibleCards;
+      visibleCards = [previous[1], previous[2], previous[0]];
+      window.setTimeout(() => {
+        update();
+        if (deck) deck.classList.remove('is-shuffling');
+        isAnimating = false;
+      }, 120);
+    };
+
+    if (deck) {
+      deck.addEventListener('click', (event) => {
+        const clickedCard = event.target.closest('[data-stack-card]');
+        if (!clickedCard || !deck.contains(clickedCard)) return;
+        if (!clickedCard.classList.contains('home-canadiana-stack__card--front')) return;
+        moveToNext();
+      });
+    }
+
+    update();
+  })();
+</script>

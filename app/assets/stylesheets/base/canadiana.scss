@@ -341,8 +341,161 @@ summary:focus-visible,
 
 /* CTA button look for card links */
 .card-collection .card-link.btn { color: #fff !important; }
-footer a {
-    color: white !important;
+.site-footer {
+    background-color: #000 !important;
+    color: #fff;
+    grid-area: footer;
+    padding-top: clamp(2.1rem, 3.4vw, 3rem);
+    padding-bottom: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.site-footer a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+.site-footer a:hover,
+.site-footer a:focus {
+    color: #fff !important;
+}
+
+.site-footer__inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding-left: clamp(1rem, 2.2vw, 2rem);
+    padding-right: clamp(1rem, 2.2vw, 2rem);
+}
+
+.site-footer__top {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(360px, 1.5fr) minmax(200px, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 2.2vw, 2rem);
+}
+
+.site-footer__brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.site-footer__brand img {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+}
+
+.site-footer__brand--canadiana img {
+    width: 100%;
+    max-width: 250px;
+}
+
+.site-footer__center {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    align-items: center;
+    gap: clamp(0.85rem, 1.8vw, 1.45rem);
+}
+
+.site-footer__address {
+    margin: 0;
+    font-style: normal;
+    font-size: clamp(0.8rem, 0.82vw, 0.95rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.site-footer__address strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: clamp(0.84rem, 0.86vw, 0.98rem);
+    font-weight: 700;
+}
+
+.site-footer__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+}
+
+.site-footer__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 176px;
+    border-radius: 6px;
+    padding: 0.5rem 0.9rem;
+    background: #ef1544;
+    color: #fff !important;
+    font-size: clamp(0.8rem, 0.86vw, 0.95rem);
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    transition: background-color 0.2s ease;
+}
+
+.site-footer__btn:hover,
+.site-footer__btn:focus {
+    background: #d80f3a;
+    text-decoration: none;
+}
+
+.site-footer__ack {
+    margin-top: clamp(1.35rem, 2.1vw, 1.9rem);
+    padding-top: clamp(1rem, 1.6vw, 1.3rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.site-footer__ack p {
+    margin: 0 auto clamp(0.6rem, 1.1vw, 0.95rem);
+    max-width: 138ch;
+    text-align: center;
+    font-size: clamp(0.74rem, 0.74vw, 0.9rem);
+    line-height: 1.58;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.site-footer__meta {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.45rem 1rem;
+    font-size: clamp(0.74rem, 0.76vw, 0.88rem);
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.site-footer__meta a {
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+}
+
+@media (max-width: 1100px) {
+    .site-footer__top {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+    }
+
+    .site-footer__center {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .site-footer__actions {
+        align-items: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .site-footer__btn {
+        width: 100%;
+        max-width: 280px;
+        min-width: 0;
+    }
 }
 .blacklight-pages-home #main-container {
     max-width: 100% !important; /* avoid vw scrollbar overflow */
@@ -376,10 +529,6 @@ footer a {
 }
 .blacklight-pages-home .navbar-logo {
     background: transparent url(/assets/canadiana-tag-white.svg) no-repeat top left;
-}
-footer.bg-dark {
-    background-color: black !important;
-    grid-area: footer;
 }
 #main-container {
     min-height: 74vh;
@@ -1187,211 +1336,6 @@ footer.bg-dark {
   max-width: 1380px;
 }
 
-.home-page .home-eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 1rem;
-  font-weight: 200;
-  margin: 0 0 .65rem;
-  opacity: .92;
-}
-
-.home-page .home-hero {
-  //border-radius: 28px;
-  position: relative;
-  overflow: hidden;
-  padding: clamp(1.8rem, 3.7vw, 3.4rem) 0 clamp(1.6rem, 3vw, 2.6rem);
-  color: #fff;
-  background:
-    linear-gradient(118deg, rgba(16,95,107,.95) 0%, rgba(33,124,95,.92) 56%, rgba(74,190,0,.88) 100%),
-    url('/assets/oocihm.12020.87 1.png') center/cover no-repeat;
-}
-
-.home-page .home-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 25%, rgba(255,255,255,.18), transparent 34%),
-    radial-gradient(circle at 84% 15%, rgba(255,255,255,.16), transparent 30%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/*
-.home-page .home-hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 228px;
-  background: #ffffff;
-  -webkit-mask-image: radial-gradient(130% 190px at 50% 0, transparent 99%, #000 100%);
-  mask-image: radial-gradient(130% 190px at 50% 0, transparent 99%, #000 100%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  pointer-events: none;
-  z-index: 0;
-}*/
-
-.home-page .home-hero > .container {
-  position: relative;
-  z-index: 1;
-}
-
-.home-page .home-hero > .canadiana-shell {
-  position: relative;
-  z-index: 1;
-}
-
-.home-page .home-hero h1 {
-  font-size: clamp(2.15rem, 4.2vw, 3.5rem);
-  line-height: 1.05;
-  margin: 0 0 .9rem;
-  //max-width: 13ch;
-}
-
-.home-page .home-hero-copy {
-  font-size: clamp(1rem, 1.55vw, 1.12rem);
-  //max-width: 64ch;
-  margin: 0;
-  color: rgba(255,255,255,.94);
-}
-
-.home-page .home-search-wrap {
-  position: static;
-  top: auto;
-  width: 100%;
-  margin: 1.3rem 0 0;
-}
-
-.home-page .home-search {
-  width: 100% !important;
-  max-width: 835px;
-  margin: 0;
-  padding: .56rem;
-  border-radius: 18px;
-  background-color: rgba(255,255,255,.18) !important;
-  border: 1px solid rgba(255,255,255,.3);
-  box-shadow: 0 10px 26px rgba(0,0,0,.18);
-}
-
-.home-page .home-search form {
-  margin-bottom: 0 !important;
-}
-
-.home-page .home-search input {
-  min-width: 0 !important;
-}
-
-.home-page .home-search .input-group {
-  background: #fff;
-  border-radius: 999px;
-  overflow: hidden;
-  box-shadow: 0 8px 22px rgba(0,0,0,.12);
-}
-
-.home-page .home-search .input-group .form-select {
-  min-width: 9rem;
-  height: 48px;
-}
-
-.home-page .home-search .input-group .form-control {
-  height: 48px;
-}
-
-.home-page .home-search .input-group .btn-primary {
-  height: 48px;
-  border-top-right-radius: 999px;
-  border-bottom-right-radius: 999px;
-}
-
-.home-page .home-search .btn-clear-search {
-  height: 48px !important;
-}
-
-@media (max-width: 991px) {
-  .home-page .home-hero::after {
-    height: 176px;
-    -webkit-mask-image: radial-gradient(150% 150px at 50% 0, transparent 99%, #000 100%);
-    mask-image: radial-gradient(150% 150px at 50% 0, transparent 99%, #000 100%);
-  }
-}
-
-.home-page .hero-quick-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .7rem;
-  margin-top: .9rem;
-}
-
-.home-page .hero-quick-links .hero-cta {
-  border-radius: 999px;
-  font-weight: 600;
-  border: 1px solid transparent;
-  box-shadow: 0 6px 16px rgba(0,0,0,.16);
-  display: inline-flex;
-  align-items: center;
-  gap: .2rem;
-}
-
-.home-page .hero-quick-links .hero-cta--primary {
-  background: rgba(18, 75, 93, .96);
-  color: #fff;
-  border-color: rgba(255,255,255,.2);
-}
-
-.home-page .hero-quick-links .hero-cta--primary:hover {
-  background: rgba(14, 66, 82, 1);
-  color: #fff;
-}
-
-.home-page .hero-quick-links .hero-cta--secondary {
-  background: transparent;
-  color: rgba(255,255,255,.95);
-  border: 0;
-  box-shadow: none;
-  padding-left: .2rem;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.home-page .hero-quick-links .hero-cta--secondary .bi {
-  font-size: 1rem;
-  margin-left: .08rem;
-}
-
-.home-page .hero-quick-links .hero-cta--secondary:hover {
-  background: transparent;
-  color: #fff;
-}
-
-.home-page .hero-stat-card {
-  background: #fff;
-  color: #102326;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.09);
-  box-shadow: 0 12px 28px rgba(0,0,0,.15);
-  padding: 1.15rem 1.25rem;
-  max-width: 355px;
-  margin-left: auto;
-  margin-top: .6rem;
-}
-
-.home-page .hero-stat-card h2 {
-  margin: 0 0 .45rem;
-  font-size: 1.75rem;
-  line-height: 1.1;
-}
-
-.home-page .hero-stat-card p {
-  margin-bottom: .5rem;
-  color: #344b4f;
-}
-
 .home-page .home-intro {
   padding-top: 2.15rem;
   padding-bottom: 2.05rem;
@@ -1913,7 +1857,7 @@ footer.bg-dark {
 }
 
 .home-page .members-header {
-  max-width: 100%;
+  max-width: none;
 }
 
 @media (max-width: 1100px) {
@@ -1941,30 +1885,6 @@ footer.bg-dark {
 }
 
 @media (max-width: 768px) {
-  .home-page .home-hero h1 {
-    font-size: 1.95rem;
-  }
-
-  .home-page .hero-quick-links .hero-cta--secondary {
-    padding-left: 0;
-  }
-
-  .home-page .home-search {
-    padding: .5rem;
-    border-radius: 14px;
-  }
-
-  .home-page .home-search .input-group .form-select {
-    min-width: 7.4rem;
-    height: 44px;
-  }
-
-  .home-page .home-search .input-group .form-control,
-  .home-page .home-search .input-group .btn-primary,
-  .home-page .home-search .btn-clear-search {
-    height: 44px !important;
-  }
-
   .home-page .band-search-form {
     flex-wrap: wrap;
     border-radius: 14px;
@@ -2039,124 +1959,8 @@ footer.bg-dark {
   padding-right: 5%;
 }
 
-.home-page .site-section > .canadiana-shell,
-.home-page .home-collection-band > .canadiana-shell,
-.home-page .home-hero > .canadiana-shell,
-.home-page .members-section > .canadiana-shell {
-  //max-width: 1880px;
-}
-
 .home-page .home-search-wrap {
   display: none !important;
-}
-
-.home-page .home-hero {
-  padding-top: clamp(3.2rem, 5.7vw, 5.15rem);
-  padding-bottom:  clamp(3.2rem, 5.7vw, 5.15rem);//8rem;
-}
-
-.home-page .home-hero h1 {
-  //max-width: 14.5ch;
-  margin-bottom: 1rem;
-  font-size: clamp(2.9rem, 5vw, 3.5rem);
-  line-height: 1.06;
-}
-
-.home-page .home-hero-copy {
-  margin-top: 0;
-  margin-bottom: 0;
-  //max-width: 31ch;
-  color: rgba(255,255,255,.92);
-  font-size: clamp(1.13rem, 1.7vw, 2.02rem);
-  line-height: 1.5;
-}
-
-.home-page .hero-primary-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .9rem;
-  margin-top: 1.8rem;
-}
-
-.home-page .hero-primary-btn {
-  border-radius: 999px;
-  border: 0;
-  background: #030708;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: .82rem 1.46rem;
-  font-weight: 700;
-  font-size: clamp(1.02rem, 1.3vw, 1.34rem);
-  line-height: 1.2;
-  box-shadow: none;
-}
-
-.home-page .hero-primary-btn:hover,
-.home-page .hero-primary-btn:focus {
-  background: #0a1012;
-  color: #fff;
-}
-
-.home-page .hero-secondary-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2.1rem;
-  margin-top: 1.34rem;
-}
-
-.home-page .hero-secondary-link {
-  display: inline-flex;
-  align-items: center;
-  color: rgba(255,255,255,.94);
-  font-size: clamp(1rem, 1.25vw, 1.36rem);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-}
-
-.home-page .hero-secondary-link:hover,
-.home-page .hero-secondary-link:focus {
-  color: #fff;
-}
-
-.home-page .hero-secondary-link .bi {
-  font-size: 1.5em;
-  margin-left: .35rem;
-  line-height: 1;
-}
-
-.home-page .hero-stat-card {
-  width: 100%;
-  max-width: 595px;
-  margin-top: clamp(1.2rem, 2.9vw, 3.65rem);
-  border-radius: 28px;
-  border: 0;
-  box-shadow: 0 16px 36px rgba(0,0,0,.22);
-  padding: clamp(1.3rem, 2.1vw, 2.05rem) clamp(1.3rem, 2.1vw, 2.25rem);
-}
-
-.home-page .hero-stat-card h2 {
-  margin-bottom: .5rem;
-  color: #040708;
-  font-size: clamp(2rem, 3.2vw, 3.05rem);
-  line-height: 1.08;
-}
-
-.home-page .hero-stat-card p {
-  margin-bottom: .9rem;
-  color: #25333a;
-  font-size: clamp(.95rem, 1.2vw, 1.28rem);
-  line-height: 1.45;
-}
-
-.home-page .hero-stat-card a {
-  color: #13171b;
-  font-weight: 700;
-  text-decoration: underline;
 }
 
 .topbar {
@@ -2350,13 +2154,6 @@ footer.bg-dark {
     padding-right: 5%;
   }
 
-  .home-page .home-hero > .canadiana-shell,
-  .home-page .site-section > .canadiana-shell,
-  .home-page .home-collection-band > .canadiana-shell,
-  .home-page .members-section > .canadiana-shell {
-    //max-width: 1380px;
-  }
-
   .topbar-main {
     min-height: 122px;
   }
@@ -2401,10 +2198,6 @@ footer.bg-dark {
 
   .nav-list.nav-list-main {
     gap: 1rem;
-  }
-
-  .home-page .hero-stat-card {
-    max-width: 520px;
   }
 }
 
@@ -2465,29 +2258,6 @@ footer.bg-dark {
 
   .nav-list.nav-list-main a {
     font-size: .96rem;
-  }
-
-  .home-page .home-hero {
-    padding-top: 2rem;
-    padding-bottom: 2.2rem;
-  }
-
-  .home-page .home-hero h1 {
-    font-size: clamp(1.95rem, 8.1vw, 3rem);
-  }
-
-  .home-page .home-hero-copy {
-    font-size: 1rem;
-    //max-width: 42ch;
-  }
-
-  .home-page .hero-secondary-actions {
-    gap: 1.15rem;
-  }
-
-  .home-page .hero-stat-card {
-    max-width: 100%;
-    margin-top: .55rem;
   }
 }
 
@@ -2798,9 +2568,13 @@ footer.bg-dark {
 
 .home-page .home-heritage-intro-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(1.2rem, 2.8vw, 3.8rem);
+  grid-template-columns: minmax(0, 1.32fr) minmax(220px, 280px);
+  align-items: start;
+  gap: clamp(1.2rem, 2.4vw, 2.9rem);
+}
+
+.home-page .home-heritage-intro-copy {
+  max-width: none;
 }
 
 .home-page .home-heritage-intro-copy .section-title {
@@ -2814,7 +2588,9 @@ footer.bg-dark {
   font-size: clamp(1.05rem, 1.3vw, 1.56rem);
   line-height: 1.58;
   margin-bottom: 1rem;
+  max-width: none;
   color: #1f2328;
+  text-wrap: pretty;
 }
 
 .home-page .home-heritage-intro-copy .section-lede a {
@@ -2824,21 +2600,21 @@ footer.bg-dark {
 }
 
 .home-page .home-heritage-logo-card {
-  width: clamp(180px, 16vw, 220px);
-  min-height: clamp(180px, 16vw, 220px);
-  border-radius: 22px;
+  width: clamp(195px, 15vw, 240px);
+  min-height: clamp(195px, 15vw, 240px);
+  border-radius: 24px;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, .04);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: clamp(0.85rem, 1.2vw, 1.25rem);
   box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
 }
 
 .home-page .home-heritage-logo {
   width: 100%;
-  max-width: 162px;
+  max-width: 176px;
   height: auto;
 }
 
@@ -3360,6 +3136,248 @@ footer.bg-dark {
   padding-bottom: clamp(1.6rem, 2.4vw, 2.45rem);
 }
 
+.home-page .home-canadiana-intro-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.34fr) minmax(250px, 360px);
+  align-items: center;
+  gap: clamp(1.25rem, 2.5vw, 3rem);
+}
+
+.home-page .home-canadiana-intro-copy {
+  min-width: 0;
+  max-width: none;
+}
+
+.home-page .home-canadiana-stack {
+  position: relative;
+  justify-self: end;
+  width: clamp(235px, 22vw, 335px);
+  margin-top: 20px;
+  --stack-deck-height: clamp(225px, 21vw, 325px);
+  --stack-accent: #2a8192;
+  --stack-accent-soft: rgba(46, 166, 184, 0.3);
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.45rem, 0.85vw, 0.8rem);
+}
+
+.home-page .home-canadiana-stack::before {
+  content: "";
+  position: absolute;
+  left: -11%;
+  right: -8%;
+  top: 7%;
+  height: 72%;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 18% 62%, rgba(20, 120, 138, 0.22), rgba(20, 120, 138, 0) 56%),
+    radial-gradient(circle at 82% 40%, rgba(92, 168, 145, 0.18), rgba(92, 168, 145, 0) 58%);
+  filter: blur(16px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.home-page .home-canadiana-stack__deck {
+  position: relative;
+  min-height: var(--stack-deck-height);
+  cursor: pointer;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.home-page .home-canadiana-stack__card {
+  position: absolute;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 0;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 22px 46px rgba(10, 24, 32, 0.2),
+    0 7px 16px rgba(10, 24, 32, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  transition:
+    transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 300ms ease;
+  will-change: transform, box-shadow, filter;
+}
+
+.home-page .home-canadiana-stack__card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 45%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.home-page .home-canadiana-stack__card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 20px;
+  object-fit: cover;
+  filter: saturate(0.94) contrast(1.03);
+  transition: filter 300ms ease, transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.home-page .home-canadiana-stack__card--back {
+  z-index: 1;
+  width: 76%;
+  aspect-ratio: 0.95;
+  left: 0;
+  top: 0.7rem;
+  transform: rotate(-11deg) translateY(0.62rem) scale(0.95);
+  filter: saturate(0.86) brightness(0.95);
+}
+
+.home-page .home-canadiana-stack__card--middle {
+  z-index: 2;
+  width: 79%;
+  aspect-ratio: 0.95;
+  left: 11%;
+  top: 0;
+  transform: rotate(-3.5deg) translateY(0.15rem) scale(0.975);
+  filter: saturate(0.91) brightness(0.98);
+}
+
+.home-page .home-canadiana-stack__card--front {
+  z-index: 3;
+  width: 82%;
+  aspect-ratio: 0.95;
+  left: 22%;
+  top: 0.8rem;
+  transform: rotate(6.5deg) translateY(0.75rem) scale(1);
+  box-shadow:
+    0 30px 62px rgba(10, 24, 32, 0.25),
+    0 11px 24px rgba(10, 24, 32, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.home-page .home-canadiana-stack__deck:hover .home-canadiana-stack__card--front {
+  transform: rotate(4.8deg) translateY(0.28rem) translateX(0.28rem) scale(1.018);
+  filter: saturate(1.02) brightness(1.02);
+}
+
+.home-page .home-canadiana-stack__deck:hover .home-canadiana-stack__card--front img {
+  transform: scale(1.02);
+}
+
+.home-page .home-canadiana-stack__deck.is-shuffling .home-canadiana-stack__card--front {
+  transform: rotate(2.1deg) translateY(-0.38rem) translateX(0.38rem) scale(1.02);
+}
+
+.home-page .home-canadiana-stack__deck.is-shuffling .home-canadiana-stack__card--middle {
+  transform: rotate(-2deg) translateY(0.45rem) translateX(-0.15rem) scale(0.97);
+}
+
+.home-page .home-canadiana-stack__deck.is-shuffling .home-canadiana-stack__card--back {
+  transform: rotate(-12deg) translateY(0.9rem) scale(0.93);
+}
+
+.home-page .home-canadiana-stack__card--back img {
+  object-position: left center;
+}
+
+.home-page .home-canadiana-stack__card--middle img {
+  object-position: center center;
+}
+
+.home-page .home-canadiana-stack__card--front img {
+  object-position: right center;
+}
+
+.home-page .home-canadiana-stack__actions {
+  position: absolute;
+  right: clamp(0.55rem, 0.95vw, 0.9rem);
+  bottom: clamp(0.28rem, 0.65vw, 0.58rem);
+  z-index: 7;
+  pointer-events: none;
+}
+
+.home-page .home-canadiana-stack__view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  width: clamp(2.6rem, 2.9vw, 3.1rem);
+  height: clamp(2.6rem, 2.9vw, 3.1rem);
+  min-height: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  background: linear-gradient(112deg, #1f6f82 0%, #2e7f90 54%, #2f8f98 100%);
+  color: #ffffff;
+  font-size: clamp(0.74rem, 0.82vw, 0.9rem);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow:
+    0 14px 26px rgba(8, 27, 36, 0.24),
+    0 5px 10px rgba(8, 27, 36, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+  transition:
+    width 220ms ease,
+    padding 220ms ease,
+    border-radius 220ms ease,
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
+}
+
+.home-page .home-canadiana-stack__view-btn:hover,
+.home-page .home-canadiana-stack__view-btn:focus {
+  color: #ffffff;
+  width: clamp(7.6rem, 9.2vw, 9rem);
+  padding: 0 0.68rem 0 0.78rem;
+  gap: 0.42rem;
+  border-radius: 999px;
+  background: linear-gradient(112deg, #1c6779 0%, #2a7688 54%, #2b858e 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 30px rgba(8, 27, 36, 0.28),
+    0 8px 14px rgba(8, 27, 36, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.home-page .home-canadiana-stack__view-btn-text {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  transition: max-width 220ms ease, opacity 180ms ease;
+}
+
+.home-page .home-canadiana-stack__view-btn:hover .home-canadiana-stack__view-btn-text,
+.home-page .home-canadiana-stack__view-btn:focus .home-canadiana-stack__view-btn-text {
+  max-width: 7rem;
+  opacity: 1;
+}
+
+.home-page .home-canadiana-stack__view-btn i {
+  font-size: clamp(1.05rem, 1.12vw, 1.2rem);
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .home-canadiana-stack__card,
+  .home-page .home-canadiana-stack__card img,
+  .home-page .home-canadiana-stack__view-btn {
+    transition: none;
+  }
+}
+
 .home-page .home-intro--canadiana-clean .section-title {
   margin-bottom: 1rem;
   color: #161b21;
@@ -3371,7 +3389,7 @@ footer.bg-dark {
   font-size: clamp(1.05rem, 1.3vw, 1.56rem);
   line-height: 1.58;
   margin-bottom: 0.4rem;
-  max-width: 74ch;
+  max-width: none;
   color: #1f2328;
 }
 
@@ -3389,7 +3407,7 @@ footer.bg-dark {
   border-radius: 0;
   box-shadow: none;
   overflow: visible;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(1.2rem, 2vw, 2.6rem);
   align-items: start;
   min-height: 0;
@@ -3398,6 +3416,7 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--canadiana-clean .home-collection-band__copy {
+  order: 1;
   background: transparent;
   color: #06090f;
   padding: 0;
@@ -3414,7 +3433,7 @@ footer.bg-dark {
   color: #1f6570;
   font-size: clamp(2.05rem, 3.35vw, 4.05rem);
   line-height: 1.1;
-  font-weight: 800;
+  font-weight: 300;
   letter-spacing: -0.02em;
   margin-bottom: 1.85rem;
   max-width: none;
@@ -3422,7 +3441,8 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--canadiana-clean .band-search-form {
-  max-width: 900px;
+  width: 100%;
+  max-width: none;
   margin: 0.35rem 0 1.35rem;
   padding: 0.22rem;
   gap: 0;
@@ -3488,14 +3508,20 @@ footer.bg-dark {
   text-underline-offset: 3px;
 }
 
+.home-page .home-collection-band--canadiana-clean .home-inline-link--history:hover,
+.home-page .home-collection-band--canadiana-clean .home-inline-link--history:focus {
+  color: #10151b;
+}
+
 .home-page .home-collection-band--canadiana-clean .home-collection-band__image {
   --canadiana-clean-exhibit-viewport-height: 475px;
   --canadiana-clean-exhibit-frame-height: 540px;
   --home-exhibit-glow: rgba(31, 120, 134, 0.2);
-  margin: 0 0 0 auto;
-  width: clamp(420px, 31vw, 560px);
-  min-width: clamp(420px, 31vw, 560px);
-  max-width: clamp(420px, 31vw, 560px);
+  order: 2;
+  margin: 0.65rem 0 0;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
   height: var(--canadiana-clean-exhibit-viewport-height);
   min-height: var(--canadiana-clean-exhibit-viewport-height);
   max-height: var(--canadiana-clean-exhibit-viewport-height);
@@ -3527,6 +3553,15 @@ footer.bg-dark {
 }
 
 @media (max-width: 1200px) {
+  .home-page .home-canadiana-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .home-page .home-canadiana-stack {
+    display: none;
+  }
+
   .home-page .home-collection-band--canadiana-clean .home-collection-band__panel {
     grid-template-columns: 1fr;
     gap: 1.1rem;
@@ -3541,11 +3576,11 @@ footer.bg-dark {
     --canadiana-clean-exhibit-frame-height: 540px;
     width: 100%;
     min-width: 0;
-    max-width: 620px;
+    max-width: none;
     height: var(--canadiana-clean-exhibit-viewport-height);
     min-height: var(--canadiana-clean-exhibit-viewport-height);
     max-height: var(--canadiana-clean-exhibit-viewport-height);
-    margin: 0 auto;
+    margin: 0;
   }
 
   .home-page .home-collection-band--canadiana-clean .home-collection-band__image iframe.exhibit {
@@ -3625,7 +3660,7 @@ footer.bg-dark {
   border-radius: 0;
   box-shadow: none;
   overflow: visible;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(1.2rem, 2vw, 2.6rem);
   align-items: start;
   min-height: 0;
@@ -3634,7 +3669,7 @@ footer.bg-dark {
 }
 
 .home-page .home-collection-band--heritage-clean .home-collection-band__copy {
-  order: 2;
+  order: 1;
   background: transparent;
   color: #06090f;
   padding: 0;
@@ -3647,11 +3682,11 @@ footer.bg-dark {
   --heritage-clean-exhibit-viewport-height: 475px;
   --heritage-clean-exhibit-frame-height: 540px;
   --home-exhibit-glow: rgba(66, 134, 15, 0.2);
-  order: 1;
-  margin: 0 auto 0 0;
-  width: clamp(420px, 31vw, 560px);
-  min-width: clamp(420px, 31vw, 560px);
-  max-width: clamp(420px, 31vw, 560px);
+  order: 2;
+  margin: 0.65rem 0 0;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
   height: var(--heritage-clean-exhibit-viewport-height);
   min-height: var(--heritage-clean-exhibit-viewport-height);
   max-height: var(--heritage-clean-exhibit-viewport-height);
@@ -3688,14 +3723,15 @@ footer.bg-dark {
   color: #2a5d00;
   font-size: clamp(2.05rem, 3.35vw, 4.05rem);
   line-height: 1.1;
-  font-weight: 800;
+  font-weight: 300;
   letter-spacing: -0.02em;
   margin-bottom: 1.85rem;
   max-width: none;
 }
 
 .home-page .home-collection-band--heritage-clean .band-search-form--heritage {
-  max-width: 900px;
+  width: 100%;
+  max-width: none;
   margin: 0.35rem 0 1.35rem;
   padding: 0.22rem;
   gap: 0;
@@ -3781,6 +3817,11 @@ footer.bg-dark {
   text-underline-offset: 3px;
 }
 
+.home-page .home-collection-band--heritage-clean .home-inline-link--history:hover,
+.home-page .home-collection-band--heritage-clean .home-inline-link--history:focus {
+  color: #10151b;
+}
+
 @media (max-width: 1200px) {
   .home-page .home-collection-band--heritage-clean .home-collection-band__panel {
     grid-template-columns: 1fr;
@@ -3798,8 +3839,8 @@ footer.bg-dark {
     order: 2;
     width: 100%;
     min-width: 0;
-    max-width: 620px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
   }
 }
 
@@ -3840,6 +3881,30 @@ footer.bg-dark {
   }
 }
 
+@media (min-width: 1700px) {
+  .home-page .home-collection-band--canadiana-clean .home-collection-band__image {
+    --canadiana-clean-exhibit-viewport-height: 560px;
+    --canadiana-clean-exhibit-frame-height: 640px;
+  }
+
+  .home-page .home-collection-band--heritage-clean .home-collection-band__image {
+    --heritage-clean-exhibit-viewport-height: 560px;
+    --heritage-clean-exhibit-frame-height: 640px;
+  }
+}
+
+@media (min-width: 2200px) {
+  .home-page .home-collection-band--canadiana-clean .home-collection-band__image {
+    --canadiana-clean-exhibit-viewport-height: 837px;
+    --canadiana-clean-exhibit-frame-height: 900px;
+  }
+
+  .home-page .home-collection-band--heritage-clean .home-collection-band__image {
+    --heritage-clean-exhibit-viewport-height: 837px;
+    --heritage-clean-exhibit-frame-height: 900px;
+  }
+}
+
 /* Home page sequence hierarchy pass (spacing + type only; no background overrides) */
 .home-page {
   --home-sequence-gap-xl: clamp(4.8rem, 7.2vw, 7.25rem);
@@ -3851,29 +3916,30 @@ footer.bg-dark {
 .home-page .home-intro--canadiana-clean,
 .home-page .home-intro--heritage-clean {
   padding-top: var(--home-sequence-gap-lg);
-  padding-bottom: var(--home-sequence-gap-sm);
+  padding-bottom: clamp(0.55rem, 1.05vw, 1rem);
 }
 
 .home-page .home-collection-band--canadiana-clean,
 .home-page .home-collection-band--heritage-clean {
-  padding-top: var(--home-sequence-gap-sm);
+  padding-top: clamp(0.45rem, 0.9vw, 0.85rem);
   padding-bottom: var(--home-sequence-gap-md);
 }
 
 .home-page .home-intro--canadiana-clean .section-title,
 .home-page .home-intro--heritage-clean .section-title {
-  font-size: clamp(2.45rem, 3.75vw, 4.1rem);
-  line-height: 1.07;
+  font-size: clamp(2.35rem, 3.45vw, 3.9rem);
+  line-height: 1.05;
   letter-spacing: -0.02em;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.75rem, 1.1vw, 1.05rem);
 }
 
 .home-page .home-intro--canadiana-clean .section-lede,
 .home-page .home-intro--heritage-clean .section-lede {
-  font-size: clamp(1.08rem, 1.28vw, 1.52rem);
-  line-height: 1.6;
-  max-width: 72ch;
+  font-size: clamp(1.06rem, 1.22vw, 1.42rem);
+  line-height: 1.52;
+  max-width: none;
   margin-bottom: 0;
+  text-wrap: pretty;
 }
 
 .home-page .home-collection-band--canadiana-clean .home-collection-band__copy h3,
@@ -3950,7 +4016,7 @@ footer.bg-dark {
 }
 
 .home-page .members-header {
-  max-width: 110ch;
+  max-width: none;
 }
 
 .home-page .members-header .text-muted.small {
@@ -3997,6 +4063,7 @@ footer.bg-dark {
 
 .home-page {
   --hero-top-ink: #f5feff;
+  --hero-top-link: var(--hero-top-ink);
   --hero-top-copy: rgba(232, 250, 255, 0.93);
   --hero-top-button-border: rgba(194, 245, 255, 0.34);
   --hero-top-card-border: rgba(194, 236, 255, 0.84);
@@ -4013,11 +4080,9 @@ footer.bg-dark {
   border: 1px solid rgba(198, 243, 254, 0.23);
   box-shadow: none;
   background:
-    radial-gradient(circle at 11% 16%, rgba(95, 229, 217, 0.42) 0 16%, transparent 48%),
-    radial-gradient(circle at 80% 8%, rgba(161, 255, 118, 0.32) 0 14%, transparent 44%),
-    radial-gradient(circle at 83% 84%, rgba(36, 195, 228, 0.3) 0 20%, transparent 50%),
-    linear-gradient(121deg, rgba(8, 67, 86, 0.95) 0%, rgba(23, 112, 95, 0.93) 42%, rgba(62, 156, 54, 0.9) 100%),
-    url('/assets/oocihm.12020.87 1.png') center/cover no-repeat;
+    radial-gradient(ellipse 58% 80% at 79% 40%, rgba(196, 247, 158, 0.5) 0%, rgba(181, 239, 148, 0.24) 34%, rgba(164, 229, 136, 0) 73%),
+    linear-gradient(104deg, rgba(29, 83, 99, 0.84) 0%, rgba(58, 161, 132, 0.8) 52%, rgba(154, 216, 112, 0.76) 100%),
+    url('/assets/oocihm.12020.87.png') 63% 45%/cover no-repeat;
 }
 
 .home-page .home-hero::before {
@@ -4027,9 +4092,8 @@ footer.bg-dark {
   pointer-events: none;
   z-index: 0;
   background:
-    linear-gradient(132deg, rgba(6, 27, 37, 0.44) 0%, rgba(4, 40, 39, 0.12) 48%, rgba(9, 32, 15, 0) 100%),
-    radial-gradient(circle at 19% 24%, rgba(255, 255, 255, 0.18), transparent 35%),
-    radial-gradient(circle at 74% 33%, rgba(153, 255, 180, 0.2), transparent 37%);
+    linear-gradient(116deg, rgba(8, 35, 48, 0.18) 0%, rgba(8, 35, 48, 0.04) 40%, rgba(8, 35, 48, 0) 70%),
+    radial-gradient(ellipse 50% 66% at 79% 40%, rgba(229, 255, 208, 0.12) 0%, transparent 52%);
 }
 
 .home-page .home-hero::after {
@@ -4038,7 +4102,7 @@ footer.bg-dark {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.25;
+  opacity: 0.08;
   background-image:
     linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px),
     linear-gradient(0deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
@@ -4063,9 +4127,9 @@ footer.bg-dark {
   border-radius: 0;
   border: 0;
   background: transparent;
-  color: var(--hero-top-ink);
+  color: var(--hero-top-link);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.2rem;
   font-weight: 300;
   font-size: clamp(0.95rem, 1.05vw, 1.06rem);
   line-height: 1.2;
@@ -4172,33 +4236,18 @@ footer.bg-dark {
   margin-top: clamp(1.4rem, 3.6vw, 4.1rem);
   padding: clamp(1.35rem, 2.2vw, 2.05rem) clamp(1.28rem, 2.2vw, 2.12rem);
   border-radius: clamp(20px, 2.2vw, 30px);
-  border: 1px solid var(--hero-top-card-border);
-  background: linear-gradient(153deg, rgba(250, 255, 255, 0.92) 0%, rgba(226, 251, 249, 0.78) 100%);
-  box-shadow: 0 28px 48px rgba(3, 24, 34, 0.26);
-  backdrop-filter: blur(8px) saturate(130%);
-  -webkit-backdrop-filter: blur(8px) saturate(130%);
-}
-
-.home-page .hero-stat-card::before {
-  content: "";
-  position: absolute;
-  top: -116px;
-  right: -84px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(132, 243, 208, 0.58) 0%, rgba(132, 243, 208, 0) 72%);
-}
-
-.home-page .hero-stat-card::after {
-  content: "";
-  position: absolute;
-  bottom: -142px;
-  left: -102px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(90, 178, 251, 0.42) 0%, rgba(90, 178, 251, 0) 72%);
+  border: 1px solid rgba(238, 250, 255, 0.5);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.12) 100%),
+    radial-gradient(circle at 84% 10%, rgba(171, 255, 228, 0.22), rgba(171, 255, 228, 0) 42%),
+    radial-gradient(circle at 14% 94%, rgba(138, 214, 255, 0.22), rgba(138, 214, 255, 0) 45%),
+    linear-gradient(155deg, rgba(248, 255, 255, 0.58) 0%, rgba(223, 245, 249, 0.38) 100%);
+  box-shadow:
+    0 26px 52px rgba(3, 24, 34, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1px 0 rgba(210, 234, 242, 0.5);
+  backdrop-filter: blur(16px) saturate(145%);
+  -webkit-backdrop-filter: blur(16px) saturate(145%);
 }
 
 .home-page .hero-stat-card > * {
@@ -4211,6 +4260,7 @@ footer.bg-dark {
   color: #03131d;
   font-family: "Manrope", "Aptos", "Roboto", sans-serif;
   font-size: clamp(2.15rem, 3.35vw, 3.15rem);
+  font-weight: 300;
   line-height: 1.04;
   letter-spacing: -0.02em;
 }
@@ -4307,5 +4357,205 @@ footer.bg-dark {
 
   .home-page .hero-stat-card h2 {
     font-size: clamp(2rem, 10vw, 2.45rem);
+  }
+}
+
+/* Inline walkthrough links under recent searches (EN + FR) */
+.home-page .home-collection-band__copy .home-walkthrough-inline {
+  margin-top: 0.55rem;
+}
+
+.home-page .home-collection-band__copy .home-walkthrough-inline a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.62rem;
+  font-size: clamp(1rem, 1.08vw, 1.24rem);
+  line-height: 1.25;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-page .home-collection-band__copy .home-walkthrough-inline a:hover,
+.home-page .home-collection-band__copy .home-walkthrough-inline a:focus {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-page .home-collection-band--canadiana-clean .home-walkthrough-inline a {
+  color: #1f6570;
+}
+
+.home-page .home-collection-band--heritage-clean .home-walkthrough-inline a {
+  color: #2a5d00;
+}
+
+.home-page .home-collection-band--canadiana-clean .home-walkthrough-inline a:hover,
+.home-page .home-collection-band--canadiana-clean .home-walkthrough-inline a:focus {
+  color: #1f6570;
+}
+
+.home-page .home-collection-band--heritage-clean .home-walkthrough-inline a:hover,
+.home-page .home-collection-band--heritage-clean .home-walkthrough-inline a:focus {
+  color: #2a5d00;
+}
+
+.home-page .home-collection-band__copy .home-walkthrough-inline .home-walkthrough__icon {
+  font-size: clamp(2.1rem, 2.6vw, 2.8rem);
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+/* Problematic content statement redesign */
+.home-page .home-statement {
+  background: #ffffff;
+}
+
+.home-page .home-statement .canadiana-shell > .home-statement-layout {
+  max-width: none;
+}
+
+.home-page .home-statement-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 500px);
+  gap: clamp(1.1rem, 2.2vw, 2rem);
+  align-items: start;
+}
+
+.home-page .home-statement-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d6dde2;
+  background: #e9e9e9;
+  border-radius: clamp(24px, 2.1vw, 34px);
+  padding: clamp(1.35rem, 2.8vw, 2.35rem);
+  color: #27353f;
+  box-shadow: 0 14px 30px rgba(12, 20, 28, 0.1);
+}
+
+.home-page .home-statement-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-page .home-statement-card .section-title {
+  font-size: clamp(1.85rem, 2.75vw, 3.05rem);
+  line-height: 1.12;
+  margin-bottom: clamp(0.9rem, 1.5vw, 1.25rem);
+  color: #1a252d;
+}
+
+.home-page .home-statement-card .section-lede,
+.home-page .home-statement-card p,
+.home-page .home-statement-card li {
+  font-size: clamp(1rem, 1.2vw, 1.45rem);
+  line-height: 1.58;
+  color: #2f3f49;
+}
+
+.home-page .home-statement-card .section-lede,
+.home-page .home-statement-card p {
+  margin-bottom: 1rem;
+}
+
+.home-page .home-statement-card ul {
+  margin: 0.95rem 0 1.15rem;
+  padding-left: 1.2rem;
+}
+
+.home-page .home-statement-card li + li {
+  margin-top: 0.45rem;
+}
+
+.home-page .home-statement-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: clamp(0.35rem, 1vw, 0.75rem);
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  background: #232418;
+  color: #ffffff;
+  font-size: clamp(0.95rem, 1vw, 1.14rem);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(16, 22, 26, 0.15);
+  transition: background-color 0.2s ease;
+}
+
+.home-page .home-statement-cta:hover,
+.home-page .home-statement-cta:focus {
+  color: #ffffff;
+  background: #17180f;
+}
+
+.home-page .home-statement-cta .bi {
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.home-page .home-statement-media {
+  border-radius: clamp(24px, 2.1vw, 34px);
+  overflow: hidden;
+  min-height: clamp(260px, 30vw, 470px);
+  padding: clamp(0.35rem, 0.9vw, 0.8rem);
+  background: #ffffff;
+  border: none;
+}
+
+.home-page .home-statement-media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  filter: sepia(10%) saturate(320%) hue-rotate(108deg) brightness(0.98) contrast(1.08);
+}
+
+@media (max-width: 1100px) {
+  .home-page .home-statement-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .home-page .home-statement-media {
+    max-width: 680px;
+    margin: 0 auto;
+    min-height: clamp(220px, 46vw, 360px);
+  }
+}
+
+@media (min-width: 1800px) {
+  .home-page .canadiana-shell {
+    max-width: 2080px;
+    padding-left: clamp(2.75rem, 3vw, 4rem);
+    padding-right: clamp(2.75rem, 3vw, 4rem);
+  }
+
+  .home-page .home-canadiana-intro-grid {
+    grid-template-columns: minmax(0, 1.42fr) minmax(300px, 440px);
+  }
+
+  .home-page .home-heritage-intro-grid {
+    grid-template-columns: minmax(0, 1.38fr) minmax(250px, 320px);
+  }
+
+  .home-page .home-intro--canadiana-clean .section-lede,
+  .home-page .home-intro--heritage-clean .section-lede {
+    font-size: clamp(1.2rem, 1.05vw, 1.58rem);
+    line-height: 1.62;
+    max-width: none;
+  }
+
+  .home-page .home-statement-layout {
+    grid-template-columns: minmax(0, 1.12fr) minmax(420px, 620px);
+  }
+
+  .home-page .home-canadiana-stack {
+    width: clamp(280px, 18vw, 430px);
+    --stack-deck-height: clamp(250px, 17vw, 390px);
+  }
+
+  .home-page .home-heritage-logo-card {
+    width: clamp(220px, 12vw, 280px);
+    min-height: clamp(220px, 12vw, 280px);
   }
 }

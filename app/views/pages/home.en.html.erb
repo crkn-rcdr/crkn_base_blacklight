@@ -48,15 +48,18 @@ archival records from across Canada</h1>
   </section>
 
   <section class="site-section home-intro home-intro--canadiana-clean">
-    <div class="canadiana-shell">
-      <h2 class="section-title">Canadiana Collection</h2>
-      <p class="section-lede">
-        Approximately 31 million pages of publications that show how knowledge, stories, and information were shared over time. This collection includes books, newspapers, magazines, government documents, maps, and more from c. 1500 to the present day. Canadiana content is largely drawn from the Canadian Institute for Historic Micro-reproductions (CIHM) microfiche series.
-      </p>
-      <a class="home-inline-link home-inline-link--arrow" href="/about/monographs?lang=<%= I18n.locale %>">
-        Learn more
-        <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
-      </a>
+    <div class="canadiana-shell home-canadiana-intro-grid">
+      <div class="home-canadiana-intro-copy">
+        <h2 class="section-title">Canadiana Collection</h2>
+        <p class="section-lede">
+          Approximately 31 million pages of publications that show how knowledge, stories, and information were shared over time. This collection includes books, newspapers, magazines, government documents, maps, and more from c. 1500 to the present day. Canadiana content is largely drawn from the Canadian Institute for Historic Micro-reproductions (CIHM) microfiche series.
+        </p>
+        <a class="home-inline-link home-inline-link--arrow" href="/about/monographs?lang=<%= I18n.locale %>">
+          Learn more
+          <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
+        </a>
+      </div>
+      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, view_text: 'View item' } %>
     </div>
   </section>
 
@@ -83,6 +86,12 @@ archival records from across Canada</h1>
           </form>
 
           <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
+          <div class="home-walkthrough-inline canadiana-walkthrough">
+            <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
+              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+              Short walk-through: How to use the Canadiana Collection search
+            </a>
+          </div>
         </div>
         <div class="home-collection-band__image">
           
@@ -90,15 +99,6 @@ archival records from across Canada</h1>
 
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="site-section home-walkthrough canadiana-walkthrough py-0">
-    <div class="canadiana-shell">
-      <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
-        <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-        Short walk-through: How to use the Canadiana Collection search
-      </a>
     </div>
   </section>
 
@@ -192,7 +192,7 @@ archival records from across Canada</h1>
         </a>
       </div>
       <div class="home-heritage-logo-card" aria-hidden="true">
-        <img class="home-heritage-logo" src="/assets/canada-wordmark.svg" alt="Government of Canada symbol" loading="lazy">
+        <img class="home-heritage-logo" src="<%= asset_path('lac.jpg') %>" alt="Library and Archives Canada logo" loading="lazy">
       </div>
     </div>
   </section>
@@ -227,6 +227,12 @@ archival records from across Canada</h1>
           </form>
 
           <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
+          <div class="home-walkthrough-inline heritage-bg">
+            <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+              Short walk-through: How to use the H&eacute;ritage Collection search
+            </a>
+          </div>
         </div>
         <div class="home-collection-band__image">
           
@@ -234,15 +240,6 @@ archival records from across Canada</h1>
      
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="site-section home-walkthrough heritage-bg py-0">
-    <div class="canadiana-shell">
-      <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
-        <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-        Short walk-through: How to use the H&eacute;ritage Collection search
-      </a>
     </div>
   </section>
 
@@ -395,26 +392,32 @@ archival records from across Canada</h1>
 
   <section class="site-section home-statement">
     <div class="canadiana-shell">
-      <h2 class="section-title">Statement on Problematic Content and Descriptions in Canadiana</h2>
-      <p class="section-lede">
-        The Canadiana Collections contain content created over five centuries that tell an incomplete, oftentimes distorted and, sometimes harmful, story of Canada.
-        The content, metadata, and resource descriptions in the Canadiana Collections contain language that reflects the biases, norms, and perspectives of the time
-        in which they were created. This includes harmful and offensive wording, cultural references, and stereotypes.
-      </p>
-      <ul>
-        <li>support and actively participate in efforts to update and change international standards for descriptions to ensure that descriptions are inclusive, respectful, and do not cause harm</li>
-        <li>replace inappropriate language in metadata and resource descriptions introduced during legacy cataloguing practices</li>
-      </ul>
-      <p>
-        This is an ongoing process. If you see records with inappropriate language or content that you think CRKN should review,
-        please fill out our
-        <a href="https://www.crkn-rcdr.ca/sites/crkn/files/2021-09/Final%20-%20Review%20Request%20Process%20for%20the%20Canadiana%20Collection%20-%20EN.pdf" target="_blank" rel="noopener">
-          Review Submission Form
-        </a>.
-      </p>
+      <div class="home-statement-layout">
+        <article class="home-statement-card">
+          <h2 class="section-title">Statement on Problematic Content and Descriptions in Canadiana</h2>
+          <p class="section-lede">
+            The Canadiana Collections contain content created over five centuries that tell an incomplete, oftentimes distorted and, sometimes harmful, story of Canada.
+            The content, metadata, and resource descriptions in the Canadiana Collections contain language that reflects the biases, norms, and perspectives of the time
+            in which they were created. This includes harmful and offensive wording, cultural references, and stereotypes.
+          </p>
+          <ul>
+            <li>support and actively participate in efforts to update and change international standards for descriptions to ensure that descriptions are inclusive, respectful, and do not cause harm</li>
+            <li>replace inappropriate language in metadata and resource descriptions introduced during legacy cataloguing practices</li>
+          </ul>
+          <p>
+            This is an ongoing process. If you see records with inappropriate language or content that you think CRKN should review.
+          </p>
+          <a class="home-statement-cta" href="https://www.crkn-rcdr.ca/sites/crkn/files/2021-09/Final%20-%20Review%20Request%20Process%20for%20the%20Canadiana%20Collection%20-%20EN.pdf" target="_blank" rel="noopener">
+            Review submission form
+            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+          </a>
+        </article>
+        <aside class="home-statement-media">
+          <img src="<%= asset_path('statement.png') %>" alt="Person reviewing archival documents at a worktable" loading="lazy">
+        </aside>
+      </div>
     </div>
   </section>
 
   <%= render(MembersComponent.new) %>
 </div>
-

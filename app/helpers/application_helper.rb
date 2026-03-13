@@ -140,6 +140,125 @@ module ApplicationHelper
       "#{field_name}_str"
     end
   end
+
+  # Returns randomized card metadata for the Canadiana intro stack.
+  # URL format: https://www.canadiana.ca/view/oocihm.<id>/<page>
+  # Parsing rule: the final numeric segment after the last dot is page,
+  # everything before that final dot is the identifier.
+  def canadiana_stack_cards(count = 12)
+    count = count.to_i
+    count = 12 if count <= 0
+
+    cards = canadiana_stack_asset_names
+      .map { |image| canadiana_stack_card_from_image(image) }
+      .compact
+
+    if cards.empty?
+      cards = [
+        {
+          image: 'oocihm.12020.87.png',
+          prefix: 'oocihm',
+          id: '12020',
+          page: '87',
+          label: 'oocihm.12020/87',
+          url: 'https://www.canadiana.ca/view/oocihm.12020/87'
+        },
+        {
+          image: 'oocihm.8_06251_308@20.jpg',
+          prefix: 'oocihm',
+          id: '8_06251_308',
+          page: '20',
+          label: 'oocihm.8_06251_308/20',
+          url: 'https://www.canadiana.ca/view/oocihm.8_06251_308/20'
+        },
+        {
+          image: 'oocihm.08567.22.jpg',
+          prefix: 'oocihm',
+          id: '08567',
+          page: '22',
+          label: 'oocihm.08567/22',
+          url: 'https://www.canadiana.ca/view/oocihm.08567/22'
+        }
+      ]
+    end
+
+    cards = cards.shuffle
+    return cards.take(count) if cards.length >= count
+
+    # Pad deterministically when fewer cards exist than requested.
+    padded = cards.dup
+    while padded.length < count
+      padded << cards[padded.length % cards.length]
+    end
+    padded
+  end
+
+  # Backward-compatible helper where only image names are needed.
+  def canadiana_stack_image_names(count = 3)
+    canadiana_stack_cards(count).map { |card| card[:image] }
+  end
+
+  private
+
+  def canadiana_stack_asset_names
+    image_root = Rails.root.join('app/assets/images')
+    allowed_exts = %w[.jpg .jpeg .png .webp]
+
+    Dir.glob(image_root.join('**/*').to_s)
+      .select { |path| File.file?(path) }
+      .select do |path|
+        stem = File.basename(path, File.extname(path)).downcase
+        ext = File.extname(path).downcase
+        stem.start_with?('oocihm', 'oocigm') && allowed_exts.include?(ext)
+      end
+      .map { |path| path.delete_prefix("#{image_root.to_s}/").delete_prefix("#{image_root.to_s}\\") }
+      .uniq
+  end
+
+  def canadiana_stack_card_from_image(image)
+    stem = File.basename(image.to_s, File.extname(image.to_s))
+    match = stem.match(/\A(oocihm|oocigm)\.(.+)\z/i)
+    return nil unless match
+
+    prefix = match[1].downcase
+    remainder = match[2]
+    id, page = canadiana_stack_extract_id_and_page(remainder)
+    return nil if id.blank? || page.blank?
+
+    {
+      image: image,
+      prefix: prefix,
+      id: id,
+      page: page,
+      label: "oocihm.#{id}/#{page}",
+      url: "https://www.canadiana.ca/view/oocihm.#{id}/#{page}"
+    }
+  end
+
+  def canadiana_stack_extract_id_and_page(remainder)
+    text = remainder.to_s
+      .strip
+      .tr('@', '.')
+      .gsub(/\s+/, '')
+      .gsub(/[^0-9A-Za-z_.-]/, '')
+      .gsub(/\.+/, '.')
+      .sub(/\A\./, '')
+      .sub(/\.\z/, '')
+
+    if text.include?('.')
+      id_raw, _separator, page_raw = text.rpartition('.')
+      id_raw = text if id_raw.blank?
+    else
+      id_raw = text
+      page_raw = '1'
+    end
+
+    id = id_raw.to_s.gsub(/[^0-9A-Za-z_-]/, '')
+    page = page_raw.to_s.gsub(/[^0-9A-Za-z-]/, '')
+    page = '1' if page.blank?
+
+    [id, page]
+  end
 end
 
 
