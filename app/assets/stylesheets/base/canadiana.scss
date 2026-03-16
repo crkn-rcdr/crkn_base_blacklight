@@ -4277,13 +4277,19 @@ summary:focus-visible,
   overflow: hidden;
   min-height: clamp(260px, 30vw, 470px);
   padding: clamp(0.35rem, 0.9vw, 0.8rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #ffffff;
   border: none;
 }
 
 .home-page .home-statement-media img {
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  max-width: 70%;
+  height: auto;
+  max-height: 70%;
+  margin: 0 auto;
   display: block;
   object-fit: contain;
   object-position: center;
@@ -5000,7 +5006,7 @@ summary:focus-visible,
   content: "";
   position: absolute;
   top: -1.3rem;
-  left: calc(100% - 2.29rem);
+  left: calc(100% - (1.4rem + clamp(0.8rem, 1.1vw, 1.15rem)));
   width: 1.5rem;
   height: 1.5rem;
   background: no-repeat url("/assets/Frame 4.svg");
@@ -5015,4 +5021,109 @@ summary:focus-visible,
   height: 1.5rem;
   background: no-repeat url("/assets/Frame 4.svg");
   background-size: contain;
+}
+
+/* Final search band type/color tuning */
+.home-page .home-collection-band--canadiana-clean {
+  --search-band-accent: #1f5f69;
+  --search-band-accent-strong: #184a52;
+  --search-band-text: #172430;
+  --search-band-muted: #5d6773;
+}
+
+.home-page .home-collection-band--heritage-clean {
+  --search-band-accent: #315f19;
+  --search-band-accent-strong: #274d13;
+  --search-band-text: #172430;
+  --search-band-muted: #626b61;
+}
+
+.home-page .home-collection-band--canadiana-clean .home-eyebrow,
+.home-page .home-collection-band--heritage-clean .home-eyebrow {
+  font-size: clamp(0.88rem, 0.82vw, 1.02rem);
+  letter-spacing: 0.1em;
+  color: var(--search-band-accent);
+}
+
+.home-page .home-collection-band--canadiana-clean .home-collection-band__copy h3,
+.home-page .home-collection-band--heritage-clean .home-collection-band__copy h3 {
+  font-size: clamp(1.85rem, 2.95vw, 3.45rem);
+  line-height: 1.1;
+  font-weight: 300;
+  color: var(--search-band-accent);
+}
+
+.home-page .home-collection-band--canadiana-clean .band-search-select,
+.home-page .home-collection-band--heritage-clean .band-search-select,
+.home-page .home-collection-band--canadiana-clean .band-search-input,
+.home-page .home-collection-band--heritage-clean .band-search-input {
+  font-size: clamp(1rem, 0.96vw, 1.12rem);
+  color: var(--search-band-text);
+}
+
+.home-page .home-collection-band--canadiana-clean .band-search-input::placeholder,
+.home-page .home-collection-band--heritage-clean .band-search-input::placeholder {
+  color: var(--search-band-muted);
+  opacity: 1;
+}
+
+.home-page .home-collection-band--canadiana-clean .band-search-form .btn,
+.home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn {
+  font-size: clamp(1rem, 1.04vw, 1.2rem);
+}
+
+.home-page .home-collection-band--canadiana-clean .band-search-form .btn {
+  background: var(--search-band-accent);
+}
+
+.home-page .home-collection-band--canadiana-clean .band-search-form .btn:hover,
+.home-page .home-collection-band--canadiana-clean .band-search-form .btn:focus {
+  background: var(--search-band-accent-strong);
+}
+
+.home-page .home-collection-band--heritage-clean .band-search-form--heritage .btn[disabled] {
+  background: #688252;
+  color: #f1f6eb;
+  filter: none;
+}
+
+.home-page .home-collection-band--canadiana-clean .home-collection-band__meta-row .home-walkthrough-inline a,
+.home-page .home-collection-band--heritage-clean .home-collection-band__meta-row .home-walkthrough-inline a {
+  font-size: clamp(0.96rem, 0.95vw, 1.08rem);
+  color: var(--search-band-accent);
+}
+
+.home-page .home-collection-band--canadiana-clean .home-collection-band__meta-row .home-inline-link--history,
+.home-page .home-collection-band--heritage-clean .home-collection-band__meta-row .home-inline-link--history {
+  font-size: clamp(0.98rem, 0.98vw, 1.12rem);
+  color: var(--search-band-text);
+}
+
+/* Keep dark members controls in sync with statement CTA black */
+.home-page {
+  --home-ink-black: #232418;
+  --home-ink-black-hover: #17180f;
+}
+
+.home-page .home-statement-cta {
+  background: var(--home-ink-black);
+}
+
+.home-page .home-statement-cta:hover,
+.home-page .home-statement-cta:focus {
+  background: var(--home-ink-black-hover);
+}
+
+.home-page .members-section .members-tabs .btn.active,
+.home-page .members-section .members-filters .chip.active {
+  background: var(--home-ink-black);
+  border-color: var(--home-ink-black);
+}
+
+.home-page .members-section .members-tabs .btn.active:hover,
+.home-page .members-section .members-tabs .btn.active:focus,
+.home-page .members-section .members-filters .chip.active:hover,
+.home-page .members-section .members-filters .chip.active:focus {
+  background: var(--home-ink-black);
+  border-color: var(--home-ink-black);
 }
