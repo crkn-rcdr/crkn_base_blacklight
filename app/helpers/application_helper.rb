@@ -141,47 +141,29 @@ module ApplicationHelper
     end
   end
 
-  # Returns randomized card metadata for the Canadiana intro stack.
+  # Returns randomized card metadata for the Canadiana/Heritage intro stack.
   # URL format: https://www.canadiana.ca/view/oocihm.<id>/<page>
   # Parsing rule: the final numeric segment after the last dot is page,
   # everything before that final dot is the identifier.
-  def canadiana_stack_cards(count = 12)
+  def canadiana_stack_cards(count = 12, collection: :canadiana)
     count = count.to_i
     count = 12 if count <= 0
+    collection_key = canadiana_stack_collection_key(collection)
+    view_host = canadiana_stack_view_host(collection_key)
 
-    cards = canadiana_stack_asset_names
+    cards = canadiana_stack_asset_names(collection_key)
       .map { |image| canadiana_stack_card_from_image(image) }
       .compact
 
     if cards.empty?
-      cards = [
-        {
-          image: 'oocihm.12020.87.png',
-          prefix: 'oocihm',
-          id: '12020',
-          page: '87',
-          label: 'oocihm.12020/87',
-          url: 'https://www.canadiana.ca/view/oocihm.12020/87'
-        },
-        {
-          image: 'oocihm.8_06251_308@20.jpg',
-          prefix: 'oocihm',
-          id: '8_06251_308',
-          page: '20',
-          label: 'oocihm.8_06251_308/20',
-          url: 'https://www.canadiana.ca/view/oocihm.8_06251_308/20'
-        },
-        {
-          image: 'oocihm.08567.22.jpg',
-          prefix: 'oocihm',
-          id: '08567',
-          page: '22',
-          label: 'oocihm.08567/22',
-          url: 'https://www.canadiana.ca/view/oocihm.08567/22'
-        }
-      ]
+      cards = canadiana_stack_fallback_images(collection_key)
+        .map { |image| canadiana_stack_card_from_image(image) }
+        .compact
     end
 
+    return [] if cards.empty?
+
+    cards = cards.map { |card| canadiana_stack_card_with_host(card, view_host) }
     cards = cards.shuffle
     return cards.take(count) if cards.length >= count
 
@@ -194,25 +176,72 @@ module ApplicationHelper
   end
 
   # Backward-compatible helper where only image names are needed.
-  def canadiana_stack_image_names(count = 3)
-    canadiana_stack_cards(count).map { |card| card[:image] }
+  def canadiana_stack_image_names(count = 3, collection: :canadiana)
+    canadiana_stack_cards(count, collection: collection).map { |card| card[:image] }
   end
 
   private
 
-  def canadiana_stack_asset_names
+  def canadiana_stack_asset_names(collection = :canadiana)
     image_root = Rails.root.join('app/assets/images')
+    collection_key = canadiana_stack_collection_key(collection)
+    collection_root = image_root.join('backgrounds', collection_key)
+    return [] unless Dir.exist?(collection_root)
+
     allowed_exts = %w[.jpg .jpeg .png .webp]
 
-    Dir.glob(image_root.join('**/*').to_s)
+    Dir.glob(collection_root.join('**/*').to_s)
       .select { |path| File.file?(path) }
       .select do |path|
-        stem = File.basename(path, File.extname(path)).downcase
         ext = File.extname(path).downcase
-        stem.start_with?('oocihm', 'oocigm') && allowed_exts.include?(ext)
+        allowed_exts.include?(ext)
       end
       .map { |path| path.delete_prefix("#{image_root.to_s}/").delete_prefix("#{image_root.to_s}\\") }
+      .sort
       .uniq
+  end
+
+  def canadiana_stack_collection_key(collection)
+    key = collection.to_s.strip.downcase
+    return 'heritage' if key == 'heritage'
+
+    'canadiana'
+  end
+
+  def canadiana_stack_fallback_images(collection)
+    case canadiana_stack_collection_key(collection)
+    when 'heritage'
+      %w[
+        backgrounds/heritage/oocihm.lac_reel_c1845.9.jpg
+        backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg
+        backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg
+      ]
+    else
+      %w[
+        backgrounds/canadiana/oocihm.8_06251_308.20.jpg
+        backgrounds/canadiana/oocihm.8_04191_542.2.jpg
+        backgrounds/canadiana/oocihm.08567.22.jpg
+      ]
+    end
+  end
+
+  def canadiana_stack_view_host(collection)
+    return 'https://heritage.canadiana.ca' if canadiana_stack_collection_key(collection) == 'heritage'
+
+    'https://www.canadiana.ca'
+  end
+
+  def canadiana_stack_card_with_host(card, view_host)
+    id = card[:id]
+    page = card[:page]
+    prefix = card[:prefix].presence || 'oocihm'
+    return card if id.blank? || page.blank?
+
+    label = "#{prefix}.#{id}/#{page}"
+    card.merge(
+      label: label,
+      url: "#{view_host}/view/#{label}"
+    )
   end
 
   def canadiana_stack_card_from_image(image)
@@ -230,8 +259,8 @@ module ApplicationHelper
       prefix: prefix,
       id: id,
       page: page,
-      label: "oocihm.#{id}/#{page}",
-      url: "https://www.canadiana.ca/view/oocihm.#{id}/#{page}"
+      label: "#{prefix}.#{id}/#{page}",
+      url: "https://www.canadiana.ca/view/#{prefix}.#{id}/#{page}"
     }
   end
 

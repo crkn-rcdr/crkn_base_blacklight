@@ -62,7 +62,7 @@
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
       </div>
-      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, view_text: 'Voir la page' } %>
+      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :canadiana } %>
     </div>
   </section>
 
@@ -88,12 +88,14 @@
             <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
           </form>
 
-          <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>
-          <div class="home-walkthrough-inline canadiana-walkthrough">
-            <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
-              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-              Guide rapide&nbsp;: comment utiliser la recherche de la collection Canadiana
-            </a>
+          <div class="home-collection-band__meta-row">
+            <div class="home-walkthrough-inline canadiana-walkthrough">
+              <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
+                <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+                Guide rapide&nbsp;: comment utiliser la recherche de la collection Canadiana
+              </a>
+            </div>
+            <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>
           </div>
         </div>
         <div class="home-collection-band__image">
@@ -184,6 +186,9 @@
 
   <section class="site-section home-intro home-intro--heritage-clean">
     <div class="canadiana-shell home-heritage-intro-grid">
+      <div class="home-heritage-intro-media">
+        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
+      </div>
       <div class="home-heritage-intro-copy">
         <h2 class="section-title">Collection H&eacute;ritage</h2>
         <p class="section-lede">
@@ -234,12 +239,14 @@
             </button>
           </form>
 
-          <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>
-          <div class="home-walkthrough-inline heritage-bg">
-            <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
-              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-              Guide rapide&nbsp;: comment utiliser la recherche de la collection H&eacute;ritage
-            </a>
+          <div class="home-collection-band__meta-row">
+            <div class="home-walkthrough-inline heritage-bg">
+              <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+                <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+                Guide rapide&nbsp;: comment utiliser la recherche de la collection H&eacute;ritage
+              </a>
+            </div>
+            <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches r&eacute;centes</a>
           </div>
         </div>
         <div class="home-collection-band__image">

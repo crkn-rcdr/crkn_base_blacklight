@@ -59,7 +59,7 @@ archival records from across Canada</h1>
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
       </div>
-      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, view_text: 'View item' } %>
+      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :canadiana } %>
     </div>
   </section>
 
@@ -85,19 +85,21 @@ archival records from across Canada</h1>
             <button type="submit" class="btn btn-primary btn-sm">Search</button>
           </form>
 
-          <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
-          <div class="home-walkthrough-inline canadiana-walkthrough">
-            <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
-              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-              Short walk-through: How to use the Canadiana Collection search
-            </a>
+          <div class="home-collection-band__meta-row">
+            <div class="home-walkthrough-inline canadiana-walkthrough">
+              <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
+                <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+                Short walk-through: How to use the Canadiana Collection search
+              </a>
+            </div>
+            <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
           </div>
         </div>
-        <div class="home-collection-band__image">
+        <!--div class="home-collection-band__image">
           
           <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit" title="Canadiana collection slideshow preview" width="440" height="560" loading="lazy" scrolling="no" aria-hidden="true" tabindex="-1"></iframe>
 
-        </div>
+        </div-->
       </div>
     </div>
   </section>
@@ -181,6 +183,9 @@ archival records from across Canada</h1>
 
   <section class="site-section home-intro home-intro--heritage-clean">
     <div class="canadiana-shell home-heritage-intro-grid">
+      <div class="home-heritage-intro-media">
+        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
+      </div>
       <div class="home-heritage-intro-copy">
         <h2 class="section-title">H&eacute;ritage Collection</h2>
         <p class="section-lede">
@@ -226,19 +231,21 @@ archival records from across Canada</h1>
             </button>
           </form>
 
-          <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
-          <div class="home-walkthrough-inline heritage-bg">
-            <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
-              <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-              Short walk-through: How to use the H&eacute;ritage Collection search
-            </a>
+          <div class="home-collection-band__meta-row">
+            <div class="home-walkthrough-inline heritage-bg">
+              <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+                <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+                Short walk-through: How to use the H&eacute;ritage Collection search
+              </a>
+            </div>
+            <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
           </div>
         </div>
-        <div class="home-collection-band__image">
+        <!--div class="home-collection-band__image">
           
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor-preview.digirati.workers.dev/api/iiif/p3/fe2a51b31a36a8144b528ad9a482d8a0/1773067341737&minimal=true&floating=true" class="exhibit" title="Heritage collection slideshow preview" width="440" height="560" loading="lazy" scrolling="no" aria-hidden="true" tabindex="-1"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor-preview.digirati.workers.dev/api/iiif/p3/8b7f3a9c5384cf9ba64d820d916f2ac7/1773692327640" class="exhibit" title="Heritage collection slideshow preview" width="440" height="560" loading="lazy" scrolling="no" aria-hidden="true" tabindex="-1"></iframe>
      
-        </div>
+        </div-->
       </div>
     </div>
   </section>
