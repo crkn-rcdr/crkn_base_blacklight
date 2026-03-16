@@ -5,7 +5,7 @@
 <% initial_slide = canadiana_slides.first %>
 <% initial_label = initial_slide[:label].present? ? "#{explore_text}: #{initial_slide[:label]}" : explore_text %>
 
-<aside class="home-canadiana-feature" data-canadiana-feature data-explore-label="<%= explore_text %>">
+<div class="home-canadiana-feature" data-canadiana-feature data-explore-label="<%= explore_text %>">
   <script type="application/json" data-canadiana-feature-data><%= raw(json_escape(canadiana_slides.to_json)) %></script>
   <a
     class="home-canadiana-feature__viewport"
@@ -21,7 +21,7 @@
       style="background-image: url('<%= initial_slide[:image_url] %>');"></span>
     <span class="home-canadiana-feature__slide" data-canadiana-feature-slide="secondary" aria-hidden="true"></span>
   </a>
-</aside>
+</div>
 
 <script nonce="<%= content_security_policy_nonce %>">
   (() => {
