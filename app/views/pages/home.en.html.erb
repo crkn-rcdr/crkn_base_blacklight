@@ -1,4 +1,4 @@
-<div class="col-12 p-0 home-page">
+<div id="home-page-top" class="col-12 p-0 home-page">
   <section class="home-hero" aria-labelledby="home-hero-title">
     <div class="canadiana-shell">
       <div class="row g-4 align-items-start">
@@ -427,4 +427,12 @@ archival records from across Canada</h1>
   </section>
 
   <%= render(MembersComponent.new) %>
+  <div class="home-jump-top-wrap">
+    <a class="home-jump-top" href="#home-page-top" aria-label="Jump to top">
+      <span class="home-jump-top__icon" aria-hidden="true">
+        <i class="bi bi-arrow-up"></i>
+      </span>
+      <span>Jump to top</span>
+    </a>
+  </div>
 </div>
