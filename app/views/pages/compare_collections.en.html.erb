@@ -1,0 +1,65 @@
+<section class="site-section">
+  <div class="container compare-collections-page">
+    <h1 class="section-title">Compare the two collections</h1>
+    <p class="lead">
+      Canadiana and H&eacute;ritage are complementary collections. Use this quick guide to choose the best starting point for your research.
+    </p>
+
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered align-middle">
+        <caption class="visually-hidden">Comparison of Canadiana and H&eacute;ritage collections</caption>
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">Canadiana Collection</th>
+            <th scope="col">H&eacute;ritage Collection</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Primary focus</th>
+            <td>Published materials</td>
+            <td>Archival microfilm materials</td>
+          </tr>
+          <tr>
+            <th scope="row">Time coverage</th>
+            <td>c. 1500 to present</td>
+            <td>1600s to 1980s</td>
+          </tr>
+          <tr>
+            <th scope="row">Approximate size</th>
+            <td>31 million pages</td>
+            <td>37+ million pages</td>
+          </tr>
+          <tr>
+            <th scope="row">Includes</th>
+            <td>Books, newspapers, magazines, government publications, maps</td>
+            <td>Government files, genealogical records, immigration records, Indigenous affairs documentation</td>
+          </tr>
+          <tr>
+            <th scope="row">Best for</th>
+            <td>Published sources, historical print culture, periodicals</td>
+            <td>Primary-source archival research and family/community history</td>
+          </tr>
+          <tr>
+            <th scope="row">Search status</th>
+            <td>Available now</td>
+            <td>Coming soon on the homepage search band</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <a class="btn btn-soft-primary btn-sm" href="<%= root_path(lang: I18n.locale, anchor: 'search-canadiana') %>">
+        Search the Canadiana Collection
+      </a>
+      <a class="btn btn-soft-primary btn-sm" href="<%= root_path(lang: I18n.locale, anchor: 'search-heritage') %>">
+        Search the H&eacute;ritage Collection
+      </a>
+      <a class="btn btn-ghost-primary btn-sm" href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+        Learn more about H&eacute;ritage
+      </a>
+    </div>
+  </div>
+</section>

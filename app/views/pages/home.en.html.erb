@@ -20,7 +20,7 @@ archival records from across Canada</h1>
           </div>
 
           <div class="hero-secondary-actions">
-            <a class="hero-secondary-link" href="/about/monographs?lang=<%= I18n.locale %>">
+            <a class="hero-secondary-link" href="<%= compare_collections_path(lang: I18n.locale) %>">
               Compare the two collections
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
@@ -427,12 +427,5 @@ archival records from across Canada</h1>
   </section>
 
   <%= render(MembersComponent.new) %>
-  <div class="home-jump-top-wrap">
-    <a class="home-jump-top" href="#home-page-top" aria-label="Jump to top">
-      <span class="home-jump-top__icon" aria-hidden="true">
-        <i class="bi bi-arrow-up"></i>
-      </span>
-      <span>Jump to top</span>
-    </a>
-  </div>
+  <%= render partial: 'shared/home_jump_top', locals: { text: 'Jump to top', aria_label: 'Jump to top', trigger_selector: '#search-canadiana' } %>
 </div>

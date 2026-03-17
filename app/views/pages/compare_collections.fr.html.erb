@@ -1,0 +1,65 @@
+<section class="site-section">
+  <div class="container compare-collections-page">
+    <h1 class="section-title">Comparer les deux collections</h1>
+    <p class="lead">
+      Canadiana et H&eacute;ritage sont des collections compl&eacute;mentaires. Utilisez ce guide rapide pour choisir le meilleur point de d&eacute;part pour votre recherche.
+    </p>
+
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered align-middle">
+        <caption class="visually-hidden">Comparaison des collections Canadiana et H&eacute;ritage</caption>
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Caract&eacute;ristique</th>
+            <th scope="col">Collection Canadiana</th>
+            <th scope="col">Collection H&eacute;ritage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Orientation principale</th>
+            <td>Documents publi&eacute;s</td>
+            <td>Documents d'archives sur microfilm</td>
+          </tr>
+          <tr>
+            <th scope="row">P&eacute;riode couverte</th>
+            <td>v. 1500 &agrave; aujourd'hui</td>
+            <td>ann&eacute;es 1600 &agrave; ann&eacute;es 1980</td>
+          </tr>
+          <tr>
+            <th scope="row">Volume approximatif</th>
+            <td>31 millions de pages</td>
+            <td>plus de 37 millions de pages</td>
+          </tr>
+          <tr>
+            <th scope="row">Contient</th>
+            <td>Livres, journaux, magazines, publications gouvernementales, cartes</td>
+            <td>Dossiers gouvernementaux, documents de g&eacute;n&eacute;alogie, dossiers d'immigration, documentation sur les affaires autochtones</td>
+          </tr>
+          <tr>
+            <th scope="row">Id&eacute;al pour</th>
+            <td>Sources publi&eacute;es, culture imprim&eacute;e historique, p&eacute;riodiques</td>
+            <td>Recherche archivistique en sources primaires et histoire familiale/communautaire</td>
+          </tr>
+          <tr>
+            <th scope="row">&Eacute;tat de la recherche</th>
+            <td>Disponible maintenant</td>
+            <td>Bient&ocirc;t disponible dans la barre de recherche de la page d'accueil</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <a class="btn btn-soft-primary btn-sm" href="<%= root_path(lang: I18n.locale, anchor: 'search-canadiana') %>">
+        Rechercher dans la collection Canadiana
+      </a>
+      <a class="btn btn-soft-primary btn-sm" href="<%= root_path(lang: I18n.locale, anchor: 'search-heritage') %>">
+        Rechercher dans la collection H&eacute;ritage
+      </a>
+      <a class="btn btn-ghost-primary btn-sm" href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+        En savoir plus sur H&eacute;ritage
+      </a>
+    </div>
+  </div>
+</section>

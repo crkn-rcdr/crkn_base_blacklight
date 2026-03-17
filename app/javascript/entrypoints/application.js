@@ -646,12 +646,18 @@ function initMembersSection() {
 
     const applyFilters = () => {
       let hasVisibleItems = false;
+      const activeChip = section.querySelector('.chip-filter.active');
+      activeProvince = activeChip?.dataset?.province || activeProvince || 'all';
+      const hasActiveFilter = activeProvince !== 'all' || text !== '';
 
       groups.forEach((group) => {
         const isActiveGroup = group.dataset.membersGroup === activeGroup;
         group.classList.toggle('d-none', !isActiveGroup);
         group.setAttribute('aria-hidden', isActiveGroup ? 'false' : 'true');
+        group.classList.toggle('is-filtered-view', isActiveGroup && hasActiveFilter);
         if (!isActiveGroup) return;
+
+        const seenMemberNames = new Set();
 
         group.querySelectorAll('.members-marquee-row').forEach((row) => {
           let rowHasVisibleItem = false;
@@ -659,13 +665,18 @@ function initMembersSection() {
           row.querySelectorAll('.member-logo').forEach((logo) => {
             const prov = logo.dataset.province || '';
             const name = logo.dataset.memberName || '';
-            const isClone = logo.dataset.memberClone === 'true';
+            const isClone = logo.dataset.memberClone === 'true' || logo.getAttribute('tabindex') === '-1';
             const provinceMatch = activeProvince === 'all' || prov === activeProvince;
             const textMatch = text === '' || name.includes(text);
             const isVisible = provinceMatch && textMatch;
+            const isDuplicateName = hasActiveFilter && seenMemberNames.has(name);
+            const shouldShowLogo = isVisible && (!hasActiveFilter || (!isClone && !isDuplicateName));
 
-            logo.classList.toggle('is-filtered-out', !isVisible);
-            if (isVisible && !isClone) rowHasVisibleItem = true;
+            logo.classList.toggle('is-filtered-out', !shouldShowLogo);
+            if (shouldShowLogo && !isClone) {
+              seenMemberNames.add(name);
+              rowHasVisibleItem = true;
+            }
           });
 
           row.classList.toggle('d-none', !rowHasVisibleItem);

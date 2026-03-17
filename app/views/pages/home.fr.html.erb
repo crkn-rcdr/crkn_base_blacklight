@@ -20,7 +20,7 @@
           </div>
 
           <div class="hero-secondary-actions">
-            <a class="hero-secondary-link" href="/about/monographs?lang=<%= I18n.locale %>">
+            <a class="hero-secondary-link" href="<%= compare_collections_path(lang: I18n.locale) %>">
               Comparer les deux collections
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
@@ -436,12 +436,5 @@
   </section>
 
   <%= render(MembersComponent.new) %>
-  <div class="home-jump-top-wrap">
-    <a class="home-jump-top" href="#home-page-top" aria-label="Retour en haut">
-      <span class="home-jump-top__icon" aria-hidden="true">
-        <i class="bi bi-arrow-up"></i>
-      </span>
-      <span>Retour en haut</span>
-    </a>
-  </div>
+  <%= render partial: 'shared/home_jump_top', locals: { text: 'Retour en haut', aria_label: 'Retour en haut', trigger_selector: '#search-canadiana' } %>
 </div>

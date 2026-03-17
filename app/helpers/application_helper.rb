@@ -237,10 +237,13 @@ module ApplicationHelper
     prefix = card[:prefix].presence || 'oocihm'
     return card if id.blank? || page.blank?
 
-    label = "#{prefix}.#{id}/#{page}"
+    id_path = "#{prefix}.#{id}/#{page}"
+    url = "#{view_host}/view/#{id_path}"
+    label = canadiana_stack_custom_label_for(url).presence || id_path
+
     card.merge(
       label: label,
-      url: "#{view_host}/view/#{label}"
+      url: url
     )
   end
 
@@ -287,6 +290,37 @@ module ApplicationHelper
     page = '1' if page.blank?
 
     [id, page]
+  end
+
+  def canadiana_stack_custom_label_for(url)
+    canadiana_stack_custom_label_lookup[canadiana_stack_normalize_url(url)]
+  end
+
+  def canadiana_stack_custom_label_lookup
+    @canadiana_stack_custom_label_lookup ||= begin
+      path = Rails.root.join('config', 'home_image_labels.csv')
+      lookup = {}
+      if File.exist?(path)
+        require 'csv'
+        CSV.foreach(path, headers: false, encoding: 'bom|utf-8') do |row|
+          label = row[0].to_s.strip
+          link = canadiana_stack_normalize_url(row[1])
+          next if label.blank? || link.blank?
+
+          lookup[link] = label
+        end
+      end
+      lookup
+    rescue StandardError
+      {}
+    end
+  end
+
+  def canadiana_stack_normalize_url(url)
+    value = url.to_s.strip
+    return '' if value.blank?
+
+    value.sub(%r{/\z}, '')
   end
 end
 

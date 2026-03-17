@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   mount Blacklight::Engine => '/'
   root to: "pages#home"
   # Simple about pages for collections
+  get '/compare-collections', to: 'pages#compare_collections', as: :compare_collections
   get '/about/monographs', to: 'pages#about_monographs'
   get '/about/serials', to: 'pages#about_serials'
   get '/about/government-publications', to: 'pages#about_govpubs'
