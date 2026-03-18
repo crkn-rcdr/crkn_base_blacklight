@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
+  get '/catalog/:id.txt', to: 'catalog#tx_gen', as: :catalog_tx_gen, constraints: { id: /[^\/]+/ }, defaults: { format: :txt }
   mount Blacklight::Engine => '/'
   root to: "pages#home"
   # Simple about pages for collections
@@ -8,6 +9,7 @@ Rails.application.routes.draw do
   get '/about/serials', to: 'pages#about_serials'
   get '/about/government-publications', to: 'pages#about_govpubs'
   get '/about/maps', to: 'pages#about_maps'
+  get '/api-access', to: 'pages#api_access', as: :api_access
   get '/what-is-iiif', to: 'pages#what_is_iiif', as: :what_is_iiif
   # Allow slashes inside :ark (e.g., ark:/69429/m0k35m90313z)
   get '/dl/:id/*ark', to: 'downloads#index', constraints: { id: /[0-z\.]+/ }, format: false

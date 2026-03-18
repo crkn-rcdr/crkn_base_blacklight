@@ -1,10 +1,19 @@
 # frozen_string_literal: true
+require 'json'
+require 'net/http'
+require 'stringio'
+require 'uri'
 
 # Blacklight controller that handles searches and document requests
 class CatalogController < ApplicationController
   include Blacklight::Catalog
   include BlacklightRangeLimit::ControllerOverride
   include Blacklight::Marc::Catalog
+
+  IIIF_CONTENT_SEARCH_TIMEOUT = 20
+  IIIF_CONTENT_SEARCH_MAX_PAGES = 20
+  IIIF_CONTENT_SEARCH_MAX_SNIPPETS = 5_000
+  TX_GEN_SEPARATOR = '-' * 40
 
   # Blacklight's track action is a redirect used for click tracking and may
   # be invoked without an authenticity token. Skip CSRF verification for it.
@@ -162,6 +171,205 @@ class CatalogController < ApplicationController
 
     # keep params tidy
     config.filter_search_state_fields = true
+  end
+
+  def tx_gen
+    fetch_result = search_service.fetch(params[:id])
+    document = fetch_result.is_a?(Array) ? fetch_result.last : fetch_result
+    return head :not_found if document.blank?
+
+    ark = Array(document['ark']).map(&:to_s).find(&:present?)
+    return head :not_found if ark.blank?
+
+    query = params[:q].to_s.strip
+    if query.blank?
+      return render plain: 'Parameter q is required for IIIF content search.', status: :bad_request, content_type: 'text/plain; charset=utf-8'
+    end
+    if wildcard_query?(query)
+      return render plain: 'Wildcard queries like :*:* are not supported by IIIF content search. Please provide a keyword, for example q=canada.',
+                    status: :bad_request,
+                    content_type: 'text/plain; charset=utf-8'
+    end
+
+    tx_content = iiif_content_search_text(ark: ark, query: query)
+    if tx_content.blank?
+      return render plain: "No IIIF content search matches were found for q=#{query.inspect} on this record.",
+                    status: :not_found,
+                    content_type: 'text/plain; charset=utf-8'
+    end
+
+    marc_metadata = extract_marc_metadata(document)
+    export_payload = build_tx_export_payload(
+      id: params[:id],
+      ark: ark,
+      query: query,
+      marc_metadata: marc_metadata,
+      text_matches: tx_content
+    )
+
+    safe_id = params[:id].to_s.gsub(/[^0-9A-Za-z.\-_]+/, '_')
+    safe_q = query.gsub(/[^0-9A-Za-z.\-_]+/, '_')[0, 48]
+    safe_q = 'query' if safe_q.blank?
+    send_data export_payload,
+              filename: "#{safe_id}_tx_gen_#{safe_q}.txt",
+              type: 'text/plain; charset=utf-8',
+              disposition: 'attachment'
+  rescue Blacklight::Exceptions::RecordNotFound
+    head :not_found
+  rescue StandardError => e
+    Rails.logger.warn("IIIF content search export failed for #{params[:id]}: #{e.class}: #{e.message}") if defined?(Rails)
+    head :bad_gateway
+  end
+
+  private def iiif_content_search_text(ark:, query:)
+    ark_path = normalize_iiif_ark_path(ark)
+    return '' if ark_path.blank?
+
+    base = Rails.configuration.x.iiif_content_search_base.to_s.sub(%r{/+\z}, '')
+    return '' if base.blank?
+
+    current_url = "#{base}/#{ark_path}?#{URI.encode_www_form(q: query)}"
+    visited = {}
+    snippets = []
+    pages = 0
+
+    while current_url.present? && pages < IIIF_CONTENT_SEARCH_MAX_PAGES
+      break if visited[current_url]
+      visited[current_url] = true
+      pages += 1
+
+      payload = fetch_json(current_url)
+      items = Array(payload['items'])
+      items.each do |item|
+        bodies = item['body'].is_a?(Array) ? item['body'] : [item['body']]
+        bodies.each do |body|
+          next unless body.is_a?(Hash)
+          value = body['value'].to_s.strip
+          next if value.blank?
+          snippets << value
+          break if snippets.length >= IIIF_CONTENT_SEARCH_MAX_SNIPPETS
+        end
+        break if snippets.length >= IIIF_CONTENT_SEARCH_MAX_SNIPPETS
+      end
+      break if snippets.length >= IIIF_CONTENT_SEARCH_MAX_SNIPPETS
+
+      next_ref = payload['next']
+      current_url =
+        if next_ref.is_a?(Hash)
+          next_ref['id'].to_s
+        else
+          next_ref.to_s
+        end
+      current_url = nil if current_url.blank?
+    end
+
+    snippets.uniq.join("\n")
+  end
+
+  private def normalize_iiif_ark_path(ark_value)
+    ark_path = ark_value.to_s.strip
+    ark_path = ark_path.sub(%r{\Ahttps?://n2t\.net/ark:/?}i, '')
+    ark_path = ark_path.sub(%r{\Aark:/?}i, '')
+    ark_path = ark_path.sub(%r{\A/+}, '')
+    ark_path
+  end
+
+  private def fetch_json(url)
+    uri = URI.parse(url)
+    Net::HTTP.start(uri.host, uri.port,
+                    use_ssl: uri.scheme == 'https',
+                    open_timeout: IIIF_CONTENT_SEARCH_TIMEOUT,
+                    read_timeout: IIIF_CONTENT_SEARCH_TIMEOUT) do |http|
+      req = Net::HTTP::Get.new(uri.request_uri)
+      req['Accept'] = 'application/json'
+      res = http.request(req)
+      raise "IIIF content search returned #{res.code}" unless res.is_a?(Net::HTTPSuccess)
+
+      JSON.parse(res.body)
+    end
+  end
+
+  private def extract_marc_metadata(document)
+    if document.respond_to?(:to_marc)
+      record = document.to_marc
+      return format_marc_record_as_text(record) if record.present?
+    end
+
+    return '' unless document.respond_to?(:export_as_marcxml)
+
+    marcxml = document.export_as_marcxml.to_s
+    return '' if marcxml.blank?
+
+    if defined?(MARC::XMLReader)
+      record = MARC::XMLReader.new(StringIO.new(marcxml)).first
+      return format_marc_record_as_text(record) if record.present?
+    end
+
+    # Final fallback: flatten MARCXML tags while preserving line breaks.
+    marcxml.gsub(/>\s*</, ">\n<")
+           .gsub(/<[^>]+>/, '')
+           .split("\n")
+           .map(&:strip)
+           .reject(&:blank?)
+           .join("\n")
+  rescue StandardError => e
+    Rails.logger.warn("MARC export failed for #{params[:id]}: #{e.class}: #{e.message}") if defined?(Rails)
+    ''
+  end
+
+  private def format_marc_record_as_text(record)
+    lines = []
+    leader = record.respond_to?(:leader) ? record.leader.to_s.strip : ''
+    lines << "LDR #{leader}" if leader.present?
+
+    Array(record.fields).each do |field|
+      if field.respond_to?(:subfields) && field.subfields.present?
+        ind1 = field.respond_to?(:indicator1) ? field.indicator1.to_s : ' '
+        ind2 = field.respond_to?(:indicator2) ? field.indicator2.to_s : ' '
+        indicators = "#{ind1}#{ind2}".tr(' ', '#')
+        subfields = field.subfields.map { |sf| "$#{sf.code} #{sf.value.to_s.strip}" }.reject(&:blank?).join(' ')
+        lines << [field.tag.to_s, indicators, subfields].reject(&:blank?).join(' ').strip
+      else
+        value = field.respond_to?(:value) ? field.value.to_s.strip : field.to_s.strip
+        next if value.blank?
+        lines << "#{field.tag} #{value}".strip
+      end
+    end
+
+    lines.reject(&:blank?).join("\n")
+  end
+
+  private def build_tx_export_payload(id:, ark:, query:, marc_metadata:, text_matches:)
+    sections = []
+
+    sections << [
+      'Record',
+      TX_GEN_SEPARATOR,
+      "ID: #{id}",
+      "ARK: #{ark}",
+      "Query: #{query}"
+    ].join("\n")
+
+    if marc_metadata.present?
+      sections << [
+        'MARC Metadata',
+        TX_GEN_SEPARATOR,
+        marc_metadata
+      ].join("\n")
+    end
+
+    sections << [
+      'Text Matches',
+      TX_GEN_SEPARATOR,
+      text_matches
+    ].join("\n")
+
+    sections.join("\n\n")
+  end
+
+  private def wildcard_query?(query)
+    normalized = query.to_s.strip
+    normalized == '*' || normalized == ':*:*'
   end
 
   private def ensure_default_catalog_query

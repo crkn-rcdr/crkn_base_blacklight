@@ -1,0 +1,143 @@
+<section class="site-section api-site-section">
+  <div class="container api-access-page api-access-page--modern">
+    <header class="api-hero">
+      <div class="api-hero__grid">
+        <div class="api-hero__copy">
+          <h1 class="section-title">Collections et infrastructure Canadiana<br>Acc&egrave;s API</h1>
+          <p class="api-lede">
+            Le RCDR offre un acc&egrave;s programmatique aux m&eacute;tadonn&eacute;es de rep&eacute;rage via les API de Collections et infrastructure Canadiana.
+            Combinez ces points d&apos;acc&egrave;s avec les param&egrave;tres de recherche, les facettes, la pagination et le tri.
+          </p>
+        </div>
+
+        <aside class="api-hero__panel" aria-label="D&eacute;marrage rapide">
+          <p class="api-hero__panel-eyebrow">D&eacute;marrage rapide</p>
+          <h2>2 appels pour commencer</h2>
+          <ol class="api-quick-list">
+            <li><span>1</span><code>GET /catalog.json?q=cartes</code></li>
+            <li><span>2</span><code>GET /catalog/:id.json</code></li>
+          </ol>
+          <p class="api-hero__panel-note">Conseil: ajoutez <code>lang=en</code> ou <code>lang=fr</code> pour le contexte d&apos;interface localis&eacute;.</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="api-layout">
+      <aside class="api-toc" aria-label="Sur cette page">
+        <h2 class="api-toc__title">Sur cette page</h2>
+        <a href="#api-feeds">Flux RSS / Atom</a>
+        <a href="#api-json">API JSON</a>
+        <a href="#api-formats">Formats de r&eacute;ponse</a>
+        <a href="#api-exports">Exports de notices</a>
+        <a href="#api-params">Param&egrave;tres courants</a>
+        <a href="#api-config">Champs et tri configur&eacute;s</a>
+        <a href="#api-examples">Exemples</a>
+        <a href="#api-structure">Structure des r&eacute;ponses</a>
+        <a href="#api-marcjson">Extension MARC JSON</a>
+        <a href="#api-iiif-query">Interroger les services IIIF</a>
+      </aside>
+
+      <div class="api-content">
+        <section id="api-feeds" class="api-card">
+          <h2>Flux RSS / Atom</h2>
+          <p>
+            Blacklight fournit des flux Atom et RSS pour les r&eacute;sultats de recherche.
+            Ajoutez <code>.atom</code> ou <code>.rss</code> &agrave; la requ&ecirc;te.
+          </p>
+          <pre class="api-code"><code>/catalog.atom?q=cartes&amp;search_field=all_fields&amp;lang=fr
+/catalog.rss?q=cartes&amp;search_field=all_fields&amp;lang=fr</code></pre>
+        </section>
+
+        <section id="api-json" class="api-card">
+          <h2>API JSON</h2>
+          <p>
+            Blacklight fournit des r&eacute;ponses JSON pour les r&eacute;sultats de recherche et les notices individuelles.
+          </p>
+          <ul class="api-list">
+            <li><strong>Point d&apos;acc&egrave;s recherche:</strong> <code>GET /catalog.json</code></li>
+            <li><strong>Point d&apos;acc&egrave;s notice:</strong> <code>GET /catalog/:id.json</code></li>
+          </ul>
+        </section>
+
+        <section id="api-formats" class="api-card">
+          <h2>Formats de r&eacute;ponse</h2>
+          <p>
+            Les r&eacute;ponses de recherche prennent en charge HTML, JSON, Atom et RSS.
+          </p>
+          <pre class="api-code"><code>/catalog?search_field=all_fields&amp;q=&amp;format=atom
+/catalog?search_field=all_fields&amp;q=&amp;format=atom&amp;content_format=marcxml
+/catalog?search_field=all_fields&amp;q=&amp;format=rss
+/catalog?search_field=all_fields&amp;q=&amp;format=json</code></pre>
+        </section>
+
+        <section id="api-exports" class="api-card">
+          <h2>Exports de notices individuelles</h2>
+          <p>
+            Cette application inclut <code>blacklight-marc</code>; les notices peuvent &ecirc;tre expos&eacute;es en formats MARC.
+          </p>
+          <pre class="api-code"><code>/catalog/oon.00001_198410.marc
+/catalog/oon.00001_198410.marcxml
+/catalog/oon.00001_198410.json</code></pre>
+        </section>
+
+        <section id="api-params" class="api-card">
+          <h2>Param&egrave;tres de requ&ecirc;te courants</h2>
+          <ul class="api-list">
+            <li><code>q</code>: texte de recherche</li>
+            <li><code>search_field</code>: champ de recherche cibl&eacute;</li>
+            <li><code>page</code>: num&eacute;ro de page</li>
+            <li><code>per_page</code>: taille de page (10, 20, 50, 100)</li>
+            <li><code>sort</code>: ordre de tri</li>
+            <li><code>f[field_name][]=value</code>: filtres de facettes</li>
+            <li><code>lang</code>: langue d&apos;interface (<code>en</code> ou <code>fr</code>)</li>
+          </ul>
+        </section>
+
+        <section id="api-config" class="api-card">
+          <h2>Champs de recherche et tri configur&eacute;s</h2>
+          <p><strong>Champs:</strong> <code>all_fields</code>, <code>full_title_tsim</code>, <code>author_tsim</code>, <code>subject_tsim</code>, <code>tx_gen</code></p>
+          <p><strong>Tri:</strong> <code>relevance</code>, <code>year-desc</code>, <code>year-asc</code>, <code>date-added-desc</code>, <code>date-added-asc</code></p>
+        </section>
+
+        <section id="api-examples" class="api-card">
+          <h2>Exemples</h2>
+          <pre class="api-code"><code>/catalog.json?q=cartes&amp;search_field=all_fields&amp;sort=date-added-desc&amp;lang=fr
+/catalog.json?q=immigration&amp;search_field=subject_tsim&amp;sort=year-desc&amp;per_page=20&amp;page=1&amp;lang=fr
+/catalog.json?f[language_ssim_str][]=French&amp;f[collectionfr_path][]=Monographies&amp;lang=fr
+/catalog/oon.00001_198410.json</code></pre>
+        </section>
+
+        <section id="api-structure" class="api-card">
+          <h2>Structure des r&eacute;ponses</h2>
+          <p>
+            Blacklight retourne des r&eacute;ponses JSON de type Solr. Les requ&ecirc;tes de recherche incluent les notices
+            dans <code>response.docs</code> ainsi que les comptes et facettes dans
+            <code>response</code>, <code>facet_counts</code> et <code>responseHeader</code>.
+          </p>
+        </section>
+
+        <section id="api-marcjson" class="api-card">
+          <h2>Extension facultative MARC JSON</h2>
+          <p>
+            Blacklight peut &ecirc;tre &eacute;tendu pour ajouter un format d&apos;export personnalis&eacute;
+            <code>marcjson</code> via un type MIME et une m&eacute;thode d&apos;export de document.
+            Ce format n&apos;est pas activ&eacute; par d&eacute;faut dans cette application.
+          </p>
+        </section>
+
+        <section id="api-iiif-query" class="api-card">
+          <h2>Comment interroger les services IIIF</h2>
+          <p>Utilisez ces appels pour interroger directement les services IIIF de Canadiana.</p>
+          <ol class="api-list">
+            <li><strong>R&eacute;cup&eacute;rer un manifeste IIIF:</strong> <code>GET <%= Rails.configuration.x.iiif_manifest_base %>/69429/m0z31ng4pk4n</code></li>
+            <li><strong>Ex&eacute;cuter une recherche IIIF Content Search:</strong> <code>GET <%= Rails.configuration.x.iiif_content_search_base %>/69429/m0z31ng4pk4n?q=canada</code></li>
+          </ol>
+          <p>
+            Pour un aper&ccedil;u plus g&eacute;n&eacute;ral des concepts et outils IIIF, consultez
+            <a href="<%= what_is_iiif_path(lang: I18n.locale) %>">Qu&apos;est-ce que IIIF?</a>.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

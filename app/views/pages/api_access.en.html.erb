@@ -1,0 +1,142 @@
+<section class="site-section api-site-section">
+  <div class="container api-access-page api-access-page--modern">
+    <header class="api-hero">
+      <div class="api-hero__grid">
+        <div class="api-hero__copy">
+          <h1 class="section-title">Canadiana Collections And Infrastructure<br>API Access</h1>
+          <p class="api-lede">
+            CRKN provides programmatic access to discovery metadata through Canadiana Collections And Infrastructure APIs.
+            Combine these endpoints with search parameters, facets, paging, and sorting.
+          </p>
+        </div>
+
+        <aside class="api-hero__panel" aria-label="Quick start">
+          <p class="api-hero__panel-eyebrow">Quick start</p>
+          <h2>Start in 2 calls</h2>
+          <ol class="api-quick-list">
+            <li><span>1</span><code>GET /catalog.json?q=maps</code></li>
+            <li><span>2</span><code>GET /catalog/:id.json</code></li>
+          </ol>
+          <p class="api-hero__panel-note">Tip: append <code>lang=en</code> or <code>lang=fr</code> for localized UI context.</p>
+        </aside>
+      </div>
+    </header>
+
+    <div class="api-layout">
+      <aside class="api-toc" aria-label="On this page">
+        <h2 class="api-toc__title">On this page</h2>
+        <a href="#api-feeds">RSS / Atom feeds</a>
+        <a href="#api-json">JSON API</a>
+        <a href="#api-formats">Response formats</a>
+        <a href="#api-exports">Single document exports</a>
+        <a href="#api-params">Common query parameters</a>
+        <a href="#api-config">Configured fields and sorts</a>
+        <a href="#api-examples">Examples</a>
+        <a href="#api-structure">Response structure</a>
+        <a href="#api-marcjson">Optional MARC JSON</a>
+        <a href="#api-iiif-query">Query IIIF services</a>
+      </aside>
+
+      <div class="api-content">
+        <section id="api-feeds" class="api-card">
+          <h2>RSS / Atom feeds</h2>
+          <p>
+            Blacklight provides Atom and RSS feeds for search results. Add <code>.atom</code> or <code>.rss</code>
+            to a search request.
+          </p>
+          <pre class="api-code"><code>/catalog.atom?q=maps&amp;search_field=all_fields&amp;lang=en
+/catalog.rss?q=maps&amp;search_field=all_fields&amp;lang=en</code></pre>
+        </section>
+
+        <section id="api-json" class="api-card">
+          <h2>JSON API</h2>
+          <p>
+            Blacklight provides JSON responses for both search results and individual documents.
+          </p>
+          <ul class="api-list">
+            <li><strong>Search endpoint:</strong> <code>GET /catalog.json</code></li>
+            <li><strong>Single record endpoint:</strong> <code>GET /catalog/:id.json</code></li>
+          </ul>
+        </section>
+
+        <section id="api-formats" class="api-card">
+          <h2>Response formats</h2>
+          <p>
+            Search responses support HTML, JSON, Atom, and RSS.
+          </p>
+          <pre class="api-code"><code>/catalog?search_field=all_fields&amp;q=&amp;format=atom
+/catalog?search_field=all_fields&amp;q=&amp;format=atom&amp;content_format=marcxml
+/catalog?search_field=all_fields&amp;q=&amp;format=rss
+/catalog?search_field=all_fields&amp;q=&amp;format=json</code></pre>
+        </section>
+
+        <section id="api-exports" class="api-card">
+          <h2>Single document exports</h2>
+          <p>
+            This application includes <code>blacklight-marc</code>, so record endpoints can expose MARC presentations.
+          </p>
+          <pre class="api-code"><code>/catalog/oon.00001_198410.marc
+/catalog/oon.00001_198410.marcxml
+/catalog/oon.00001_198410.json</code></pre>
+        </section>
+
+        <section id="api-params" class="api-card">
+          <h2>Common query parameters</h2>
+          <ul class="api-list">
+            <li><code>q</code>: search query text</li>
+            <li><code>search_field</code>: fielded search selector</li>
+            <li><code>page</code>: result page number</li>
+            <li><code>per_page</code>: page size (10, 20, 50, 100)</li>
+            <li><code>sort</code>: sort key</li>
+            <li><code>f[field_name][]=value</code>: facet filters</li>
+            <li><code>lang</code>: interface language (<code>en</code> or <code>fr</code>)</li>
+          </ul>
+        </section>
+
+        <section id="api-config" class="api-card">
+          <h2>Configured fields and sorts</h2>
+          <p><strong>Search fields:</strong> <code>all_fields</code>, <code>full_title_tsim</code>, <code>author_tsim</code>, <code>subject_tsim</code>, <code>tx_gen</code></p>
+          <p><strong>Sort values:</strong> <code>relevance</code>, <code>year-desc</code>, <code>year-asc</code>, <code>date-added-desc</code>, <code>date-added-asc</code></p>
+        </section>
+
+        <section id="api-examples" class="api-card">
+          <h2>Examples</h2>
+          <pre class="api-code"><code>/catalog.json?q=maps&amp;search_field=all_fields&amp;sort=date-added-desc&amp;lang=en
+/catalog.json?q=immigration&amp;search_field=subject_tsim&amp;sort=year-desc&amp;per_page=20&amp;page=1&amp;lang=en
+/catalog.json?f[language_ssim_str][]=English&amp;f[collectionen_path][]=Monographs&amp;lang=en
+/catalog/oon.00001_198410.json</code></pre>
+        </section>
+
+        <section id="api-structure" class="api-card">
+          <h2>Response structure</h2>
+          <p>
+            Blacklight returns Solr-style JSON responses. Search requests include records in
+            <code>response.docs</code>, plus counts and facets in objects such as
+            <code>response</code>, <code>facet_counts</code>, and <code>responseHeader</code>.
+          </p>
+        </section>
+
+        <section id="api-marcjson" class="api-card">
+          <h2>Optional MARC JSON extension</h2>
+          <p>
+            Blacklight can be extended to support a custom <code>marcjson</code> export format by registering a MIME type
+            and adding a document export method. This is not enabled by default in this application.
+          </p>
+        </section>
+
+        <section id="api-iiif-query" class="api-card">
+          <h2>How to query IIIF services</h2>
+          <p>Use these calls to query Canadiana IIIF services directly.</p>
+          <ol class="api-list">
+            <li><strong>Fetch a IIIF manifest:</strong> <code>GET <%= Rails.configuration.x.iiif_manifest_base %>/69429/m0z31ng4pk4n</code></li>
+            <li><strong>Run IIIF Content Search:</strong> <code>GET <%= Rails.configuration.x.iiif_content_search_base %>/69429/m0z31ng4pk4n?q=canada</code></li>
+          </ol>
+          <p>
+            For a broader overview of IIIF concepts and tools, see
+            <a href="<%= what_is_iiif_path(lang: I18n.locale) %>">What is IIIF?</a>.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

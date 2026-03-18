@@ -3,7 +3,7 @@
   <li><a href="<%= I18n.t('links.URL_ABOUT') %>"><%= is_fr ? 'À propos' : 'About' %></a></li>
   <li><a href="<%= I18n.t('links.URL_NEW') %>"><%= is_fr ? 'Nouveautés à venir' : 'New Content' %></a></li>
   <li><a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
-  <li><a href="<%= what_is_iiif_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
+  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
   <li><a href="<%= I18n.t('links.URL_CITATION_GUIDE') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
   <li><a href="<%= I18n.t('links.URL_SYSTEM') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'État du système' : 'System Status' %></a></li>
   <li><a href="<%= I18n.t('links.URL_CONTACT') %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
