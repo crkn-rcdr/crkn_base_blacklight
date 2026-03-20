@@ -32,26 +32,31 @@
       </p>
     </header>
 
-    <div class="about-modern-feature-grid">
-      <article class="about-modern-card about-modern-card--media">
-        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Documents d'archives historiques de la collection Heritage" loading="lazy">
+    <div class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
+        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Manuscrit d'archives de la collection Heritage" loading="lazy">
       </article>
-      <article class="about-modern-card about-modern-card--copy">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
+        <img src="<%= asset_path('government_documents.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
+        <ul>
+          <li>Documents d'archives uniques numerises a partir des fonds de Bibliotheque et Archives Canada</li>
+          <li>Environ 60 millions de pages de documents de source primaire</li>
+          <li>Couverture des annees 1600 au milieu du XXe siecle</li>
+          <li>Organisation en cinq grands volets thematiques pour faciliter l'exploration</li>
+          <li>Un corpus utile aux historiens, etudiants et genealogistes</li>
+        </ul>
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
         <h3>Une ressource essentielle</h3>
         <p>
           H&eacute;ritage se compose d'un vaste ensemble de documents uniques en cours de numerisation a partir des fonds
           precieux de Bibliotheque et Archives Canada.
         </p>
       </article>
-      <article class="about-modern-card about-modern-card--copy">
-        <h3>Trois siecles de patrimoine documentaire</h3>
-        <p>
-          Le resultat final sera un corpus majeur de patrimoine documentaire couvrant trois siecles, organise en cinq
-          grands volets thematiques pour faciliter l'exploration.
-        </p>
-      </article>
-      <article class="about-modern-card about-modern-card--media">
-        <img src="<%= asset_path('government_documents.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
+        <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Image de source archivistique de la collection Heritage" loading="lazy">
       </article>
     </div>
 

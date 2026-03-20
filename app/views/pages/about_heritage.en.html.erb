@@ -32,26 +32,31 @@
       </p>
     </header>
 
-    <div class="about-modern-feature-grid">
-      <article class="about-modern-card about-modern-card--media">
-        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Historic archival materials in the Heritage collection" loading="lazy">
+    <div class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
+        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Historic archival manuscript in the Heritage collection" loading="lazy">
       </article>
-      <article class="about-modern-card about-modern-card--copy">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
+        <img src="<%= asset_path('government_documents.jpg') %>" alt="Government records from the Heritage collection" loading="lazy">
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
+        <ul>
+          <li>Unique archival records digitized from Library and Archives Canada holdings</li>
+          <li>Approximately 60 million pages of primary-source documents</li>
+          <li>Coverage from the 1600s to the mid-1900s</li>
+          <li>Organized into five core subject areas for easier exploration</li>
+          <li>Supports historians, students, and genealogists</li>
+        </ul>
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
         <h3>An Essential Resource</h3>
         <p>
           H&eacute;ritage consists of a wide variety of unique records now being digitized from the treasured holdings of
           Library and Archives Canada.
         </p>
       </article>
-      <article class="about-modern-card about-modern-card--copy">
-        <h3>Three centuries of documentary heritage</h3>
-        <p>
-          The end result will be a significant corpus of documentary heritage spanning three centuries, organized into five
-          core subject areas for easier navigation.
-        </p>
-      </article>
-      <article class="about-modern-card about-modern-card--media">
-        <img src="<%= asset_path('government_documents.jpg') %>" alt="Government records from the Heritage collection" loading="lazy">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
+        <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Archival source image from the Heritage collection" loading="lazy">
       </article>
     </div>
 
