@@ -55,7 +55,7 @@ These steps set up Docker Desktop to build containers in Ubuntu on WSL2.
 1. Copy `.env.example` to `.env` and fill in values.
 1. Run `bin/rails server`.
 
-Optional: run `bin/vite dev` in another terminal for faster frontend rebuilds.
+Optional: run `yarn vite` in another terminal for faster frontend rebuilds.
 
 You can also run `bin/setup` to install dependencies.
 
@@ -137,7 +137,7 @@ Common in-container commands:
 - `bin/rails console` - Interactive Rails console.
 - `bin/rails routes` - List routes and controllers.
 - `bin/rails test` - Run tests.
-- `bin/vite dev` - Run the Vite dev server.
+- `yarn vite` - Run the Vite dev server.
 
 ## Deployment (CRKN Servers)
 

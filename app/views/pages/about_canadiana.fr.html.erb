@@ -1,3 +1,5 @@
+<% content_for :page_title, "Collection Canadiana - #{application_name}" %>
+
 <div class="home-page">
   <section class="site-section about-intro about-intro--canadiana">
     <div class="canadiana-shell about-intro-grid about-intro-grid--canadiana">
@@ -19,36 +21,36 @@
 <section class="site-section about-modern-section about-modern-section--canadiana">
   <div class="canadiana-shell about-modern-layout">
     <div class="about-modern-feature-grid">
-      <article class="about-modern-card about-modern-card--media">
-        <img src="<%= asset_path('monog.jpg') %>" alt="Livres et publications historiques de la collection Canadiana" loading="lazy">
-      </article>
       <article class="about-modern-card about-modern-card--copy">
-        <h3>31&nbsp;millions de pages dans une seule collection</h3>
+        <h2>31&nbsp;millions de pages dans une seule collection</h2>
         <p>
           Parcourez des documents couvrant environ cinq siecles d'edition canadienne, des premiers imprimes aux periodiques
           et documents du XXe&nbsp;siecle.
         </p>
       </article>
+      <article class="about-modern-card about-modern-card--media">
+        <img src="<%= asset_path('monog.jpg') %>" alt="Livres et publications historiques de la collection Canadiana" loading="lazy">
+      </article>
+      <article class="about-modern-card about-modern-card--media">
+        <img src="<%= asset_path('maps.jpg') %>" alt="Documents cartographiques historiques de la collection Canadiana" loading="lazy">
+      </article>
       <article class="about-modern-card about-modern-card--copy">
-        <h3>Une profondeur documentaire pour la recherche exigeante</h3>
+        <h2>Une profondeur documentaire pour la recherche exigeante</h2>
         <p>
           Le contenu comprend des livres, journaux, magazines, cartes et publications gouvernementales, selectionnes
           grace a l'expertise de comites consultatifs et a des partenariats de numerisation durables.
         </p>
       </article>
-      <article class="about-modern-card about-modern-card--media">
-        <img src="<%= asset_path('maps.jpg') %>" alt="Documents cartographiques historiques de la collection Canadiana" loading="lazy">
-      </article>
     </div>
 
     <section class="about-modern-block about-modern-deep-dive" aria-labelledby="canadiana-deep-dive-title-fr">
       <div class="about-modern-block-head">
-        <h3 id="canadiana-deep-dive-title-fr">Ce que vous pouvez trouver dans la collection Canadiana</h3>
+        <h2 id="canadiana-deep-dive-title-fr">Ce que vous pouvez trouver dans la collection Canadiana</h2>
       </div>
 
       <article class="about-modern-card about-modern-card--detail about-modern-card--detail-books" aria-labelledby="canadiana-detail-books-title-fr">
         <header class="about-modern-detail-header">
-          <h4 id="canadiana-detail-books-title-fr">Livres et publications</h4>
+          <h3 id="canadiana-detail-books-title-fr">Livres et publications</h3>
           <p class="about-modern-detail-intro">
             La collection Livres et publications, qui couvre trois siecles et demi d'histoire documentaire canadienne,
             rassemble de riches sources primaires touchant de nombreux sujets et disciplines. Avec un total prevu de
@@ -75,7 +77,7 @@
         </header>
         <div class="about-modern-detail-grid">
           <section class="about-modern-detail-panel">
-            <h5>Contenu</h5>
+            <h4>Contenu</h4>
             <p>
               Livres et publications est une collection exhaustive, composee de titres selectionnes et numerises a partir
               des fonds de plus de 200 bibliotheques. Entre 2003 et 2016, Canadiana a renforce et mis a jour cette
@@ -85,7 +87,7 @@
             </p>
           </section>
           <section class="about-modern-detail-panel">
-            <h5>Points forts de la collection</h5>
+            <h4>Points forts de la collection</h4>
             <ul class="about-modern-detail-list">
               <li>Tous les livres et publications microfilmes par l'Institut canadien de microreproductions historiques (ICMH)</li>
               <li>Tous les livres et publications disponibles dans Early Canadiana Online (ECO)</li>
@@ -103,7 +105,7 @@
 
       <article class="about-modern-card about-modern-card--detail about-modern-card--detail-serials" aria-labelledby="canadiana-detail-serials-title-fr">
         <header class="about-modern-detail-header">
-          <h4 id="canadiana-detail-serials-title-fr">Journaux et magazines</h4>
+          <h3 id="canadiana-detail-serials-title-fr">Journaux et magazines</h3>
           <p class="about-modern-detail-intro">
             La collection Journaux et magazines comprend un large eventail de quotidiens, hebdomadaires, revues
             specialisees et magazines grand public, ainsi que des annuaires de villes et des rapports annuels
@@ -133,7 +135,7 @@
         </header>
         <div class="about-modern-detail-grid about-modern-detail-grid--single">
           <section class="about-modern-detail-panel">
-            <h5>Points forts de la collection</h5>
+            <h4>Points forts de la collection</h4>
             <ul class="about-modern-detail-list">
               <li>Tous les annuels et periodiques microfilmes par l'Institut canadien de microreproductions historiques (ICMH)</li>
               <li>Tous les periodiques disponibles dans Early Canadiana Online (ECO)</li>
@@ -151,7 +153,7 @@
 
       <article class="about-modern-card about-modern-card--detail about-modern-card--detail-government" aria-labelledby="canadiana-detail-government-title-fr">
         <header class="about-modern-detail-header">
-          <h4 id="canadiana-detail-government-title-fr">Publications gouvernementales</h4>
+          <h3 id="canadiana-detail-government-title-fr">Publications gouvernementales</h3>
           <p class="about-modern-detail-intro">
             La collection Publications gouvernementales comprend plus de 1,7&nbsp;million de pages de documents
             gouvernementaux coloniaux, provinciaux et federaux d'avant 1900. Elle inclut notamment des lois,
@@ -176,7 +178,7 @@
         </header>
         <div class="about-modern-detail-grid about-modern-detail-grid--single">
           <section class="about-modern-detail-panel">
-            <h5>Points forts de la collection</h5>
+            <h4>Points forts de la collection</h4>
             <ul class="about-modern-detail-list">
               <li>Une selection de publications officielles pre-Confederation produites par les legislatures coloniales, comme les lois, debats, journaux legislatifs et documents sessionnels</li>
               <li>Une selection de documents federaux publies entre 1867 et 1900, comme les lois, debats parlementaires, journaux parlementaires, rapports de commissions royales et documents sessionnels</li>
@@ -194,7 +196,7 @@
 
       <article class="about-modern-card about-modern-card--detail about-modern-card--detail-maps" aria-labelledby="canadiana-detail-maps-title-fr">
         <header class="about-modern-detail-header">
-          <h4 id="canadiana-detail-maps-title-fr">Cartes</h4>
+          <h3 id="canadiana-detail-maps-title-fr">Cartes</h3>
           <p class="about-modern-detail-intro">
             La collection Cartes comprend actuellement pres de 22&nbsp;000 cartes canadiennes numerisees a partir de la
             serie topographique nationale a l'echelle 1:50&nbsp;000. Les cartes datent de 1905 a 2012 et couvrent
@@ -221,7 +223,7 @@
         </header>
         <div class="about-modern-detail-grid">
           <section class="about-modern-detail-panel">
-            <h5>Partenariat et acces</h5>
+            <h4>Partenariat et acces</h4>
             <p>
               Les cartes ont ete numerisees par la Bibliotheque de l'Universite McGill et sont presentees ici dans le cadre
               d'un partenariat entre la Bibliotheque de l'Universite McGill et le Reseau canadien de documentation pour la
@@ -236,7 +238,7 @@
             </p>
           </section>
           <section class="about-modern-detail-panel">
-            <h5>Contenu</h5>
+            <h4>Contenu</h4>
             <p>
               Cartes de la serie topographique nationale a l'echelle 1:50&nbsp;000, couvrant les annees 1905 a 2012 et
               representant l'ensemble des provinces et territoires canadiens.
@@ -255,7 +257,7 @@
           <img src="<%= asset_path('govpubs.jpg') %>" alt="Flux de recherche pour les documents Canadiana" loading="lazy">
         </article>
         <article class="about-modern-card about-modern-card--steps">
-          <h3>Comment exploiter la collection</h3>
+          <h2>Comment exploiter la collection</h2>
           <ol>
             <li><strong>Commencer large&nbsp;:</strong> recherchez dans tous les champs pour reperer des titres et themes prometteurs.</li>
             <li><strong>Affiner rapidement&nbsp;:</strong> utilisez les filtres pour cibler monographies, periodiques, cartes ou contenus gouvernementaux.</li>
@@ -268,7 +270,7 @@
 
     <section class="about-modern-block" aria-labelledby="canadiana-faq-title-fr">
       <div class="about-modern-block-head">
-        <h3 id="canadiana-faq-title-fr">Questions de recherche, reponses</h3>
+        <h2 id="canadiana-faq-title-fr">Questions de recherche, reponses</h2>
       </div>
       <div class="about-modern-faq">
         <details open>

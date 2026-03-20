@@ -2164,8 +2164,8 @@ summary:focus-visible,
 
 .topbar-main {
   background: #fff;
-  padding-top: calc(.98rem + 6px);
-  padding-bottom: .78rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .topbar-main-inner {
@@ -2253,8 +2253,8 @@ summary:focus-visible,
   }
 
   .topbar-main {
-    padding-top: calc(.9rem + 6px);
-    padding-bottom: .72rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .topbar-main-inner {
@@ -2282,8 +2282,8 @@ summary:focus-visible,
 
 @media (max-width: 1199px) {
   .topbar-main {
-    padding-top: calc(.8rem + 6px);
-    padding-bottom: .64rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .topbar-main-inner {
@@ -5629,6 +5629,7 @@ summary:focus-visible,
   font-size: clamp(2.9rem, 3.45vw, 4.7rem);
   line-height: 1.01;
   letter-spacing: -0.02em;
+  animation: aboutIntroSlideInLeft 620ms cubic-bezier(0.2, 0.72, 0.28, 1) both;
 }
 
 .blacklight-pages-about_canadiana .about-intro-copy .section-lede,
@@ -5637,6 +5638,30 @@ summary:focus-visible,
   margin-bottom: 0;
   font-size: clamp(1rem, 0.96vw, 1.16rem);
   line-height: 1.43;
+  animation: aboutIntroSlideInLeft 760ms cubic-bezier(0.2, 0.72, 0.28, 1) both;
+  animation-delay: 90ms;
+}
+
+@keyframes aboutIntroSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-44px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blacklight-pages-about_canadiana .about-intro-copy .section-title,
+  .blacklight-pages-about_canadiana .about-intro-copy .section-lede,
+  .blacklight-pages-about_heritage .about-intro-copy .section-title,
+  .blacklight-pages-about_heritage .about-intro-copy .section-lede {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .blacklight-pages-about_canadiana .about-intro-grid--canadiana {
@@ -5656,7 +5681,7 @@ summary:focus-visible,
 
 .blacklight-pages-about_heritage .about-intro--heritage {
   background: #fff;
-  border-radius: clamp(20px, 2.1vw, 34px) clamp(20px, 2.1vw, 34px) 0 0;
+  border-radius: 0 clamp(20px, 2.1vw, 34px) 0 0;
   overflow: hidden;
 }
 
@@ -6844,6 +6869,8 @@ summary:focus-visible,
   gap: 0.52rem;
 }
 
+.blacklight-pages-about_canadiana .about-modern-card--copy h2,
+.blacklight-pages-about_heritage .about-modern-card--copy h2,
 .blacklight-pages-about_canadiana .about-modern-card--copy h3,
 .blacklight-pages-about_heritage .about-modern-card--copy h3 {
   margin: 0;
@@ -6910,6 +6937,8 @@ summary:focus-visible,
   gap: clamp(0.8rem, 1.2vw, 1rem);
 }
 
+.blacklight-pages-about_canadiana .about-modern-block-head h2,
+.blacklight-pages-about_heritage .about-modern-block-head h2,
 .blacklight-pages-about_canadiana .about-modern-block-head h3,
 .blacklight-pages-about_heritage .about-modern-block-head h3 {
   margin: 0;
@@ -6955,6 +6984,8 @@ summary:focus-visible,
   flex: 1 1 auto;
 }
 
+.blacklight-pages-about_canadiana .about-modern-card-body h3,
+.blacklight-pages-about_heritage .about-modern-card-body h3,
 .blacklight-pages-about_canadiana .about-modern-card-body h4,
 .blacklight-pages-about_heritage .about-modern-card-body h4 {
   margin: 0;
@@ -6990,6 +7021,7 @@ summary:focus-visible,
   gap: 0.72rem;
 }
 
+.blacklight-pages-about_canadiana .about-modern-card--detail h3,
 .blacklight-pages-about_canadiana .about-modern-card--detail h4 {
   margin: 0;
   max-width: 24ch;
@@ -7080,6 +7112,7 @@ summary:focus-visible,
   background: #fff;
 }
 
+.blacklight-pages-about_canadiana .about-modern-detail-panel h4,
 .blacklight-pages-about_canadiana .about-modern-detail-panel h5 {
   margin: 0;
   font-size: 1rem;
@@ -7187,6 +7220,8 @@ summary:focus-visible,
   gap: 0.7rem;
 }
 
+.blacklight-pages-about_canadiana .about-modern-card--steps h2,
+.blacklight-pages-about_heritage .about-modern-card--steps h2,
 .blacklight-pages-about_canadiana .about-modern-card--steps h3,
 .blacklight-pages-about_heritage .about-modern-card--steps h3 {
   margin: 0;
@@ -7289,6 +7324,7 @@ summary:focus-visible,
     padding: 1rem;
   }
 
+  .blacklight-pages-about_canadiana .about-modern-card--detail h3,
   .blacklight-pages-about_canadiana .about-modern-card--detail h4 {
     max-width: none;
   }

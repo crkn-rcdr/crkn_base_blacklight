@@ -27,7 +27,7 @@ services:
         if [ -f package.json ]; then yarn install --immutable; fi
         rm -f tmp/pids/server.pid
         bundle exec rails db:prepare
-        bin/vite dev --host 0.0.0.0 --port 3036 &
+        yarn vite --host 0.0.0.0 --port 3036 &
         bundle exec rails server -b 0.0.0.0 -p 3000
 volumes:
   node_modules:
