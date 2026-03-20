@@ -1,10 +1,12 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<% news_url = is_fr ? 'https://www.crkn-rcdr.ca/fr/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' : 'https://www.crkn-rcdr.ca/en/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' %>
 <ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
-  <li><a href="<%= I18n.t('links.URL_ABOUT') %>"><%= is_fr ? 'À propos' : 'About' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_NEW') %>"><%= is_fr ? 'Nouveautés à venir' : 'New Content' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
-  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_CITATION_GUIDE') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_SYSTEM') %>" target="_blank" rel="noopener noreferrer"><%= is_fr ? 'État du système' : 'System Status' %></a></li>
-  <li><a href="<%= I18n.t('links.URL_CONTACT') %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_ABOUT') %>"><%= is_fr ? '&#192; propos' : 'About' %></a></li>
+  <li><a href="<%= I18n.t('links.URL_NEW') %>"><%= is_fr ? 'Nouveaut&#233;s &#224; venir' : 'New Content' %></a></li>
+  <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
+  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? 'Acc&#232;s API' : 'API Access' %></a></li>
+  <li><a href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
+  <li><a href="<%= system_status_path(lang: I18n.locale) %>"><%= is_fr ? '&#201;tat du syst&#232;me' : 'System Status' %></a></li>
+  <li><a href="<%= contact_us_page_path(lang: I18n.locale) %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
+  <li><a href="<%= news_url %>"><%= is_fr ? 'Nouvelles' : 'News' %></a></li>
 </ul>

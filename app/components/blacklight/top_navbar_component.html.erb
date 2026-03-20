@@ -2,6 +2,7 @@
   <% current_lang = I18n.locale.to_s.start_with?('fr') ? 'fr' : 'en' %>
   <% en_url = request.path + "?" + request.query_parameters.merge(lang: 'en').to_query %>
   <% fr_url = request.path + "?" + request.query_parameters.merge(lang: 'fr').to_query %>
+  <% terms_label = current_lang == 'fr' ? 'Conditions de service' : 'Terms of Service' %>
   <% menu_toggle_label = current_lang == 'fr' ? 'Afficher ou masquer le menu de navigation' : 'Toggle navigation menu' %>
 
   <div class="topbar-utility">
@@ -9,9 +10,9 @@
       <ul class="topbar-utility-list">
         <li class="topbar-language-switch">
           <% if current_lang == 'fr' %>
-            <%= link_to 'EN', en_url, lang: 'en' %> | <span aria-current="true" lang="fr">FR</span>
+            <%= link_to terms_label, terms_of_service_path(lang: current_lang) %> | <%= link_to 'EN', en_url, lang: 'en' %> | <span aria-current="true" lang="fr">FR</span>
           <% else %>
-            <span aria-current="true" lang="en">EN</span> | <%= link_to 'FR', fr_url, lang: 'fr' %>
+            <%= link_to terms_label, terms_of_service_path(lang: current_lang) %> | <span aria-current="true" lang="en">EN</span> | <%= link_to 'FR', fr_url, lang: 'fr' %>
           <% end %>
         </li>
         <li class="topbar-socials">

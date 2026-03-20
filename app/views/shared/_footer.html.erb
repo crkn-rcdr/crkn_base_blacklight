@@ -17,7 +17,7 @@
         </address>
 
         <nav class="site-footer__actions" aria-label="Footer actions">
-          <a class="site-footer__btn" href="<%= I18n.t('links.URL_CONTACT') %>">Contact Us</a>
+          <a class="site-footer__btn" href="<%= contact_us_page_path(lang: I18n.locale) %>">Contact Us</a>
           <a class="site-footer__btn" href="https://www.crkn-rcdr.ca/en/newsletter-sign-up" target="_blank" rel="noopener">Newsletter Sign Up</a>
           <a class="site-footer__btn" href="https://www.crkn-rcdr.ca/en/digitization-services" target="_blank" rel="noopener">Digitization Services</a>
         </nav>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="site-footer__meta">
-      <a href="<%= I18n.t('links.URL_TERMS') %>">Terms of Service</a>
+      <a href="<%= terms_of_service_path(lang: I18n.locale) %>">Terms of Service</a>
       <span>&copy; <%= Time.current.year %> Canadian Research Knowledge Network</span>
     </div>
   </div>

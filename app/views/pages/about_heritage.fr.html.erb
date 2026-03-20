@@ -1,0 +1,34 @@
+<div class="home-page">
+  <section class="site-section home-intro home-intro--heritage-clean">
+    <div class="canadiana-shell home-heritage-intro-grid">
+      <div class="home-heritage-intro-media">
+        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
+      </div>
+      <div class="home-heritage-intro-copy">
+        <h1 class="section-title">Collection H&eacute;ritage</h1>
+        <p class="section-lede">
+          La collection H&eacute;ritage est un partenariat avec
+          <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Biblioth&egrave;que et Archives Canada</a> (BAC)
+          pour num&eacute;riser et rendre accessibles les riches ressources de microfilms d&apos;archives conserv&eacute;es par BAC.
+          Avec plus de 37&nbsp;millions de pages de documents de source primaire, H&eacute;ritage retrace le Canada et ses peuples
+          des ann&eacute;es 1600 aux ann&eacute;es 1980.
+        </p>
+      </div>
+      <div class="home-heritage-logo-card" aria-hidden="true">
+        <img class="home-heritage-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="site-section">
+  <div class="container">
+    <h2 class="h4">Utiliser H&eacute;ritage pour</h2>
+    <ul>
+      <li>La g&eacute;n&eacute;alogie et l&apos;histoire communautaire</li>
+      <li>Les dossiers gouvernementaux et institutionnels</li>
+      <li>La recherche en sources primaires</li>
+    </ul>
+
+  </div>
+</section>

@@ -45,7 +45,7 @@ summary:focus-visible,
     padding-bottom: 1rem;
 }
 .navbar-logo {
-    background: transparent url(/assets/canadiana-tag-color.svg) no-repeat top left;
+    background: transparent url(/assets/ci-logo.svg) no-repeat top left;
     height: 80px !important;
     width: 245px !important;
 }
@@ -110,6 +110,19 @@ summary:focus-visible,
 /* Global search bar (top of pages except home) */
 .navbar-search {
   padding: .75rem 0; border-bottom: none;
+}
+
+/* Hide global top search on informational pages */
+.blacklight-pages-about_canadiana .navbar-search,
+.blacklight-pages-about_heritage .navbar-search,
+.blacklight-pages-compare_collections .navbar-search,
+.blacklight-pages-api_access .navbar-search,
+.blacklight-pages-contact_us .navbar-search,
+.blacklight-pages-system_status .navbar-search,
+.blacklight-pages-navigating_collections .navbar-search,
+.blacklight-pages-citation_guide .navbar-search,
+.blacklight-pages-terms_of_service .navbar-search {
+  display: none;
 }
 
 .sort-pagination,
@@ -1334,7 +1347,7 @@ summary:focus-visible,
 }
 
 .blacklight-pages-home .navbar-logo {
-  background: transparent url(/assets/canadiana-tag-color.svg) no-repeat top left;
+  background: transparent url(/assets/ci-logo.svg) no-repeat top left;
   background-size: contain;
   width: 190px !important;
   height: 58px !important;
@@ -2000,7 +2013,7 @@ summary:focus-visible,
 
 .topbar-utility {
   min-height: 55px;
-  background: #e4e6e8;
+  background: #f3f3f3;
 }
 
 .topbar-utility-inner {
@@ -2118,7 +2131,7 @@ summary:focus-visible,
   flex: 0 0 auto;
   width: 358px !important;
   height: 113px !important;
-  background: transparent url(/assets/canadiana-tag-color.svg) no-repeat top left;
+  background: transparent url(/assets/ci-logo.svg) no-repeat top left;
   background-size: contain;
 }
 
@@ -3194,7 +3207,8 @@ summary:focus-visible,
 }
 
 .home-page .home-intro--canadiana-clean .home-inline-link--arrow {
-  display: none;
+  display: inline-flex;
+  margin-top: 0.85rem;
 }
 
 .home-page .home-collection-band--canadiana-clean {
@@ -3443,7 +3457,8 @@ summary:focus-visible,
 }
 
 .home-page .home-intro--heritage-clean .home-inline-link--arrow {
-  display: none;
+  display: inline-flex;
+  margin-top: 0.85rem;
 }
 
 .home-page .home-collection-band--heritage-clean {
@@ -5014,7 +5029,7 @@ summary:focus-visible,
     border-radius: clamp(24px, 2vw, 34px) clamp(24px, 2vw, 34px) clamp(24px, 2vw, 34px) clamp(24px, 2vw, 34px);
   }
 
-  .home-page .home-intro--canadiana-clean .home-canadiana-intro-copy {
+  .home-page .home-intro--canadiana-clean .home-canadiana-intro-grid > .home-canadiana-intro-copy {
     grid-area: 1 / 1;
     position: absolute;
     z-index: 2;
@@ -5120,7 +5135,7 @@ summary:focus-visible,
     border-radius: clamp(24px, 2vw, 34px);
   }
 
-  .home-page .home-intro--heritage-clean .home-heritage-intro-copy {
+  .home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-intro-copy {
     grid-area: 1 / 1;
     position: absolute;
     z-index: 2;
@@ -5136,7 +5151,7 @@ summary:focus-visible,
   }
 
 
-  .home-page .home-intro--heritage-clean .home-heritage-logo-card {
+  .home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-logo-card {
     grid-area: 1 / 1;
     position: absolute;
     z-index: 2;
@@ -5189,7 +5204,7 @@ summary:focus-visible,
 }
 
 
-.home-canadiana-intro-copy::after {
+.home-page .home-intro--canadiana-clean .home-canadiana-intro-grid > .home-canadiana-intro-copy::after {
   content: "";
   position: absolute;
   top: -1px;
@@ -5199,7 +5214,7 @@ summary:focus-visible,
   background: no-repeat url("/assets/Frame 2.svg");
   background-size: contain;
 }
-.home-canadiana-intro-copy::before {
+.home-page .home-intro--canadiana-clean .home-canadiana-intro-grid > .home-canadiana-intro-copy::before {
   content: "";
   position: absolute;
   bottom: -1.4rem;
@@ -5210,7 +5225,7 @@ summary:focus-visible,
   background-size: contain;
 }
 
-.home-heritage-intro-copy::after {
+.home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-intro-copy::after {
   content: "";
   position: absolute;
   top: -1px;
@@ -5220,7 +5235,7 @@ summary:focus-visible,
   background: no-repeat url("/assets/Frame 3.svg");
   background-size: contain;
 }
-.home-heritage-intro-copy::before {
+.home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-intro-copy::before {
   content: "";
   position: absolute;
   bottom: -1.4rem;
@@ -5231,7 +5246,7 @@ summary:focus-visible,
   background-size: contain;
   margin-left: var(--home-section-edge-margin);
 }
-.home-heritage-logo-card::after {
+.home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-logo-card::after {
   content: "";
   position: absolute;
   top: -1.3rem;
@@ -5241,7 +5256,7 @@ summary:focus-visible,
   background: no-repeat url("/assets/Frame 4.svg");
   background-size: contain;
 }
-.home-heritage-logo-card::before {
+.home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-logo-card::before {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -5472,11 +5487,12 @@ summary:focus-visible,
 .blacklight-pages-api_access .api-site-section {
   padding-top: clamp(1rem, 2vw, 1.8rem);
   padding-bottom: clamp(1.6rem, 2.8vw, 2.8rem);
+  overflow-x: clip;
 }
 
 .blacklight-pages-api_access .api-access-page--modern.container {
   width: auto;
-  max-width: 90%;
+  max-width: 1240px;
 }
 
 .blacklight-pages-api_access .api-access-page--modern {
@@ -5488,6 +5504,14 @@ summary:focus-visible,
   --api-soft-shadow: 0 10px 24px rgba(17, 56, 74, 0.08);
   --api-accent: #15798a;
   --api-accent-strong: #0f5f6d;
+  --api-title-size: clamp(2.05rem, 3vw, 3.2rem);
+  --api-lede-size: clamp(1.24rem, 1.15vw, 1.6rem);
+  --api-h2-size: clamp(1.72rem, 2vw, 2.2rem);
+  --api-h3-size: clamp(1.24rem, 1.45vw, 1.56rem);
+  --api-h4-size: clamp(1.08rem, 1vw, 1.22rem);
+  --api-body-size: clamp(1rem, 0.82vw, 1.12rem);
+  --api-small-size: clamp(0.9rem, 0.68vw, 0.98rem);
+  --api-prose-max: 78ch;
   color: var(--api-ink);
 }
 
@@ -5498,16 +5522,13 @@ summary:focus-visible,
   padding: clamp(1.4rem, 2.9vw, 2.5rem);
   margin-bottom: clamp(1.1rem, 2vw, 1.8rem);
   border: 1px solid rgba(21, 121, 138, 0.18);
-  background:
-    radial-gradient(120% 100% at 0% 0%, rgba(74, 190, 0, 0.2) 0%, rgba(74, 190, 0, 0) 52%),
-    radial-gradient(120% 120% at 100% 100%, rgba(31, 133, 145, 0.22) 0%, rgba(31, 133, 145, 0) 58%),
-    linear-gradient(140deg, #f7fcfd 0%, #eef7f8 60%, #edf3f7 100%);
+  background: #ffffff;
   box-shadow: var(--api-shadow);
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-hero::before,
 .blacklight-pages-api_access .api-access-page--modern .api-hero::after {
-  content: "";
+  content: none;
   position: absolute;
   border-radius: 999px;
   pointer-events: none;
@@ -5533,35 +5554,64 @@ summary:focus-visible,
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
-  gap: clamp(0.9rem, 2vw, 1.5rem);
-  align-items: end;
+  grid-template-columns: minmax(0, 1.36fr) minmax(320px, 0.64fr);
+  gap: clamp(1rem, 2.1vw, 1.85rem);
+  align-items: start;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-hero__grid.api-hero__grid--single {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-hero__copy {
   min-width: 0;
+  align-self: start;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .section-title {
   margin-top: 0;
-  margin-bottom: 0.45rem;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.06;
+  margin-bottom: 0.7rem;
+  max-width: none;
+  font-size: var(--api-title-size);
+  line-height: 1.03;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .section-title .api-hero__eyebrow-text {
+  display: block;
+  margin: 0 0 0.52rem;
+  font-size: clamp(0.82rem, 0.76vw, 1.02rem);
+  line-height: 1.2;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  font-weight: 300;
+  white-space: nowrap;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .section-title .api-hero__title-main {
+  display: block;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-lede {
-  max-width: 66ch;
+  max-width: 68ch;
   margin: 0;
-  color: var(--api-muted);
-  font-size: clamp(1rem, 1.35vw, 1.32rem);
-  line-height: 1.5;
+  color: #314955;
+  font-size: var(--api-body-size);
+  line-height: 1.54;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-hero__panel {
+  align-self: start;
+  width: 100%;
+  max-width: 560px;
   border-radius: 18px;
   border: 1px solid rgba(32, 53, 66, 0.16);
-  padding: 0.95rem;
-  background: linear-gradient(170deg, #ffffff 0%, #eef2f5 100%);
+  padding: 1.1rem 1.15rem;
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(74, 190, 0, 0.2) 0%, rgba(74, 190, 0, 0) 52%),
+    radial-gradient(120% 120% at 100% 100%, rgba(31, 133, 145, 0.22) 0%, rgba(31, 133, 145, 0) 58%),
+    linear-gradient(140deg, #f7fcfd 0%, #eef7f8 60%, #edf3f7 100%);
   color: #223744;
   box-shadow: 0 14px 28px rgba(22, 45, 58, 0.12);
 }
@@ -5571,15 +5621,16 @@ summary:focus-visible,
   color: #61717c;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  font-size: 0.74rem;
+  font-size: 0.82rem;
   font-weight: 700;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-hero__panel h2 {
-  margin: 0.28rem 0 0.72rem;
+  margin: 0.34rem 0 0.8rem;
   color: #1f313d;
-  font-size: 1.15rem;
-  line-height: 1.2;
+  font-size: clamp(1.55rem, 1.7vw, 1.95rem);
+  line-height: 1.14;
+  letter-spacing: -0.012em;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-quick-list {
@@ -5587,26 +5638,27 @@ summary:focus-visible,
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 0.48rem;
+  gap: 0.56rem;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-quick-list li {
   display: grid;
-  grid-template-columns: 1.45rem minmax(0, 1fr);
-  gap: 0.48rem;
-  align-items: start;
+  grid-template-columns: 1.6rem minmax(0, 1fr);
+  gap: 0.56rem;
+  align-items: center;
   color: #2d434f;
-  font-size: 0.92rem;
+  font-size: 1.04rem;
+  line-height: 1.32;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-quick-list li > span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.45rem;
-  height: 1.45rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 999px;
-  font-size: 0.79rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #2c4553;
   background: #dde4e9;
@@ -5619,16 +5671,16 @@ summary:focus-visible,
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-hero__panel-note {
-  margin: 0.72rem 0 0;
+  margin: 0.8rem 0 0;
   color: #4e6573;
-  font-size: 0.86rem;
-  line-height: 1.4;
+  font-size: var(--api-small-size);
+  line-height: 1.46;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-layout {
   display: grid;
-  grid-template-columns: minmax(215px, 260px) minmax(0, 1fr);
-  gap: clamp(0.95rem, 1.6vw, 1.5rem);
+  grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
+  gap: clamp(1.15rem, 2vw, 2rem);
   align-items: start;
 }
 
@@ -5637,14 +5689,14 @@ summary:focus-visible,
   top: 1rem;
   border: 1px solid var(--api-stroke);
   border-radius: 18px;
-  padding: 0.95rem;
+  padding: 1.05rem;
   background: rgba(255, 255, 255, 0.86);
   box-shadow: var(--api-soft-shadow);
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-toc__title {
   margin: 0 0 0.55rem;
-  font-size: 0.92rem;
+  font-size: 1rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--api-muted);
@@ -5653,34 +5705,42 @@ summary:focus-visible,
 .blacklight-pages-api_access .api-access-page--modern .api-toc a {
   display: block;
   margin: 0;
-  padding: 0.46rem 0.56rem;
+  padding: 0.5rem 0.62rem;
   border-radius: 10px;
   color: var(--api-ink);
   text-decoration: none;
-  font-size: 0.94rem;
-  line-height: 1.25;
+  font-size: 0.98rem;
+  line-height: 1.38;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-toc a:hover,
-.blacklight-pages-api_access .api-access-page--modern .api-toc a:focus {
+.blacklight-pages-api_access .api-access-page--modern .api-toc a:focus-visible {
   background: rgba(21, 121, 138, 0.12);
   color: var(--api-accent-strong);
 }
 
+.blacklight-pages-api_access .api-access-page--modern .api-toc a:focus-visible {
+  outline: 2px solid var(--a11y-focus-ring);
+  outline-offset: 2px;
+}
+
 .blacklight-pages-api_access .api-access-page--modern .api-content {
   display: grid;
-  gap: clamp(0.9rem, 1.5vw, 1.25rem);
+  gap: clamp(1.2rem, 2vw, 1.9rem);
+  min-width: 0;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-card {
   position: relative;
   border: 1px solid var(--api-stroke);
   border-radius: 18px;
-  padding: clamp(1rem, 2vw, 1.35rem);
+  padding: clamp(1.2rem, 2.3vw, 1.8rem);
   background: var(--api-surface);
   box-shadow: var(--api-soft-shadow);
+  scroll-margin-top: 1rem;
   animation: apiFadeUp 0.55s ease both;
   transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+  min-width: 0;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-card::before {
@@ -5714,36 +5774,140 @@ summary:focus-visible,
 
 .blacklight-pages-api_access .api-access-page--modern .api-card h2 {
   margin-top: 0;
-  margin-bottom: 0.52rem;
-  font-size: clamp(1.24rem, 2vw, 1.5rem);
+  margin-bottom: 0.68rem;
+  font-size: var(--api-h2-size);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-card h3 {
+  margin: clamp(1.35rem, 2.1vw, 1.9rem) 0 0.65rem;
+  font-size: var(--api-h3-size);
+  line-height: 1.28;
+  letter-spacing: -0.008em;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-card h3[id] {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(18, 58, 77, 0.12);
+  scroll-margin-top: 1rem;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-card h4 {
+  margin: 1.05rem 0 0.45rem;
+  font-size: var(--api-h4-size);
+  line-height: 1.34;
+  font-weight: 700;
+  color: #1f313d;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__heading {
+  margin: 0 0 0.95rem;
+  font-size: clamp(1.02rem, 1.08vw, 1.2rem);
   line-height: 1.2;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: #304754;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__item {
+  max-width: 720px;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.78rem;
+  text-decoration: none;
+  color: #112f97;
+  font-size: clamp(1.24rem, 1.45vw, 1.76rem);
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__link:hover,
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__link:focus-visible {
+  text-decoration: underline;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2.4rem;
+  border-radius: 2px;
+  background: #f5f5f5;
+  color: #d23b3b;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__icon .bi {
+  font-size: 1.08rem;
+  line-height: 1;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__icon-label {
+  margin-top: 0.1rem;
+  padding: 0.02rem 0.2rem;
+  border-radius: 2px;
+  background: #cf4242;
+  color: #ffffff;
+  font-size: 0.58rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__title {
+  color: #12208e;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .citation-related-docs__desc {
+  margin-top: 0.5rem;
+  color: #162631;
+  font-size: clamp(1rem, 0.92vw, 1.24rem);
+  line-height: 1.4;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-card p {
-  margin: 0 0 0.58rem;
+  max-width: var(--api-prose-max);
+  margin: 0 0 0.9rem;
   color: #314955;
-  line-height: 1.55;
+  font-size: var(--api-body-size);
+  line-height: 1.62;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-list {
-  margin: 0;
-  padding-left: 1.15rem;
+  max-width: var(--api-prose-max);
+  margin: 0.1rem 0 0.95rem;
+  padding-left: 1.3rem;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-list li {
-  margin-bottom: 0.38rem;
+  margin: 0;
   color: #29404a;
+  font-size: var(--api-body-size);
+  line-height: 1.58;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-list li + li {
+  margin-top: 0.48rem;
 }
 
 .blacklight-pages-api_access .api-access-page--modern code {
   color: #0f5968;
   background: rgba(15, 89, 104, 0.09);
+  border: 1px solid rgba(15, 89, 104, 0.16);
   border-radius: 6px;
   padding: 0.12rem 0.32rem;
+  overflow-wrap: anywhere;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-code {
-  margin: 0.7rem 0 0;
+  margin: 0.85rem 0 1rem;
   border-radius: 14px;
   border: 1px solid rgba(143, 180, 191, 0.45);
   background: linear-gradient(160deg, #0f2d3a 0%, #173f4f 100%);
@@ -5751,6 +5915,7 @@ summary:focus-visible,
   padding: 0.9rem;
   overflow-x: auto;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  max-width: 100%;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-code code {
@@ -5758,7 +5923,67 @@ summary:focus-visible,
   background: transparent;
   border: 0;
   padding: 0;
-  font-size: 0.92rem;
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost {
+  margin: 0.85rem 0 1rem;
+  border-radius: 10px;
+  border: 1px solid #d9e0e7;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(18, 24, 35, 0.06);
+  max-width: 100%;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost figcaption {
+  margin: 0;
+  padding: 0.46rem 0.62rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: #586577;
+  font-size: 0.84rem;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-snippet__label {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-snippet__lang {
+  display: inline-block;
+  padding: 0.22rem 0.12rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #475569;
+  font-weight: 600;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-code--docmost {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 1rem;
+  box-shadow: none;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-code--docmost code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95rem;
+  line-height: 1.58;
+  color: #1f2937;
+  white-space: pre;
 }
 
 @keyframes apiFadeUp {
@@ -5778,8 +6003,19 @@ summary:focus-visible,
     align-items: start;
   }
 
+  .blacklight-pages-api_access .api-access-page--modern .section-title {
+    max-width: none;
+    font-size: clamp(2.15rem, 6.3vw, 3.2rem);
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-lede {
+    max-width: 66ch;
+  }
+
   .blacklight-pages-api_access .api-access-page--modern .api-hero__panel {
-    margin-top: 0.28rem;
+    margin-top: 0.35rem;
+    width: 100%;
+    max-width: 680px;
   }
 
   .blacklight-pages-api_access .api-access-page--modern .api-layout {
@@ -5816,14 +6052,97 @@ summary:focus-visible,
     padding: 1rem;
   }
 
+  .blacklight-pages-api_access .api-access-page--modern .section-title {
+    font-size: clamp(1.95rem, 8.8vw, 2.85rem);
+    line-height: 1.08;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .section-title .api-hero__eyebrow-text {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.45rem;
+    white-space: nowrap;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-lede {
+    max-width: none;
+    font-size: 1rem;
+    line-height: 1.52;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-hero__panel {
+    padding: 0.95rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-hero__panel h2 {
+    font-size: 1.42rem;
+    line-height: 1.16;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-quick-list li {
+    font-size: 0.96rem;
+    line-height: 1.35;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-quick-list li > span {
+    width: 1.45rem;
+    height: 1.45rem;
+    font-size: 0.82rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-hero__panel-note {
+    font-size: 0.95rem;
+  }
+
   .blacklight-pages-api_access .api-access-page--modern .api-card {
     border-radius: 14px;
     padding: 0.9rem;
   }
 
+  .blacklight-pages-api_access .api-access-page--modern .api-card h2 {
+    font-size: clamp(1.38rem, 6.2vw, 1.72rem);
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-card p,
+  .blacklight-pages-api_access .api-access-page--modern .api-list li {
+    font-size: 1rem;
+    line-height: 1.56;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-card h3 {
+    margin-top: 1.2rem;
+    font-size: 1.2rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-card h4 {
+    font-size: 1.04rem;
+    line-height: 1.34;
+  }
+
   .blacklight-pages-api_access .api-access-page--modern .api-code {
     border-radius: 10px;
     padding: 0.72rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-code code {
+    font-size: 0.92rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-code--docmost {
+    padding: 0.78rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost figcaption {
+    padding: 0.36rem 0.48rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-snippet__lang {
+    padding: 0.18rem 0.1rem;
+    font-size: 0.72rem;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost .api-code--docmost code {
+    font-size: 0.86rem;
   }
 }
 
@@ -6039,4 +6358,22 @@ summary:focus-visible,
   .home-page .home-explore .home-split-card__media {
     min-height: clamp(170px, 44vw, 250px);
   }
+}
+
+/* Flat card style across pages: remove card elevation */
+.card,
+.card-collection,
+.home-page .home-split-card,
+.blacklight-pages-api_access .api-access-page--modern .api-hero,
+.blacklight-pages-api_access .api-access-page--modern .api-toc,
+.blacklight-pages-api_access .api-access-page--modern .api-card,
+.blacklight-pages-api_access .api-access-page--modern .api-hero__panel,
+.blacklight-pages-api_access .api-access-page--modern .api-snippet--docmost {
+  box-shadow: none !important;
+}
+
+.card:hover,
+.card-collection:hover,
+.blacklight-pages-api_access .api-access-page--modern .api-card:hover {
+  box-shadow: none !important;
 }

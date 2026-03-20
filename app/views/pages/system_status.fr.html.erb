@@ -1,0 +1,68 @@
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
+              <span class="api-hero__title-main">&#201;tat du syst&egrave;me</span>
+            </h1>
+            <p class="api-lede">
+              Mises &agrave; jour de disponibilit&eacute; pour les services Canadiana et H&eacute;ritage.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="api-layout">
+        <aside class="api-toc" aria-label="Sur cette page">
+          <h2 class="api-toc__title">Sur cette page</h2>
+          <a href="#fr-status-live">&#201;tat en direct</a>
+          <a href="#fr-status-services">Services suivis</a>
+          <a href="#fr-status-incident">En cas de perturbation</a>
+          <a href="#fr-status-contact">Contacter le soutien</a>
+        </aside>
+
+        <div class="api-content">
+          <section id="fr-status-live" class="api-card">
+            <h2>&#201;tat en direct</h2>
+            <p>
+              Consultez la page d&apos;&eacute;tat pour les incidents actifs, les d&eacute;gradations et les interruptions planifi&eacute;es.
+            </p>
+            <p>
+              <a href="<%= I18n.t('links.URL_SYSTEM') %>" target="_blank" rel="noopener">Ouvrir la page d&apos;&eacute;tat en direct</a>
+            </p>
+          </section>
+
+          <section id="fr-status-services" class="api-card">
+            <h2>Services suivis</h2>
+            <ul class="api-list">
+              <li>Recherche au catalogue et pages de notices</li>
+              <li>Diffusion IIIF des manifestes et des images</li>
+              <li>Acc&egrave;s API et int&eacute;grations associ&eacute;es</li>
+            </ul>
+          </section>
+
+          <section id="fr-status-incident" class="api-card">
+            <h2>En cas de perturbation</h2>
+            <ul class="api-list">
+              <li>V&eacute;rifiez d&apos;abord la page d&apos;&eacute;tat pour les incidents actifs</li>
+              <li>R&eacute;essayez quelques minutes plus tard en cas de d&eacute;gradation temporaire</li>
+              <li>Si le probl&egrave;me persiste, contactez le soutien avec l&apos;URL, l&apos;heure et le message d&apos;erreur</li>
+            </ul>
+          </section>
+
+          <section id="fr-status-contact" class="api-card">
+            <h2>Contacter le soutien</h2>
+            <p>
+              Si vous devez signaler un probl&egrave;me, utilisez la page
+              <a href="<%= contact_us_page_path(lang: I18n.locale) %>">Nous joindre</a>
+              pour transmettre les d&eacute;tails techniques.
+            </p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,175 @@
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Canadiana Collections And Infrastructure</span>
+              <span class="api-hero__title-main">Navigating the Collections</span>
+            </h1>
+            <p class="api-lede">
+              Browse, search, and explore material from Canadiana with this quick guide.
+              Additional guidance for H&eacute;ritage finding aids and reference guides is included below.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="api-layout">
+        <aside class="api-toc" aria-label="On this page">
+          <h2 class="api-toc__title">On this page</h2>
+          <a href="#nav-search">Searching the collections</a>
+          <a href="#nav-maps">Searching for maps</a>
+          <a href="#nav-metadata">Metadata and downloads</a>
+          <a href="#nav-pdiiif">PDiiiF workflow</a>
+          <a href="#nav-purl">Persistent URLs</a>
+          <a href="#nav-heritage">H&eacute;ritage guides</a>
+        </aside>
+
+        <div class="api-content">
+          <section id="nav-search" class="api-card">
+            <h2>Searching the collections</h2>
+            <p>
+              Use the Canadiana search form to search descriptive information and metadata such as titles,
+              author or creator names, subject keywords, and (where available) text content.
+              Search terms are not case-sensitive and not accent-sensitive.
+            </p>
+            <h3>Search operators</h3>
+            <ul class="api-list">
+              <li><strong>Wildcards:</strong> <code>?</code> matches one character; <code>*</code> matches any number of characters. Examples: <code>defen?e</code>, <code>labo*r</code></li>
+              <li><strong>Phrases:</strong> use quotes for exact phrases. Example: <code>"quebec city"</code></li>
+              <li><strong>Excluded terms:</strong> prefix with <code>-</code>. Example: <code>paris -france</code></li>
+              <li><strong>Alternates:</strong> use <code>|</code> between options. Example: <code>ontario york | toronto</code></li>
+              <li><strong>Field search:</strong> <code>ti:</code> title, <code>au:</code> author or creator, <code>su:</code> subject. Example: <code>ti:vancouver</code></li>
+            </ul>
+            <h3>Searching Chinese-language collections</h3>
+            <p>
+              Solr currently works best when spaces are used between multi-character terms.
+              Quotes can also improve results. Example: <code>"&#38620; &#36008; &#24215;"</code> to search for <code>&#38620;&#36008;&#24215;</code>.
+            </p>
+          </section>
+
+          <section id="nav-maps" class="api-card">
+            <h2>Searching for maps</h2>
+            <p>
+              To search for maps in Canadiana, use the
+              <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Maps collection search</a>
+              to browse by Province or Territory, or browse the full maps collection.
+            </p>
+            <p>
+              Maps can also be found by National Topographic System (NTS) number.
+              For NTS lookup help, consult Natural Resources Canada&apos;s National Topographic System index maps.
+              To search by NTS number in Canadiana, enter <code>x0</code> before the 5-digit NTS number.
+              Example: <code>"x084M01"</code>.
+            </p>
+          </section>
+
+          <section id="nav-metadata" class="api-card">
+            <h2>Metadata and download menu</h2>
+            <p>
+              On an item record, use the <strong>Details</strong> panel for metadata, citation, and downloads.
+            </p>
+            <figure class="mt-3 mb-3">
+              <%= image_tag 'navigating-collections-details-panel.png',
+                            class: 'img-fluid rounded border',
+                            alt: 'Canadiana item view showing the Details panel with metadata links and download options.' %>
+              <figcaption class="small text-muted mt-2">
+                Current item interface with Details metadata links and download options.
+              </figcaption>
+            </figure>
+            <ul class="api-list">
+              <li><strong>View Detailed Metadata:</strong> full record fields</li>
+              <li><strong>Cite:</strong> citation options</li>
+              <li><strong>Downloads:</strong> <code>IMG</code> (Download image), <code>PAGE</code> (Download page PDF, if available), <code>FULL</code> (Download full PDF, when available)</li>
+              <li><strong>Rights Statement</strong> and <strong>Persistent URL</strong> are shown directly in record details</li>
+            </ul>
+            <div class="d-flex flex-wrap gap-2 mt-2 mb-3" aria-label="Download button examples">
+              <%= image_tag 'navigating-download-button-img.png',
+                            class: 'img-fluid rounded border',
+                            alt: 'IMG download button example.' %>
+              <%= image_tag 'navigating-download-button-page.png',
+                            class: 'img-fluid rounded border',
+                            alt: 'PAGE download button example.' %>
+              <%= image_tag 'navigating-download-button-full.png',
+                            class: 'img-fluid rounded border',
+                            alt: 'FULL download button example.' %>
+            </div>
+            <p>
+              Some download options are item-dependent. If a button is disabled (for example <code>FULL</code>),
+              that download type is not currently available for that item.
+            </p>
+          </section>
+
+          <section id="nav-pdiiif" class="api-card">
+            <h2>Downloading with PDiiiF</h2>
+            <p>
+              Not all items are available as complete multi-page PDFs. You can generate image-based multi-page PDFs
+              (including page ranges) with third-party tools such as PDiiiF.
+            </p>
+            <p>
+              PDiiiF is not maintained by CRKN. Availability and errors are outside CRKN control.
+              PDiiiF output is image-based PDF by default (text is not searchable without additional OCR processing).
+            </p>
+            <h3>PDiiiF workflow</h3>
+            <ol>
+              <li>Open the item you want to download.</li>
+              <li>Edit the item URL: change <code>view</code> to <code>iiif</code> and replace the final page number with <code>manifest</code>.</li>
+              <li>Open <a href="https://pdiiif.jbaiter.de/" target="_blank" rel="noopener">pdiiif.jbaiter.de</a> and paste the manifest URL.</li>
+              <li>Click <strong>Generate PDF</strong> for the full item.</li>
+              <li>For specific pages or ranges, use <strong>Settings</strong> and enter values such as <code>1, 10-200</code>.</li>
+            </ol>
+            <p>
+              Example URLs:<br>
+              <code>https://heritage.canadiana.ca/view/oocihm.lac_reel_h1023/1</code><br>
+              <code>https://heritage.canadiana.ca/iiif/oocihm.lac_reel_h1023/manifest</code>
+            </p>
+          </section>
+
+          <section id="nav-purl" class="api-card">
+            <h2>Persistent URLs (ARKs)</h2>
+            <p>
+              Canadiana provides persistent URLs (ARKs) for collection items. These links are designed to remain stable over time,
+              even when infrastructure or item records change.
+            </p>
+            <p>
+              Use persistent URLs for citation and long-term references whenever possible.
+              You can find the persistent URL in each item&apos;s Details panel.
+              For citation practices, see the
+              <a href="<%= citation_guide_path(lang: I18n.locale) %>">Citation Guide</a>.
+            </p>
+          </section>
+
+          <section id="nav-heritage" class="api-card">
+            <h2>Navigating H&eacute;ritage collection guides</h2>
+            <p>
+              In H&eacute;ritage, open an individual series and review the <strong>About</strong> tab,
+              especially the <strong>Description</strong> notes. These often explain reel arrangement and whether
+              finding aids or indexes exist.
+            </p>
+            <h3>Finding aids</h3>
+            <ul class="api-list">
+              <li><strong>On H&eacute;ritage reels:</strong> some descriptions indicate the reel range containing the finding aid</li>
+              <li><strong>On Library and Archives Canada:</strong> use the collection&apos;s MIKAN number from H&eacute;ritage and search LAC Collection Search</li>
+              <li>In LAC results, open <strong>Record Information - Details</strong> and check <strong>Finding Aid</strong></li>
+            </ul>
+            <h3>Reference guides frequently used by researchers</h3>
+            <ul class="api-list">
+              <li>C-5694 Index</li>
+              <li>Chinese immigration records: C.I. 44 forms and index cards (RG76 D2j)</li>
+              <li>Chinese Times Research Guide</li>
+              <li>The Heir and Devisee Commission</li>
+              <li>Jacques-Henri Fabien Collection (MG 25 G231)</li>
+              <li>Juvenile Inspection Reports (RG 76 C4c)</li>
+              <li>Manifest Indexes, 1906-1920 (Index Passenger Lists, 1906-1920)</li>
+              <li>Search Tips for ICR content</li>
+              <li>Upper Canada Sundries</li>
+              <li>Upper Canada Land Books</li>
+              <li>War Diaries - Second World War</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

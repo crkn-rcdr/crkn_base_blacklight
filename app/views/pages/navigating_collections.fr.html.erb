@@ -1,0 +1,86 @@
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
+              <span class="api-hero__title-main">Naviguer dans les collections</span>
+            </h1>
+            <p class="api-lede">
+              Parcourez, recherchez et explorez le contenu de Canadiana avec ce guide rapide.
+              Des indications suppl&eacute;mentaires pour H&eacute;ritage sont incluses plus bas.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="api-layout">
+        <aside class="api-toc" aria-label="Sur cette page">
+          <h2 class="api-toc__title">Sur cette page</h2>
+          <a href="#fr-start">Choisir la collection</a>
+          <a href="#fr-search">Construire une recherche</a>
+          <a href="#fr-refine">Affiner les r&eacute;sultats</a>
+          <a href="#fr-record">Notice et lien ARK</a>
+          <a href="#fr-resources">Ressources utiles</a>
+        </aside>
+
+        <div class="api-content">
+          <section id="fr-start" class="api-card">
+            <h2>Choisir la collection de d&eacute;part</h2>
+            <ul class="api-list">
+              <li><strong>Collection Canadiana :</strong> publications (monographies, p&eacute;riodiques, publications gouvernementales, cartes)</li>
+              <li><strong>Collection H&eacute;ritage :</strong> documents d&apos;archives et sources primaires sur l&apos;histoire des personnes, des communaut&eacute;s et des institutions</li>
+            </ul>
+            <p>
+              <a href="<%= compare_collections_path(lang: I18n.locale) %>">Comparer les deux collections</a>
+            </p>
+          </section>
+
+          <section id="fr-search" class="api-card">
+            <h2>Construire une recherche</h2>
+            <ul class="api-list">
+              <li>Commencez par <code>Tous les champs</code> pour une recherche large</li>
+              <li>Passez &agrave; <code>Titre</code>, <code>Cr&eacute;ateur</code>, <code>Sujet</code> ou <code>Texte int&eacute;gral</code> pour pr&eacute;ciser</li>
+              <li>Utilisez des guillemets pour une expression exacte</li>
+            </ul>
+          </section>
+
+          <section id="fr-refine" class="api-card">
+            <h2>Affiner les r&eacute;sultats</h2>
+            <ul class="api-list">
+              <li>Appliquez les facettes de langue, de date et de collection</li>
+              <li>Triez par pertinence, ann&eacute;e ou date d&apos;ajout</li>
+              <li>Utilisez la pagination pour parcourir de grands ensembles de r&eacute;sultats</li>
+            </ul>
+          </section>
+
+          <section id="fr-record" class="api-card">
+            <h2>Ouvrir une notice et utiliser un lien stable</h2>
+            <ul class="api-list">
+              <li>V&eacute;rifiez les m&eacute;tadonn&eacute;es de la notice (titre, auteur, date)</li>
+              <li>Privil&eacute;giez les liens ARK pour le partage et la citation</li>
+              <li>Consultez les pages Citation et API pour des usages avanc&eacute;s</li>
+            </ul>
+          </section>
+
+          <section id="fr-resources" class="api-card">
+            <h2>Ressources utiles</h2>
+            <div class="d-flex flex-wrap gap-2">
+              <a class="btn btn-soft-primary btn-sm" href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
+                Tutoriel complet
+              </a>
+              <a class="btn btn-ghost-primary btn-sm" href="<%= citation_guide_path(lang: I18n.locale) %>">
+                Guide de citation
+              </a>
+              <a class="btn btn-ghost-primary btn-sm" href="<%= api_access_path(lang: I18n.locale) %>">
+                Acc&egrave;s API
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

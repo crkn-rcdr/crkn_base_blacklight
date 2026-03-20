@@ -17,7 +17,7 @@
         </address>
 
         <nav class="site-footer__actions" aria-label="Actions du pied de page">
-          <a class="site-footer__btn" href="<%= I18n.t('links.URL_CONTACT') %>">Nous joindre</a>
+          <a class="site-footer__btn" href="<%= contact_us_page_path(lang: I18n.locale) %>">Nous joindre</a>
           <a class="site-footer__btn" href="https://www.crkn-rcdr.ca/fr/infolettre" target="_blank" rel="noopener">S&apos;inscrire &agrave; l&apos;infolettre</a>
           <a class="site-footer__btn" href="https://www.crkn-rcdr.ca/fr/digitization-services" target="_blank" rel="noopener">Services de num&eacute;risation</a>
         </nav>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="site-footer__meta">
-      <a href="<%= I18n.t('links.URL_TERMS') %>">Conditions de service</a>
+      <a href="<%= terms_of_service_path(lang: I18n.locale) %>">Conditions de service</a>
       <span>&copy; <%= Time.current.year %> R&eacute;seau canadien de documentation pour la recherche</span>
     </div>
   </div>

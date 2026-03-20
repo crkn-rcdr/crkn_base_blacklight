@@ -48,7 +48,7 @@
   </section>
 
   <section class="site-section home-intro home-intro--canadiana-clean">
-    <div class="canadiana-shell home-canadiana-intro-grid">
+    <div class="canadiana-shell">
       <div class="home-canadiana-intro-copy">
         <h2 class="section-title">Collection Canadiana</h2>
         <p class="section-lede">
@@ -57,12 +57,11 @@
           gouvernementaux, cartes et plus encore, de 1500 &agrave; aujourd&apos;hui. Le contenu Canadiana provient en grande partie de
           la s&eacute;rie de microfiches de l&apos;Institut canadien de microreproductions historiques (ICMH).
         </p>
-        <a class="home-inline-link home-inline-link--arrow" href="/about/monographs?lang=<%= I18n.locale %>">
+        <a class="home-inline-link home-inline-link--arrow" href="<%= about_canadiana_path(lang: I18n.locale) %>">
           En savoir plus
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
       </div>
-      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :canadiana } %>
     </div>
   </section>
 
@@ -90,7 +89,7 @@
 
           <div class="home-collection-band__meta-row">
             <div class="home-walkthrough-inline canadiana-walkthrough">
-              <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
+              <a href="<%= navigating_collections_path(lang: I18n.locale) %>">
                 <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
                 Guide rapide&nbsp;: comment utiliser la recherche de la collection Canadiana
               </a>
@@ -185,10 +184,7 @@
   </section>
 
   <section class="site-section home-intro home-intro--heritage-clean">
-    <div class="canadiana-shell home-heritage-intro-grid">
-      <div class="home-heritage-intro-media">
-        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
-      </div>
+    <div class="canadiana-shell">
       <div class="home-heritage-intro-copy">
         <h2 class="section-title">Collection H&eacute;ritage</h2>
         <p class="section-lede">
@@ -199,13 +195,10 @@
           des ann&eacute;es 1600 aux ann&eacute;es 1980. H&eacute;ritage est une ressource in&eacute;gal&eacute;e pour les chercheurs
           et les communaut&eacute;s de partout au pays.
         </p>
-        <a class="home-inline-link home-inline-link--arrow" href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+        <a class="home-inline-link home-inline-link--arrow" href="<%= about_heritage_path(lang: I18n.locale) %>">
           En savoir plus
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
-      </div>
-      <div class="home-heritage-logo-card" aria-hidden="true">
-        <img class="home-heritage-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
       </div>
     </div>
   </section>

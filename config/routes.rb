@@ -5,12 +5,15 @@ Rails.application.routes.draw do
   root to: "pages#home"
   # Simple about pages for collections
   get '/compare-collections', to: 'pages#compare_collections', as: :compare_collections
-  get '/about/monographs', to: 'pages#about_monographs'
-  get '/about/serials', to: 'pages#about_serials'
-  get '/about/government-publications', to: 'pages#about_govpubs'
-  get '/about/maps', to: 'pages#about_maps'
+  get '/about/canadiana', to: 'pages#about_canadiana', as: :about_canadiana
+  get '/about/heritage', to: 'pages#about_heritage', as: :about_heritage
   get '/api-access', to: 'pages#api_access', as: :api_access
   get '/what-is-iiif', to: 'pages#what_is_iiif', as: :what_is_iiif
+  get '/citation-guide', to: 'pages#citation_guide', as: :citation_guide
+  get '/navigating-collections', to: 'pages#navigating_collections', as: :navigating_collections
+  get '/contact-us', to: 'pages#contact_us', as: :contact_us_page
+  get '/system-status', to: 'pages#system_status', as: :system_status
+  get '/terms-of-service', to: 'pages#terms_of_service', as: :terms_of_service
   # Allow slashes inside :ark (e.g., ark:/69429/m0k35m90313z)
   get '/dl/:id/*ark', to: 'downloads#index', constraints: { id: /[0-z\.]+/ }, format: false
   #root to: "catalog#index"
