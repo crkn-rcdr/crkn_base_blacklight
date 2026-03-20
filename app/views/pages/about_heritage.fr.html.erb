@@ -1,4 +1,4 @@
-<% content_for :page_title, "Collection Heritage - #{application_name}" %>
+<% content_for :page_title, "Collection Héritage - #{application_name}" %>
 
 <div class="home-page">
   <section class="site-section about-intro about-intro--heritage">
@@ -7,14 +7,14 @@
         <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
       </div>
       <div class="about-intro-copy about-intro-copy--heritage">
-        <h1 class="section-title">Collection H&eacute;ritage</h1>
+        <h1 class="section-title">Collection Héritage</h1>
         <p class="section-lede">
-          La collection H&eacute;ritage est un projet conjoint soutenu par les membres du RCDR et Bibliotheque et Archives
+          La collection Héritage est un projet conjoint soutenu par les membres du RCDR et Bibliotheque et Archives
           Canada (BAC), et elle s'appuie sur les riches ressources de microfilms d'archives detenues par BAC. Avec plus
-          de 37&nbsp;millions de pages de documents de source primaire, H&eacute;ritage retrace le Canada et ses peuples
-          des annees 1600 aux annees 1980. H&eacute;ritage est une ressource inegalee qui soutient les chercheurs et les
+          de 37 millions de pages de documents de source primaire, Héritage retrace le Canada et ses peuples
+          des annees 1600 aux annees 1980. Héritage est une ressource inegalee qui soutient les chercheurs et les
           communautes partout au Canada. Le RCDR et BAC poursuivent ensemble le developpement de la collection, avec
-          environ 300&nbsp;000 pages ajoutees chaque annee.
+          environ 300 000 pages ajoutees chaque annee.
         </p>
       </div>
       <div class="about-intro-logo-card" aria-hidden="true">
@@ -26,7 +26,7 @@
 
 <section class="site-section about-modern-section about-modern-section--heritage">
   <div class="canadiana-shell about-modern-layout">
-    <div class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase">
+    <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title-fr">
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
         <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Manuscrit d'archives de la collection Heritage" loading="lazy">
       </article>
@@ -34,6 +34,7 @@
         <img src="<%= asset_path('government_documents.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
+        <h2 class="visually-hidden">Collection Héritage en bref</h2>
         <ul>
           <li>Documents d'archives uniques numerises a partir des fonds de Bibliotheque et Archives Canada</li>
           <li>Environ 60 millions de pages de documents de source primaire</li>
@@ -45,18 +46,18 @@
       <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
         <h2>Une ressource essentielle</h2>
         <p>
-          H&eacute;ritage se compose d'un vaste ensemble de documents uniques en cours de numerisation a partir des fonds
+          Héritage se compose d'un vaste ensemble de documents uniques en cours de numerisation a partir des fonds
           precieux de Bibliotheque et Archives Canada.
         </p>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
         <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Image de source archivistique de la collection Heritage" loading="lazy">
       </article>
-    </div>
+    </section>
 
     <section class="about-modern-block" aria-labelledby="heritage-areas-title-fr">
       <div class="about-modern-block-head">
-        <h2 id="heritage-areas-title-fr">Ce que vous pouvez trouver dans la collection H&eacute;ritage</h2>
+        <h2 id="heritage-areas-title-fr">Ce que vous pouvez trouver dans la collection Héritage</h2>
       </div>
       <div class="about-modern-collection-grid about-modern-collection-grid--five">
         <article class="about-modern-card about-modern-card--collection">
@@ -79,7 +80,7 @@
           <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_t12502.1426.jpg') %>" alt="Archives des ministeres dans Heritage" loading="lazy">
           <div class="about-modern-card-body">
             <h3>Ministeres et administrations</h3>
-            <p>Documents precoces de ministeres cles&nbsp;: Affaires indiennes, Immigration, Sante, Agriculture, Canaux et chemins de fer, Peches et Ressources naturelles.</p>
+            <p>Documents precoces de ministeres cles : Affaires indiennes, Immigration, Sante, Agriculture, Canaux et chemins de fer, Peches et Ressources naturelles.</p>
           </div>
         </article>
 
@@ -101,7 +102,7 @@
       </div>
     </section>
 
-    <section class="about-modern-block">
+    <section class="about-modern-block" aria-labelledby="heritage-use-title-fr">
       <div class="about-modern-work-grid">
         <article class="about-modern-card about-modern-card--media">
           <img src="<%= asset_path('govpubs.jpg') %>" alt="Parcours de recherche dans la collection Heritage" loading="lazy">
@@ -109,10 +110,10 @@
         <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title-fr">
           <h2 id="heritage-use-title-fr">Comment utiliser ce site</h2>
           <ol>
-            <li><strong>Choisir une collection&nbsp;:</strong> commencez par le volet correspondant le mieux a votre sujet de recherche.</li>
-            <li><strong>Consulter les aides au reperage&nbsp;:</strong> chaque page propose des reperes et des conseils pour naviguer dans les bobines de microfilms numerisees.</li>
-            <li><strong>Effectuer une recherche simple&nbsp;:</strong> interrogez les metadonnees descriptives (mots du titre, auteur/createur, sujets) et le texte lorsqu'il est disponible.</li>
-            <li><strong>Exploiter le contexte MIKAN&nbsp;:</strong> les indications de collection s'appuient sur <a href="http://www.collectionscanada.gc.ca/lac-bac/recherche/arch" target="_blank" rel="noopener">le catalogue d'archives MIKAN</a> de Bibliotheque et Archives Canada.</li>
+            <li><strong>Choisir une collection :</strong> commencez par le volet correspondant le mieux a votre sujet de recherche.</li>
+            <li><strong>Consulter les aides au reperage :</strong> chaque page propose des reperes et des conseils pour naviguer dans les bobines de microfilms numerisees.</li>
+            <li><strong>Effectuer une recherche simple :</strong> interrogez les metadonnees descriptives (mots du titre, auteur/createur, sujets) et le texte lorsqu'il est disponible.</li>
+            <li><strong>Exploiter le contexte MIKAN :</strong> les indications de collection s'appuient sur <a href="http://www.collectionscanada.gc.ca/lac-bac/recherche/arch" target="_blank" rel="noopener">le catalogue d'archives MIKAN</a> de Bibliotheque et Archives Canada.</li>
           </ol>
         </article>
       </div>
@@ -120,29 +121,30 @@
 
     <section class="about-modern-block" aria-labelledby="heritage-fulltext-title-fr">
       <div class="about-modern-block-head">
-        <h2 id="heritage-fulltext-title-fr">Puis-je rechercher en texte integral&nbsp;?</h2>
+        <h2 id="heritage-fulltext-title-fr">Puis-je rechercher en texte integral ?</h2>
       </div>
       <div class="about-modern-faq">
         <details open>
-          <summary>La recherche plein texte est-elle disponible maintenant&nbsp;?</summary>
+          <summary>La recherche plein texte est-elle disponible maintenant ?</summary>
           <p>Tres peu de texte archivistique est actuellement visible dans nos outils de recherche.</p>
         </details>
         <details>
-          <summary>Qu'est-il prevu pour la decouverte en texte integral&nbsp;?</summary>
+          <summary>Qu'est-il prevu pour la decouverte en texte integral ?</summary>
           <p>
             La transcription de ces documents pour produire du texte interrogeable demandera du temps et des ressources
-            et demeure un objectif majeur du projet. Les futures versions de H&eacute;ritage prendront en charge la
+            et demeure un objectif majeur du projet. Les futures versions de Héritage prendront en charge la
             recherche en texte integral au fur et a mesure de la transcription des documents.
           </p>
         </details>
         <details>
-          <summary>Quelles sont les prochaines etapes pour la recherche&nbsp;?</summary>
+          <summary>Quelles sont les prochaines etapes pour la recherche ?</summary>
           <p>
             Au cours des prochaines annees, de nouveaux outils de recherche et des infrastructures pour la creation et
-            l'interconnexion de metadonnees enrichies seront developpes par Canadiana et ses partenaires H&eacute;ritage.
+            l'interconnexion de metadonnees enrichies seront developpes par Canadiana et ses partenaires Héritage.
           </p>
         </details>
       </div>
     </section>
   </div>
 </section>
+

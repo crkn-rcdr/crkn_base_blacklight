@@ -18,28 +18,28 @@
 
 <section class="site-section about-modern-section about-modern-section--canadiana">
   <div class="canadiana-shell about-modern-layout">
-    <div class="about-modern-feature-grid">
-      <article class="about-modern-card about-modern-card--copy">
+    <section class="about-modern-feature-grid" aria-labelledby="canadiana-overview-title">
+      <article class="about-modern-card about-modern-card--copy about-modern-card--canadiana-copy-primary">
         <h2>31 million pages in one collection</h2>
         <p>
           Browse materials spanning approximately five centuries of Canadian publishing, from early imprints to twentieth-century
           periodicals and documents.
         </p>
       </article>
-      <article class="about-modern-card about-modern-card--media">
+      <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-primary">
         <img src="<%= asset_path('monog.jpg') %>" alt="Historic books and publications from the Canadiana Collection" loading="lazy">
       </article>
-      <article class="about-modern-card about-modern-card--media">
+      <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-secondary">
         <img src="<%= asset_path('maps.jpg') %>" alt="Historic map materials from the Canadiana Collection" loading="lazy">
       </article>
-      <article class="about-modern-card about-modern-card--copy">
+      <article class="about-modern-card about-modern-card--copy about-modern-card--canadiana-copy-secondary">
         <h2>Collection depth built for serious research</h2>
         <p>
           Content includes books, newspapers, magazines, maps, and government publications selected through expert advisory
           guidance and sustained digitization partnerships.
         </p>
       </article>
-    </div>
+    </section>
 
     <section class="about-modern-block about-modern-deep-dive" aria-labelledby="canadiana-deep-dive-title">
       <div class="about-modern-block-head">
@@ -236,13 +236,13 @@
       </article>
     </section>
 
-    <section class="about-modern-block">
+    <section class="about-modern-block" aria-labelledby="canadiana-use-title">
       <div class="about-modern-work-grid">
         <article class="about-modern-card about-modern-card--media">
           <img src="<%= asset_path('govpubs.jpg') %>" alt="Research workflow for Canadiana materials" loading="lazy">
         </article>
         <article class="about-modern-card about-modern-card--steps">
-          <h2>How to Work with the Collection</h2>
+          <h2 id="canadiana-use-title">How to Work with the Collection</h2>
           <ol>
             <li><strong>Start broad:</strong> Search across all fields to identify promising titles and themes.</li>
             <li><strong>Narrow fast:</strong> Use collection filters to focus on monographs, serials, maps, or government content.</li>

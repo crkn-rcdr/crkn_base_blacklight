@@ -1,4 +1,4 @@
-<% content_for :page_title, "Heritage Collection - #{application_name}" %>
+<% content_for :page_title, "Héritage Collection - #{application_name}" %>
 
 <div class="home-page">
   <section class="site-section about-intro about-intro--heritage">
@@ -7,12 +7,12 @@
         <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
       </div>
       <div class="about-intro-copy about-intro-copy--heritage">
-        <h1 class="section-title">H&eacute;ritage Collection</h1>
+        <h1 class="section-title">Héritage Collection</h1>
         <p class="section-lede">
-          The H&eacute;ritage collection is a joint project supported by CRKN members and Library and Archives Canada
+          The Héritage collection is a joint project supported by CRKN members and Library and Archives Canada
           (LAC) and draws from the rich resources of archival microfilm held by LAC. With more than 37 million pages
-          of primary-source documents, H&eacute;ritage chronicles Canada and its peoples from the 1600s to the 1980s.
-          H&eacute;ritage is an unparalleled resource supporting researchers and communities across Canada. CRKN and LAC
+          of primary-source documents, Héritage chronicles Canada and its peoples from the 1600s to the 1980s.
+          Héritage is an unparalleled resource supporting researchers and communities across Canada. CRKN and LAC
           continue to work together to develop the collection, with approximately 300,000 pages added annually.
         </p>
       </div>
@@ -25,7 +25,7 @@
 
 <section class="site-section about-modern-section about-modern-section--heritage">
   <div class="canadiana-shell about-modern-layout">
-    <div class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase">
+    <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title">
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
         <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Historic archival manuscript in the Heritage collection" loading="lazy">
       </article>
@@ -33,9 +33,10 @@
         <img src="<%= asset_path('government_documents.jpg') %>" alt="Government records from the Heritage collection" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
+        <h2 class="visually-hidden">Héritage Collection at a glance</h2>
         <ul>
           <li>Unique archival records digitized from Library and Archives Canada holdings</li>
-          <li>Approximately 60 million pages of primary-source documents</li>
+          <li>approximately 37.5 million pages of primary-source documents</li>
           <li>Coverage from the 1600s to the mid-1900s</li>
           <li>Organized into five core subject areas for easier exploration</li>
           <li>Supports historians, students, and genealogists</li>
@@ -44,18 +45,18 @@
       <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
         <h2>An Essential Resource</h2>
         <p>
-          H&eacute;ritage consists of a wide variety of unique records now being digitized from the treasured holdings of
+          Héritage consists of a wide variety of unique records now being digitized from the treasured holdings of
           Library and Archives Canada.
         </p>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
         <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Archival source image from the Heritage collection" loading="lazy">
       </article>
-    </div>
+    </section>
 
     <section class="about-modern-block" aria-labelledby="heritage-areas-title">
       <div class="about-modern-block-head">
-        <h2 id="heritage-areas-title">What you can find in the H&eacute;ritage Collection</h2>
+        <h2 id="heritage-areas-title">What you can find in the Héritage Collection</h2>
       </div>
       <div class="about-modern-collection-grid about-modern-collection-grid--five">
         <article class="about-modern-card about-modern-card--collection">
@@ -100,7 +101,7 @@
       </div>
     </section>
 
-    <section class="about-modern-block">
+    <section class="about-modern-block" aria-labelledby="heritage-use-title">
       <div class="about-modern-work-grid">
         <article class="about-modern-card about-modern-card--media">
           <img src="<%= asset_path('govpubs.jpg') %>" alt="Research workflow in the Heritage collection" loading="lazy">
@@ -130,14 +131,14 @@
           <summary>What is planned for full-text discovery?</summary>
           <p>
             Transcribing these records to produce searchable text will take time and resources and remains a major project
-            objective. Future versions of H&eacute;ritage will support full-text searching as records are transcribed.
+            objective. Future versions of Héritage will support full-text searching as records are transcribed.
           </p>
         </details>
         <details>
           <summary>What comes next for research support?</summary>
           <p>
             Over the coming years, additional research tools and infrastructure for enhanced metadata creation and linking
-            will be developed by Canadiana and its H&eacute;ritage partners.
+            will be developed by Canadiana and its Héritage partners.
           </p>
         </details>
       </div>
