@@ -337,14 +337,14 @@ fr:
         go_to_next_page: Aller à la page suivante
         go_to_page: Aller à la page %{page}
         go_to_previous_page: Aller à la page précédente
-      first: "&laquo; Première"
-      last: Dernière &raquo;
-      next: Suivante &raquo;
-      previous: "&laquo; Précédente"
+      first: "« Première"
+      last: Dernière »
+      next: Suivante »
+      previous: "« Précédente"
       truncate: "…"
     pagination_compact:
-      next: Suivante &raquo;
-      previous: "&laquo; Précédente"
+      next: Suivante »
+      previous: "« Précédente"
   labels:
     L_ABOUT: À propos
     L_BROWSE: Parcourir

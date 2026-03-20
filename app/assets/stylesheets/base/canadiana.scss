@@ -19,6 +19,7 @@
     --accent-teal: var(--brand-teal);
     --accent-blue: #1096ac;
     --a11y-focus-ring: #005fcc;
+    --page-header-content-gap: 0.5rem;
     --bs-font-sans-serif: 'Roboto';
     --bs-font-monospace: 'Roboto';
 }
@@ -2011,14 +2012,21 @@ summary:focus-visible,
   background: #fff !important;
 }
 
+.topbar-utility .canadiana-shell,
+.topbar-main .canadiana-shell {
+  padding-left: clamp(20px, 2.6vw, 46px);
+  padding-right: clamp(20px, 2.6vw, 46px);
+}
+
 .topbar-utility {
-  min-height: 55px;
+  min-height: 44px;
   background: #f3f3f3;
+  border-bottom: 1px solid #e6e8eb;
 }
 
 .topbar-utility-inner {
   width: 100%;
-  min-height: 55px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -2030,14 +2038,15 @@ summary:focus-visible,
   padding: 0;
   display: flex;
   align-items: center;
-  gap: .95rem;
+  gap: .65rem;
 }
 
 .topbar-language-switch {
-  line-height: 1;
+  line-height: 1.2;
   color: #2d4f53;
-  font-size: 1.08rem;
-  letter-spacing: .02em;
+  font-size: clamp(.86rem, .68vw, .95rem);
+  letter-spacing: .01em;
+  white-space: nowrap;
 }
 
 .topbar-language-switch a {
@@ -2060,12 +2069,15 @@ summary:focus-visible,
 .topbar-socials {
   display: flex;
   align-items: center;
-  gap: .48rem;
+  gap: .38rem;
+  padding-left: .62rem;
+  margin-left: .1rem;
+  border-left: 1px solid rgba(29, 43, 58, .18);
 }
 
 .topbar .sm-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   margin: 0;
   background-color: #050607;
   -webkit-mask-repeat: no-repeat;
@@ -2108,30 +2120,34 @@ summary:focus-visible,
 
 .topbar .sm-icon.instagram i {
   color: #050607 !important;
-  font-size: 1.56rem;
+  font-size: 1.34rem;
   line-height: 1;
 }
 
 .topbar-main {
-  min-height: 122px;
   background: #fff;
+  padding-top: calc(.98rem + 15px);
+  padding-bottom: .78rem;
 }
 
 .topbar-main-inner {
   width: 100%;
-  min-height: 125px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2.4rem;
+  gap: clamp(1.1rem, 2vw, 1.7rem);
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .topbar-main .navbar-brand.navbar-logo {
   margin: 0;
   flex: 0 0 auto;
-  width: 358px !important;
-  height: 113px !important;
-  background: transparent url(/assets/ci-logo.svg) no-repeat top left;
+  display: block;
+  align-self: center;
+  width: 292px !important;
+  height: 80px !important;
+  background: transparent url(/assets/ci-logo.svg) no-repeat left center;
   background-size: contain;
 }
 
@@ -2151,21 +2167,24 @@ summary:focus-visible,
   align-items: center;
   justify-content: flex-end;
   flex-wrap: nowrap;
-  gap: 2.5rem;
+  gap: clamp(.9rem, 1.35vw, 1.45rem);
 }
 
 .nav-list.nav-list-main li {
   margin: 0 !important;
-  display: block !important;
+  display: flex !important;
+  align-items: center;
 }
 
 .nav-list.nav-list-main a {
   color: #222930 !important;
   text-decoration: none !important;
   white-space: nowrap;
-  font-size: clamp(.92rem, .99vw, 1.22rem);
-  line-height: 1.2;
-  font-weight: 400;
+  font-size: clamp(.94rem, .78vw, 1.02rem);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: .003em;
+  padding: .15rem 0;
 }
 
 .nav-list.nav-list-main a:hover,
@@ -2196,49 +2215,54 @@ summary:focus-visible,
   }
 
   .topbar-main {
-    min-height: 122px;
+    padding-top: calc(.9rem + 15px);
+    padding-bottom: .72rem;
   }
 
   .topbar-main-inner {
-    min-height: 125px;
-    gap: 1.7rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    gap: 1.2rem;
+    padding-left: 0;
+    padding-right: 0;
     max-width: 98% !important;
   }
 
   .topbar-utility-inner {
-    padding-left: 1rem;
-    padding-right: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
     //padding-top: 1rem;
   }
 
   .topbar-main .navbar-brand.navbar-logo {
-    width: 255px !important;
-    height: 97px !important;
+    width: 274px !important;
+    height: 76px !important;
   }
 
   .nav-list.nav-list-main {
-    gap: 1.55rem;
+    gap: .95rem;
   }
 }
 
 @media (max-width: 1199px) {
   .topbar-main {
-    min-height: 116px;
+    padding-top: calc(.8rem + 15px);
+    padding-bottom: .64rem;
   }
 
   .topbar-main-inner {
-    min-height: 125px;
+    gap: .72rem;
   }
 
   .topbar-main .navbar-brand.navbar-logo {
-    width: 260px !important;
-    height: 82px !important;
+    width: 236px !important;
+    height: 68px !important;
   }
 
   .nav-list.nav-list-main {
-    gap: 1rem;
+    gap: .6rem;
+  }
+
+  .nav-list.nav-list-main a {
+    font-size: .9rem;
   }
 }
 
@@ -2250,32 +2274,38 @@ summary:focus-visible,
 
   .topbar-utility,
   .topbar-utility-inner {
-    min-height: 48px;
+    min-height: 42px;
   }
 
   .topbar-language-switch {
-    font-size: 1rem;
+    font-size: .86rem;
   }
 
   .topbar .sm-icon {
-    width: 22px;
-    height: 22px;
+    width: 19px;
+    height: 19px;
   }
 
   .topbar .sm-icon.instagram i {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+
+  .topbar-socials {
+    padding-left: .55rem;
+    border-left: 0;
   }
 
   .topbar-main {
-    min-height: 88px;
+    min-height: 76px;
+    padding-block: 0;
   }
 
   .topbar-main-inner {
-    min-height: 125px;
+    min-height: 102px;
     flex-wrap: wrap;
     gap: .8rem;
-    padding-top: .6rem;
-    padding-bottom: .7rem;
+    padding-top: .65rem;
+    padding-bottom: .65rem;
   }
 
   .topbar-main .navbar-brand.navbar-logo {
@@ -3005,12 +3035,6 @@ summary:focus-visible,
   .home-page .home-collection-band--canadiana {
     position: relative;
   }
-  .topbar-main-inner {
-    min-height: 155px;
-    margin-top: 10px;
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
-  }
 }
 
 @media (min-width: 1500px) { 
@@ -3024,12 +3048,6 @@ summary:focus-visible,
 
   .home-page .home-collection-band--canadiana {
     position: relative;
-  }
-  .topbar-main-inner {
-    min-height: fit-content;
-    margin-top: 10px;
-    padding-top: 1rem;
-    padding-bottom: 1.5rem;
   }
 }
 
@@ -3886,7 +3904,7 @@ summary:focus-visible,
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  margin: clamp(0.45rem, 1vw, 1.15rem) clamp(0.35rem, 1vw, 1.25rem) 0;
+  margin: var(--page-header-content-gap) clamp(0.35rem, 1vw, 1.25rem) 0;
   padding-top: clamp(3.4rem, 6vw, 6rem);
   padding-bottom: clamp(3rem, 5.4vw, 5.8rem);
   border-radius: clamp(20px, 2.1vw, 34px);
@@ -4113,7 +4131,7 @@ summary:focus-visible,
 
 @media (max-width: 991px) {
   .home-page .home-hero {
-    margin: 0.42rem 0.5rem 0;
+    margin: var(--page-header-content-gap) 0.5rem 0;
     border-radius: 22px;
     padding-top: 2.4rem;
     padding-bottom: 2.45rem;
@@ -4165,7 +4183,7 @@ summary:focus-visible,
 
 @media (max-width: 575px) {
   .home-page .home-hero {
-    margin: 0.4rem 0.35rem 0;
+    margin: var(--page-header-content-gap) 0.35rem 0;
     border-radius: 18px;
   }
 
@@ -5485,9 +5503,14 @@ summary:focus-visible,
 
 /* API access page refresh */
 .blacklight-pages-api_access .api-site-section {
-  padding-top: clamp(1rem, 2vw, 1.8rem);
+  padding-top: var(--page-header-content-gap);
   padding-bottom: clamp(1.6rem, 2.8vw, 2.8rem);
   overflow-x: clip;
+}
+
+.blacklight-pages-about_canadiana .home-page > .home-intro--canadiana-clean,
+.blacklight-pages-about_heritage .home-page > .home-intro--heritage-clean {
+  margin-top: var(--page-header-content-gap);
 }
 
 .blacklight-pages-api_access .api-access-page--modern.container {

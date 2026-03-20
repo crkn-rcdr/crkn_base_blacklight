@@ -4,10 +4,10 @@
       <div class="home-canadiana-intro-copy">
         <h1 class="section-title">Collection Canadiana</h1>
         <p class="section-lede">
-          Environ 31&nbsp;millions de pages de publications qui montrent comment les connaissances, les r&eacute;cits et l&apos;information
-          ont circul&eacute; au fil du temps. Cette collection comprend des livres, journaux, magazines, documents gouvernementaux,
-          cartes et plus encore, de 1500 &agrave; aujourd&apos;hui. Le contenu Canadiana provient en grande partie de la s&eacute;rie de
-          microfiches de l&apos;Institut canadien de microreproductions historiques (ICMH).
+          Environ 31&nbsp;millions de pages de publications qui montrent comment les connaissances, les récits et l’information
+          ont circulé au fil du temps. Cette collection comprend des livres, journaux, magazines, documents gouvernementaux,
+          cartes et plus encore, de 1500 à aujourd’hui. Le contenu Canadiana provient en grande partie de la série de
+          microfiches de l’Institut canadien de microreproductions historiques (ICMH).
         </p>
       </div>
       <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :canadiana } %>
@@ -20,7 +20,7 @@
     <h2 class="h4">Volets de la collection</h2>
     <ul>
       <li><a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Monographies</a></li>
-      <li><a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Publications en s&eacute;rie</a></li>
+      <li><a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Publications en série</a></li>
       <li><a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Publications gouvernementales</a></li>
       <li><a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Cartes</a></li>
     </ul>
@@ -30,7 +30,7 @@
         Rechercher dans la collection Canadiana
       </a>
       <a class="btn btn-ghost-primary btn-sm" href="<%= compare_collections_path(lang: I18n.locale) %>">
-        Comparer avec H&eacute;ritage
+        Comparer avec Héritage
       </a>
     </div>
   </div>

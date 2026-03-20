@@ -352,14 +352,14 @@ en:
         go_to_next_page: Go to next page
         go_to_page: Go to page %{page}
         go_to_previous_page: Go to previous page
-      first: "&laquo; First"
-      last: Last &raquo;
-      next: Next &raquo;
-      previous: "&laquo; Previous"
+      first: "« First"
+      last: Last »
+      next: Next »
+      previous: "« Previous"
       truncate: "…"
     pagination_compact:
-      next: Next &raquo;
-      previous: "&laquo; Previous"
+      next: Next »
+      previous: "« Previous"
   layouts:
     catalog_result:
       aria:

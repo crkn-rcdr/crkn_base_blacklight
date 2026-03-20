@@ -5,11 +5,11 @@
         <div class="api-hero__copy">
           <h1 class="section-title">
             <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
-            <span class="api-hero__title-main">Acc&egrave;s API</span>
+            <span class="api-hero__title-main">Accès API</span>
           </h1>
           <p class="api-lede">
-            Le RCDR offre un acc&egrave;s programmatique aux m&eacute;tadonn&eacute;es de rep&eacute;rage via les API de Collections et infrastructure Canadiana.
-            Combinez ces points d&apos;acc&egrave;s avec les param&egrave;tres de recherche, les facettes, la pagination et le tri.
+            Le RCDR offre un accès programmatique aux métadonnées de repérage via les API de Collections et infrastructure Canadiana.
+            Combinez ces points d’accès avec les paramètres de recherche, les facettes, la pagination et le tri.
           </p>
         </div>
       </div>
@@ -18,67 +18,67 @@
     <div class="api-layout">
       <aside class="api-toc" aria-label="Sur cette page">
         <h2 class="api-toc__title">Sur cette page</h2>
-        <a href="#api-json">Points d&apos;acc&egrave;s API du catalogue</a>
-        <a href="#api-formats">Formats de r&eacute;ponse du catalogue</a>
-        <a href="#api-params">Param&egrave;tres de requ&ecirc;te du catalogue</a>
-        <a href="#api-config">Champs, facettes et tri configur&eacute;s du catalogue</a>
-        <a href="#api-structure">Structure des r&eacute;ponses du catalogue</a>
+        <a href="#api-json">Points d’accès API du catalogue</a>
+        <a href="#api-formats">Formats de réponse du catalogue</a>
+        <a href="#api-params">Paramètres de requête du catalogue</a>
+        <a href="#api-config">Champs, facettes et tri configurés du catalogue</a>
+        <a href="#api-structure">Structure des réponses du catalogue</a>
         <a href="#api-examples">Exemples du catalogue</a>
-        <a href="#iiif-endpoints">Points d&apos;acc&egrave;s API IIIF</a>
-        <a href="#iiif-formats">Formats de r&eacute;ponse IIIF</a>
+        <a href="#iiif-endpoints">Points d’accès API IIIF</a>
+        <a href="#iiif-formats">Formats de réponse IIIF</a>
         <a href="#iiif-examples">Exemples IIIF</a>
       </aside>
 
       <div class="api-content">
         <section id="api-json" class="api-card">
-          <h2>Points d&apos;acc&egrave;s API du catalogue</h2>
+          <h2>Points d’accès API du catalogue</h2>
           <p>
-            Utilisez ces points d&apos;acc&egrave;s du catalogue pour les recherches, les notices et les facettes.
-            Le param&egrave;tre <code>format</code> est l&apos;option la plus fiable lorsque les identifiants
+            Utilisez ces points d’accès du catalogue pour les recherches, les notices et les facettes.
+            Le paramètre <code>format</code> est l’option la plus fiable lorsque les identifiants
             contiennent des points (par exemple <code>oocihm.N_00591</code>).
           </p>
           <ul class="api-list">
-            <li><strong>Point d&apos;acc&egrave;s recherche:</strong> <code>GET /catalog?search_field=all_fields&amp;q=&amp;format=json</code></li>
-            <li><strong>Point d&apos;acc&egrave;s notice:</strong> <code>GET /catalog/:id?format=json</code></li>
-            <li><strong>Point d&apos;acc&egrave;s facette:</strong> <code>GET /catalog/facet/:facet_id?search_field=all_fields&amp;q=&amp;format=json</code></li>
-            <li><strong>Point d&apos;acc&egrave;s export notice:</strong> <code>GET /catalog/:id?format=marc|marcxml|xml</code></li>
+            <li><strong>Point d’accès recherche:</strong> <code>GET /catalog?search_field=all_fields&amp;q=&amp;format=json</code></li>
+            <li><strong>Point d’accès notice:</strong> <code>GET /catalog/:id?format=json</code></li>
+            <li><strong>Point d’accès facette:</strong> <code>GET /catalog/facet/:facet_id?search_field=all_fields&amp;q=&amp;format=json</code></li>
+            <li><strong>Point d’accès export notice:</strong> <code>GET /catalog/:id?format=marc|marcxml|xml</code></li>
           </ul>
-          <h3 id="api-formats">Formats de r&eacute;ponse du catalogue</h3>
+          <h3 id="api-formats">Formats de réponse du catalogue</h3>
           <p>
-            Les requ&ecirc;tes de recherche retournent actuellement une charge utile de style JSON:API
-            avec les cl&eacute;s de premier niveau <code>links</code>, <code>meta</code>, <code>data</code> et <code>included</code>.
+            Les requêtes de recherche retournent actuellement une charge utile de style JSON:API
+            avec les clés de premier niveau <code>links</code>, <code>meta</code>, <code>data</code> et <code>included</code>.
           </p>
           <ul class="api-list">
             <li><strong>Formats recherche:</strong> <code>html</code>, <code>json</code></li>
             <li><strong>Formats notice individuelle:</strong> <code>html</code>, <code>json</code>, <code>marc</code>, <code>marcxml</code>, <code>xml</code></li>
           </ul>
-          <h3 id="api-params">Param&egrave;tres de requ&ecirc;te du catalogue</h3>
+          <h3 id="api-params">Paramètres de requête du catalogue</h3>
           <ul class="api-list">
-            <li><code>q</code>: texte de recherche (une cha&icirc;ne vide retourne l&apos;ensemble de r&eacute;sultats par d&eacute;faut)</li>
+            <li><code>q</code>: texte de recherche (une chaîne vide retourne l’ensemble de résultats par défaut)</li>
             <li><code>search_field</code>: un des champs <code>all_fields</code>, <code>full_title_tsim</code>, <code>author_tsim</code>, <code>subject_tsim</code>, <code>tx_gen</code></li>
-            <li><code>lang</code>: langue de la r&eacute;ponse (<code>en</code> ou <code>fr</code>)</li>
-            <li><code>page</code>: num&eacute;ro de page (commence &agrave; <code>1</code>)</li>
+            <li><code>lang</code>: langue de la réponse (<code>en</code> ou <code>fr</code>)</li>
+            <li><code>page</code>: numéro de page (commence à <code>1</code>)</li>
             <li><code>per_page</code>: taille de page (<code>10</code>, <code>20</code>, <code>50</code>, <code>100</code>)</li>
-            <li><code>sort</code>: cl&eacute; de tri (par exemple <code>date-added-desc</code>)</li>
+            <li><code>sort</code>: clé de tri (par exemple <code>date-added-desc</code>)</li>
             <li><code>f[field_name][]=value</code>: filtres de facettes, par exemple <code>f[language_ssim_str][]=English</code></li>
-            <li><code>range[pub_date_ssim][begin]</code> et <code>range[pub_date_ssim][end]</code>: filtre par intervalle d&apos;ann&eacute;es</li>
+            <li><code>range[pub_date_ssim][begin]</code> et <code>range[pub_date_ssim][end]</code>: filtre par intervalle d’années</li>
             <li><code>format</code>: format de sortie (par exemple <code>json</code>)</li>
           </ul>
-          <h3 id="api-config">Champs, facettes et tri configur&eacute;s du catalogue</h3>
+          <h3 id="api-config">Champs, facettes et tri configurés du catalogue</h3>
           <p><strong>Champs de recherche:</strong> <code>all_fields</code>, <code>full_title_tsim</code>, <code>author_tsim</code>, <code>subject_tsim</code>, <code>tx_gen</code></p>
           <p><strong>Valeurs de tri:</strong> <code>relevance</code>, <code>year-desc</code>, <code>year-asc</code>, <code>date-added-desc</code>, <code>date-added-asc</code></p>
           <p><strong>Identifiants de facette:</strong> <code>pub_date_ssim</code>, <code>language_ssim_str</code>, <code>depositor_tsim_str</code>, <code>subject_ssim_str</code>, <code>author_ssm_str</code>, <code>collectionen_path</code>, <code>collectionfr_path</code>, <code>serial_title_str</code>, <code>is_issue_str</code>, <code>is_serial_str</code></p>
-          <h3 id="api-structure">Structure des r&eacute;ponses du catalogue</h3>
+          <h3 id="api-structure">Structure des réponses du catalogue</h3>
           <p>
-            Une requ&ecirc;te de recherche comme
+            Une requête de recherche comme
             <code>/catalog?search_field=all_fields&amp;q=&amp;format=json</code>
             retourne:
           </p>
           <ul class="api-list">
             <li><code>links</code>: URLs de navigation (<code>self</code>, <code>next</code>, <code>last</code>)</li>
-            <li><code>meta.pages</code>: &eacute;tat de pagination et volumes (<code>current_page</code>, <code>total_pages</code>, <code>limit_value</code>, <code>total_count</code>)</li>
+            <li><code>meta.pages</code>: état de pagination et volumes (<code>current_page</code>, <code>total_pages</code>, <code>limit_value</code>, <code>total_count</code>)</li>
             <li><code>data[]</code>: notices avec <code>id</code>, <code>type</code>, <code>attributes</code> et <code>links.self</code></li>
-            <li><code>included[]</code>: objets API r&eacute;utilisables pour les facettes, les champs de recherche et les tris</li>
+            <li><code>included[]</code>: objets API réutilisables pour les facettes, les champs de recherche et les tris</li>
           </ul>
           <figure class="api-snippet api-snippet--docmost" aria-label="Structure de reponse catalogue en JSON">
             <figcaption>
@@ -121,12 +121,12 @@
 }</code></pre>
           </figure>
           <p>
-            Plusieurs valeurs <code>attributes.*.attributes.value</code> sont des fragments HTML destin&eacute;s &agrave; l&apos;affichage.
-            Pour un pipeline de donn&eacute;es pur, pr&eacute;voyez de nettoyer ou de filtrer ce balisage.
+            Plusieurs valeurs <code>attributes.*.attributes.value</code> sont des fragments HTML destinés à l’affichage.
+            Pour un pipeline de données pur, prévoyez de nettoyer ou de filtrer ce balisage.
           </p>
           <h3 id="api-examples">Exemples du catalogue</h3>
-          <h4>Exemple 1 : R&eacute;ponse JSON catalogue par d&eacute;faut</h4>
-          <p>R&eacute;cup&eacute;rez la r&eacute;ponse catalogue par d&eacute;faut et lisez le total des r&eacute;sultats.</p>
+          <h4>Exemple 1 : Réponse JSON catalogue par défaut</h4>
+          <p>Récupérez la réponse catalogue par défaut et lisez le total des résultats.</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Exemple JSON catalogue par defaut">
             <figcaption>
               <span class="api-snippet__label">Code</span>
@@ -145,8 +145,8 @@ response.raise_for_status()
 catalogue = response.json()
 print(catalogue["meta"]["pages"]["total_count"])</code></pre>
           </figure>
-          <h4>Exemple 2 : Requ&ecirc;te avec tri et pagination</h4>
-          <p>Ex&eacute;cutez une recherche par mot-cl&eacute; avec tri, taille de page et num&eacute;ro de page.</p>
+          <h4>Exemple 2 : Requête avec tri et pagination</h4>
+          <p>Exécutez une recherche par mot-clé avec tri, taille de page et numéro de page.</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Exemple tri et pagination du catalogue">
             <figcaption>
               <span class="api-snippet__label">Code</span>
@@ -172,7 +172,7 @@ response.raise_for_status()
 cartes = response.json()</code></pre>
           </figure>
           <h4>Exemple 3 : Filtres de facettes</h4>
-          <p>Appliquez des facettes pour limiter les r&eacute;sultats par langue et chemin de collection.</p>
+          <p>Appliquez des facettes pour limiter les résultats par langue et chemin de collection.</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Exemples de filtres de facettes du catalogue">
             <figcaption>
               <span class="api-snippet__label">Code</span>
@@ -208,8 +208,8 @@ journaux_response = requests.get(
 journaux_response.raise_for_status()
 journaux = journaux_response.json()</code></pre>
           </figure>
-          <h4>Exemple 4 : Intervalle d&apos;ann&eacute;es de publication</h4>
-          <p>Filtrez les notices par plage d&apos;ann&eacute;es avec le champ de facette de date.</p>
+          <h4>Exemple 4 : Intervalle d’années de publication</h4>
+          <p>Filtrez les notices par plage d’années avec le champ de facette de date.</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Exemple intervalle d'annees du catalogue">
             <figcaption>
               <span class="api-snippet__label">Code</span>
@@ -234,7 +234,7 @@ response.raise_for_status()
 periode = response.json()</code></pre>
           </figure>
           <h4>Exemple 5 : Notice individuelle en plusieurs formats</h4>
-          <p>R&eacute;cup&eacute;rez la m&ecirc;me notice en JSON, MARC et MARCXML depuis un seul point d&apos;acc&egrave;s.</p>
+          <p>Récupérez la même notice en JSON, MARC et MARCXML depuis un seul point d’accès.</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Exemples de formats pour une notice">
             <figcaption>
               <span class="api-snippet__label">Code</span>
@@ -273,21 +273,21 @@ notice_marcxml = marcxml_response.text</code></pre>
         <section id="api-iiif-query" class="api-card">
           <h2>API IIIF</h2>
           <p>
-            L&apos;exemple ci-dessous est bas&eacute; sur le manifeste <code>m2025000007606h</code>
-            (collection <code>69429</code>). Il s&apos;agit d&apos;un manifeste IIIF Presentation 3 avec
+            L’exemple ci-dessous est basé sur le manifeste <code>m2025000007606h</code>
+            (collection <code>69429</code>). Il s’agit d’un manifeste IIIF Presentation 3 avec
             <code>842</code> canevas.
           </p>
-          <h3 id="iiif-endpoints">Points d&apos;acc&egrave;s API IIIF</h3>
+          <h3 id="iiif-endpoints">Points d’accès API IIIF</h3>
           <ul class="api-list">
-            <li><strong>R&eacute;cup&eacute;rer l&apos;ARK depuis les m&eacute;tadonn&eacute;es du catalogue:</strong> le JSON de recherche utilise <code>data[i].attributes.ark.attributes.value</code>; le JSON de notice utilise <code>data.attributes.ark.attributes.value</code>. Extrayez l&apos;URL du <code>href</code> (par exemple <code>https://n2t.net/ark:/69429/m2025000007606h</code>).</li>
-            <li><strong>Construire le chemin IIIF depuis l&apos;ARK:</strong> retirez <code>https://n2t.net/ark:/</code> (ou <code>ark:/</code>) pour obtenir <code>69429/m2025000007606h</code>.</li>
-            <li><strong>Point d&apos;acc&egrave;s manifeste:</strong> <code>GET {presentation_service}/69429/m2025000007606h</code></li>
-            <li><strong>Point d&apos;acc&egrave;s info image:</strong> <code>GET {image_service}/info.json</code></li>
-            <li><strong>Point d&apos;acc&egrave;s rendu image:</strong> <code>GET {image_service}/{region}/{size}/{rotation}/{quality}.{format}</code></li>
-            <li><strong>Point d&apos;acc&egrave;s Content Search:</strong> <code>GET {content_search_service}/69429/m2025000007606h?q=canada</code></li>
+            <li><strong>Récupérer l’ARK depuis les métadonnées du catalogue:</strong> le JSON de recherche utilise <code>data[i].attributes.ark.attributes.value</code>; le JSON de notice utilise <code>data.attributes.ark.attributes.value</code>. Extrayez l’URL du <code>href</code> (par exemple <code>https://n2t.net/ark:/69429/m2025000007606h</code>).</li>
+            <li><strong>Construire le chemin IIIF depuis l’ARK:</strong> retirez <code>https://n2t.net/ark:/</code> (ou <code>ark:/</code>) pour obtenir <code>69429/m2025000007606h</code>.</li>
+            <li><strong>Point d’accès manifeste:</strong> <code>GET {presentation_service}/69429/m2025000007606h</code></li>
+            <li><strong>Point d’accès info image:</strong> <code>GET {image_service}/info.json</code></li>
+            <li><strong>Point d’accès rendu image:</strong> <code>GET {image_service}/{region}/{size}/{rotation}/{quality}.{format}</code></li>
+            <li><strong>Point d’accès Content Search:</strong> <code>GET {content_search_service}/69429/m2025000007606h?q=canada</code></li>
           </ul>
           <p>
-            Sp&eacute;cification compl&egrave;te:
+            Spécification complète:
             <a href="https://iiif.io/api/image/2.1/">IIIF Image API 2.1</a>.
           </p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Gabarit URL API Image IIIF en Python">
@@ -313,17 +313,17 @@ print(response.headers["Content-Type"])  # image/jpeg</code></pre>
             <li><code>region</code>: <code>full</code>, <code>x,y,w,h</code> ou <code>pct:x,y,w,h</code></li>
             <li><code>size</code>: <code>full</code>, <code>w,</code>, <code>,h</code>, <code>w,h</code> ou <code>pct:n</code></li>
             <li><code>rotation</code>: <code>0</code>, <code>90</code>, <code>180</code>, <code>270</code> (et angles arbitraires si pris en charge)</li>
-            <li><code>quality</code>: d&eacute;pend du service; cette image prend en charge <code>default</code>, <code>color</code>, <code>gray</code>, <code>bitonal</code></li>
-            <li><code>format</code>: d&eacute;pend du service; ce service image annonce <code>jpg</code></li>
+            <li><code>quality</code>: dépend du service; cette image prend en charge <code>default</code>, <code>color</code>, <code>gray</code>, <code>bitonal</code></li>
+            <li><code>format</code>: dépend du service; ce service image annonce <code>jpg</code></li>
           </ul>
-          <h3 id="iiif-formats">Formats de r&eacute;ponse IIIF</h3>
+          <h3 id="iiif-formats">Formats de réponse IIIF</h3>
           <ul class="api-list">
-            <li><strong>Point d&apos;acc&egrave;s manifeste:</strong> JSON (IIIF Presentation 3)</li>
-            <li><strong>Point d&apos;acc&egrave;s info image (<code>info.json</code>):</strong> JSON (IIIF Image API)</li>
-            <li><strong>Point d&apos;acc&egrave;s rendu image:</strong> octets binaires (par exemple <code>image/jpeg</code>)</li>
-            <li><strong>Point d&apos;acc&egrave;s Content Search:</strong> JSON; <code>items</code> peut &ecirc;tre vide s&apos;il n&apos;y a pas de correspondance OCR</li>
+            <li><strong>Point d’accès manifeste:</strong> JSON (IIIF Presentation 3)</li>
+            <li><strong>Point d’accès info image (<code>info.json</code>):</strong> JSON (IIIF Image API)</li>
+            <li><strong>Point d’accès rendu image:</strong> octets binaires (par exemple <code>image/jpeg</code>)</li>
+            <li><strong>Point d’accès Content Search:</strong> JSON; <code>items</code> peut être vide s’il n’y a pas de correspondance OCR</li>
           </ul>
-          <h3>Forme de la r&eacute;ponse manifeste (Presentation 3)</h3>
+          <h3>Forme de la réponse manifeste (Presentation 3)</h3>
           <figure class="api-snippet api-snippet--docmost" aria-label="Forme de manifeste en JSON">
             <figcaption>
               <span class="api-snippet__label">Response</span>
@@ -379,8 +379,8 @@ print(response.headers["Content-Type"])  # image/jpeg</code></pre>
     ]
 }</code></pre>
           </figure>
-          <h3>Forme de la r&eacute;ponse API Image IIIF</h3>
-          <p><code>info.json</code> retourne des m&eacute;tadonn&eacute;es JSON:</p>
+          <h3>Forme de la réponse API Image IIIF</h3>
+          <p><code>info.json</code> retourne des métadonnées JSON:</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Forme info.json en JSON">
             <figcaption>
               <span class="api-snippet__label">Response</span>
@@ -406,7 +406,7 @@ print(response.headers["Content-Type"])  # image/jpeg</code></pre>
           </figure>
           <h3 id="iiif-examples">Exemples IIIF</h3>
           <h4>Exemple 1 : ARK vers manifeste et Content Search</h4>
-          <p>Extrayez l&apos;ARK depuis le catalogue, construisez le chemin IIIF, r&eacute;cup&eacute;rez le manifeste, puis lancez Content Search.</p>
+          <p>Extrayez l’ARK depuis le catalogue, construisez le chemin IIIF, récupérez le manifeste, puis lancez Content Search.</p>
           <figure class="api-snippet api-snippet--docmost" aria-label="Workflow IIIF en Python">
             <figcaption>
               <span class="api-snippet__label">Code</span>
@@ -419,7 +419,7 @@ BASE_URL = "http://localhost:3000"
 PRESENTATION_SERVICE = "{presentation_service}"
 CONTENT_SEARCH_SERVICE = "{content_search_service}"
 
-# 1) R&eacute;cup&eacute;rer une notice et extraire l&apos;ARK (href) depuis la valeur HTML
+# 1) Récupérer une notice et extraire l’ARK (href) depuis la valeur HTML
 notice = requests.get(
     f"{BASE_URL}/catalog/oocihm.N_00591",
     params={"format": "json"},
@@ -432,16 +432,16 @@ ark_url = re.search(r'href="([^"]+)"', ark_html).group(1)
 ark_path = re.sub(r"^https?://n2t\\.net/ark:/?|^ark:/?", "", ark_url).lstrip("/")
 # "69429/m2025000007606h"
 
-# 3) R&eacute;cup&eacute;rer le manifeste
+# 3) Récupérer le manifeste
 manifeste = requests.get(f"{PRESENTATION_SERVICE}/{ark_path}", timeout=30).json()
 print(manifeste["type"], len(manifeste["items"]))  # Manifest 842
 
-# 4) R&eacute;cup&eacute;rer le service image du premier canevas
+# 4) Récupérer le service image du premier canevas
 service_image = manifeste["items"][0]["items"][0]["items"][0]["body"]["service"][0]["id"]
 info = requests.get(f"{service_image}/info.json", timeout=30).json()
 print(info["width"], info["height"])
 
-# 5) Ex&eacute;cuter une recherche IIIF Content Search
+# 5) Exécuter une recherche IIIF Content Search
 recherche = requests.get(
     f"{CONTENT_SEARCH_SERVICE}/{ark_path}",
     params={"q": "canada"},
@@ -449,9 +449,9 @@ recherche = requests.get(
 ).json()
 print(recherche["type"], len(recherche["items"]))</code></pre>
           </figure>
-          <h4>Exemple 2 : Requ&ecirc;tes image IIIF</h4>
-          <p>Interrogez le service d&apos;image pour lire les capacit&eacute;s et g&eacute;n&eacute;rer des d&eacute;riv&eacute;s courants.</p>
-          <figure class="api-snippet api-snippet--docmost" aria-label="Requ&ecirc;tes API Image IIIF en Python">
+          <h4>Exemple 2 : Requêtes image IIIF</h4>
+          <p>Interrogez le service d’image pour lire les capacités et générer des dérivés courants.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Requêtes API Image IIIF en Python">
             <figcaption>
               <span class="api-snippet__label">Code</span>
               <span class="api-snippet__lang">python</span>
@@ -460,15 +460,15 @@ print(recherche["type"], len(recherche["items"]))</code></pre>
 
 service_id = "https://image-tor.canadiana.ca/iiif/2/69429%2Fc2025000026xr85"
 
-# D&eacute;couvrir les capacit&eacute;s
+# Découvrir les capacités
 info = requests.get(f"{service_id}/info.json", timeout=30).json()
 print(info["width"], info["height"])  # 3936 3200
 
-# Image compl&egrave;te redimensionn&eacute;e &agrave; 500 px de large
+# Image complète redimensionnée à 500 px de large
 img_small = requests.get(f"{service_id}/full/500,/0/default.jpg", timeout=30)
 print(img_small.headers["Content-Type"])  # image/jpeg
 
-# Recadrage par r&eacute;gion en pourcentage, puis redimensionnement
+# Recadrage par région en pourcentage, puis redimensionnement
 img_crop = requests.get(
     f"{service_id}/pct:25,25,50,50/800,/0/default.jpg",
     timeout=30,
@@ -477,12 +477,12 @@ img_crop = requests.get(
 # Sortie avec rotation
 img_rotated = requests.get(f"{service_id}/full/500,/90/default.jpg", timeout=30)
 
-# Qualit&eacute; alternative
+# Qualité alternative
 img_gray = requests.get(f"{service_id}/full/500,/0/gray.jpg", timeout=30)</code></pre>
           </figure>
-          <h4>Exemple 3 : R&eacute;ponse image binaire</h4>
-          <p>V&eacute;rifiez le type MIME retourn&eacute;, puis utilisez le contenu binaire de l&apos;image.</p>
-          <figure class="api-snippet api-snippet--docmost" aria-label="R&eacute;ponse image binaire en Python">
+          <h4>Exemple 3 : Réponse image binaire</h4>
+          <p>Vérifiez le type MIME retourné, puis utilisez le contenu binaire de l’image.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Réponse image binaire en Python">
             <figcaption>
               <span class="api-snippet__label">Code</span>
               <span class="api-snippet__lang">python</span>
@@ -498,8 +498,8 @@ jpeg_binaire = response.content          # bytes
 print(len(jpeg_binaire))</code></pre>
           </figure>
           <p>
-            Pour un aper&ccedil;u plus g&eacute;n&eacute;ral des concepts et outils IIIF, consultez
-            <a href="<%= what_is_iiif_path(lang: I18n.locale) %>">Qu&apos;est-ce que IIIF?</a>.
+            Pour un aperçu plus général des concepts et outils IIIF, consultez
+            <a href="<%= what_is_iiif_path(lang: I18n.locale) %>">Qu’est-ce que IIIF?</a>.
           </p>
         </section>
       </div>
