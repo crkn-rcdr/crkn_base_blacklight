@@ -2126,7 +2126,7 @@ summary:focus-visible,
 
 .topbar-main {
   background: #fff;
-  padding-top: calc(.98rem + 15px);
+  padding-top: calc(.98rem + 6px);
   padding-bottom: .78rem;
 }
 
@@ -2215,7 +2215,7 @@ summary:focus-visible,
   }
 
   .topbar-main {
-    padding-top: calc(.9rem + 15px);
+    padding-top: calc(.9rem + 6px);
     padding-bottom: .72rem;
   }
 
@@ -2244,7 +2244,7 @@ summary:focus-visible,
 
 @media (max-width: 1199px) {
   .topbar-main {
-    padding-top: calc(.8rem + 15px);
+    padding-top: calc(.8rem + 6px);
     padding-bottom: .64rem;
   }
 
@@ -3193,7 +3193,7 @@ summary:focus-visible,
 /* Canadiana home refresh isolated from legacy .home-collection-band--canadiana rules */
 
 .home-page .home-intro--canadiana-clean {
-  padding-top: clamp(2.7rem, 3.8vw, 4rem);
+  padding-top: 0;
   padding-bottom: clamp(1.6rem, 2.4vw, 2.45rem);
 }
 
@@ -3468,7 +3468,7 @@ summary:focus-visible,
 /* Heritage home refresh isolated from legacy .home-collection-band--heritage rules */
 
 .home-page .home-intro--heritage-clean {
-  padding-top: clamp(2.7rem, 3.8vw, 4rem);
+  padding-top: 0;
   padding-bottom: clamp(1.6rem, 2.4vw, 2.45rem);
   background: #f0f1f2;
   border-radius: 25px 25px 0 0;
@@ -3746,7 +3746,7 @@ summary:focus-visible,
 
 .home-page .home-intro--canadiana-clean,
 .home-page .home-intro--heritage-clean {
-  padding-top: var(--home-sequence-gap-lg);
+  padding-top: 0;
   padding-bottom: clamp(0.55rem, 1.05vw, 1rem);
 }
 
@@ -4412,8 +4412,8 @@ summary:focus-visible,
 }
 
 .home-page .home-intro--canadiana-clean {
-  margin-left: var(--home-section-edge-margin);
-  margin-right: var(--home-section-edge-margin);
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .home-page .home-intro--heritage-clean {
@@ -5021,7 +5021,7 @@ summary:focus-visible,
   }
 
   .home-page .home-intro--canadiana-clean {
-    padding-top: clamp(0.95rem, 1.45vw, 1.7rem);
+    padding-top: 0;
     padding-bottom: clamp(1rem, 1.6vw, 1.9rem);
   }
 
@@ -5040,6 +5040,9 @@ summary:focus-visible,
     width: 100%;
     min-height: inherit;
     justify-self: stretch;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
   }
 
   .home-page .home-intro--canadiana-clean .home-canadiana-feature__viewport {
@@ -5056,7 +5059,7 @@ summary:focus-visible,
     width: clamp(380px, 39vw, 650px);
     max-width: none;
     margin: 0;
-    padding: clamp(1.55rem, 2.2vw, 2.35rem) var(--home-shell-pad-inline);
+    padding: clamp(1.55rem, 2.2vw, 2.35rem) 0;
     border-radius: clamp(24px, 2vw, 34px) 0 clamp(24px, 2vw, 34px) 0;
     border: none;
     background: #ffffff;
@@ -5082,8 +5085,8 @@ summary:focus-visible,
   width: 100%;
   min-width: 0;
   grid-column: 1 / -1;
-  padding-left: var(--home-section-edge-margin);
-  padding-right: var(--home-section-edge-margin);
+  padding-left: 0;
+  padding-right: 0;
   box-sizing: border-box;
 }
 
@@ -5123,7 +5126,7 @@ summary:focus-visible,
   }
 
   .home-page .home-intro--heritage-clean {
-    padding-top: clamp(0.95rem, 1.45vw, 1.7rem);
+    padding-top: 0;
     padding-bottom: clamp(1.2rem, 1.8vw, 2.1rem);
   }
 
@@ -5162,7 +5165,7 @@ summary:focus-visible,
     width: clamp(380px, 39vw, 650px);
     max-width: none;
     margin: 0;
-    padding: clamp(1.55rem, 2.2vw, 2.35rem) var(--home-shell-pad-inline);
+    padding: clamp(1.55rem, 2.2vw, 2.35rem) 0;
     border-radius: clamp(24px, 2vw, 34px) 0 clamp(24px, 2vw, 34px) 0;
     border: none;
     background: #f0f1f2;
@@ -5257,7 +5260,7 @@ summary:focus-visible,
   content: "";
   position: absolute;
   bottom: -1.4rem;
-  left: 0;
+  left: -0.8rem;
   width: 1.5rem;
   height: 1.5rem;
   background: no-repeat url("/assets/Frame 3.svg");
@@ -5268,7 +5271,7 @@ summary:focus-visible,
   content: "";
   position: absolute;
   top: -1.3rem;
-  left: calc(100% - (1.4rem + clamp(0.8rem, 1.1vw, 1.15rem)));
+  left: calc(100% - (2.6rem  + clamp(0.8rem, 1.1vw, 1.15rem)));
   width: 1.5rem;
   height: 1.5rem;
   background: no-repeat url("/assets/Frame 4.svg");
@@ -5510,7 +5513,24 @@ summary:focus-visible,
 
 .blacklight-pages-about_canadiana .home-page > .home-intro--canadiana-clean,
 .blacklight-pages-about_heritage .home-page > .home-intro--heritage-clean {
-  margin-top: var(--page-header-content-gap);
+  margin-top: 0
+}
+
+/* Align About page hero text with the header logo inset */
+.blacklight-pages-about_canadiana .home-page,
+.blacklight-pages-about_heritage .home-page {
+  --home-shell-pad-inline: clamp(20px, 2.6vw, 46px);
+}
+
+/* About Heritage page: use white intro header background */
+.blacklight-pages-about_heritage .home-page > .home-intro--heritage-clean {
+  background: #fff;
+}
+
+@media (min-width: 1201px) {
+  .blacklight-pages-about_heritage .home-page > .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-intro-copy {
+    background: #fff;
+  }
 }
 
 .blacklight-pages-api_access .api-access-page--modern.container {
@@ -6296,7 +6316,9 @@ summary:focus-visible,
 /* Keep post-heritage sections visually full-width peers (not nested-looking) */
 .home-page .home-featured > .canadiana-shell,
 .home-page .home-statement > .canadiana-shell,
-.home-page .members-section > .canadiana-shell {
+.home-page .members-section > .canadiana-shell,
+.home-page .home-intro--canadiana-clean > .canadiana-shell,
+.home-page .home-intro--heritage-clean > .canadiana-shell {
   max-width: 100%;
   padding-left: var(--home-shell-pad-inline, 5%);
   padding-right: var(--home-shell-pad-inline, 5%);
@@ -6305,9 +6327,30 @@ summary:focus-visible,
 @media (max-width: 991px) {
   .home-page .home-featured > .canadiana-shell,
   .home-page .home-statement > .canadiana-shell,
-  .home-page .members-section > .canadiana-shell {
+  .home-page .members-section > .canadiana-shell,
+  .home-page .home-intro--canadiana-clean > .canadiana-shell,
+  .home-page .home-intro--heritage-clean > .canadiana-shell {
     padding-left: 16px;
     padding-right: 16px;
+  }
+}
+
+/* Match Canadiana/Héritage title section spacing to Featured section */
+.home-page .home-intro--canadiana-clean,
+.home-page .home-intro--heritage-clean {
+  padding-top: 0 !important;
+  padding-bottom: var(--home-sequence-gap-lg) !important;
+}
+
+.home-page .home-intro--heritage-clean {
+  padding-top: 0 !important;
+}
+
+@media (max-width: 992px) {
+  .home-page .home-intro--canadiana-clean,
+  .home-page .home-intro--heritage-clean {
+    padding-top: 0 !important;
+    padding-bottom: var(--home-sequence-gap-md) !important;
   }
 }
 
@@ -6399,4 +6442,12 @@ summary:focus-visible,
 .card-collection:hover,
 .blacklight-pages-api_access .api-access-page--modern .api-card:hover {
   box-shadow: none !important;
+}
+
+/* Disable only Heritage "Recent Searches" link on home search band */
+.home-page .home-collection-band--heritage-clean .home-collection-band__meta-row .home-inline-link--history.is-disabled {
+  color: rgba(16, 21, 27, 0.58);
+  text-decoration: none;
+  cursor: not-allowed;
+  pointer-events: none;
 }
