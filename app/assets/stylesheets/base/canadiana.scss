@@ -731,6 +731,44 @@ summary:focus-visible,
 }
 
 #appliedParams { margin-bottom: .75rem; margin-top: 0 !important; }
+
+/* Catalog show: keep Start Over / Back to Search on the left and Prev/Next on the right */
+.blacklight-catalog-show #appliedParams {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+
+.blacklight-catalog-show #appliedParams + .pagination-search-widgets {
+  float: right;
+  margin: 0;
+  padding-top: 0.15rem;
+}
+
+.blacklight-catalog-show #appliedParams + .pagination-search-widgets .search-context.page-links {
+  margin: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .blacklight-catalog-show #appliedParams {
+    display: flex;
+  }
+
+  .blacklight-catalog-show #appliedParams + .pagination-search-widgets {
+    float: none;
+    display: block;
+    margin-top: 0.55rem;
+    padding-top: 0;
+  }
+
+  .blacklight-catalog-show #appliedParams + .pagination-search-widgets .search-context.page-links {
+    white-space: normal;
+  }
+}
 /* Unified tools styling (IIIF + sidebar Tools) */
 .show-tools.card,
 .iiif-tools-list,
@@ -4513,6 +4551,12 @@ summary:focus-visible,
   min-width: 0;
 }
 
+/* Temporarily hide collection walk-through video links */
+.home-page .home-collection-band--canadiana-clean .home-collection-band__meta-row .home-walkthrough-inline,
+.home-page .home-collection-band--heritage-clean .home-collection-band__meta-row .home-walkthrough-inline {
+  display: none !important;
+}
+
 .home-page .home-collection-band--canadiana-clean .home-collection-band__meta-row .home-inline-link--history,
 .home-page .home-collection-band--heritage-clean .home-collection-band__meta-row .home-inline-link--history {
   margin-top: 0;
@@ -5489,6 +5533,60 @@ summary:focus-visible,
   margin-top: 0;
 }
 
+/* About pages: keep a framed top/side inset similar to other hero sections */
+.blacklight-pages-about_canadiana #main-container.container,
+.blacklight-pages-about_heritage #main-container.container {
+  max-width: 100%;
+  padding: var(--page-header-content-gap) clamp(0.35rem, 1vw, 1.25rem) 0;
+}
+
+/* About pages: remove horizontal container/column gutters */
+.blacklight-pages-navigating_collections #main-container.container,
+.blacklight-pages-system_status #main-container.container,
+.blacklight-pages-api_access #main-container.container,
+.blacklight-pages-contact_us #main-container.container,
+.blacklight-pages-citation_guide #main-container.container {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blacklight-pages-about_canadiana #main-container > .row.base-first-row,
+.blacklight-pages-about_heritage #main-container > .row.base-first-row,
+.blacklight-pages-navigating_collections #main-container > .row.base-first-row,
+.blacklight-pages-system_status #main-container > .row.base-first-row,
+.blacklight-pages-api_access #main-container > .row.base-first-row,
+.blacklight-pages-contact_us #main-container > .row.base-first-row,
+.blacklight-pages-citation_guide #main-container > .row.base-first-row {
+  --bs-gutter-x: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.blacklight-pages-about_canadiana #main-container > .row.base-first-row > section,
+.blacklight-pages-about_heritage #main-container > .row.base-first-row > section,
+.blacklight-pages-navigating_collections #main-container > .row.base-first-row > section,
+.blacklight-pages-system_status #main-container > .row.base-first-row > section,
+.blacklight-pages-api_access #main-container > .row.base-first-row > section,
+.blacklight-pages-contact_us #main-container > .row.base-first-row > section,
+.blacklight-pages-citation_guide #main-container > .row.base-first-row > section,
+.blacklight-pages-about_canadiana #main-container .canadiana-shell,
+.blacklight-pages-about_heritage #main-container .canadiana-shell,
+.blacklight-pages-navigating_collections #main-container .canadiana-shell,
+.blacklight-pages-system_status #main-container .canadiana-shell,
+.blacklight-pages-api_access #main-container .canadiana-shell,
+.blacklight-pages-contact_us #main-container .canadiana-shell,
+.blacklight-pages-citation_guide #main-container .canadiana-shell {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blacklight-pages-about_canadiana #main-container .site-section:not(.about-intro) > .canadiana-shell,
+.blacklight-pages-about_heritage #main-container .site-section:not(.about-intro) > .canadiana-shell {
+  padding-left: var(--home-shell-pad-inline, 5%);
+  padding-right: var(--home-shell-pad-inline, 5%);
+}
+
 /* About page intro blocks use an isolated class namespace (about-intro-*) */
 .blacklight-pages-about_canadiana .home-page,
 .blacklight-pages-about_heritage .home-page {
@@ -5499,14 +5597,14 @@ summary:focus-visible,
 
 .blacklight-pages-about_canadiana .about-intro,
 .blacklight-pages-about_heritage .about-intro {
-  padding-top: var(--section-y);
+  padding-top: 0;
   padding-bottom: clamp(1.2rem, 1.8vw, 2.1rem);
 }
 
 @media (min-width: 992px) {
   .blacklight-pages-about_canadiana .about-intro,
   .blacklight-pages-about_heritage .about-intro {
-    padding-top: var(--section-y-lg);
+    padding-top: 0;
   }
 }
 
@@ -5552,7 +5650,7 @@ summary:focus-visible,
 
 .blacklight-pages-about_canadiana .about-intro-copy--canadiana {
   order: 2;
-  padding: clamp(1.15rem, 1.9vw, 1.75rem) 0;
+  padding: clamp(1.15rem, 1.9vw, 1.75rem) clamp(0.95rem, 1.4vw, 1.4rem);
   background: #fff;
 }
 
@@ -5573,7 +5671,7 @@ summary:focus-visible,
 
 .blacklight-pages-about_heritage .about-intro-copy--heritage {
   order: 2;
-  padding: clamp(1.15rem, 1.9vw, 1.75rem) 0;
+  padding: clamp(1.15rem, 1.9vw, 1.75rem) clamp(0.95rem, 1.4vw, 1.4rem);
   background: #fff;
   border-radius: 0 0 clamp(16px, 1.7vw, 24px) 0;
 }
@@ -5629,7 +5727,7 @@ summary:focus-visible,
     width: var(--about-intro-copy-width);
     max-width: none;
     margin: 0;
-    padding: clamp(1.55rem, 2.2vw, 2.35rem) 0;
+    padding: clamp(1.55rem, 2.2vw, 2.35rem) clamp(1.05rem, 1.5vw, 1.6rem);
     border-radius: 0 0 var(--about-intro-block-radius) 0;
     border: none;
     background: #fff;
@@ -5670,7 +5768,7 @@ summary:focus-visible,
     width: var(--about-intro-copy-width);
     max-width: none;
     margin: 0;
-    padding: clamp(1.55rem, 2.2vw, 2.35rem) 0;
+    padding: clamp(1.55rem, 2.2vw, 2.35rem) clamp(1.05rem, 1.5vw, 1.6rem);
     border-radius: 0 0 var(--about-intro-block-radius) 0;
     border: none;
     background: #fff;
@@ -6774,8 +6872,8 @@ summary:focus-visible,
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: clamp(250px, 24vw, 360px) clamp(220px, 22vw, 320px);
   grid-template-areas:
-    "left tall list"
-    "note tall right";
+    "note tall right"
+    "left tall list";
   align-items: stretch;
 }
 
