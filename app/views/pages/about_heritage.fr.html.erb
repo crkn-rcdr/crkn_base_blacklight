@@ -1,34 +1,150 @@
 <div class="home-page">
-  <section class="site-section home-intro home-intro--heritage-clean">
-    <div class="canadiana-shell home-heritage-intro-grid">
-      <div class="home-heritage-intro-media">
+  <section class="site-section about-intro about-intro--heritage">
+    <div class="canadiana-shell about-intro-grid about-intro-grid--heritage">
+      <div class="about-intro-media">
         <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
       </div>
-      <div class="home-heritage-intro-copy">
-        <h1 class="section-title">Collection Héritage</h1>
+      <div class="about-intro-copy about-intro-copy--heritage">
+        <h1 class="section-title">Collection H&eacute;ritage</h1>
         <p class="section-lede">
-          La collection Héritage est un partenariat avec
-          <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Bibliothèque et Archives Canada</a> (BAC)
-          pour numériser et rendre accessibles les riches ressources de microfilms d’archives conservées par BAC.
-          Avec plus de 37&nbsp;millions de pages de documents de source primaire, Héritage retrace le Canada et ses peuples
-          des années 1600 aux années 1980.
+          Le projet H&eacute;ritage numerisera et rendra accessibles certaines des collections d'archives canadiennes les
+          plus consultees, representant environ 60&nbsp;millions de pages de documents de source primaire. Retracant
+          l'histoire du pays et de ses peuples des annees 1600 au milieu du XXe&nbsp;siecle, cette collection constitue
+          une ressource vaste et unique pour les historiens, etudiants et genealogistes du Canada.
         </p>
       </div>
-      <div class="home-heritage-logo-card" aria-hidden="true">
-        <img class="home-heritage-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
+      <div class="about-intro-logo-card" aria-hidden="true">
+        <img class="about-intro-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
       </div>
     </div>
   </section>
 </div>
 
-<section class="site-section">
-  <div class="container">
-    <h2 class="h4">Utiliser Héritage pour</h2>
-    <ul>
-      <li>La généalogie et l’histoire communautaire</li>
-      <li>Les dossiers gouvernementaux et institutionnels</li>
-      <li>La recherche en sources primaires</li>
-    </ul>
+<section class="site-section about-modern-section about-modern-section--heritage">
+  <div class="canadiana-shell about-modern-layout">
+    <header class="about-modern-header">
+      <h2 class="section-title">H&eacute;ritage</h2>
+      <p class="section-lede">
+        Le projet H&eacute;ritage numerisera et rendra accessibles certaines des collections d'archives canadiennes les
+        plus consultees, representant environ 60&nbsp;millions de pages de documents de source primaire. Retracant
+        l'histoire du pays et de ses peuples des annees 1600 au milieu du XXe&nbsp;siecle, cette collection constitue
+        une ressource vaste et unique pour les historiens, etudiants et genealogistes du Canada.
+      </p>
+    </header>
 
+    <div class="about-modern-feature-grid">
+      <article class="about-modern-card about-modern-card--media">
+        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Documents d'archives historiques de la collection Heritage" loading="lazy">
+      </article>
+      <article class="about-modern-card about-modern-card--copy">
+        <h3>Une ressource essentielle</h3>
+        <p>
+          H&eacute;ritage se compose d'un vaste ensemble de documents uniques en cours de numerisation a partir des fonds
+          precieux de Bibliotheque et Archives Canada.
+        </p>
+      </article>
+      <article class="about-modern-card about-modern-card--copy">
+        <h3>Trois siecles de patrimoine documentaire</h3>
+        <p>
+          Le resultat final sera un corpus majeur de patrimoine documentaire couvrant trois siecles, organise en cinq
+          grands volets thematiques pour faciliter l'exploration.
+        </p>
+      </article>
+      <article class="about-modern-card about-modern-card--media">
+        <img src="<%= asset_path('government_documents.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
+      </article>
+    </div>
+
+    <section class="about-modern-block" aria-labelledby="heritage-areas-title-fr">
+      <div class="about-modern-block-head">
+        <h3 id="heritage-areas-title-fr">Principaux volets thematiques</h3>
+        <p>Pour faciliter la navigation, la collection est divisee en cinq grands volets.</p>
+      </div>
+      <div class="about-modern-collection-grid about-modern-collection-grid--five">
+        <article class="about-modern-card about-modern-card--collection">
+          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c1845.9.jpg') %>" alt="Documents genealogiques de Heritage" loading="lazy">
+          <div class="about-modern-card-body">
+            <h4>Materiaux genealogiques</h4>
+            <p>Dossiers d'immigration, registres d'eglise, titres fonciers, histoires et papiers de famille, listes electorales, etc.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Documents lies a l'histoire autochtone dans Heritage" loading="lazy">
+          <div class="about-modern-card-body">
+            <h4>Peuples autochtones</h4>
+            <p>Un important volume de documents concernant les Premieres Nations, les Metis et les Inuit du Canada.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_t12502.1426.jpg') %>" alt="Archives des ministeres dans Heritage" loading="lazy">
+          <div class="about-modern-card-body">
+            <h4>Ministeres et administrations</h4>
+            <p>Documents precoces de ministeres cles&nbsp;: Affaires indiennes, Immigration, Sante, Agriculture, Canaux et chemins de fer, Peches et Ressources naturelles.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c2925.95.jpg') %>" alt="Documents d'histoire militaire dans Heritage" loading="lazy">
+          <div class="about-modern-card-body">
+            <h4>Histoire militaire</h4>
+            <p>Documents sur la guerre de 1812, la Premiere Guerre mondiale, la Seconde Guerre mondiale et l'administration militaire en temps de paix.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg') %>" alt="Papiers de personnalites canadiennes dans Heritage" loading="lazy">
+          <div class="about-modern-card-body">
+            <h4>Personnalites canadiennes</h4>
+            <p>Papiers de premiers ministres, gouverneurs generaux, premiers ministres provinciaux, ministres, explorateurs, scientifiques, entrepreneurs, ecrivains et artistes.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-modern-block">
+      <div class="about-modern-work-grid">
+        <article class="about-modern-card about-modern-card--media">
+          <img src="<%= asset_path('govpubs.jpg') %>" alt="Parcours de recherche dans la collection Heritage" loading="lazy">
+        </article>
+        <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title-fr">
+          <h3 id="heritage-use-title-fr">Comment utiliser ce site</h3>
+          <ol>
+            <li><strong>Choisir une collection&nbsp;:</strong> commencez par le volet correspondant le mieux a votre sujet de recherche.</li>
+            <li><strong>Consulter les aides au reperage&nbsp;:</strong> chaque page propose des reperes et des conseils pour naviguer dans les bobines de microfilms numerisees.</li>
+            <li><strong>Effectuer une recherche simple&nbsp;:</strong> interrogez les metadonnees descriptives (mots du titre, auteur/createur, sujets) et le texte lorsqu'il est disponible.</li>
+            <li><strong>Exploiter le contexte MIKAN&nbsp;:</strong> les indications de collection s'appuient sur <a href="http://www.collectionscanada.gc.ca/lac-bac/recherche/arch" target="_blank" rel="noopener">le catalogue d'archives MIKAN</a> de Bibliotheque et Archives Canada.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-modern-block" aria-labelledby="heritage-fulltext-title-fr">
+      <div class="about-modern-block-head">
+        <h3 id="heritage-fulltext-title-fr">Puis-je rechercher en texte integral&nbsp;?</h3>
+      </div>
+      <div class="about-modern-faq">
+        <details open>
+          <summary>La recherche plein texte est-elle disponible maintenant&nbsp;?</summary>
+          <p>Tres peu de texte archivistique est actuellement visible dans nos outils de recherche.</p>
+        </details>
+        <details>
+          <summary>Qu'est-il prevu pour la decouverte en texte integral&nbsp;?</summary>
+          <p>
+            La transcription de ces documents pour produire du texte interrogeable demandera du temps et des ressources
+            et demeure un objectif majeur du projet. Les futures versions de H&eacute;ritage prendront en charge la
+            recherche en texte integral au fur et a mesure de la transcription des documents.
+          </p>
+        </details>
+        <details>
+          <summary>Quelles sont les prochaines etapes pour la recherche&nbsp;?</summary>
+          <p>
+            Au cours des prochaines annees, de nouveaux outils de recherche et des infrastructures pour la creation et
+            l'interconnexion de metadonnees enrichies seront developpes par Canadiana et ses partenaires H&eacute;ritage.
+          </p>
+        </details>
+      </div>
+    </section>
   </div>
 </section>

@@ -835,3 +835,99 @@ function initExploreSliders() {
 }
 
 document.addEventListener('DOMContentLoaded', initExploreSliders);
+
+let scrollRevealObserver = null;
+
+function shouldInitScrollRevealText() {
+  const body = document.body;
+  if (!body) return false;
+  return (
+    body.classList.contains('blacklight-pages-home') ||
+    body.classList.contains('blacklight-pages-about_canadiana') ||
+    body.classList.contains('blacklight-pages-about_heritage')
+  );
+}
+
+function collectScrollRevealTargets(root) {
+  const selector = [
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'p',
+    'li',
+    'summary',
+    'blockquote',
+    'figcaption',
+    'a.home-inline-link',
+    'a.hero-secondary-link',
+    'a.hero-primary-btn',
+    'a.about-modern-cta',
+    'a.home-statement-cta'
+  ].join(', ');
+
+  return Array.from(root.querySelectorAll(selector)).filter((element) => {
+    if (element.dataset.scrollRevealBound === '1') return false;
+    if (element.classList.contains('visually-hidden') || element.closest('.visually-hidden')) return false;
+    return (element.textContent || '').trim().length > 0;
+  });
+}
+
+function initScrollRevealText() {
+  if (!shouldInitScrollRevealText()) return;
+
+  const body = document.body;
+  const isHome = body.classList.contains('blacklight-pages-home');
+  const isAbout =
+    body.classList.contains('blacklight-pages-about_canadiana') ||
+    body.classList.contains('blacklight-pages-about_heritage');
+
+  let roots = [];
+  if (isHome) {
+    roots = Array.from(document.querySelectorAll('.home-page'));
+  } else if (isAbout) {
+    roots = Array.from(document.querySelectorAll('#main-container'));
+  }
+
+  if (!roots.length) return;
+
+  const targets = [];
+  roots.forEach((root) => {
+    targets.push(...collectScrollRevealTargets(root));
+  });
+  if (!targets.length) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    targets.forEach((element) => {
+      element.dataset.scrollRevealBound = '1';
+      element.classList.add('scroll-reveal-text', 'is-visible');
+    });
+    return;
+  }
+
+  if (!scrollRevealObserver) {
+    scrollRevealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }
+    );
+  }
+
+  targets.forEach((element, index) => {
+    element.dataset.scrollRevealBound = '1';
+    element.classList.add('scroll-reveal-text');
+    element.style.setProperty('--scroll-reveal-delay', `${(index % 8) * 30}ms`);
+    scrollRevealObserver.observe(element);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initScrollRevealText);
+document.addEventListener('turbo:load', initScrollRevealText);

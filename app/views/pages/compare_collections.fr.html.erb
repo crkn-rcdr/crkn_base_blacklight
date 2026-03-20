@@ -1,54 +1,97 @@
-<section class="site-section">
+<section class="site-section compare-collections-section">
   <div class="container compare-collections-page">
-    <h1 class="section-title">Comparer les deux collections</h1>
-    <p class="lead">
-      Canadiana et Héritage sont des collections complémentaires. Utilisez ce guide rapide pour choisir le meilleur point de départ pour votre recherche.
-    </p>
+    <div class="compare-frame">
+      <div class="compare-hero-grid">
+        <aside class="compare-control-panel" aria-labelledby="compare-panel-title-fr">
+          <h1 id="compare-panel-title-fr" class="compare-control-title">Comparer nos collections</h1>
+        </aside>
 
-    <div class="table-responsive mt-4">
-      <table class="table table-bordered align-middle">
-        <caption class="visually-hidden">Comparaison des collections Canadiana et Héritage</caption>
-        <thead class="table-light">
-          <tr>
-            <th scope="col">Caractéristique</th>
-            <th scope="col">Collection Canadiana</th>
-            <th scope="col">Collection Héritage</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Orientation principale</th>
-            <td>Documents publiés</td>
-            <td>Documents d'archives sur microfilm</td>
-          </tr>
-          <tr>
-            <th scope="row">Période couverte</th>
-            <td>v. 1500 à aujourd'hui</td>
-            <td>années 1600 à années 1980</td>
-          </tr>
-          <tr>
-            <th scope="row">Volume approximatif</th>
-            <td>31 millions de pages</td>
-            <td>plus de 37 millions de pages</td>
-          </tr>
-          <tr>
-            <th scope="row">Contient</th>
-            <td>Livres, journaux, magazines, publications gouvernementales, cartes</td>
-            <td>Dossiers gouvernementaux, documents de généalogie, dossiers d'immigration, documentation sur les affaires autochtones</td>
-          </tr>
-          <tr>
-            <th scope="row">Idéal pour</th>
-            <td>Sources publiées, culture imprimée historique, périodiques</td>
-            <td>Recherche archivistique en sources primaires et histoire familiale/communautaire</td>
-          </tr>
-          <tr>
-            <th scope="row">État de la recherche</th>
-            <td>Disponible maintenant</td>
-            <td>Bientôt disponible dans la barre de recherche de la page d'accueil</td>
-          </tr>
-        </tbody>
-      </table>
+        <article class="compare-collection-card">
+          <img src="<%= asset_path('monog.jpg') %>" alt="Livres et periodiques de la collection Canadiana" loading="lazy">
+          <div class="compare-collection-body">
+            <h3>Collection Canadiana</h3>
+            <p class="compare-collection-type">Patrimoine publie</p>
+            <p class="compare-collection-metric">31M+ pages</p>
+          </div>
+        </article>
+
+        <article class="compare-collection-card">
+          <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Documents d'archives de la collection Heritage" loading="lazy">
+          <div class="compare-collection-body">
+            <h3>Collection Heritage</h3>
+            <p class="compare-collection-type">Microfilms d'archives</p>
+            <p class="compare-collection-metric">60M pages projetees</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="compare-spec-scroll">
+        <table class="compare-spec-table">
+          <caption class="visually-hidden">Comparaison des collections Canadiana et Heritage</caption>
+          <colgroup>
+            <col class="compare-col-feature">
+            <col class="compare-col-value">
+            <col class="compare-col-value">
+          </colgroup>
+          <tbody>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Orientation principale</th>
+              <td>Patrimoine canadien publie : livres, periodiques, cartes et publications gouvernementales.</td>
+              <td>Dossiers d'archives sur microfilm de Bibliotheque et Archives Canada et de partenaires.</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Periode couverte</th>
+              <td>v. 1500 a aujourd'hui</td>
+              <td>Des annees 1600 au milieu des annees 1900</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Taille de la collection</th>
+              <td>Environ 31 millions de pages</td>
+              <td>Environ 60 millions de pages projetees</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Materiaux genealogiques</th>
+              <td>Limite</td>
+              <td>Couverture importante, incluant dossiers familiaux, immigration et listes electorales</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Histoire autochtone</th>
+              <td>Forte dans les publications de recherche et d'analyse</td>
+              <td>Forte dans les dossiers d'archives et les fonds gouvernementaux</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Journaux et magazines</th>
+              <td><span class="compare-token compare-token--yes">Oui</span></td>
+              <td><span class="compare-token compare-token--no">Non</span></td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Cartes</th>
+              <td><span class="compare-token compare-token--yes">Oui</span></td>
+              <td><span class="compare-token compare-token--no">Non</span></td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Documents militaires</th>
+              <td>Selection de publications historiques militaires</td>
+              <td>Documentation archivistique militaire etendue</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="true">
+              <th scope="row">Mode d'acces</th>
+              <td>Accessible via la plateforme Canadiana pour les communautes membres du RCDR</td>
+              <td>Accessible via la plateforme Canadiana pour les communautes membres du RCDR</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Ideale pour</th>
+              <td>La decouverte de sources publiees, la recherche periodique et l'analyse de la culture imprimee.</td>
+              <td>La recherche archivistique de sources primaires, la genealogie et l'histoire documentaire gouvernementale.</td>
+            </tr>
+            <tr class="compare-spec-row compare-spec-row--action" data-equal="false">
+              <th scope="row"><span class="visually-hidden">Parcourir</span></th>
+              <td><a class="compare-action-link" href="<%= about_canadiana_path(lang: I18n.locale) %>">Aller a Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link" href="<%= about_heritage_path(lang: I18n.locale) %>">Aller a Heritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
   </div>
 </section>

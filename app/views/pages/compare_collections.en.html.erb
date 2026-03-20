@@ -1,54 +1,97 @@
-<section class="site-section">
+<section class="site-section compare-collections-section">
   <div class="container compare-collections-page">
-    <h1 class="section-title">Comparing the Canadiana and Heritage Collections</h1>
-    <p>
-      CRKN provides access to two major digital heritage collections: the Canadiana Collection and the Héritage Collection.
-    </p>
-    <div class="table-responsive mt-4">
-      <table class="table table-bordered align-middle">
-        <caption class="visually-hidden">Comparison of Canadiana and Héritage collections</caption>
-        <thead class="table-light">
-          <tr>
-            <th scope="col">Feature</th>
-            <th scope="col">Canadiana Collection</th>
-            <th scope="col">Héritage Collection</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Size</th>
-            <td>Approximately 31.5 million pages</td>
-            <td>Approximately 37.5 million pages</td>
-          </tr>
-          <tr>
-            <th scope="row">Date range</th>
-            <td>c. 1500 to 2000</td>
-            <td>c. 1600 to 1985</td>
-          </tr>
-          <tr>
-            <th scope="row">Content</th>
-            <td>
-              Historical publications, including monographs (books), serials (newspapers, magazines, journals, annual reports),
-              government publications, and maps.
-            </td>
-            <td>
-              Digitized archival microfilm collections from Library and Archives Canada, including governmental records,
-              records relating to Indigenous history, genealogical records, military records, and personal papers.
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Collection notes</th>
-            <td>
-              Canadiana content is largely drawn from the Canadian Institute for Historic Microreproductions (CIHM) microfiche series.
-            </td>
-            <td>
-              Héritage is a joint project supported by CRKN members and Library and Archives Canada (LAC), and approximately
-              300,000 pages are added annually.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="compare-frame">
+      <div class="compare-hero-grid">
+        <aside class="compare-control-panel" aria-labelledby="compare-panel-title">
+          <h1 id="compare-panel-title" class="compare-control-title">Compare Our Collections</h1>
+        </aside>
 
+        <article class="compare-collection-card">
+          <img src="<%= asset_path('monog.jpg') %>" alt="Books and periodicals in the Canadiana Collection" loading="lazy">
+          <div class="compare-collection-body">
+            <h3>Canadiana Collection</h3>
+            <p class="compare-collection-type">Published Heritage</p>
+            <p class="compare-collection-metric">31M+ pages</p>
+          </div>
+        </article>
+
+        <article class="compare-collection-card">
+          <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Archival documents in the Heritage Collection" loading="lazy">
+          <div class="compare-collection-body">
+            <h3>Heritage Collection</h3>
+            <p class="compare-collection-type">Archival Microfilm</p>
+            <p class="compare-collection-metric">60M projected pages</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="compare-spec-scroll">
+        <table class="compare-spec-table">
+          <caption class="visually-hidden">Comparison of Canadiana and Heritage collections</caption>
+          <colgroup>
+            <col class="compare-col-feature">
+            <col class="compare-col-value">
+            <col class="compare-col-value">
+          </colgroup>
+          <tbody>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Primary focus</th>
+              <td>Published Canadian heritage: books, serials, maps, and government publications.</td>
+              <td>Archival microfilm records from Library and Archives Canada and partners.</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Date range</th>
+              <td>c. 1500 to present day</td>
+              <td>1600s to mid-1900s</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Collection size</th>
+              <td>Approximately 31 million pages</td>
+              <td>Approximately 60 million pages projected</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Genealogy materials</th>
+              <td>Limited</td>
+              <td>Strong coverage, including family, immigration, and voters' records</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Indigenous history</th>
+              <td>Strong in published scholarship and commentary</td>
+              <td>Strong in archival records and government files</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Newspapers and magazines</th>
+              <td><span class="compare-token compare-token--yes">Yes</span></td>
+              <td><span class="compare-token compare-token--no">No</span></td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Maps</th>
+              <td><span class="compare-token compare-token--yes">Yes</span></td>
+              <td><span class="compare-token compare-token--no">No</span></td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Military records</th>
+              <td>Selected published military histories</td>
+              <td>Extensive military archival documentation</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="true">
+              <th scope="row">Access model</th>
+              <td>Available through the Canadiana platform for CRKN member communities</td>
+              <td>Available through the Canadiana platform for CRKN member communities</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Best for</th>
+              <td>Published source discovery, periodical research, and print culture analysis.</td>
+              <td>Primary archival research, genealogy, and government documentary history.</td>
+            </tr>
+            <tr class="compare-spec-row compare-spec-row--action" data-equal="false">
+              <th scope="row"><span class="visually-hidden">Browse now</span></th>
+              <td><a class="compare-action-link" href="<%= about_canadiana_path(lang: I18n.locale) %>">Go to Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link" href="<%= about_heritage_path(lang: I18n.locale) %>">Go to Heritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </section>
