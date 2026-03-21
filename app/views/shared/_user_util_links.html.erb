@@ -1,7 +1,6 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% news_url = is_fr ? 'https://www.crkn-rcdr.ca/fr/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' : 'https://www.crkn-rcdr.ca/en/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' %>
 <ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
-  <li><a href="<%= I18n.t('links.URL_NEW') %>"><%= is_fr ? 'Nouveautés à venir' : 'New Content' %></a></li>
   <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
   <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
   <li><a href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
