@@ -9,7 +9,7 @@
               <span class="api-hero__title-main">Nous joindre</span>
             </h1>
             <p class="api-lede">
-              Coordonnées pour l’aide Canadiana, les demandes de service et les contacts de l’équipe du RCDR.
+              Coordonnées pour le soutien des collections Canadiana, les services de numérisation et les demandes à l'équipe du RCDR.
             </p>
           </div>
         </div>
@@ -18,46 +18,44 @@
       <div class="api-layout">
         <aside class="api-toc" aria-label="Sur cette page">
           <h2 class="api-toc__title">Sur cette page</h2>
-          <a href="#fr-contact-support">Soutien Canadiana</a>
-          <a href="#fr-contact-details">Éléments à fournir</a>
-          <a href="#fr-contact-address">Adresse postale</a>
+          <a href="#contact-collections">Collections Canadiana</a>
+          <a href="#contact-digitization">Services de numérisation</a>
+          <a href="#contact-team">Équipe du RCDR</a>
         </aside>
 
         <div class="api-content">
-          <section id="fr-contact-support" class="api-card">
-            <h2>Soutien Canadiana</h2>
+          <section id="contact-collections" class="api-card">
+            <h2>Collections Canadiana</h2>
             <p>
-              Besoin d’aide pour l’accès à Canadiana, les notices ou un problème technique?
+              Avez-vous une question sur les collections Canadiana (y compris Héritage),
+              ou recherchez-vous de l'aide en recherche?
             </p>
-            <div class="d-flex flex-wrap gap-2 mt-2">
-              <a class="btn btn-soft-primary btn-sm" href="<%= I18n.t('links.URL_CONTACT') %>" target="_blank" rel="noopener">
-                Ouvrir le formulaire de contact
-              </a>
-              <a class="btn btn-ghost-primary btn-sm" href="<%= system_status_path(lang: I18n.locale) %>">
-                Voir l’état du système
-              </a>
-            </div>
+            <p>
+              Veuillez communiquer avec :
+              <a href="mailto:info@crkn.ca">info@crkn.ca</a>
+              ou
+              <a href="tel:+16139077023">613-907-7023</a>
+            </p>
           </section>
 
-          <section id="fr-contact-details" class="api-card">
-            <h2>Éléments à inclure dans une demande</h2>
-            <ul class="api-list">
-              <li>L’URL de la page où le problème se produit</li>
-              <li>L’identifiant de notice ou l’ARK (s’il y a lieu)</li>
-              <li>Le comportement attendu et le résultat observé</li>
-              <li>La date, l’heure et les détails navigateur ou appareil</li>
-            </ul>
+          <section id="contact-digitization" class="api-card">
+            <h2>Services de numérisation</h2>
+            <p>Avez-vous une question sur les services de numérisation du RCDR?</p>
+            <p>
+              Veuillez communiquer avec :
+              <a href="mailto:digitization@crkn.ca">digitization@crkn.ca</a>
+              ou
+              <a href="tel:+16139077028">613-907-7028</a>
+            </p>
           </section>
 
-          <section id="fr-contact-address" class="api-card">
-            <h2>Adresse postale</h2>
-            <address>
-              <strong>Réseau canadien de documentation pour la recherche</strong><br>
-              1309 Carling Ave<br>
-              PO Box 35155 Westgate<br>
-              Ottawa, ON K1Z 1A2<br>
-              t. 613.907.7040
-            </address>
+          <section id="contact-team" class="api-card">
+            <h2>Équipe du RCDR</h2>
+            <p>
+              Si vous souhaitez communiquer directement avec une personne de l'équipe du RCDR,
+              consultez la
+              <a href="https://www.crkn-rcdr.ca/en/staff" target="_blank" rel="noopener">page du personnel du RCDR</a>.
+            </p>
           </section>
         </div>
       </div>

@@ -2230,6 +2230,26 @@ summary:focus-visible,
   color: #1d808b !important;
 }
 
+@media (min-width: 1200px) {
+  html[lang^='fr'] .topbar-main .canadiana-shell {
+    padding-left: clamp(14px, 1.45vw, 24px);
+    padding-right: clamp(14px, 1.45vw, 24px);
+  }
+
+  html[lang^='fr'] .topbar-main .navbar-brand.navbar-logo {
+    width: 220px !important;
+    height: 58px !important;
+  }
+
+  html[lang^='fr'] .nav-list.nav-list-main {
+    gap: clamp(.45rem, .7vw, .72rem);
+  }
+
+  html[lang^='fr'] .nav-list.nav-list-main a {
+    font-size: clamp(.86rem, .56vw, .95rem);
+  }
+}
+
 .blacklight-pages-home .topbar {
   position: relative !important;
   left: auto !important;
@@ -2271,8 +2291,8 @@ summary:focus-visible,
   }
 
   .topbar-main .navbar-brand.navbar-logo {
-    width: 274px !important;
-    height: 76px !important;
+    width: 234px !important;
+    height: 60px !important;
   }
 
   .nav-list.nav-list-main {
@@ -2291,8 +2311,8 @@ summary:focus-visible,
   }
 
   .topbar-main .navbar-brand.navbar-logo {
-    width: 236px !important;
-    height: 68px !important;
+    width: 220px !important;
+    height: 58px !important;
   }
 
   .nav-list.nav-list-main {
@@ -5720,6 +5740,48 @@ summary:focus-visible,
   margin-left: auto;
 }
 
+@media (max-width: 1200px) {
+  .blacklight-pages-about_heritage .about-intro-grid--heritage {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "media"
+      "copy";
+  }
+
+  .blacklight-pages-about_heritage .about-intro-media {
+    grid-area: media;
+  }
+
+  .blacklight-pages-about_heritage .about-intro-copy--heritage {
+    grid-area: copy;
+    position: relative;
+    padding-right: clamp(0.95rem, 1.4vw, 1.4rem);
+  }
+
+  .blacklight-pages-about_heritage .about-intro-copy--heritage .section-title {
+    max-width: calc(100% - clamp(112px, 28vw, 160px));
+  }
+
+  .blacklight-pages-about_heritage .about-intro-logo-card {
+    grid-area: copy;
+    align-self: start;
+    justify-self: end;
+    z-index: 2;
+    margin: clamp(0.25rem, 1.2vw, 0.55rem) clamp(0.85rem, 2.8vw, 1.1rem) 0 0;
+    width: clamp(98px, 24vw, 128px);
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .blacklight-pages-about_heritage .about-intro-logo {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+}
+
 @media (min-width: 1201px) {
   .blacklight-pages-about_canadiana .about-intro-grid--canadiana {
     grid-template-columns: 1fr;
@@ -6209,8 +6271,8 @@ summary:focus-visible,
   margin: 0 0 0.95rem;
   font-size: clamp(1.02rem, 1.08vw, 1.2rem);
   line-height: 1.2;
-  letter-spacing: 0.2rem;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: #304754;
 }
 
@@ -6287,7 +6349,8 @@ summary:focus-visible,
 .blacklight-pages-api_access .api-access-page--modern .api-list {
   max-width: var(--api-prose-max);
   margin: 0.1rem 0 0.95rem;
-  padding-left: 1.3rem;
+  padding-left: 0;
+  list-style: none;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-list li {
@@ -6299,6 +6362,100 @@ summary:focus-visible,
 
 .blacklight-pages-api_access .api-access-page--modern .api-list li + li {
   margin-top: 0.48rem;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .navigating-downloads-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .navigating-download-option {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .navigating-download-option__img {
+  max-width: 360px;
+  width: 100%;
+  height: auto;
+  flex: 0 1 360px;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-card ul.api-list--bulleted {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-list.api-list--bulleted li {
+  display: list-item;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table-wrap {
+  max-width: none;
+  width: 100%;
+  margin: 0.15rem 0 1rem;
+  overflow-x: auto;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(18, 58, 77, 0.16);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table thead th {
+  padding: 0.55rem 0.75rem;
+  background: #f8fafc;
+  color: #4a6070;
+  font-size: 0.84rem;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(18, 58, 77, 0.12);
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table th,
+.blacklight-pages-api_access .api-access-page--modern .api-table td {
+  padding: 0.62rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid rgba(18, 58, 77, 0.12);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table tbody tr:first-child th,
+.blacklight-pages-api_access .api-access-page--modern .api-table tbody tr:first-child td {
+  border-top: 0;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table th[scope="row"] {
+  font-weight: 700;
+  color: #203647;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table td {
+  color: #2a424d;
+  font-size: var(--api-body-size);
+  line-height: 1.56;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-table th code,
+.blacklight-pages-api_access .api-access-page--modern .api-table td code {
+  white-space: normal;
 }
 
 .blacklight-pages-api_access .api-access-page--modern code {
@@ -6444,6 +6601,15 @@ summary:focus-visible,
     background: #f7fbfc;
     flex: 0 0 auto;
   }
+
+  .blacklight-pages-compare_collections .api-access-page--modern .api-toc,
+  .blacklight-pages-navigating_collections .api-access-page--modern .api-toc,
+  .blacklight-pages-citation_guide .api-access-page--modern .api-toc,
+  .blacklight-pages-api_access .api-access-page--modern .api-toc,
+  .blacklight-pages-system_status .api-access-page--modern .api-toc,
+  .blacklight-pages-contact_us .api-access-page--modern .api-toc {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -6511,6 +6677,21 @@ summary:focus-visible,
   .blacklight-pages-api_access .api-access-page--modern .api-list li {
     font-size: 1rem;
     line-height: 1.56;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .navigating-download-option__img {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-table th,
+  .blacklight-pages-api_access .api-access-page--modern .api-table td {
+    font-size: 1rem;
+    line-height: 1.56;
+  }
+
+  .blacklight-pages-api_access .api-access-page--modern .api-table {
+    min-width: 0;
   }
 
   .blacklight-pages-api_access .api-access-page--modern .api-card h3 {
@@ -7394,8 +7575,14 @@ summary:focus-visible,
   border-left: 0;
   border-right: 1px solid rgba(22, 30, 40, 0.11);
   border-bottom: 1px solid rgba(22, 30, 40, 0.11);
-  border-radius: 0 var(--compare-surface-radius) 0 0;
+  border-radius: var(--compare-surface-radius) var(--compare-surface-radius) 0 0;
   overflow: hidden;
+}
+
+.blacklight-pages-compare_collections .compare-hero-spacer {
+  min-height: 100%;
+  background: #fff;
+  border-right: 1px solid rgba(22, 30, 40, 0.11);
 }
 
 .blacklight-pages-compare_collections .compare-control-panel,
@@ -7516,6 +7703,15 @@ summary:focus-visible,
   vertical-align: top;
 }
 
+.blacklight-pages-compare_collections .compare-spec-table thead th {
+  padding: 0;
+  height: 0;
+  border: 0;
+  font-size: 0;
+  line-height: 0;
+  background: transparent;
+}
+
 .blacklight-pages-compare_collections .compare-spec-table tbody tr:first-child th,
 .blacklight-pages-compare_collections .compare-spec-table tbody tr:first-child td {
   border-top: 0;
@@ -7600,17 +7796,7 @@ summary:focus-visible,
 
 @media (max-width: 1080px) {
   .blacklight-pages-compare_collections .compare-hero-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .blacklight-pages-compare_collections .compare-control-panel {
-    grid-column: 1 / -1;
-    border-right: 0;
-    border-bottom: 1px solid rgba(22, 30, 40, 0.11);
-  }
-
-  .blacklight-pages-compare_collections .compare-collection-card:nth-child(2) {
-    border-right: 1px solid rgba(22, 30, 40, 0.11);
+    grid-template-columns: 38% 31% 31%;
   }
 
   .blacklight-pages-compare_collections .compare-col-feature {
@@ -7627,12 +7813,12 @@ summary:focus-visible,
     padding: 0.9rem;
   }
 
-  .blacklight-pages-compare_collections .compare-control-title {
-    font-size: clamp(1.6rem, 7vw, 2.1rem);
-  }
-
   .blacklight-pages-compare_collections .compare-hero-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .blacklight-pages-compare_collections .compare-hero-spacer {
+    display: none;
   }
 
   .blacklight-pages-compare_collections .compare-control-panel {
@@ -7644,8 +7830,97 @@ summary:focus-visible,
     border-right: 0;
   }
 
+  .blacklight-pages-compare_collections .compare-spec-scroll {
+    overflow-x: visible;
+  }
+
   .blacklight-pages-compare_collections .compare-spec-table {
-    min-width: 760px;
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    display: block;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table tbody {
+    display: block;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table thead {
+    display: none;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table tbody tr {
+    display: block;
+    margin: 0 0 0.72rem;
+    border: 1px solid rgba(22, 30, 40, 0.11);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table th,
+  .blacklight-pages-compare_collections .compare-spec-table td {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 0.72rem 0.8rem;
+    text-align: left;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table th {
+    background: #f8fafc;
+    border-bottom: 1px solid rgba(22, 30, 40, 0.11);
+    font-size: 0.95rem;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table td {
+    border-bottom: 1px solid rgba(22, 30, 40, 0.11);
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-table td::before {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: #5a6776;
+    font-size: 0.74rem;
+    letter-spacing: 0.045em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  html:not([lang^='fr']) .blacklight-pages-compare_collections .compare-spec-table td:nth-of-type(1)::before {
+    content: "Canadiana";
+  }
+
+  html:not([lang^='fr']) .blacklight-pages-compare_collections .compare-spec-table td:nth-of-type(2)::before {
+    content: "Heritage";
+  }
+
+  html[lang^='fr'] .blacklight-pages-compare_collections .compare-spec-table td:nth-of-type(1)::before {
+    content: "Canadiana";
+  }
+
+  html[lang^='fr'] .blacklight-pages-compare_collections .compare-spec-table td:nth-of-type(2)::before {
+    content: "H\00E9ritage";
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-row--action th {
+    display: none;
+  }
+
+  .blacklight-pages-compare_collections .compare-spec-row--action td {
+    border-bottom: 0;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .blacklight-pages-compare_collections .compare-action-link {
+    width: 100%;
+    min-width: 0;
   }
 }
 
@@ -7677,3 +7952,4 @@ summary:focus-visible,
     transition: none;
   }
 }
+

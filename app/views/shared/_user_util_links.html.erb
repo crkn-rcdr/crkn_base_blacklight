@@ -1,11 +1,13 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% news_url = is_fr ? 'https://www.crkn-rcdr.ca/fr/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' : 'https://www.crkn-rcdr.ca/en/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' %>
+<% about_crkn_url = is_fr ? 'https://www.crkn-rcdr.ca/fr/a-propos-du-rcdr' : 'https://www.crkn-rcdr.ca/en/about-crkn' %>
 <ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
+  <li><a href="<%= compare_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Comparer les collections' : 'Comparing the Collections' %></a></li>
   <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Naviguer dans les collections' : 'Navigating the Collections' %></a></li>
-  <li><a href="<%= compare_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Comparer les collections' : 'Compare the Collections' %></a></li>
-  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
   <li><a href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
+  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? 'Accès API' : 'API Access' %></a></li>
   <li><a href="<%= system_status_path(lang: I18n.locale) %>"><%= is_fr ? 'État du système' : 'System Status' %></a></li>
+  <li><a href="<%= news_url %>" target="_blank" rel="noopener"><%= is_fr ? 'Nouvelles' : 'News' %></a></li>
+  <li><a href="<%= about_crkn_url %>" target="_blank" rel="noopener"><%= is_fr ? 'À propos du RCDR' : 'About CRKN' %></a></li>
   <li><a href="<%= contact_us_page_path(lang: I18n.locale) %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
-  <li><a href="<%= news_url %>"><%= is_fr ? 'Nouvelles' : 'News' %></a></li>
 </ul>

@@ -1,11 +1,28 @@
-<section class="site-section compare-collections-section">
-  <div class="container compare-collections-page">
-    <div class="compare-frame">
-      <div class="compare-hero-grid">
-        <aside class="compare-control-panel" aria-labelledby="compare-panel-title-fr">
-          <h1 id="compare-panel-title-fr" class="compare-control-title">Comparer nos collections</h1>
-        </aside>
+<% content_for :page_title, "Comparer les collections - #{application_name}" %>
 
+<section class="site-section compare-collections-section blacklight-pages-api_access">
+  <div class="container compare-collections-page api-access-page api-access-page--modern">
+    <div class="compare-frame">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
+              <span class="api-hero__title-main">Comparer les collections</span>
+            </h1>
+            <p class="api-lede">Decouvrez des publications numerisees et des archives de partout au Canada.</p>
+            <p>
+              Le RCDR donne acces a deux grandes collections numeriques de patrimoine : la collection Canadiana et la collection Heritage.
+              Les collections Canadiana figurent parmi les plus vastes collections de patrimoine documentaire canadien numerise au monde.
+              Offertes sans frais grace au soutien continu des membres du RCDR par l'entremise du fonds Heritage Content Access and Preservation (HCAP),
+              ces collections offrent des millions de pages de contenu patrimonial aux chercheurs du monde entier.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="compare-hero-grid">
+        <div class="compare-hero-spacer" aria-hidden="true"></div>
         <article class="compare-collection-card">
           <img src="<%= asset_path('monog.jpg') %>" alt="Livres et periodiques de la collection Canadiana" loading="lazy">
           <div class="compare-collection-body">
@@ -33,6 +50,13 @@
             <col class="compare-col-value">
             <col class="compare-col-value">
           </colgroup>
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden">Critère</span></th>
+              <th scope="col"><span class="visually-hidden">Collection Canadiana</span></th>
+              <th scope="col"><span class="visually-hidden">Collection Héritage</span></th>
+            </tr>
+          </thead>
           <tbody>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Orientation principale</th>
@@ -92,6 +116,30 @@
           </tbody>
         </table>
       </div>
+
+      <section class="api-card mt-3">
+        <p>
+          Le RCDR reconnaît que les collections Canadiana, en tant que ressources développées au cours de décennies de collecte
+          et de préservation de documents, contiennent des contenus offensifs et teintés de préjugés, contribuant à donner du
+          Canada une image incomplète, déformée et préjudiciable. Nous sommes déterminés à redéfinir les principes qui
+          sous-tendent les collections, en veillant à ce que leur développement soit fermement ancré dans notre engagement
+          envers la réconciliation et la justice. Le RCDR s'emploie actuellement à
+          <a href="https://www.crkn-rcdr.ca/fr/appel-de-projets-de-developpement-de-la-collection-canadiana" target="_blank" rel="noopener">développer la collection</a>
+          avec du contenu
+          provenant des collections des membres et des parties prenantes, tout en accordant la priorité aux documents à risque,
+          aux journaux et aux contenus représentatifs de la diversité de la population canadienne.
+        </p>
+        <p class="mb-0">
+          Les collections de Canadiana sont encadrées par le
+          <a href="https://www.crkn-rcdr.ca/fr/comite-de-preservation-et-dacces" target="_blank" rel="noopener">Comité de préservation et d'accès</a> (CPA)
+          et les sous-comités du CPA, le
+          <a href="https://www.crkn-rcdr.ca/fr/sous-comite-sur-le-contenu-de-canadiana-sccc" target="_blank" rel="noopener">Sous-comité sur le contenu de Canadiana</a>
+          et le
+          <a href="https://www.crkn-rcdr.ca/fr/sous-comite-technique-sur-les-plateformes-sctp" target="_blank" rel="noopener">Sous-comité technique sur les plateformes</a>.
+          Pour en savoir plus
+          sur les collections de Canadiana, contactez-nous à <a href="mailto:info@crkn.ca">info@crkn.ca</a>.
+        </p>
+      </section>
     </div>
   </div>
 </section>

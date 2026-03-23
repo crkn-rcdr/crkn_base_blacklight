@@ -9,7 +9,7 @@
               <span class="api-hero__title-main">État du système</span>
             </h1>
             <p class="api-lede">
-              Mises à jour de disponibilité pour les services Canadiana et Héritage.
+              Mises à jour d état pour les sites Web Canadiana et Héritage, y compris les interruptions de service et les pannes système.
             </p>
           </div>
         </div>
@@ -18,47 +18,46 @@
       <div class="api-layout">
         <aside class="api-toc" aria-label="Sur cette page">
           <h2 class="api-toc__title">Sur cette page</h2>
-          <a href="#fr-status-live">État en direct</a>
-          <a href="#fr-status-services">Services suivis</a>
-          <a href="#fr-status-incident">En cas de perturbation</a>
-          <a href="#fr-status-contact">Contacter le soutien</a>
+          <a href="#status-updates">Mises à jour d état</a>
+          <a href="#status-hours">Heures de mise à jour</a>
+          <a href="#status-current">État actuel</a>
+          <a href="#status-support">Contact du soutien</a>
         </aside>
 
         <div class="api-content">
-          <section id="fr-status-live" class="api-card">
-            <h2>État en direct</h2>
+          <section id="status-updates" class="api-card">
+            <h2>Mises à jour d état</h2>
             <p>
-              Consultez la page d’état pour les incidents actifs, les dégradations et les interruptions planifiées.
+              Cette page fournit des mises à jour d état pour les sites Web
+              <a href="<%= I18n.t('links.URL_CANADIANA') %>" target="_blank" rel="noopener">Canadiana</a>
+              et
+              <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">Héritage</a>,
+              y compris les interruptions de service et les pannes système.
             </p>
+          </section>
+
+          <section id="status-hours" class="api-card">
+            <h2>Heures de mise à jour</h2>
             <p>
-              <a href="<%= I18n.t('links.URL_SYSTEM') %>" target="_blank" rel="noopener">Ouvrir la page d’état en direct</a>
+              Cette page est généralement mise à jour entre 8 h 30 et 16 h 30 HE, du lundi au vendredi.
             </p>
           </section>
 
-          <section id="fr-status-services" class="api-card">
-            <h2>Services suivis</h2>
-            <ul class="api-list">
-              <li>Recherche au catalogue et pages de notices</li>
-              <li>Diffusion IIIF des manifestes et des images</li>
-              <li>Accès API et intégrations associées</li>
-            </ul>
+          <section id="status-current" class="api-card">
+            <h2>État actuel</h2>
+            <h3>Canadiana</h3>
+            <p>Canadiana fonctionne normalement.</p>
+            <h3>Héritage</h3>
+            <p>Héritage fonctionne normalement.</p>
           </section>
 
-          <section id="fr-status-incident" class="api-card">
-            <h2>En cas de perturbation</h2>
-            <ul class="api-list">
-              <li>Vérifiez d’abord la page d’état pour les incidents actifs</li>
-              <li>Réessayez quelques minutes plus tard en cas de dégradation temporaire</li>
-              <li>Si le problème persiste, contactez le soutien avec l’URL, l’heure et le message d’erreur</li>
-            </ul>
-          </section>
-
-          <section id="fr-status-contact" class="api-card">
-            <h2>Contacter le soutien</h2>
+          <section id="status-support" class="api-card">
+            <h2>Contact du soutien</h2>
             <p>
-              Si vous devez signaler un problème, utilisez la page
-              <a href="<%= contact_us_page_path(lang: I18n.locale) %>">Nous joindre</a>
-              pour transmettre les détails techniques.
+              Pour des performances optimales, utilisez une connexion Internet haute vitesse lorsque vous accédez à Canadiana et Héritage.
+              Si vous rencontrez des problèmes d accès qui ne sont pas indiqués sur cette page, contactez
+              <a href="mailto:info@crkn.ca">info@crkn.ca</a>
+              et continuez de consulter cette page pour obtenir des renseignements supplémentaires.
             </p>
           </section>
         </div>
