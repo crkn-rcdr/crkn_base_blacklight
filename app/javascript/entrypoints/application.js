@@ -939,7 +939,10 @@ let aboutFeaturePanListenersBound = false;
 function shouldInitAboutFeaturePan() {
   const body = document.body;
   if (!body) return false;
-  return body.classList.contains('blacklight-pages-about_canadiana');
+  return (
+    body.classList.contains('blacklight-pages-about_canadiana') ||
+    body.classList.contains('blacklight-pages-about_heritage')
+  );
 }
 
 function queueAboutFeaturePanUpdate() {

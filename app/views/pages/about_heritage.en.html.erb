@@ -27,10 +27,10 @@
   <div class="canadiana-shell about-modern-layout">
     <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title">
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
-        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Historic archival manuscript in the Heritage collection" loading="lazy">
+        <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h1700.190.jpg') %>" alt="Historic archival manuscript in the Heritage collection" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
-        <img src="<%= asset_path('government_documents.jpg') %>" alt="Government records from the Heritage collection" loading="lazy">
+        <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c15645.23') %>" alt="Government records from the Heritage collection" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
         <h2 class="visually-hidden">Héritage Collection at a glance</h2>
@@ -50,7 +50,7 @@
         </p>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
-        <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Archival source image from the Heritage collection" loading="lazy">
+        <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h2270.233.jpg') %>" alt="Archival source image from the Heritage collection" loading="lazy">
       </article>
     </section>
 
@@ -99,14 +99,13 @@
     <section class="about-modern-block" aria-labelledby="heritage-use-title">
       <div class="about-modern-work-grid">
         <article class="about-modern-card about-modern-card--media">
-          <img src="<%= asset_path('govpubs.jpg') %>" alt="Research workflow in the Heritage collection" loading="lazy">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c13421.55.jpg') %>" alt="Research workflow in the Heritage collection" loading="lazy">
         </article>
         <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title">
           <h2 id="heritage-use-title">How to Work with the Collection</h2>
           <ol>
-            <li>To get started, choose the collection which best reflects your research interest. Each collection page includes basic finding aids to guide your search, as well as tips on how to navigate the digitized microfilm rolls. This information, drawn from Library and Archives Canada’s MIKAN archival catalogue, was generously shared to help ease of access.</li>
-            <li>The basic Search can help guide you to a collection which matches your chosen keywords. The Search is a simple form which scans collections for both descriptive information and metadata, such as title words, author/creator names, subjects, as well as the text content of documents, where available.</li>
-            <li>To refine your query, use the tools from <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Navigating the Collections</a>, including exact phrases in quotes and operators like <code>?</code>, <code>*</code>, <code>-</code>, and <code>|</code>.</li>
+            <li>To get started, choose the collection that best matches your research interest. Each collection page includes finding aids and tips for navigating digitized microfilm rolls. This information, drawn from Library and Archives Canada’s <a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/index" target="_blank" rel="noopener">MIKAN archival catalogue</a>, was generously shared to help ease of access.</li>
+            <li>The basic Search helps guide you to collections that match your keywords. It searches descriptive information, metadata, and, where available, document text. To refine your query, use the tools from <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Navigating the Collections</a>, including exact phrases in quotes and operators like <span style="white-space: nowrap;"><code>?</code>, <code>*</code>, <code>-</code>, and <code>|</code></span>.</li>
             <li>When you find relevant records, save your evidence using <code>IMG</code>, <code>PAGE</code>, and <code>FULL</code> (if available), and copy the persistent URL from the record.</li>
             <li>For citation, follow the <a href="<%= citation_guide_path(lang: I18n.locale) %>">Citation Guide</a>: cite Canadiana as the source and include the persistent URL. For publicly available works, please send a copy or link to CRKN.</li>
           </ol>

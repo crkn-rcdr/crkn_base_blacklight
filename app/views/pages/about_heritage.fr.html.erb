@@ -28,10 +28,10 @@
   <div class="canadiana-shell about-modern-layout">
     <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title-fr">
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
-        <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Manuscrit d'archives de la collection Heritage" loading="lazy">
+        <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h1700.190.jpg') %>" alt="Manuscrit d'archives de la collection Heritage" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
-        <img src="<%= asset_path('government_documents.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
+        <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c15645.23.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
         <h2 class="visually-hidden">Collection Héritage en bref</h2>
@@ -51,7 +51,7 @@
         </p>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
-        <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Image de source archivistique de la collection Heritage" loading="lazy">
+        <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h2270.233.jpg') %>" alt="Image de source archivistique de la collection Heritage" loading="lazy">
       </article>
     </section>
 
@@ -100,14 +100,13 @@
     <section class="about-modern-block" aria-labelledby="heritage-use-title-fr">
       <div class="about-modern-work-grid">
         <article class="about-modern-card about-modern-card--media">
-          <img src="<%= asset_path('govpubs.jpg') %>" alt="Parcours de recherche dans la collection Heritage" loading="lazy">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c13421.55.jpg') %>" alt="Parcours de recherche dans la collection Heritage" loading="lazy">
         </article>
         <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title-fr">
           <h2 id="heritage-use-title-fr">Comment exploiter la collection</h2>
           <ol>
-            <li>Pour commencer, choisissez la collection qui reflète le mieux votre domaine d’intérêt. Chaque page de la collection est équipée d’un moteur de recherche de base pour vous guider dans votre recherche et offre des conseils sur la manière de naviguer à travers les bobines de microfilm numérisées. Ces informations proviennent de MIKAN, le catalogue des fonds d’archives de Bibliothèque et Archives Canada. Ce dernier a eu la générosité de partager ces informations avec vous pour en faciliter l’accès.</li>
-            <li>La recherche de base peut servir à vous guider vers une collection qui correspond aux mots clés choisis. Là où elle est disponible, la recherche de base est une méthode simple de scruter les collections afin d’y détecter tant les informations descriptives que les métadonnées, telles que les mots d’un titre, les noms d’auteurs ou de créateurs, les sujets, ainsi que le contenu textuel des documents.</li>
-            <li>Pour affiner la requête, appliquez les outils de <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, y compris les expressions exactes entre guillemets et les opérateurs <code>?</code>, <code>*</code>, <code>-</code> et <code>|</code>.</li>
+            <li>Pour commencer, choisissez la collection qui correspond le mieux à votre domaine d’intérêt. Chaque page comprend des instruments de recherche et des conseils pour parcourir les bobines de microfilm numérisées. Ces informations proviennent de <a href="https://recherche-collection-search.bac-lac.gc.ca/fra" target="_blank" rel="noopener">MIKAN, le catalogue des fonds d’archives de Bibliothèque et Archives Canada</a>. Ce dernier a eu la générosité de partager ces informations avec vous pour en faciliter l’accès.</li>
+            <li>La recherche de base vous aide à repérer les collections correspondant à vos mots clés. Elle parcourt les informations descriptives, les métadonnées et, lorsque disponible, le texte des documents. Pour affiner la requête, appliquez les outils de <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, y compris les expressions exactes entre guillemets et les opérateurs <span style="white-space: nowrap;"><code>?</code>, <code>*</code>, <code>-</code> et <code>|</code></span>.</li>
             <li>Lorsque vous trouvez des notices pertinentes, conservez vos preuves avec <code>IMG</code>, <code>PAGE</code> et <code>FULL</code> (si offert), puis copiez l’URL pérenne de la notice.</li>
             <li>Pour la citation, suivez le <a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation</a> : citez Canadiana comme source et incluez l’URL pérenne. Pour les travaux rendus publics, veuillez envoyer une copie ou un lien au RCDR.</li>
           </ol>
