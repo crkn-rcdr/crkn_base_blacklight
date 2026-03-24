@@ -1,14 +1,13 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% new_canadiana_url = search_catalog_path(lang: I18n.locale, q: '', search_field: 'all_fields', sort: 'date-added-desc') %>
-<% new_heritage_url = is_fr ? 'https://heritage.canadiana.ca/?usrlang=fr' : 'https://heritage.canadiana.ca/?usrlang=en' %>
 <ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
   <li class="nav-item-dropdown dropdown">
     <button class="btn nav-dropdown-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <%= is_fr ? "\u00C0 propos des collections" : 'About the Collections' %>
+      <%= is_fr ? "À propos des collections" : 'About the Collections' %>
     </button>
     <ul class="dropdown-menu nav-dropdown-menu">
-      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= about_canadiana_path(lang: I18n.locale) %>"><%= is_fr ? "\u00C0 propos de Canadiana" : 'About Canadiana' %></a></li>
-      <li><a class="dropdown-item dropdown-item--heritage" href="<%= about_heritage_path(lang: I18n.locale) %>"><%= is_fr ? "\u00C0 propos d\u2019H\u00E9ritage" : "About H\u00E9ritage" %></a></li>
+      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= about_canadiana_path(lang: I18n.locale) %>"><%= is_fr ? "À propos de Canadiana" : 'About Canadiana' %></a></li>
+      <li><a class="dropdown-item dropdown-item--heritage" href="<%= about_heritage_path(lang: I18n.locale) %>"><%= is_fr ? "À propos d’Héritage" : "About Héritage" %></a></li>
     </ul>
   </li>
   <li class="nav-item-dropdown dropdown">
@@ -17,12 +16,17 @@
     </button>
     <ul class="dropdown-menu nav-dropdown-menu">
       <li><a class="dropdown-item dropdown-item--canadiana" href="<%= new_canadiana_url %>"><%= is_fr ? 'Nouveau contenu Canadiana' : 'New Canadiana Content' %></a></li>
-      <li><a class="dropdown-item dropdown-item--heritage" href="<%= new_heritage_url %>" target="_blank" rel="noopener"><%= is_fr ? "Nouveau contenu H\u00E9ritage" : "New H\u00E9ritage Content" %></a></li>
+      <li>
+        <span class="dropdown-item dropdown-item--heritage dropdown-item--disabled" aria-disabled="true">
+          <%= is_fr ? "Nouveau contenu Héritage" : "New Héritage Content" %>
+          <small class="dropdown-item__status"><%= is_fr ? 'Bientôt disponible' : 'Coming soon' %></small>
+        </span>
+      </li>
     </ul>
   </li>
   <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Parcourir les collections' : 'Navigating the Collections' %></a></li>
-  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? "Acc\u00E8s aux API" : 'API Access' %></a></li>
+  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? "Accès aux API" : 'API Access' %></a></li>
   <li><a href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
-  <li><a href="<%= system_status_path(lang: I18n.locale) %>"><%= is_fr ? "Statut du syst\u00E8me" : 'System Status' %></a></li>
+  <li><a href="<%= system_status_path(lang: I18n.locale) %>"><%= is_fr ? "Statut du système" : 'System Status' %></a></li>
   <li><a href="<%= contact_us_page_path(lang: I18n.locale) %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>
 </ul>

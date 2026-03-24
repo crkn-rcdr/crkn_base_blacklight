@@ -2294,6 +2294,7 @@ summary:focus-visible,
   font-size: .98rem;
   font-weight: 700;
   white-space: normal;
+  display: block;
   padding: .92rem .2rem .92rem .7rem;
   border-radius: 0;
   border: 0;
@@ -2340,6 +2341,28 @@ summary:focus-visible,
 .nav-list.nav-list-main .nav-dropdown-menu .dropdown-item:focus-visible {
   outline: 2px solid rgba(31, 133, 145, .3);
   outline-offset: 2px;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--disabled {
+  color: rgba(17, 24, 31, .62);
+  background: rgba(24, 37, 47, .04);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--disabled:hover,
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--disabled:focus {
+  color: rgba(17, 24, 31, .62);
+  background: rgba(24, 37, 47, .04);
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item__status {
+  display: block;
+  margin-top: .2rem;
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
 }
 
 @media (min-width: 1200px) {

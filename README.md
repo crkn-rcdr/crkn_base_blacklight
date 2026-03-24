@@ -12,9 +12,14 @@ CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and disco
    ruby -rsecurerandom -e 'puts SecureRandom.hex(64)'
    ```
    Save that value to `config/master.key` or export it as `RAILS_MASTER_KEY`.
-1. Run the app.
+1. Run the app in development.
    ```bash
-   docker compose up --build --force-recreate
+   docker compose -f docker-compose.dev.yml up --build --force-recreate
+   ```
+
+1. Run the app in production mode.
+   ```bash
+   docker compose -f docker-compose.prod.yml up --build --force-recreate
    ```
 
 The app will be available at `http://localhost:3000`.
@@ -126,9 +131,14 @@ High-level steps:
 
 ## Development
 
-Run the container:
+Run the development container:
 ```bash
-docker compose up
+docker compose -f docker-compose.dev.yml up --build --force-recreate
+```
+
+Run the production container:
+```bash
+docker compose -f docker-compose.prod.yml up --build --force-recreate
 ```
 
 Common in-container commands:
