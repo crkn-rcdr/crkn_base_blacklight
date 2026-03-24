@@ -931,3 +931,318 @@ function initScrollRevealText() {
 
 document.addEventListener('DOMContentLoaded', initScrollRevealText);
 document.addEventListener('turbo:load', initScrollRevealText);
+
+let aboutFeaturePanTargets = [];
+let aboutFeaturePanRafId = null;
+let aboutFeaturePanListenersBound = false;
+
+function shouldInitAboutFeaturePan() {
+  const body = document.body;
+  if (!body) return false;
+  return body.classList.contains('blacklight-pages-about_canadiana');
+}
+
+function queueAboutFeaturePanUpdate() {
+  if (aboutFeaturePanRafId !== null) return;
+  aboutFeaturePanRafId = window.requestAnimationFrame(() => {
+    aboutFeaturePanRafId = null;
+    if (!aboutFeaturePanTargets.length) return;
+
+    const viewportHeight = Math.max(window.innerHeight || 0, 1);
+    aboutFeaturePanTargets.forEach((img) => {
+      const mediaCard = img.closest('.about-modern-card--media');
+      if (!mediaCard) return;
+
+      const rect = mediaCard.getBoundingClientRect();
+      const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+      const clamped = Math.max(0, Math.min(1, progress));
+      img.style.setProperty('--about-scroll-pan-y', `${(clamped * 100).toFixed(2)}%`);
+    });
+  });
+}
+
+function initAboutFeaturePan() {
+  if (!shouldInitAboutFeaturePan()) {
+    aboutFeaturePanTargets = [];
+    return;
+  }
+
+  aboutFeaturePanTargets = Array.from(
+    document.querySelectorAll(
+      '.about-modern-feature-grid .about-modern-card--media img, .about-modern-work-grid .about-modern-card--media img'
+    )
+  );
+  if (!aboutFeaturePanTargets.length) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  aboutFeaturePanTargets.forEach((img) => {
+    img.dataset.scrollPan = '1';
+    img.style.setProperty('--about-scroll-pan-y', prefersReducedMotion ? '50%' : '0%');
+  });
+
+  if (prefersReducedMotion) return;
+
+  queueAboutFeaturePanUpdate();
+
+  if (aboutFeaturePanListenersBound) return;
+
+  window.addEventListener('scroll', queueAboutFeaturePanUpdate, { passive: true });
+  window.addEventListener('resize', queueAboutFeaturePanUpdate);
+  aboutFeaturePanListenersBound = true;
+}
+
+document.addEventListener('DOMContentLoaded', initAboutFeaturePan);
+document.addEventListener('turbo:load', initAboutFeaturePan);
+
+let heritageFloatingCardsState = null;
+let heritageFloatingCardsRefreshTimer = null;
+let heritageFloatingCardsViewportListenersBound = false;
+
+function queueHeritageFloatingCardsRefresh() {
+  if (heritageFloatingCardsRefreshTimer !== null) {
+    window.clearTimeout(heritageFloatingCardsRefreshTimer);
+  }
+
+  heritageFloatingCardsRefreshTimer = window.setTimeout(() => {
+    heritageFloatingCardsRefreshTimer = null;
+
+    if (!shouldInitHeritageFloatingCards()) {
+      destroyHeritageFloatingCards();
+      return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth < 1100) {
+      destroyHeritageFloatingCards();
+      return;
+    }
+
+    if (!heritageFloatingCardsState) {
+      initHeritageFloatingCards();
+      return;
+    }
+
+    if (typeof heritageFloatingCardsState.rebuildLayout === 'function') {
+      window.requestAnimationFrame(heritageFloatingCardsState.rebuildLayout);
+    }
+  }, 120);
+}
+
+function bindHeritageFloatingCardsViewportListeners() {
+  if (heritageFloatingCardsViewportListenersBound) return;
+
+  window.addEventListener('resize', queueHeritageFloatingCardsRefresh, { passive: true });
+  window.addEventListener('orientationchange', queueHeritageFloatingCardsRefresh);
+
+  heritageFloatingCardsViewportListenersBound = true;
+}
+
+function shouldInitHeritageFloatingCards() {
+  const body = document.body;
+  if (!body) return false;
+  return body.classList.contains('blacklight-pages-about_heritage');
+}
+
+function destroyHeritageFloatingCards() {
+  if (heritageFloatingCardsRefreshTimer !== null) {
+    window.clearTimeout(heritageFloatingCardsRefreshTimer);
+    heritageFloatingCardsRefreshTimer = null;
+  }
+
+  if (!heritageFloatingCardsState) return;
+
+  const state = heritageFloatingCardsState;
+  if (state.rafId !== null) window.cancelAnimationFrame(state.rafId);
+  if (state.resizeHandler) window.removeEventListener('resize', state.resizeHandler);
+  if (state.visibilityHandler) document.removeEventListener('visibilitychange', state.visibilityHandler);
+
+  state.cards.forEach((card) => {
+    card.style.removeProperty('transform');
+    card.classList.remove('is-floating');
+  });
+
+  heritageFloatingCardsState = null;
+}
+
+function initHeritageFloatingCards() {
+  destroyHeritageFloatingCards();
+  if (!shouldInitHeritageFloatingCards()) return;
+  bindHeritageFloatingCardsViewportListeners();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.innerWidth < 1100) return;
+
+  const grid = document.querySelector('.about-modern-collection-grid--five');
+  if (!grid) return;
+
+  const cards = Array.from(grid.querySelectorAll('.about-modern-card--collection'));
+  if (cards.length < 2) return;
+
+  const randomBetween = (min, max) => min + Math.random() * (max - min);
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  const state = {
+    grid,
+    cards,
+    items: [],
+    containerPadding: 14,
+    rafId: null,
+    lastTimestamp: null,
+    resizeHandler: null,
+    visibilityHandler: null,
+    rebuildLayout: null
+  };
+
+  const rebuildLayout = () => {
+    const gridRect = grid.getBoundingClientRect();
+    const padding = state.containerPadding;
+
+    const previous = new Map(state.items.map((item) => [item.card, item]));
+    state.items = cards.map((card) => {
+      const width = card.offsetWidth;
+      const height = card.offsetHeight;
+      const prior = previous.get(card);
+      const angle = randomBetween(0, Math.PI * 2);
+      const speed = randomBetween(0.009, 0.022);
+
+      const cardRect = card.getBoundingClientRect();
+      const baseX = card.offsetParent === grid ? card.offsetLeft : (cardRect.left - gridRect.left);
+      const baseY = card.offsetParent === grid ? card.offsetTop : (cardRect.top - gridRect.top);
+      let minX = padding - baseX;
+      let maxX = gridRect.width - padding - baseX - width;
+      let minY = padding - baseY;
+      let maxY = gridRect.height - padding - baseY - height;
+
+      if (minX > maxX) {
+        minX = 0;
+        maxX = 0;
+      }
+      if (minY > maxY) {
+        minY = 0;
+        maxY = 0;
+      }
+
+      card.classList.add('is-floating');
+
+      return {
+        card,
+        baseX,
+        baseY,
+        width,
+        height,
+        minX,
+        maxX,
+        minY,
+        maxY,
+        x: clamp(prior?.x ?? 0, minX, maxX),
+        y: clamp(prior?.y ?? 0, minY, maxY),
+        vx: prior?.vx ?? Math.cos(angle) * speed,
+        vy: prior?.vy ?? Math.sin(angle) * speed,
+        bobAmp: prior?.bobAmp ?? randomBetween(0.9, 2.6),
+        bobRate: prior?.bobRate ?? randomBetween(0.00032, 0.00062),
+        bobPhase: prior?.bobPhase ?? randomBetween(0, Math.PI * 2)
+      };
+    });
+  };
+  state.rebuildLayout = rebuildLayout;
+
+  const resolveCollisions = () => {
+    const items = state.items;
+    for (let i = 0; i < items.length; i += 1) {
+      for (let j = i + 1; j < items.length; j += 1) {
+        const a = items[i];
+        const b = items[j];
+
+        const aLeft = a.baseX + a.x;
+        const aTop = a.baseY + a.y;
+        const bLeft = b.baseX + b.x;
+        const bTop = b.baseY + b.y;
+
+        const overlapX = Math.min(aLeft + a.width, bLeft + b.width) - Math.max(aLeft, bLeft);
+        const overlapY = Math.min(aTop + a.height, bTop + b.height) - Math.max(aTop, bTop);
+        if (overlapX <= 0 || overlapY <= 0) continue;
+
+        if (overlapX < overlapY) {
+          const direction = (aLeft + a.width * 0.5) < (bLeft + b.width * 0.5) ? -1 : 1;
+          const push = overlapX * 0.52;
+          a.x += direction * push;
+          b.x -= direction * push;
+          const avx = a.vx;
+          a.vx = -b.vx * 0.92;
+          b.vx = -avx * 0.92;
+        } else {
+          const direction = (aTop + a.height * 0.5) < (bTop + b.height * 0.5) ? -1 : 1;
+          const push = overlapY * 0.52;
+          a.y += direction * push;
+          b.y -= direction * push;
+          const avy = a.vy;
+          a.vy = -b.vy * 0.92;
+          b.vy = -avy * 0.92;
+        }
+      }
+    }
+  };
+
+  const tick = (timestamp) => {
+    state.rafId = window.requestAnimationFrame(tick);
+    if (document.visibilityState === 'hidden') {
+      state.lastTimestamp = timestamp;
+      return;
+    }
+
+    const dt = Math.min(34, state.lastTimestamp ? (timestamp - state.lastTimestamp) : 16);
+    state.lastTimestamp = timestamp;
+
+    state.items.forEach((item) => {
+      item.x += item.vx * dt;
+      item.y += item.vy * dt;
+
+      if (item.x <= item.minX || item.x >= item.maxX) {
+        item.x = clamp(item.x, item.minX, item.maxX);
+        item.vx *= -1;
+      }
+      if (item.y <= item.minY || item.y >= item.maxY) {
+        item.y = clamp(item.y, item.minY, item.maxY);
+        item.vy *= -1;
+      }
+
+      const speed = Math.hypot(item.vx, item.vy);
+      if (speed < 0.0062) {
+        const resetAngle = randomBetween(0, Math.PI * 2);
+        item.vx = Math.cos(resetAngle) * 0.011;
+        item.vy = Math.sin(resetAngle) * 0.011;
+      }
+    });
+
+    resolveCollisions();
+
+    state.items.forEach((item) => {
+      item.x = clamp(item.x, item.minX, item.maxX);
+      item.y = clamp(item.y, item.minY, item.maxY);
+      const bob = Math.sin(timestamp * item.bobRate + item.bobPhase) * item.bobAmp;
+      item.card.style.transform = `translate3d(${item.x.toFixed(2)}px, ${(item.y + bob).toFixed(2)}px, 0)`;
+    });
+  };
+
+  state.resizeHandler = () => {
+    if (window.innerWidth < 1100) {
+      destroyHeritageFloatingCards();
+      return;
+    }
+    window.requestAnimationFrame(rebuildLayout);
+  };
+
+  state.visibilityHandler = () => {
+    if (document.visibilityState === 'visible') {
+      rebuildLayout();
+    }
+  };
+
+  rebuildLayout();
+  state.rafId = window.requestAnimationFrame(tick);
+  window.addEventListener('resize', state.resizeHandler);
+  document.addEventListener('visibilitychange', state.visibilityHandler);
+  heritageFloatingCardsState = state;
+}
+
+document.addEventListener('DOMContentLoaded', initHeritageFloatingCards);
+document.addEventListener('turbo:load', initHeritageFloatingCards);
+document.addEventListener('turbo:before-cache', destroyHeritageFloatingCards);

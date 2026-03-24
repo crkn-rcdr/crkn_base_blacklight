@@ -10,15 +10,15 @@ fr:
       range_end_short: Fin
       range_html: " %{begin_value} – %{end_value}"
     members:
-      title: Canadiana existe grâce aux bibliothèques membres du RCDR
+      title: Canadiana est rendu possible grâce aux bibliothèques membres du RCDR
       subtitle: Le RCDR est une communauté canadienne de bibliothèques, d’archives et d’institutions d’un océan à l’autre
       category_aria: Onglets de catégories de membres
-      institutional: Membres institutionnels
+      institutional: Établissements membres
       associate: Membres associés
       all: Tous
-      search_label: Filtrer les membres
-      search_placeholder: Rechercher des membres…
-      blurb_html: "Le RCDR réunit <strong>%{count}</strong> organisations membres d’un océan à l’autre : de grandes bibliothèques universitaires et de recherche, les deux bibliothèques nationales du Canada et le plus grand réseau de bibliothèques publiques du pays. Ensemble, nos membres rendent possibles les collections Canadiana — pour que chacun puisse explorer, découvrir et se connecter au patrimoine documentaire du Canada."
+      search_label: Rechercher les membres
+      search_placeholder: Rechercher les membres
+      blurb_html: "Les collections et l'infrastructure Canadiana existent grâce à l'engagement commun et au soutien financier des 88 bibliothèques membres du RCDR à travers le pays. Ensemble, elles permettent à chacun d'explorer, de découvrir et de se connecter au patrimoine documentaire du Canada. <a href='https://www.crkn-rcdr.ca/fr/a-propos-du-rcdr' target='blank'>En savoir plus sur le RCDR.</a>"
       visit_site_aria: "Visiter le site de %{name}"
     page_search:
       matching_pages_for_html: "Pages correspondantes pour <strong>%{term}</strong>"

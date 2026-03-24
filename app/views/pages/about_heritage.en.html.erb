@@ -1,4 +1,4 @@
-<% content_for :page_title, "Héritage Collection - #{application_name}" %>
+<% content_for :page_title, "About H\u00E9ritage - #{application_name}" %>
 
 <div class="home-page">
   <section class="site-section about-intro about-intro--heritage">
@@ -7,7 +7,7 @@
         <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
       </div>
       <div class="about-intro-copy about-intro-copy--heritage">
-        <h1 class="section-title">Héritage Collection</h1>
+        <h1 class="section-title">About H\u00E9ritage</h1>
         <p class="section-lede">
           The Héritage collection is a joint project supported by CRKN members and Library and Archives Canada
           (LAC) and draws from the rich resources of archival microfilm held by LAC. With more than 37 million pages
@@ -60,7 +60,6 @@
       </div>
       <div class="about-modern-collection-grid about-modern-collection-grid--five">
         <article class="about-modern-card about-modern-card--collection">
-          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c1845.9.jpg') %>" alt="Genealogy records in Heritage" loading="lazy">
           <div class="about-modern-card-body">
             <h3>Genealogy Materials</h3>
             <p>Immigration records, church records, land records, family histories and papers, and voters' lists.</p>
@@ -68,7 +67,6 @@
         </article>
 
         <article class="about-modern-card about-modern-card--collection">
-          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg') %>" alt="Indigenous history records in Heritage" loading="lazy">
           <div class="about-modern-card-body">
             <h3>Indigenous Peoples</h3>
             <p>Extensive documents relating to First Nations, M&eacute;tis, and Inuit communities in Canada.</p>
@@ -76,7 +74,6 @@
         </article>
 
         <article class="about-modern-card about-modern-card--collection">
-          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_t12502.1426.jpg') %>" alt="Government department records in Heritage" loading="lazy">
           <div class="about-modern-card-body">
             <h3>Government Departments</h3>
             <p>Early records from Indian Affairs, Immigration, Health, Agriculture, Railways and Canals, Fisheries, and Natural Resources.</p>
@@ -84,7 +81,6 @@
         </article>
 
         <article class="about-modern-card about-modern-card--collection">
-          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c2925.95.jpg') %>" alt="Military history documents in Heritage" loading="lazy">
           <div class="about-modern-card-body">
             <h3>Military History</h3>
             <p>Materials covering the War of 1812, First World War, World War II, and military administration in peacetime.</p>
@@ -92,7 +88,6 @@
         </article>
 
         <article class="about-modern-card about-modern-card--collection">
-          <img src="<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg') %>" alt="Papers from prominent Canadians in Heritage" loading="lazy">
           <div class="about-modern-card-body">
             <h3>Prominent Canadians</h3>
             <p>Papers from prime ministers, governors general, premiers, cabinet ministers, explorers, scientists, writers, and artists.</p>
@@ -107,12 +102,13 @@
           <img src="<%= asset_path('govpubs.jpg') %>" alt="Research workflow in the Heritage collection" loading="lazy">
         </article>
         <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title">
-          <h2 id="heritage-use-title">How to Use This Site</h2>
+          <h2 id="heritage-use-title">How to Work with the Collection</h2>
           <ol>
-            <li><strong>Choose a collection:</strong> Start with the area that best reflects your research interest.</li>
-            <li><strong>Use collection finding aids:</strong> Each page includes guidance and tips for navigating digitized microfilm rolls.</li>
-            <li><strong>Run a basic search:</strong> Search descriptive metadata such as title words, author or creator names, subjects, and text where available.</li>
-            <li><strong>Use MIKAN context:</strong> Collection guidance is drawn from Library and Archives Canada's <a href="http://www.collectionscanada.gc.ca/lac-bac/search/arch" target="_blank" rel="noopener">MIKAN archival catalog</a>.</li>
+            <li>To get started, choose the collection which best reflects your research interest. Each collection page includes basic finding aids to guide your search, as well as tips on how to navigate the digitized microfilm rolls. This information, drawn from Library and Archives Canada’s MIKAN archival catalogue, was generously shared to help ease of access.</li>
+            <li>The basic Search can help guide you to a collection which matches your chosen keywords. The Search is a simple form which scans collections for both descriptive information and metadata, such as title words, author/creator names, subjects, as well as the text content of documents, where available.</li>
+            <li>To refine your query, use the tools from <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Navigating the Collections</a>, including exact phrases in quotes and operators like <code>?</code>, <code>*</code>, <code>-</code>, and <code>|</code>.</li>
+            <li>When you find relevant records, save your evidence using <code>IMG</code>, <code>PAGE</code>, and <code>FULL</code> (if available), and copy the persistent URL from the record.</li>
+            <li>For citation, follow the <a href="<%= citation_guide_path(lang: I18n.locale) %>">Citation Guide</a>: cite Canadiana as the source and include the persistent URL. For publicly available works, please send a copy or link to CRKN.</li>
           </ol>
         </article>
       </div>

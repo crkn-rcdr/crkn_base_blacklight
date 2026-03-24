@@ -1,10 +1,10 @@
-<% content_for :page_title, "Canadiana Collection - #{application_name}" %>
+<% content_for :page_title, "About Canadiana - #{application_name}" %>
 
 <div class="home-page">
   <section class="site-section about-intro about-intro--canadiana">
     <div class="canadiana-shell about-intro-grid about-intro-grid--canadiana">
       <div class="about-intro-copy about-intro-copy--canadiana">
-        <h1 class="section-title">Canadiana Collection</h1>
+        <h1 class="section-title">About Canadiana</h1>
         <p class="section-lede">
           Approximately 31 million pages of publications that show how knowledge, stories, and information were shared over time.
           This collection includes books, newspapers, magazines, government documents, maps, and more from c. 1500 to the present day.
@@ -27,10 +27,10 @@
         </p>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-primary">
-        <img src="<%= asset_path('monog.jpg') %>" alt="Historic books and publications from the Canadiana Collection" loading="lazy">
+        <img src="<%= asset_path('about/canadiana/oocihm.8_06349_193304.1.jpg') %>" alt="Historic books and publications from the Canadiana Collection" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-secondary">
-        <img src="<%= asset_path('maps.jpg') %>" alt="Historic map materials from the Canadiana Collection" loading="lazy">
+        <img src="<%= asset_path('about/canadiana/oocihm.8_06967_385.1.jpg') %>" alt="Historic map materials from the Canadiana Collection" loading="lazy">
       </article>
       <article class="about-modern-card about-modern-card--copy about-modern-card--canadiana-copy-secondary">
         <h2>Collection depth built for serious research</h2>
@@ -239,15 +239,15 @@
     <section class="about-modern-block" aria-labelledby="canadiana-use-title">
       <div class="about-modern-work-grid">
         <article class="about-modern-card about-modern-card--media">
-          <img src="<%= asset_path('govpubs.jpg') %>" alt="Research workflow for Canadiana materials" loading="lazy">
+          <img src="<%= asset_path('about/canadiana/oocihm.9_01973_3_1.2.jpg') %>" alt="Research workflow for Canadiana materials" loading="lazy">
         </article>
         <article class="about-modern-card about-modern-card--steps">
           <h2 id="canadiana-use-title">How to Work with the Collection</h2>
           <ol>
-            <li><strong>Start broad:</strong> Search across all fields to identify promising titles and themes.</li>
-            <li><strong>Narrow fast:</strong> Use collection filters to focus on monographs, serials, maps, or government content.</li>
-            <li><strong>Validate context:</strong> Review publication details, date ranges, and source metadata before citation.</li>
-            <li><strong>Move to evidence:</strong> Open the full document to read, compare, and extract primary-source passages.</li>
+            <li><strong>Start broad:</strong> Use Basic Search to identify promising records, then narrow with filters for monographs, serials, maps, or government publications.</li>
+            <li><strong>Refine queries:</strong> Apply tools from <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Navigating the Collections</a>, including exact phrases in quotes and operators like <code>?</code>, <code>*</code>, <code>-</code>, and <code>|</code>.</li>
+            <li><strong>Save evidence:</strong> When relevant records appear, capture <code>IMG</code>, <code>PAGE</code>, and <code>FULL</code> (if available), then copy the persistent URL.</li>
+            <li><strong>Cite correctly:</strong> Follow the <a href="<%= citation_guide_path(lang: I18n.locale) %>">Citation Guide</a>, cite Canadiana as the source, and include the persistent URL.</li>
           </ol>
         </article>
       </div>

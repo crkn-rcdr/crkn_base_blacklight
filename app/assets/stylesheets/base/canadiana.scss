@@ -2230,6 +2230,118 @@ summary:focus-visible,
   color: #1d808b !important;
 }
 
+.nav-list.nav-list-main .nav-item-dropdown {
+  position: relative;
+}
+
+.nav-list.nav-list-main .nav-dropdown-toggle {
+  color: #222930 !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  font-size: clamp(.94rem, .78vw, 1.02rem);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: .003em;
+  padding: .15rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-list.nav-list-main .nav-dropdown-toggle:hover,
+.nav-list.nav-list-main .nav-dropdown-toggle:focus,
+.nav-list.nav-list-main .nav-dropdown-toggle:active {
+  color: #1d808b !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.nav-list.nav-list-main .nav-dropdown-toggle::after {
+  margin-left: .38rem;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu {
+  margin-top: 0;
+  border: 1px solid rgba(25, 35, 43, .12);
+  border-radius: .32rem;
+  padding: .35rem 1.05rem .35rem .86rem;
+  min-width: 15.8rem;
+  box-shadow: 0 12px 24px rgba(16, 24, 40, .11);
+  background: #fff;
+  position: absolute;
+  top: calc(100% + .42rem) !important;
+  left: 0 !important;
+  right: auto !important;
+  transform: none !important;
+  z-index: 1200;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: .36rem;
+  bottom: .36rem;
+  left: .26rem;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #1d808b 0%, #4abe00 100%);
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item {
+  color: #11181f;
+  font-size: .98rem;
+  font-weight: 700;
+  white-space: normal;
+  padding: .92rem .2rem .92rem .7rem;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid rgba(24, 37, 47, .2);
+  background: transparent;
+  margin: 0;
+  transition: color .15s ease, background-color .15s ease;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--canadiana {
+  color: #11181f;
+  border-color: rgba(24, 37, 47, .2);
+  background: transparent;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--heritage {
+  color: #11181f;
+  border-color: rgba(24, 37, 47, .2);
+  background: transparent;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item:hover,
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item:focus {
+  color: #0f151c;
+  border-color: rgba(24, 37, 47, .2);
+  background: rgba(15, 128, 139, .05);
+  box-shadow: none;
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--canadiana:hover,
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--canadiana:focus {
+  color: #1d808b;
+  border-color: rgba(24, 37, 47, .2);
+  background: rgba(15, 128, 139, .06);
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--heritage:hover,
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item--heritage:focus {
+  color: #367a00;
+  border-color: rgba(24, 37, 47, .2);
+  background: rgba(74, 190, 0, .06);
+}
+
+.nav-list.nav-list-main .nav-dropdown-menu .dropdown-item:focus-visible {
+  outline: 2px solid rgba(31, 133, 145, .3);
+  outline-offset: 2px;
+}
+
 @media (min-width: 1200px) {
   html[lang^='fr'] .topbar-main .canadiana-shell {
     padding-left: clamp(14px, 1.45vw, 24px);
@@ -2246,6 +2358,10 @@ summary:focus-visible,
   }
 
   html[lang^='fr'] .nav-list.nav-list-main a {
+    font-size: clamp(.86rem, .56vw, .95rem);
+  }
+
+  html[lang^='fr'] .nav-list.nav-list-main .nav-dropdown-toggle {
     font-size: clamp(.86rem, .56vw, .95rem);
   }
 }
@@ -2322,6 +2438,10 @@ summary:focus-visible,
   .nav-list.nav-list-main a {
     font-size: .9rem;
   }
+
+  .nav-list.nav-list-main .nav-dropdown-toggle {
+    font-size: .9rem;
+  }
 }
 
 @media (max-width: 991px) {
@@ -2387,6 +2507,29 @@ summary:focus-visible,
 
   .nav-list.nav-list-main a {
     font-size: .96rem;
+  }
+
+  .nav-list.nav-list-main .nav-item-dropdown {
+    display: block !important;
+    align-items: stretch;
+  }
+
+  .nav-list.nav-list-main .nav-dropdown-toggle {
+    width: 100%;
+    justify-content: space-between;
+    font-size: .96rem;
+  }
+
+  .nav-list.nav-list-main .nav-dropdown-menu {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    float: none;
+    width: 100%;
+    min-width: 0;
+    margin-top: .35rem;
+    border-radius: .55rem;
+    box-shadow: none;
   }
 }
 
@@ -4891,7 +5034,8 @@ summary:focus-visible,
   will-change: transform, opacity, background-position;
 }
 
-.home-page .home-intro--canadiana-clean .home-canadiana-feature__viewport::before {
+.home-page .home-intro--canadiana-clean .home-canadiana-feature__viewport::before,
+.home-page .about-intro--canadiana .home-canadiana-feature__viewport::before {
   background:
     radial-gradient(62% 56% at 14% 20%, rgba(44, 155, 130, 0.42) 0%, rgba(44, 155, 130, 0) 74%),
     radial-gradient(46% 44% at 82% 78%, rgba(228, 169, 84, 0.34) 0%, rgba(228, 169, 84, 0) 72%),
@@ -4902,7 +5046,8 @@ summary:focus-visible,
   animation: homeCanadianaAura 16s ease-in-out infinite alternate;
 }
 
-.home-page .home-intro--canadiana-clean .home-canadiana-feature__viewport::after {
+.home-page .home-intro--canadiana-clean .home-canadiana-feature__viewport::after,
+.home-page .about-intro--canadiana .home-canadiana-feature__viewport::after {
   inset: -8%;
   background:
     radial-gradient(52% 58% at 24% 30%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 74%),
@@ -4913,7 +5058,8 @@ summary:focus-visible,
   animation: homeCanadianaSweep 16s ease-in-out infinite alternate;
 }
 
-.home-page .home-intro--heritage-clean .home-canadiana-feature__viewport::before {
+.home-page .home-intro--heritage-clean .home-canadiana-feature__viewport::before,
+.home-page .about-intro--heritage .home-canadiana-feature__viewport::before {
   background:
     radial-gradient(65% 58% at 20% 18%, rgba(76, 132, 140, 0.32) 0%, rgba(76, 132, 140, 0) 76%),
     radial-gradient(48% 46% at 78% 78%, rgba(176, 199, 154, 0.28) 0%, rgba(176, 199, 154, 0) 72%),
@@ -4924,7 +5070,8 @@ summary:focus-visible,
   animation: homeHeritageDrift 20s ease-in-out infinite alternate;
 }
 
-.home-page .home-intro--heritage-clean .home-canadiana-feature__viewport::after {
+.home-page .home-intro--heritage-clean .home-canadiana-feature__viewport::after,
+.home-page .about-intro--heritage .home-canadiana-feature__viewport::after {
   inset: 0;
   background:
     radial-gradient(58% 50% at 32% 24%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 74%),
@@ -4934,11 +5081,13 @@ summary:focus-visible,
   animation: homeHeritageTexture 15s ease-in-out infinite alternate;
 }
 
-.home-page .home-intro--canadiana-clean .home-canadiana-feature__slide.is-active {
+.home-page .home-intro--canadiana-clean .home-canadiana-feature__slide.is-active,
+.home-page .about-intro--canadiana .home-canadiana-feature__slide.is-active {
   animation: homeCanadianaPan 21s ease-in-out infinite alternate;
 }
 
-.home-page .home-intro--heritage-clean .home-canadiana-feature__slide.is-active {
+.home-page .home-intro--heritage-clean .home-canadiana-feature__slide.is-active,
+.home-page .about-intro--heritage .home-canadiana-feature__slide.is-active {
   animation: homeHeritagePan 24s ease-in-out infinite alternate;
 }
 
@@ -5789,7 +5938,7 @@ summary:focus-visible,
     gap: 0;
     position: relative;
     overflow: visible;
-    min-height: clamp(560px, 43vw, 760px);
+    min-height: clamp(440px, 34vw, 620px);
     background: inherit;
   }
 
@@ -7078,12 +7227,24 @@ summary:focus-visible,
   min-height: clamp(220px, 30vw, 290px);
 }
 
+.blacklight-pages-about_canadiana .about-modern-feature-grid .about-modern-card--media {
+  height: clamp(364px, 28.6vw, 546px);
+  min-height: clamp(364px, 28.6vw, 546px);
+}
+
 .blacklight-pages-about_canadiana .about-modern-card--media img,
 .blacklight-pages-about_heritage .about-modern-card--media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.blacklight-pages-about_canadiana .about-modern-feature-grid .about-modern-card--media img[data-scroll-pan='1'],
+.blacklight-pages-about_canadiana .about-modern-work-grid .about-modern-card--media img[data-scroll-pan='1'] {
+  object-position: 50% var(--about-scroll-pan-y, 0%);
+  will-change: object-position;
+  transition: object-position .08s linear;
 }
 
 .blacklight-pages-about_heritage .about-modern-feature-grid--heritage-showcase {
@@ -7148,7 +7309,31 @@ summary:focus-visible,
 }
 
 .blacklight-pages-about_heritage .about-modern-collection-grid--five {
+  position: relative;
+  overflow: hidden;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+@media (min-width: 1101px) {
+  .blacklight-pages-about_heritage .about-modern-collection-grid--five .about-modern-card--collection {
+    width: clamp(202px, 18vw, 270px);
+    max-width: 100%;
+    justify-self: center;
+  }
+}
+
+.blacklight-pages-about_heritage .about-modern-collection-grid--five .about-modern-card--collection.is-floating {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blacklight-pages-about_heritage .about-modern-collection-grid--five .about-modern-card--collection.is-floating {
+    transform: none !important;
+  }
 }
 
 .blacklight-pages-about_canadiana .about-modern-card--collection,
@@ -7399,6 +7584,26 @@ summary:focus-visible,
   gap: clamp(0.85rem, 1.4vw, 1.15rem);
 }
 
+.blacklight-pages-about_heritage .about-modern-work-grid {
+  align-items: start;
+}
+
+@media (min-width: 993px) {
+  .blacklight-pages-about_canadiana .about-modern-work-grid {
+    align-items: stretch;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-work-grid > .about-modern-card {
+    height: 100%;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-work-grid .about-modern-card--media {
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+  }
+}
+
 .blacklight-pages-about_canadiana .about-modern-card--steps,
 .blacklight-pages-about_heritage .about-modern-card--steps {
   padding: clamp(1rem, 1.6vw, 1.35rem);
@@ -7494,6 +7699,11 @@ summary:focus-visible,
   .blacklight-pages-about_canadiana .about-modern-card--media,
   .blacklight-pages-about_heritage .about-modern-card--media {
     min-height: 220px;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-feature-grid .about-modern-card--media {
+    min-height: clamp(250px, 62vw, 360px);
+    height: auto;
   }
 
   .blacklight-pages-about_heritage .about-modern-feature-grid--heritage-showcase {

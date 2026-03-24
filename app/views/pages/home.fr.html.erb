@@ -3,19 +3,19 @@
     <div class="canadiana-shell">
       <div class="row g-4 align-items-start">
         <div class="col-lg-8">
-          <p class="home-eyebrow">Canadiana Collections et infrastructure</p>
-          <h1 id="home-hero-title">Découvrez des publications numérisées et des archives provenant de partout au Canada</h1>
+          <p class="home-eyebrow">Les collections et l’infrastructure de Canadiana</p>
+          <h1 id="home-hero-title">Découvrez des publications numérisées et des documents d'archives provenant de partout au Canada.</h1>
           <p class="home-hero-copy">
-            Canadiana donne accès à deux grandes collections : la collection Canadiana et la collection Héritage.
-            Chaque collection dispose de sa propre recherche indépendante et est accessible via les API Canadiana.
+            Canadiana offre l'accès à deux collections majeures : la collection Canadiana et la collection Héritage.
+            Chaque collection dispose de son propre moteur de recherche indépendant et est accessible via les API de Canadiana.
           </p>
 
           <div class="hero-primary-actions">
             <a class="btn hero-primary-btn" href="/#search-canadiana">
-              RECHERCHER DANS LA COLLECTION CANADIANA
+              Rechercher dans la collection Canadiana
             </a>
             <a class="btn hero-primary-btn" href="/#search-heritage">
-              RECHERCHER DANS LA COLLECTION HÉRITAGE
+              Rechercher dans la collection Héritage
             </a>
           </div>
 
@@ -25,7 +25,7 @@
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
             <a class="hero-secondary-link" href="<%= api_access_path(lang: I18n.locale) %>">
-              En savoir plus sur l’accès API
+              En savoir plus sur l'accès aux API
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
           </div>
@@ -33,8 +33,8 @@
 
         <div class="col-lg-4">
           <div class="hero-stat-card">
-            <h2>68 millions +</h2>
-            <p class="mb-2">Pages numérisées disponibles en ligne</p>
+            <h2>Plus de 69 millions</h2>
+            <p class="mb-2">de pages numérisées disponibles en ligne</p>
             <p class="mb-0">
               Contenu fourni par les
               <a href="/#members-section">bibliothèques membres du RCDR</a>
@@ -52,13 +52,10 @@
       <div class="home-canadiana-intro-copy">
         <h2 class="section-title">Collection Canadiana</h2>
         <p class="section-lede">
-          Environ 31 millions de pages de publications montrent comment les connaissances, les histoires et l’information
-          ont été partagées au fil du temps. Cette collection comprend des livres, journaux, magazines, documents
-          gouvernementaux, cartes et plus encore, de 1500 à aujourd’hui. Le contenu Canadiana provient en grande partie de
-          la série de microfiches de l’Institut canadien de microreproductions historiques (ICMH).
+          Environ 31,5 millions de pages de publications qui illustrent comment les connaissances, les récits et les informations ont été partagés au fil du temps. Cette collection comprend des livres, des journaux, des magazines, des documents gouvernementaux, des cartes et d'autres documents datant d'environ 1500 à nos jours. Le contenu de Canadiana provient en grande partie de la série de microfiches de l’Institut canadien de microreproductions historiques (ICMH).
         </p>
         <a class="home-inline-link home-inline-link--arrow" href="<%= about_canadiana_path(lang: I18n.locale) %>">
-          En savoir plus
+          En savoir plus.
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
       </div>
@@ -69,8 +66,8 @@
     <div class="canadiana-shell">
       <div class="home-collection-band__panel">
         <div class="home-collection-band__copy">
-          <p class="home-eyebrow">RECHERCHER DANS LA COLLECTION CANADIANA</p>
-          <h3>Des millions de pages de publications qui témoignent des personnes, des événements et des expériences qui ont façonné les territoires maintenant connus comme le Canada.</h3>
+          <p class="home-eyebrow">Rechercher dans la collection Canadiana</p>
+          <h3>Des millions de pages de publications reflétant les peuples, les événements et les expériences qui ont façonné les terres aujourd’hui connues sous le nom de Canada.</h3>
 
           <form class="band-search-form band-search-form--canadiana" action="/catalog" method="get">
             <input type="hidden" name="lang" value="<%= I18n.locale %>">
@@ -82,16 +79,16 @@
               <option value="subject_tsim">Sujet</option>
               <option value="tx_gen">Texte intégral</option>
             </select>
-            <label class="visually-hidden" for="canadiana-band-q">RECHERCHER DANS LA COLLECTION CANADIANA</label>
+            <label class="visually-hidden" for="canadiana-band-q">Rechercher dans la collection Canadiana</label>
             <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Rechercher..." data-typed-placeholder-phrases="Sessional Papers of the Dominon of Canada|The Toronto World|&#22823;&#28450;&#20844;&#22577; (Chinese Times)|The Dawn of Tomorrow|Anne of the Island">
-            <button type="submit" class="btn btn-primary btn-sm">Chercher</button>
+            <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
           </form>
 
           <div class="home-collection-band__meta-row">
             <div class="home-walkthrough-inline canadiana-walkthrough">
               <a href="/">
                 <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-                Guide rapide : comment utiliser la recherche de la collection Canadiana
+                Vidéo d’instruction : Comment rechercher dans la collection Canadiana
               </a>
             </div>
             <a class="home-inline-link home-inline-link--history" href="/catalog?lang=<%= I18n.locale %>&q=&search_field=all_fields">Mes recherches récentes</a>
@@ -108,7 +105,7 @@
 
   <section class="site-section home-explore home-explore-canadiana">
     <div class="canadiana-shell">
-      <h3 class="section-title">Explorer les documents publiés</h3>
+      <h3 class="section-title">Explorer des documents publiés</h3>
       <div class="home-slider" data-slider="explore">
         <button type="button" class="home-slider__nav home-slider__nav--prev" data-slider-prev aria-label="Cartes précédentes">
           <i class="bi bi-chevron-left" aria-hidden="true"></i>
@@ -119,7 +116,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Livres et publications</h3>
-                  <p class="home-split-card__text">Recherchez des monographies et des livres historiques provenant de collections canadiennes.</p>
+                  <p class="home-split-card__text">Recherchez des œuvres originales couvrant des centaines d'années d'histoire canadienne, notamment des livres, des rapports, des brochures et bien plus encore.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -134,7 +131,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Journaux et magazines</h3>
-                  <p class="home-split-card__text">Explorez des périodiques, annuaires, rapports annuels et numéros de journaux.</p>
+                  <p class="home-split-card__text">Découvrez la vie quotidienne, les histoires locales et les actualités communautaires des villes et villages du Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -149,7 +146,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Publications gouvernementales</h3>
-                  <p class="home-split-card__text">Découvrez comment le Canada a été gouverné à travers des lois, débats, rapports et traités produits par les administrations coloniales, provinciales et fédérales.</p>
+                  <p class="home-split-card__text">Découvrez comment le Canada a été gouverné et façonné à travers les lois, les débats, les rapports et les traités élaborés par les administrations coloniales, provinciales et fédérales.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -164,7 +161,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Cartes</h3>
-                  <p class="home-split-card__text">Consultez des cartes détaillées de toutes les provinces et tous les territoires, créées entre 1905 et 2012. Observez l’évolution des lieux et des frontières du Canada au fil du temps.</p>
+                  <p class="home-split-card__text">Consultez des cartes détaillées de chaque province et territoire, créées entre 1905 et 2012. Observez comment les lieux et les frontières du Canada ont évolué au fil du temps.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -188,15 +185,13 @@
       <div class="home-heritage-intro-copy">
         <h2 class="section-title">Collection Héritage</h2>
         <p class="section-lede">
-          La collection Héritage est un partenariat avec
+          La collection Héritage est le résultat d'un partenariat avec
           <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Bibliothèque et Archives Canada</a> (BAC)
-          pour numériser et rendre accessibles de riches ressources de microfilms d’archives conservées par BAC.
-          Avec plus de 37 millions de pages de documents de source primaire, Héritage retrace le Canada et ses peuples
-          des années 1600 aux années 1980. Héritage est une ressource inégalée pour les chercheurs
-          et les communautés de partout au pays.
+          visant à numériser et à rendre accessibles les riches ressources des microfilms d'archives détenus par BAC.
+          Avec plus de 37,5 millions de pages de documents de première main, Héritage retrace l'histoire du Canada et de ses peuples d’environ 1500 aux années 1980. Héritage est une ressource inégalée qui soutient les chercheurs et les communautés à travers le Canada.
         </p>
         <a class="home-inline-link home-inline-link--arrow" href="<%= about_heritage_path(lang: I18n.locale) %>">
-          En savoir plus
+          En savoir plus.
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
       </div>
@@ -207,8 +202,8 @@
     <div class="canadiana-shell">
       <div class="home-collection-band__panel">
         <div class="home-collection-band__copy">
-          <p class="home-eyebrow">RECHERCHER DANS LA COLLECTION HÉRITAGE</p>
-          <h3>Quatre siècles de documents d’archives, des dossiers gouvernementaux aux ressources sur les affaires autochtones et la généalogie.</h3>
+          <p class="home-eyebrow">Rechercher dans la collection Héritage</p>
+          <h3>Cinq siècles d'archives, allant de documents historiques et dossiers gouvernementaux à des documents sur les affaires autochtones et la généalogie.</h3>
 
           <form class="band-search-form band-search-form--heritage" action="/catalog" method="get">
             <input type="hidden" name="lang" value="<%= I18n.locale %>">
@@ -220,7 +215,7 @@
               <option value="subject_tsim">Sujet</option>
               <option value="tx_gen">Texte intégral</option>
             </select>
-            <label class="visually-hidden" for="heritage-band-q">RECHERCHER DANS LA COLLECTION HÉRITAGE</label>
+            <label class="visually-hidden" for="heritage-band-q">Rechercher dans la collection Héritage</label>
             <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Rechercher..." data-typed-placeholder-phrases="Concessions de terres du Bas-Canada|Journaux de guerre, 1939-1945|Listes de passagers|Dossiers d’immigration chinoise|Registres paroissiaux : Nouveau-Brunswick">
             <button
               type="submit"
@@ -228,7 +223,7 @@
               disabled
               aria-disabled="true"
               title="Bientôt disponible : la recherche Héritage n’est pas encore accessible.">
-              Chercher (Bientôt disponible)
+              Rechercher
             </button>
           </form>
 
@@ -236,7 +231,7 @@
             <div class="home-walkthrough-inline heritage-bg">
               <a href="/">
                 <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-                Guide rapide : comment utiliser la recherche de la collection Héritage
+                Vidéo d’instruction : Comment rechercher dans la collection Héritage
               </a>
             </div>
             <span class="home-inline-link home-inline-link--history is-disabled" aria-disabled="true">Mes recherches récentes</span>
@@ -264,7 +259,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Histoire familiale et communautaire</h3>
-                  <p class="home-split-card__text">Parcourez des ressources sur la généalogie, l’immigration, l’occupation des terres, les établissements et plus encore.</p>
+                  <p class="home-split-card__text">Consultez les documents sur les premières familles, les terres et les colonies.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?lang=<%= I18n.locale %>&q=genealogie+immigration+etablissements&search_field=all_fields" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -279,7 +274,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Histoire autochtone</h3>
-                  <p class="home-split-card__text">Explorez des dossiers historiques sur les interactions entre les gouvernements et les communautés autochtones. Voyez les effets sur les terres, l’éducation et la vie communautaire.</p>
+                  <p class="home-split-card__text">Explorez les archives sur les relations entre les gouvernements et les communautés autochtones. Découvrez comment ces actions ont influé sur les terres, l'éducation et la vie communautaire.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?lang=<%= I18n.locale %>&q=histoire+autochtone+terres+education&search_field=all_fields" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -293,15 +288,15 @@
             <article class="home-split-card home-split-card--green">
               <div class="home-split-card__content">
                 <div>
-                  <h3 class="home-split-card__title">Documents gouvernementaux</h3>
-                  <p class="home-split-card__text">Explorez des dossiers provenant des ministères, sociétés de la Couronne et organismes canadiens pendant des périodes de changements industriels, politiques et sociaux.</p>
+                  <h3 class="home-split-card__title">Archives gouvernementales</h3>
+                  <p class="home-split-card__text">Explorez les archives des ministères, des sociétés d'État et des organismes canadiens à une époque marquée par des changements industriels, politiques et sociaux.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/government_documents.jpg" alt="Documents gouvernementaux" loading="lazy">
+                <img src="/assets/government_documents.jpg" alt="Archives gouvernementales" loading="lazy">
               </div>
             </article>
 
@@ -309,7 +304,7 @@
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Histoire militaire</h3>
-                  <p class="home-split-card__text">Trouvez des documents, rapports et dossiers de service sur le passé militaire du Canada. Découvrez la vie en temps de guerre, de conflit et de paix.</p>
+                  <p class="home-split-card__text">Trouvez des lettres, des rapports et des dossiers militaires sur l'histoire militaire du Canada. Découvrez à quoi ressemblait la vie pendant les guerres, les conflits et les périodes de paix.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?lang=<%= I18n.locale %>&q=histoire+militaire&search_field=all_fields" class="btn btn-sm home-split-card__cta">Parcourir</a>
@@ -323,7 +318,7 @@
             <article class="home-split-card home-split-card--green">
               <div class="home-split-card__content">
                 <div>
-                  <h3 class="home-split-card__title">Documents marquants</h3>
+                  <h3 class="home-split-card__title">Personnes et organisations</h3>
                   <p class="home-split-card__text">Consultez des fonds personnels de personnes et de groupes qui ont contribué à façonner le Canada. Découvrez des voix de la politique, des arts, du travail, de la justice sociale et des mouvements de femmes.</p>
                 </div>
                 <div class="home-split-card__actions">
@@ -331,7 +326,7 @@
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/landmark_papers.jpg" alt="Documents marquants" loading="lazy">
+                <img src="/assets/landmark_papers.jpg" alt="Personnes et organisations" loading="lazy">
               </div>
             </article>
 
@@ -370,7 +365,7 @@
   <section class="site-section home-featured" id="featured-content">
     <div class="canadiana-shell">
       <div class="home-featured-head">
-        <h2 class="section-title">Contenu vedette</h2>
+        <h2 class="section-title">Contenu en vedette</h2>
         <% if show_featured_pagination %>
           <div class="home-featured-nav">
             <% if prev_featured_disabled %>
@@ -378,7 +373,7 @@
                 <i class="bi bi-chevron-left" aria-hidden="true"></i>
               </span>
             <% else %>
-              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(prev_featured_params) %>" aria-label="Contenu vedette precedent">
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(prev_featured_params) %>" aria-label="Contenu en vedette précédent">
                 <i class="bi bi-chevron-left" aria-hidden="true"></i>
               </a>
             <% end %>
@@ -387,7 +382,7 @@
                 <i class="bi bi-chevron-right" aria-hidden="true"></i>
               </span>
             <% else %>
-              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(next_featured_params) %>" aria-label="Contenu vedette suivant">
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(next_featured_params) %>" aria-label="Contenu en vedette suivant">
                 <i class="bi bi-chevron-right" aria-hidden="true"></i>
               </a>
             <% end %>
@@ -429,6 +424,6 @@
   </section>
 
   <%= render(MembersComponent.new) %>
-  <%= render partial: 'shared/home_jump_top', locals: { text: 'Retour en haut', aria_label: 'Retour en haut', trigger_selector: '#search-canadiana' } %>
+  <%= render partial: 'shared/home_jump_top', locals: { text: 'Aller en haut', aria_label: 'Aller en haut', trigger_selector: '#search-canadiana' } %>
 </div>
 
