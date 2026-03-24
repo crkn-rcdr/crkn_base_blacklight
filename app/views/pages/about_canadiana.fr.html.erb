@@ -29,10 +29,14 @@
         </p>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-primary">
-        <img src="<%= asset_path('about/canadiana/oocihm.8_06349_193304.1.jpg') %>" alt="Livres et publications historiques de la collection Canadiana" loading="lazy">
+        <a href="https://www.canadiana.ca/view/oocihm.8_06349_193304/1" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/canadiana/oocihm.8_06349_193304.1.jpg') %>" alt="Livres et publications historiques de la collection Canadiana" loading="lazy">
+        </a>
       </article>
       <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-secondary">
-        <img src="<%= asset_path('about/canadiana/oocihm.8_06967_385.1.jpg') %>" alt="Documents cartographiques historiques de la collection Canadiana" loading="lazy">
+        <a href="https://www.canadiana.ca/view/oocihm.8_06967_385/1" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/canadiana/oocihm.8_06967_385.1.jpg') %>" alt="Documents cartographiques historiques de la collection Canadiana" loading="lazy">
+        </a>
       </article>
       <article class="about-modern-card about-modern-card--copy about-modern-card--canadiana-copy-secondary">
         <h2>Une ressource de confiance depuis pres de 50 ans</h2>
@@ -251,11 +255,8 @@
       </article>
     </section>
 
-    <section class="about-modern-block" aria-labelledby="canadiana-use-title-fr">
+    <section class="about-modern-block about-modern-block--use" aria-labelledby="canadiana-use-title-fr">
       <div class="about-modern-work-grid">
-        <article class="about-modern-card about-modern-card--media">
-          <img src="<%= asset_path('about/canadiana/oocihm.9_01973_3_1.2.jpg') %>" alt="Flux de recherche pour les documents Canadiana" loading="lazy">
-        </article>
         <article class="about-modern-card about-modern-card--steps">
           <h2 id="canadiana-use-title-fr">Comment exploiter la collection</h2>
           <ol>
@@ -265,12 +266,17 @@
             <li><strong>Citer correctement :</strong> suivez le <a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation</a>, citez Canadiana comme source et incluez l'URL perenne.</li>
           </ol>
         </article>
+        <article class="about-modern-card about-modern-card--media">
+          <a href="https://www.canadiana.ca/view/oocihm.9_01973_3_1/2" target="_blank" rel="noopener">
+            <img src="<%= asset_path('about/canadiana/oocihm.9_01973_3_1.2.jpg') %>" alt="Flux de recherche pour les documents Canadiana" loading="lazy">
+          </a>
+        </article>
       </div>
     </section>
 
-    <section class="about-modern-block" aria-labelledby="canadiana-faq-title-fr">
+    <section class="about-modern-block about-modern-block--faq" aria-labelledby="canadiana-faq-title-fr">
       <div class="about-modern-block-head">
-        <h2 id="canadiana-faq-title-fr">Questions de recherche, reponses</h2>
+        <h2 id="canadiana-faq-title-fr">FAQ</h2>
       </div>
       <div class="about-modern-faq">
         <details open>

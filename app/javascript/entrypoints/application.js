@@ -997,6 +997,31 @@ function initAboutFeaturePan() {
 document.addEventListener('DOMContentLoaded', initAboutFeaturePan);
 document.addEventListener('turbo:load', initAboutFeaturePan);
 
+function syncCanadianaWorkGridHeights() {
+  const body = document.body;
+  if (!body || !body.classList.contains('blacklight-pages-about_canadiana')) return;
+
+  const workGrid = document.querySelector('.about-modern-work-grid');
+  if (!workGrid) return;
+
+  const mediaCard = workGrid.querySelector('.about-modern-card--media');
+  const stepsCard = workGrid.querySelector('.about-modern-card--steps');
+  if (!mediaCard || !stepsCard) return;
+
+  mediaCard.style.removeProperty('--canadiana-work-card-height');
+
+  if (window.innerWidth < 993) return;
+
+  const stepsHeight = stepsCard.getBoundingClientRect().height;
+  if (stepsHeight > 0) {
+    mediaCard.style.setProperty('--canadiana-work-card-height', `${stepsHeight}px`);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', syncCanadianaWorkGridHeights);
+document.addEventListener('turbo:load', syncCanadianaWorkGridHeights);
+window.addEventListener('resize', syncCanadianaWorkGridHeights);
+
 let heritageFloatingCardsState = null;
 let heritageFloatingCardsRefreshTimer = null;
 let heritageFloatingCardsViewportListenersBound = false;
