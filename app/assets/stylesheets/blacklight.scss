@@ -69,9 +69,23 @@ i {
 
 #collection-items-list {
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+    width: 100%;
 }
 #collection-items-list .card {
     padding: 0;
+}
+.collection-item-card {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.collection-item__viewer-frame {
+    height: 440px;
+    border-bottom: none;
+    margin-bottom: 0;
 }
 #collection-items-list .collection-item__viewer {
     position: relative;
@@ -161,6 +175,30 @@ button i {
 
 #doc-main #collection-items-list { 
     margin-left:0.5rem;
+}
+
+@media (min-width: 900px) {
+    #collection-items-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1399px) {
+    .collection-item__viewer-frame {
+        height: 360px;
+    }
+}
+
+@media (min-width: 1400px) {
+    #collection-items-list {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    #collection-items-list {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 /* Responsive adjustments */
@@ -459,6 +497,74 @@ button i {
 .blacklight-catalog-show .btn-outline-custom.disabled,
 .blacklight-catalog-show .btn-outline-custom[aria-disabled="true"] {
     border-color: var(--catalog-btn-outline) !important;
+}
+
+@media (min-width: 1400px) {
+    .blacklight-catalog-show #main-container.container {
+        font-size: 1.18rem;
+    }
+
+    .blacklight-catalog-show #appliedParams .btn,
+    .blacklight-catalog-show #appliedParams + .pagination-search-widgets .page-links {
+        font-size: 1.2rem;
+    }
+
+    .blacklight-catalog-show .top-content-title,
+    .blacklight-catalog-show h1 {
+        font-size: clamp(3rem, 3vw, 4.2rem);
+        line-height: 1.06;
+    }
+
+    .blacklight-catalog-show h2,
+    .blacklight-catalog-show .document-sidebar-header h2,
+    .blacklight-catalog-show #toggle-menu h2,
+    .blacklight-catalog-show #toggle-menu h3 {
+        font-size: 2rem;
+        line-height: 1.15;
+    }
+
+    .blacklight-catalog-show #toggle-menu .document-metadata,
+    .blacklight-catalog-show #toggle-menu .document-metadata dd,
+    .blacklight-catalog-show #toggle-menu .document-metadata p {
+        font-size: 1.22rem;
+        line-height: 1.6;
+    }
+
+    .blacklight-catalog-show #toggle-menu .document-metadata dt {
+        font-size: 1.02rem;
+        margin-top: 1.15rem;
+    }
+
+    #toggle-menu #download-toolbar .download-toolbar-title {
+        font-size: 1.45rem;
+    }
+
+    #toggle-menu #download-toolbar .sidebar-download-btn {
+        min-height: 3.35rem;
+        padding: 0.65rem 0.9rem;
+    }
+
+    #toggle-menu #download-toolbar .download-kind {
+        width: 3.15rem;
+        min-width: 3.15rem;
+        font-size: 0.76rem;
+    }
+
+    #toggle-menu #download-toolbar .download-label {
+        font-size: 1.08rem;
+    }
+
+    .blacklight-catalog-show .toolbox-card .toolbox-actions .btn,
+    .blacklight-catalog-show .btn-outline-custom,
+    .blacklight-catalog-show .copy-link-btn {
+        min-height: 2.9rem;
+        padding: 0.45rem 0.88rem !important;
+        font-size: 1rem !important;
+    }
+
+    #document-togglable-content {
+        font-size: 1.08rem;
+    }
 }
 
 /* Mirador WCAG AA: increase selected view-label contrast on light top bar */

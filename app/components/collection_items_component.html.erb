@@ -6,12 +6,12 @@
         <% viewer_id = "osd-#{collection_item['id'].to_s.gsub(/[^a-zA-Z0-9_-]/, '-')}" %>
         <% ark_value = Array(collection_item['ark']).first.to_s.strip %>
         <% ark_id = ark_value.sub('https://n2t.net/ark:/', '') %>
-        <div class="card" style="width: 300px; margin: 0 1.4rem 1rem 0;">
+        <div class="card collection-item-card">
         <div
-          class="card-img-top collection-item__viewer"
+          class="card-img-top collection-item__viewer collection-item__viewer-frame"
           id="<%= viewer_id %>"
           data-ark-id="<%= ark_id %>"
-          style="height: 330px; border-bottom:none; margin-bottom: 0;">
+          >
           <button type="button" class="collection-item__activate" aria-pressed="false"><%= activate_zoom_label %></button>
         </div>
           <div class="card-body">
@@ -90,10 +90,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+function initializeCollectionItemViewers() {
   const hasOpenSeadragon = typeof OpenSeadragon !== "undefined";
   const list = document.getElementById("collection-items-list");
   if (!list || !hasOpenSeadragon) return;
+  if (list.dataset.collectionItemsInitialized === "1") return;
+  list.dataset.collectionItemsInitialized = "1";
 
   let activeViewerState = null;
 
@@ -210,5 +212,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     })();
   });
-});
+}
+
+document.addEventListener("DOMContentLoaded", initializeCollectionItemViewers);
+document.addEventListener("turbo:load", initializeCollectionItemViewers);
+
+if (document.readyState !== "loading") {
+  initializeCollectionItemViewers();
+}
 </script>

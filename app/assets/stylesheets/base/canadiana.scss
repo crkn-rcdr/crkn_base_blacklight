@@ -99,11 +99,6 @@ summary:focus-visible,
 .blacklight-pages-home .home-cards .card-collection { margin-top: .25rem; }
 .blacklight-pages-home .home-cards .card-collection .card-header { font-weight: 600; letter-spacing: .01em; }
 
-@media (max-width: 1400px) {
-    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-        max-width: 98%;
-    }
-}
 .search-query-form {
     width: 100% !important;
     margin-bottom:0;
@@ -131,6 +126,260 @@ summary:focus-visible,
 .pagination-search-widgets {
   border-bottom: none;
 }
+
+.blacklight-catalog-index > .navbar-search {
+  display: none;
+}
+
+.blacklight-catalog-index .catalog-search-hero {
+  margin: 0 0 1.2rem;
+  padding: 0 0 clamp(1.2rem, 2.2vw, 2rem) 0;
+}
+
+.blacklight-catalog-index #main-container.container {
+  padding-left: clamp(20px, 2.6vw, 46px);
+  padding-right: clamp(20px, 2.6vw, 46px);
+}
+
+.blacklight-catalog-show #main-container.container {
+  padding-left: clamp(20px, 2.6vw, 46px);
+  padding-right: clamp(20px, 2.6vw, 46px);
+}
+
+.blacklight-catalog-index .catalog-search-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: center;
+}
+
+.blacklight-catalog-index .catalog-search-hero__copy {
+  min-width: 0;
+}
+
+.blacklight-catalog-index .catalog-search-hero__title {
+  margin: 0 0 .55rem;
+  color: #161b21;
+  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.blacklight-catalog-index .catalog-search-hero__lede {
+  max-width: 74ch;
+  margin: 0;
+  color: #58636e;
+  font-size: clamp(.94rem, .92vw, 1.08rem);
+  line-height: 1.28;
+}
+
+.blacklight-catalog-index .catalog-search-hero__search {
+  margin-top: clamp(1rem, 2vw, 1.6rem);
+}
+
+.blacklight-catalog-index .catalog-search-hero__applied {
+  margin-top: .9rem;
+}
+
+.blacklight-catalog-index .catalog-search-hero__applied:empty {
+  display: none;
+}
+
+.blacklight-catalog-index .catalog-search-hero__applied #appliedParams {
+  margin: 0;
+}
+
+.blacklight-catalog-index .catalog-search-hero__search .container {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blacklight-catalog-index #main-container > .row.base-first-row {
+  --bs-gutter-x: clamp(1rem, 1.8vw, 1.5rem);
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+}
+
+.blacklight-catalog-index #main-container > .row.base-first-row > section {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blacklight-catalog-index #main-container > .row.base-first-row > #content {
+  padding-left: var(--bs-gutter-x);
+}
+
+@media (min-width: 992px) {
+  .blacklight-catalog-index #main-container > .row.base-first-row {
+    display: grid;
+    grid-template-columns: minmax(240px, 280px) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .blacklight-catalog-index #main-container > .row.base-first-row > #content.col-lg-9,
+  .blacklight-catalog-index #main-container > .row.base-first-row > #sidebar.col-lg-3 {
+    width: auto;
+    max-width: none;
+    flex: none;
+  }
+
+  .blacklight-catalog-index #main-container > .row.base-first-row > #content.col-lg-9 {
+    grid-column: 2;
+  }
+
+  .blacklight-catalog-index #main-container > .row.base-first-row > #sidebar.col-lg-3 {
+    grid-column: 1;
+  }
+}
+
+@media (min-width: 1620px) {
+  .blacklight-catalog-index #main-container.container {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__grid {
+    grid-template-columns: minmax(0, 0.95fr) minmax(560px, 1.05fr);
+    gap: clamp(1.5rem, 2.4vw, 2.75rem);
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__copy {
+    max-width: 56rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__lede {
+    max-width: 58ch;
+    font-size: 1.08rem;
+    line-height: 1.3;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__art {
+    max-width: 56rem;
+    min-height: 31rem;
+    justify-self: center;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--one {
+    width: 15rem !important;
+    height: 15rem !important;
+    left: -18% !important;
+    top: 20% !important;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--two {
+    width: 15rem !important;
+    height: 15rem !important;
+    left: 30% !important;
+    top: -3% !important;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--three {
+    width: 15rem !important;
+    height: 15rem !important;
+    left: 73% !important;
+    top: 22% !important;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--four {
+    width: 15rem !important;
+    height: 15rem !important;
+    right: -78% !important;
+    top: 2% !important;
+  }
+}
+
+.blacklight-catalog-index .catalog-search-hero__art {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  min-height: clamp(175px, 20vw, 238px);
+  justify-self: auto;
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile {
+  position: absolute;
+  display: block;
+  border-radius: 12px;
+  background-color: rgba(178, 178, 178, .76);
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: none;
+  border: 1px solid rgba(15, 23, 42, .08);
+  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile:hover,
+.blacklight-catalog-index .catalog-search-hero__tile:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .12);
+  opacity: .98;
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile:focus-visible {
+  outline: 3px solid rgba(29, 128, 139, .35);
+  outline-offset: 3px;
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile--one {
+  width: 12.5vw;
+  height: 12.5vw;
+  left: -15%;
+  top: 20%;
+  background-color: rgba(207, 207, 207, .18);
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile--two {
+  width: 11.4vw;
+  height: 11.4vw;
+  left: 18%;
+  top: 0%;
+  background-color: rgba(173, 173, 173, .16);
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile--three {
+  width: 12.5vw;
+  height: 12.5vw;
+  left: 39%;
+  top: 23%;
+  background-color: rgba(198, 198, 198, .16);
+}
+
+.blacklight-catalog-index .catalog-search-hero__tile--four {
+  width: 12.5vw;
+  height: 12.5vw;
+  right: -3%;
+  top: 9%;
+  background-color: rgba(182, 182, 182, .16);
+}
+
+@media (max-width: 991px) {
+  .blacklight-catalog-index .catalog-search-hero {
+    padding-bottom: .65rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__art {
+    display: none;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__title {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__lede {
+    font-size: .98rem;
+    line-height: 1.35;
+  }
+}
+
 .navbar-search .input-group {
   border: 1px solid rgba(0,0,0,.12);
   border-radius: 999px; overflow: hidden; background: #fff;
@@ -145,8 +394,12 @@ summary:focus-visible,
 .navbar-search .input-group > .form-control { border-left: 0 !important; }
 .navbar-search .search-field.form-select { min-width: 11rem; }
 .navbar-search .search-q.form-control { height: 48px; padding-left: 1rem; }
-.navbar-search #search.btn { height: 50px; padding: 0 1.25rem; display: inline-flex; align-items: center; gap: .35rem; border: 0 !important; align-self: stretch; border-top-right-radius: 999px; border-bottom-right-radius: 999px; }
-.navbar-search .search-btn svg { width: 20px; height: 20px; }
+.navbar-search #search.btn { height: 50px; padding: 0 1.25rem; display: inline-flex; align-items: center; justify-content: center; gap: .35rem; border: 0 !important; align-self: stretch; border-top-right-radius: 999px; border-bottom-right-radius: 999px; line-height: 1; }
+.navbar-search #search.btn .submit-search-text,
+.navbar-search #search.btn .blacklight-icons-search,
+.navbar-search #catalog-search-submit .submit-search-text,
+.navbar-search #catalog-search-submit .blacklight-icons-search { display: flex; align-items: center; line-height: 1; }
+.navbar-search .search-btn svg { width: 20px; height: 20px; display: block; }
 .navbar-search .btn-clear-search { border: 0 !important; height: 50px; border-radius: 0; background-color: transparent !important; color: #6c757d !important; }
 .navbar-search .btn-clear-search:hover,
 .navbar-search .btn-clear-search:focus { background-color: rgba(0,0,0,.04) !important; color: #495057 !important; box-shadow: none !important; }
@@ -921,6 +1174,107 @@ summary:focus-visible,
   background: var(--theme-primary); color: #fff; border-color: transparent;
   box-shadow: 0 10px 24px rgba(29,128,139,.35);
 }
+
+@media (min-width: 1620px) {
+  .blacklight-catalog-index .facets-header {
+    margin-bottom: 1rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__title {
+    font-size: clamp(3.2rem, 3vw, 4rem);
+    line-height: 1.04;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__lede {
+    font-size: 1.42rem;
+    line-height: 1.52;
+    max-width: 52ch;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__search .form-select,
+  .blacklight-catalog-index .catalog-search-hero__search .form-control,
+  .blacklight-catalog-index .catalog-search-hero__search .search-btn {
+    min-height: 78px;
+    font-size: 1.28rem;
+  }
+
+  .blacklight-catalog-index .facets-header h2,
+  .blacklight-catalog-index #sidebar h2 {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .blacklight-catalog-index .facet-limit {
+    margin-bottom: 1rem;
+  }
+
+  .blacklight-catalog-index .facet-limit .collapse-toggle {
+    min-height: 70px;
+    padding: 1rem 1.25rem;
+    font-size: 1.35rem;
+  }
+
+  .blacklight-catalog-index .facet-limit .card-body {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .blacklight-catalog-index .facet-values {
+    font-size: 1.18rem;
+  }
+
+  .blacklight-catalog-index .facet-values li {
+    padding: .62rem .75rem;
+  }
+
+  .blacklight-catalog-index #sortAndPerPage {
+    padding-top: .95rem;
+    margin-bottom: .45rem;
+  }
+
+  .blacklight-catalog-index #sortAndPerPage .btn,
+  .blacklight-catalog-index #sortAndPerPage .dropdown-toggle,
+  .blacklight-catalog-index #sortAndPerPage .btn-outline-secondary {
+    min-height: 64px;
+    padding: .92rem 1.4rem;
+    font-size: 1.24rem;
+  }
+
+  .blacklight-catalog-index .paginate-section .page-links,
+  .blacklight-catalog-index .search-widgets .page-links {
+    font-size: 1.28rem;
+  }
+
+  .blacklight-catalog-index .documents-list article.document {
+    padding: 26px 30px 26px 118px;
+    margin-bottom: 1.1rem;
+  }
+
+  .blacklight-catalog-index .documents-list .document-counter {
+    font-size: 1.3rem;
+  }
+
+  .blacklight-catalog-index .documents-list .documentHeader h3 {
+    font-size: 2.15rem;
+    line-height: 1.2;
+    margin-bottom: .75rem;
+  }
+
+  .blacklight-catalog-index .documents-list .document-metadata {
+    font-size: 1.28rem;
+    line-height: 1.55;
+  }
+
+  .blacklight-catalog-index .documents-list .document-metadata dt {
+    margin-top: .72rem;
+    font-size: 1rem;
+    letter-spacing: .03em;
+  }
+
+  .blacklight-catalog-index .documents-list .document-metadata dd {
+    margin-bottom: .45rem;
+  }
+}
+
 .page-search-toggle { 
     vertical-align: middle; display:flex; align-items: center; 
     span {
@@ -1325,6 +1679,43 @@ summary:focus-visible,
 
   .member-logo.is-long .member-logo__text {
     font-size: clamp(1rem, 2.9vw, 1.3rem);
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1399px) {
+  .members-marquee-wrap.is-filtered-view {
+    gap: 1.5rem;
+  }
+
+  .members-marquee-wrap.is-filtered-view .members-marquee-row {
+    overflow: visible;
+    margin: 0;
+  }
+
+  .members-marquee-wrap.is-filtered-view .members-marquee-track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.4rem 1.8rem;
+    width: 100%;
+    padding-inline: 0;
+    justify-items: center;
+  }
+
+  .members-marquee-wrap.is-filtered-view .member-logo,
+  .members-marquee-wrap.is-filtered-view .member-logo.has-image,
+  .members-marquee-wrap.is-filtered-view .member-logo.is-long {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .members-marquee-wrap.is-filtered-view .member-logo__image {
+    width: 100%;
+    max-width: 14rem;
+  }
+
+  .members-marquee-wrap.is-filtered-view .member-logo__text {
+    text-align: center;
   }
 }
 
@@ -5520,6 +5911,7 @@ summary:focus-visible,
   background-size: contain;
 }
 
+
 @media (max-width: 768px) {
   /* Mobile: place Heritage logo card before text and media */
   .home-page .home-heritage-intro-grid .home-heritage-logo-card {
@@ -6142,6 +6534,12 @@ summary:focus-visible,
     height: 1.5rem;
     background: no-repeat url("/assets/Frame 4.svg");
     background-size: contain;
+  }
+}
+
+@media (min-width: 1600px) {
+  .blacklight-pages-about_canadiana .about-intro-grid--canadiana {
+    min-height: 750px;
   }
 }
 
@@ -7832,6 +8230,139 @@ summary:focus-visible,
   margin: 0.58rem 0 0;
 }
 
+@media (min-width: 1600px) {
+  .blacklight-pages-about_canadiana .about-modern-section,
+  .blacklight-pages-about_heritage .about-modern-section {
+    font-size: 1.18rem;
+  }
+
+  .blacklight-pages-about_canadiana .about-intro-copy .section-title,
+  .blacklight-pages-about_heritage .about-intro-copy .section-title {
+    font-size: clamp(3.25rem, 3vw, 4.15rem);
+    line-height: 1.03;
+  }
+
+  .blacklight-pages-about_canadiana .about-intro-copy .section-lede,
+  .blacklight-pages-about_heritage .about-intro-copy .section-lede {
+    font-size: 1.5rem;
+    line-height: 1.52;
+    max-width: 60ch;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-header .section-title,
+  .blacklight-pages-about_heritage .about-modern-header .section-title,
+  .blacklight-pages-about_canadiana .about-modern-block-head h2,
+  .blacklight-pages-about_heritage .about-modern-block-head h2,
+  .blacklight-pages-about_canadiana .about-modern-block-head h3,
+  .blacklight-pages-about_heritage .about-modern-block-head h3 {
+    font-size: clamp(2.7rem, 2.45vw, 3.35rem);
+    line-height: 1.06;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-header .section-lede,
+  .blacklight-pages-about_heritage .about-modern-header .section-lede,
+  .blacklight-pages-about_canadiana .about-modern-block-head p,
+  .blacklight-pages-about_heritage .about-modern-block-head p {
+    font-size: 1.34rem;
+    line-height: 1.62;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card--copy,
+  .blacklight-pages-about_heritage .about-modern-card--copy,
+  .blacklight-pages-about_canadiana .about-modern-card--steps,
+  .blacklight-pages-about_heritage .about-modern-card--steps {
+    padding: clamp(1.35rem, 1.7vw, 1.8rem);
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card--copy h2,
+  .blacklight-pages-about_heritage .about-modern-card--copy h2,
+  .blacklight-pages-about_canadiana .about-modern-card--copy h3,
+  .blacklight-pages-about_heritage .about-modern-card--copy h3,
+  .blacklight-pages-about_canadiana .about-modern-card--steps h2,
+  .blacklight-pages-about_heritage .about-modern-card--steps h2,
+  .blacklight-pages-about_canadiana .about-modern-card--steps h3,
+  .blacklight-pages-about_heritage .about-modern-card--steps h3 {
+    font-size: clamp(2.45rem, 2.2vw, 3rem);
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card--copy p,
+  .blacklight-pages-about_heritage .about-modern-card--copy p,
+  .blacklight-pages-about_canadiana .about-modern-card--steps ol,
+  .blacklight-pages-about_heritage .about-modern-card--steps ol,
+  .blacklight-pages-about_canadiana .about-modern-card--steps li,
+  .blacklight-pages-about_heritage .about-modern-card--steps li,
+  .blacklight-pages-about_heritage .about-modern-card--heritage-list ul,
+  .blacklight-pages-about_heritage .about-modern-card--heritage-list li {
+    font-size: 1.4rem;
+    line-height: 1.65;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card-body,
+  .blacklight-pages-about_heritage .about-modern-card-body {
+    padding: 1.15rem 1.2rem 1.2rem;
+    gap: 0.7rem;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card-body h3,
+  .blacklight-pages-about_heritage .about-modern-card-body h3,
+  .blacklight-pages-about_canadiana .about-modern-card-body h4,
+  .blacklight-pages-about_heritage .about-modern-card-body h4 {
+    font-size: 2.25rem;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card-body p,
+  .blacklight-pages-about_heritage .about-modern-card-body p,
+  .blacklight-pages-about_canadiana .about-modern-meta,
+  .blacklight-pages-about_heritage .about-modern-meta {
+    font-size: 1.32rem;
+    line-height: 1.64;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card--detail {
+    padding: clamp(1.45rem, 1.8vw, 2rem);
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card--detail h3,
+  .blacklight-pages-about_canadiana .about-modern-card--detail h4 {
+    font-size: clamp(2.35rem, 2.15vw, 2.9rem);
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-intro,
+  .blacklight-pages-about_canadiana .about-modern-detail-criteria,
+  .blacklight-pages-about_canadiana .about-modern-detail-panel p,
+  .blacklight-pages-about_canadiana .about-modern-detail-list li {
+    font-size: 1.3rem;
+    line-height: 1.72;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-panel h4,
+  .blacklight-pages-about_canadiana .about-modern-detail-panel h5 {
+    font-size: 1.85rem;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-size-value {
+    font-size: 1rem;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-chip,
+  .blacklight-pages-about_canadiana .about-modern-cta,
+  .blacklight-pages-about_heritage .about-modern-cta {
+    font-size: 1rem;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-faq summary,
+  .blacklight-pages-about_heritage .about-modern-faq summary {
+    font-size: 1.36rem;
+    line-height: 1.45;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-faq p,
+  .blacklight-pages-about_heritage .about-modern-faq p {
+    font-size: 1.28rem;
+    line-height: 1.68;
+  }
+}
+
 @media (max-width: 1200px) {
   .blacklight-pages-about_heritage .about-modern-feature-grid--heritage-showcase {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -8342,3 +8873,31 @@ summary:focus-visible,
   }
 }
 
+.blacklight-pages-about_heritage .about-intro-grid--heritage > .about-intro-logo-card::after {
+  left: calc(100% - 1.5rem);
+}
+.blacklight-pages-about_heritage .about-intro-grid--heritage > .about-intro-copy--heritage::before {
+  left: calc(100% - 31.8rem);
+}
+
+.container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  max-width: 100% !important;
+}
+
+
+.navbar-search {
+  div {
+    padding: 0 !important;
+  }
+}
+@media (min-width: 1400px) {
+  .blacklight-catalog > #main-container, .blacklight-catalog > .container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .navbar-search {
+    div {
+      padding: 0 !important;
+    }
+  }
+}

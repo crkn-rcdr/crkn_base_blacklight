@@ -1022,6 +1022,19 @@ document.addEventListener('DOMContentLoaded', syncCanadianaWorkGridHeights);
 document.addEventListener('turbo:load', syncCanadianaWorkGridHeights);
 window.addEventListener('resize', syncCanadianaWorkGridHeights);
 
+function moveCatalogAppliedParams() {
+  const target = document.querySelector('[data-catalog-applied-params-target]');
+  const appliedParams = document.querySelector('.blacklight-catalog-index #appliedParams');
+
+  if (!target || !appliedParams) return;
+  if (target.contains(appliedParams)) return;
+
+  target.appendChild(appliedParams);
+}
+
+document.addEventListener('DOMContentLoaded', moveCatalogAppliedParams);
+document.addEventListener('turbo:load', moveCatalogAppliedParams);
+
 let heritageFloatingCardsState = null;
 let heritageFloatingCardsRefreshTimer = null;
 let heritageFloatingCardsViewportListenersBound = false;

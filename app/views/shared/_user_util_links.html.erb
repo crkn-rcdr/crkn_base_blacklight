@@ -10,6 +10,7 @@
     <ul class="dropdown-menu nav-dropdown-menu">
       <li><a class="dropdown-item dropdown-item--canadiana" href="<%= about_canadiana_path(lang: I18n.locale) %>"><%= is_fr ? "À propos de la collection Canadiana" : 'About the Canadiana Collection' %></a></li>
       <li><a class="dropdown-item dropdown-item--heritage" href="<%= about_heritage_path(lang: I18n.locale) %>"><%= is_fr ? "À propos de la collection Héritage" : "About the Héritage Collection" %></a></li>
+      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= is_fr ? 'https://www.crkn-rcdr.ca/fr/propos-du-rcdr' : 'https://www.crkn-rcdr.ca/en/about-crkn' %>" target="_blank" rel="noopener"><%= is_fr ? 'À propos du RCDR' : 'About CRKN' %></a></li>
     </ul>
   </li>
   <li class="nav-item-dropdown dropdown">
@@ -40,9 +41,16 @@
       </li>
     </ul>
   </li>
-  <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Parcourir les collections' : 'Navigating the Collections' %></a></li>
-  <li><a href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
-  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? "Accès aux API" : 'API Access' %></a></li>
+  <li class="nav-item-dropdown dropdown">
+    <button class="btn nav-dropdown-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <%= is_fr ? "Guides d'aide" : 'Help Guides' %>
+    </button>
+    <ul class="dropdown-menu nav-dropdown-menu">
+      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Parcourir les collections' : 'Navigating the Collections' %></a></li>
+      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
+      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? "Accès aux API" : 'API Access' %></a></li>
+    </ul>
+  </li>
   <li><a href="<%= system_status_path(lang: I18n.locale) %>"><%= is_fr ? "Statut du système" : 'System Status' %></a></li>
   <li><a href="<%= news_url %>" target="_blank" rel="noopener"><%= is_fr ? 'Nouvelles' : 'News' %></a></li>
   <li><a href="<%= contact_us_page_path(lang: I18n.locale) %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>

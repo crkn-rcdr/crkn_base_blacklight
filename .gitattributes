@@ -8,3 +8,7 @@ vendor/* linguist-vendored
 
 # Keep executable scripts Docker-friendly
 bin/* text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+.gitattributes text eol=lf
+.gitignore text eol=lf
