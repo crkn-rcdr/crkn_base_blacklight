@@ -91,4 +91,5 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.hosts << ENV["BLACKLIGHT_HOST_IP"]
   config.hosts << ENV["BLACKLIGHT_HOST_ADDR"]
+  config.hosts << "canadiana-demo.azurewebsites.net"
 end
