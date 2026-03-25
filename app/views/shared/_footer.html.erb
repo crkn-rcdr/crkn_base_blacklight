@@ -45,6 +45,7 @@
     </div>
 
     <div class="site-footer__meta">
+      <a href="<%= sitemap_path(lang: I18n.locale) %>"><%= I18n.locale.to_s.start_with?('fr') ? 'Plan du site' : 'Sitemap' %></a>
       <a href="<%= terms_of_service_path(lang: I18n.locale) %>">Terms of Service</a>
       <span>&copy; <%= Time.current.year %> Canadian Research Knowledge Network</span>
     </div>

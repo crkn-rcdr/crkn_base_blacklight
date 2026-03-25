@@ -1,0 +1,41 @@
+<% content_for :page_title, "Plan du site - #{application_name}" %>
+
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
+              <span class="api-hero__title-main">Plan du site</span>
+            </h1>
+            <p class="api-lede">
+              Retrouvez les principales pages de Collections et infrastructure Canadiana au meme endroit.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="api-content">
+        <section class="api-card api-card--accent">
+          <h2>Pages principales</h2>
+          <ul class="api-list api-list--bulleted">
+            <li><a href="<%= root_path(lang: I18n.locale) %>">Accueil</a></li>
+            <li><a href="<%= about_canadiana_path(lang: I18n.locale) %>">À propos de la collection Canadiana</a></li>
+            <li><a href="<%= about_heritage_path(lang: I18n.locale) %>">À propos de la collection Héritage</a></li>
+            <li><a href="<%= search_catalog_path(lang: I18n.locale) %>">Rechercher dans la collection Canadiana</a></li>
+            <li><a href="<%= compare_collections_path(lang: I18n.locale) %>">Comparer les collections</a></li>
+            <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a></li>
+            <li><a href="<%= api_access_path(lang: I18n.locale) %>">Accès aux API</a></li>
+            <li><a href="<%= what_is_iiif_path(lang: I18n.locale) %>">Qu’est-ce que IIIF?</a></li>
+            <li><a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation</a></li>
+            <li><a href="<%= system_status_path(lang: I18n.locale) %>">Statut du système</a></li>
+            <li><a href="<%= contact_us_page_path(lang: I18n.locale) %>">Nous joindre</a></li>
+            <li><a href="<%= terms_of_service_path(lang: I18n.locale) %>">Conditions d’utilisation</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+</div>

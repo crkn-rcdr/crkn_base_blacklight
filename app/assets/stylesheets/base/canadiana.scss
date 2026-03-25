@@ -118,6 +118,7 @@ summary:focus-visible,
 .blacklight-pages-about_heritage .navbar-search,
 .blacklight-pages-compare_collections .navbar-search,
 .blacklight-pages-api_access .navbar-search,
+.blacklight-pages-what_is_iiif .navbar-search,
 .blacklight-pages-contact_us .navbar-search,
 .blacklight-pages-system_status .navbar-search,
 .blacklight-pages-navigating_collections .navbar-search,
@@ -6173,6 +6174,10 @@ summary:focus-visible,
   --api-body-size: clamp(1rem, 0.82vw, 1.12rem);
   --api-small-size: clamp(0.9rem, 0.68vw, 0.98rem);
   --api-prose-max: 78ch;
+  --fuzzy-gradient-bg:
+    radial-gradient(120% 100% at 0% 0%, rgba(74, 190, 0, 0.2) 0%, rgba(74, 190, 0, 0) 52%),
+    radial-gradient(120% 120% at 100% 100%, rgba(31, 133, 145, 0.22) 0%, rgba(31, 133, 145, 0) 58%),
+    linear-gradient(140deg, #f7fcfd 0%, #eef7f8 60%, #edf3f7 100%);
   color: var(--api-ink);
 }
 
@@ -6269,10 +6274,7 @@ summary:focus-visible,
   border-radius: 18px;
   border: 1px solid rgba(32, 53, 66, 0.16);
   padding: 1.1rem 1.15rem;
-  background:
-    radial-gradient(120% 100% at 0% 0%, rgba(74, 190, 0, 0.2) 0%, rgba(74, 190, 0, 0) 52%),
-    radial-gradient(120% 120% at 100% 100%, rgba(31, 133, 145, 0.22) 0%, rgba(31, 133, 145, 0) 58%),
-    linear-gradient(140deg, #f7fcfd 0%, #eef7f8 60%, #edf3f7 100%);
+  background: var(--fuzzy-gradient-bg);
   color: #223744;
   box-shadow: 0 14px 28px rgba(22, 45, 58, 0.12);
 }
@@ -6336,6 +6338,22 @@ summary:focus-visible,
   color: #4e6573;
   font-size: var(--api-small-size);
   line-height: 1.46;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-hero__panel--iiif {
+  display: grid;
+  place-items: center;
+  min-height: clamp(130px, 16vw, 185px);
+  padding: 0.8rem 1rem;
+  background: #fff;
+  box-shadow: none !important;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-hero__iiif-logo {
+  display: block;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-layout {
@@ -6429,8 +6447,7 @@ summary:focus-visible,
 
 .blacklight-pages-api_access .api-access-page--modern .api-card--accent {
   border-color: rgba(21, 121, 138, 0.35);
-  background:
-    linear-gradient(180deg, rgba(233, 248, 250, 0.95) 0%, rgba(255, 255, 255, 1) 55%);
+  background: #fff;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-card h2 {
@@ -6539,6 +6556,26 @@ summary:focus-visible,
   color: #314955;
   font-size: var(--api-body-size);
   line-height: 1.62;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .iiif-page-figure__image {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-list.api-list--bulleted li.iiif-page-list-image {
+  list-style: none;
+  margin-left: calc(-1 * 1.25rem);
+  width: calc(100% + 1.25rem);
+  max-width: none;
+}
+
+.blacklight-pages-api_access .api-access-page--modern .api-list.api-list--bulleted li.iiif-page-list-text--manifest {
+  list-style: none;
+  margin-left: 0;
 }
 
 .blacklight-pages-api_access .api-access-page--modern .api-list {

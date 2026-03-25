@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get '/navigating-collections', to: 'pages#navigating_collections', as: :navigating_collections
   get '/contact-us', to: 'pages#contact_us', as: :contact_us_page
   get '/system-status', to: 'pages#system_status', as: :system_status
+  get '/sitemap', to: 'pages#sitemap', as: :sitemap
   get '/terms-of-service', to: 'pages#terms_of_service', as: :terms_of_service
   # Allow slashes inside :ark (e.g., ark:/69429/m0k35m90313z)
   get '/dl/:id/*ark', to: 'downloads#index', constraints: { id: /[0-z\.]+/ }, format: false

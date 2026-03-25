@@ -11,5 +11,6 @@ class PagesController < ApplicationController
     def navigating_collections; end
     def contact_us; end
     def system_status; end
+    def sitemap; end
     def terms_of_service; end
 end

@@ -1,5 +1,6 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% new_canadiana_url = search_catalog_path(lang: I18n.locale, q: '', search_field: 'all_fields', sort: 'date-added-desc') %>
+<% search_canadiana_url = search_catalog_path(lang: I18n.locale) %>
 <% news_url = is_fr ? 'https://www.crkn-rcdr.ca/fr/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' : 'https://www.crkn-rcdr.ca/en/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' %>
 <ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
   <li class="nav-item-dropdown dropdown">
@@ -25,9 +26,23 @@
       </li>
     </ul>
   </li>
+  <li class="nav-item-dropdown dropdown">
+    <button class="btn nav-dropdown-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <%= is_fr ? 'Recherche' : 'Search' %>
+    </button>
+    <ul class="dropdown-menu nav-dropdown-menu">
+      <li><a class="dropdown-item dropdown-item--canadiana" href="<%= search_canadiana_url %>"><%= is_fr ? 'Rechercher dans la collection Canadiana' : 'Search the Canadiana Collection' %></a></li>
+      <li>
+        <span class="dropdown-item dropdown-item--heritage dropdown-item--disabled" aria-disabled="true">
+          <%= is_fr ? 'Rechercher dans la collection Héritage' : 'Search the Héritage Collection' %>
+          <small class="dropdown-item__status"><%= is_fr ? 'Bientôt disponible' : 'Coming soon' %></small>
+        </span>
+      </li>
+    </ul>
+  </li>
   <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>"><%= is_fr ? 'Parcourir les collections' : 'Navigating the Collections' %></a></li>
-  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? "Accès aux API" : 'API Access' %></a></li>
   <li><a href="<%= citation_guide_path(lang: I18n.locale) %>"><%= is_fr ? 'Guide de citation' : 'Citation Guide' %></a></li>
+  <li><a href="<%= api_access_path(lang: I18n.locale) %>"><%= is_fr ? "Accès aux API" : 'API Access' %></a></li>
   <li><a href="<%= system_status_path(lang: I18n.locale) %>"><%= is_fr ? "Statut du système" : 'System Status' %></a></li>
   <li><a href="<%= news_url %>" target="_blank" rel="noopener"><%= is_fr ? 'Nouvelles' : 'News' %></a></li>
   <li><a href="<%= contact_us_page_path(lang: I18n.locale) %>"><%= is_fr ? 'Nous joindre' : 'Contact Us' %></a></li>

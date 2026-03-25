@@ -1,70 +1,165 @@
-<section class="site-section">
-  <div class="container">
-    <div class="d-flex align-items-center gap-3 mb-3">
-      <img src="/assets/iiif_logo.png" alt="IIIF logo" width="72" height="72" loading="lazy">
-      <div>
-        <h1 class="section-title mb-1">What is IIIF?</h1>
+<% content_for :page_title, "What is IIIF? - #{application_name}" %>
+
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Canadiana Collections And Infrastructure</span>
+              <span class="api-hero__title-main">What is IIIF?</span>
+            </h1>
+            <p class="api-lede">
+              The International Image Interoperability Framework helps institutions share digital objects across platforms,
+              collections, and tools. Canadiana uses IIIF to support viewing, reuse, and interoperability.
+            </p>
+          </div>
+          <aside class="api-hero__panel api-hero__panel--iiif" aria-hidden="true">
+            <img class="api-hero__iiif-logo" src="/assets/iiif_logo.png" alt="" loading="lazy">
+          </aside>
+        </div>
+      </header>
+
+      <div class="api-layout">
+        <aside class="api-toc" aria-label="On this page">
+          <h2 class="api-toc__title">On this page</h2>
+          <a href="#iiif-overview">IIIF overview</a>
+          <a href="#iiif-tools">IIIF tools in Canadiana</a>
+          <a href="#iiif-other-tools">Other IIIF tools</a>
+          <a href="#iiif-collections">Other IIIF collections</a>
+          <a href="#iiif-learn">Learn more</a>
+          <a href="#iiif-questions">Questions</a>
+        </aside>
+
+        <div class="api-content">
+          <section id="iiif-overview" class="api-card api-card--accent">
+            <h2>IIIF overview</h2>
+            <p>
+              The <a href="https://iiif.io/" target="_blank" rel="noopener">International Image Interoperability Framework</a>
+              (IIIF, pronounced “triple-eye-eff”) is a set of open standards for sharing images, audiovisual files,
+              and other types of digital objects online. IIIF is used by institutions such as libraries, archives,
+              museums, and scientific institutes to share digital collections.
+            </p>
+            <p>
+              One of the key benefits of IIIF is that it is open source. This means that a variety of tools and platforms,
+              such as the Mirador image viewer used by Canadiana, can be built to integrate with IIIF and can be freely
+              used and adapted by other institutions and developers. Additionally, because institutions using IIIF are
+              employing a collective standard to display digital objects, these digital objects can easily be shared
+              between different platforms, different collections, and even different institutions.
+            </p>
+            <p>
+              IIIF began in 2011 as a collaboration between Bibliothèque nationale de France, the Bodleian Libraries,
+              the British Library, Cornell University, Los Alamos National Laboratory Research Library,
+              Nasjonalbiblioteket (National Library of Norway), and Stanford University. In 2015, the
+              <a href="https://iiif.io/community/consortium/members/" target="_blank" rel="noopener">IIIF Consortium</a>
+              was founded and now includes members from across the globe. CRKN has been an
+              <a href="https://www.crkn-rcdr.ca/en/crkn-joins-iiif-consortium-associate-member" target="_blank" rel="noopener">Associate Member of IIIF</a>
+              since 2024.
+            </p>
+          </section>
+
+          <section id="iiif-tools" class="api-card">
+            <h2>What IIIF tools are available on Canadiana?</h2>
+            <p>
+              If you only need to view content on Canadiana, you can simply search and browse the collection as you
+              normally would. However, Canadiana also offers several IIIF-enabled tools in the Toolbox section
+              underneath the image viewer to enhance your research.
+            </p>
+            <ul class="api-list api-list--bulleted">
+              <li>
+                <strong>Copy Manifest Link:</strong> If you would like to use Canadiana content in other IIIF applications,
+                you will need to copy the manifest of that item first. A manifest is an excerpt of JSON code containing
+                all the information of the object, including its content and how it is structured, as well as associated
+                metadata.
+              </li>
+              <li class="iiif-page-list-text iiif-page-list-text--manifest">
+                On Canadiana, a link to the IIIF manifest for any item can be found in the Toolbox section:
+                Click “Copy Manifest Link” and paste the link into the manifest URL field in any IIIF application. The
+                application will then be able to read the manifest and display the item.
+              </li>
+              <li class="iiif-page-list-image">
+                <img class="iiif-page-figure__image" src="/assets/iiif-copy-en.png" alt="The copy manifest link button can be found towards the bottom of the page." loading="lazy">
+              </li>
+              <li>
+                <strong>Crop Image:</strong> This tool allows you crop and save images from Canadiana items. Click
+                “Crop Image,” then use the pencil icon to draw a rectangle around the part of the image you wish to crop.
+              </li>
+              <li>
+                <strong>Generate PDF:</strong> The PDiiif tool allows you to generate custom PDFs from Canadiana items.
+                After clicking “Generate PDF,” use the green settings icon to adjust the image size, page range, and
+                optimization settings.
+              </li>
+              <li>
+                <strong>Edit Copy of Manifest:</strong> This tool allows you to edit a copy of a Canadiana item’s manifest.
+                Use the various features to annotate images, reorder and delete pages, add images from other resources,
+                and more.
+              </li>
+            </ul>
+          </section>
+
+          <section id="iiif-other-tools" class="api-card">
+            <h2>What other IIIF tools are available to use?</h2>
+            <p>
+              There are a wide variety of external IIIF applications available that allow you to view and compare images,
+              build exhibitions, annotate documents, and more. Visit the IIIF website for a list of
+              <a href="https://iiif.io/get-started/tools/" target="_blank" rel="noopener">popular IIIF tools</a>
+              including image and A/V viewers, digital exhibit platforms, annotation platforms, and manifest editors,
+              as well as useful
+              <a href="https://iiif.io/get-started/training/" target="_blank" rel="noopener">IIIF training resources</a>.
+            </p>
+          </section>
+
+          <section id="iiif-collections" class="api-card">
+            <h2>Where can I find other IIIF-enabled collections?</h2>
+            <p>
+              Institutions around the world use IIIF for their digital collections. IIIF maintains a partial list of
+              <a href="https://iiif.io/guides/finding_resources/" target="_blank" rel="noopener">participating institutions</a>,
+              and you can also keep an eye out for the IIIF logo when viewing material on digital collections websites.
+              Additionally, the
+              <a href="https://seige.digital/en/detektiiif/" target="_blank" rel="noopener">DetektIIIF browser extension</a>
+              is a downloadable tool that automatically detects IIIF resources in websites.
+            </p>
+            <p>
+              CRKN has begun a list, maintained on GitHub, of
+              <a href="https://github.com/crkn-rcdr/iiif-canada-directory?tab=readme-ov-file" target="_blank" rel="noopener">Canadian institutions using IIIF</a>.
+              Do you know of an institution with IIIF-enabled collections, services, or tools that’s not listed here?
+              Contact us via the instructions at our GitHub page, or email <a href="mailto:info@crkn.ca">info@crkn.ca</a>
+              to let us know.
+            </p>
+          </section>
+
+          <section id="iiif-learn" class="api-card">
+            <h2>Where can I learn more?</h2>
+            <p>For more information, check out the resources below.</p>
+            <ul class="api-list api-list--bulleted">
+              <li><a href="https://iiif.io/get-started/" target="_blank" rel="noopener">Get Started — IIIF</a></li>
+              <li><a href="https://gallerycollections.courtauld.ac.uk/iiif" target="_blank" rel="noopener">What is IIIF? — The Courtauld Gallery</a></li>
+              <li><a href="https://doc.biblissima.fr/iiif/introduction-iiif/" target="_blank" rel="noopener">Introduction à IIIF</a> — French language overview by Biblissima+ (FR available)</li>
+              <li><a href="https://doc.biblissima.fr/formation-iiif/" target="_blank" rel="noopener">Module de formation à IIIF</a> — French language training module by Biblissima+ (FR available)</li>
+              <li><a href="https://collections.library.utoronto.ca/explore/faq/getting_started" target="_blank" rel="noopener">Reusing Collections of U of T Items with IIIF</a> — University of Toronto</li>
+              <li><a href="https://open.library.ubc.ca/docs#iiifapi" target="_blank" rel="noopener">The Open Collections IIIF API</a> — University of British Columbia</li>
+            </ul>
+            <h3>Videos</h3>
+            <ul class="api-list api-list--bulleted">
+              <li><a href="https://www.youtube.com/watch?v=AXkbQ8A3JC8" target="_blank" rel="noopener">IIIF Literacy, from ABC to PhD</a></li>
+              <li><a href="https://www.youtube.com/watch?v=2GbtdSAm8OY" target="_blank" rel="noopener">An Introduction to IIIF</a></li>
+              <li><a href="https://www.youtube.com/watch?v=UlNZR6FCmaU" target="_blank" rel="noopener">Accessible Digitization with the Digirati Manifest Editor</a></li>
+            </ul>
+          </section>
+
+          <section id="iiif-questions" class="api-card">
+            <h2>Questions?</h2>
+            <p>Contact CRKN at <a href="mailto:info@crkn.ca">info@crkn.ca</a> for Canadiana research questions and website troubleshooting.</p>
+            <p>
+              If you have questions for the broader IIIF community, consider joining the
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGV9QSFo8i2z1R5iIMP7B2JVhS9akHqcykWF5_y4mtWqVrBA/viewform" target="_blank" rel="noopener">IIIF Slack workspace</a>.
+              A wide variety of channels are available to join, including <strong>#beginners</strong> and <strong>#canada</strong>,
+              where you can ask questions and share updates with Canadian colleagues.
+            </p>
+          </section>
+        </div>
       </div>
     </div>
-
-    <p>The <a href="https://iiif.io/" target="_blank" rel="noopener">International Image Interoperability Framework</a> (IIIF, pronounced “triple-eye-eff”) is a set of open standards for sharing images, audiovisual files, and other types of digital objects online. IIIF is used by institutions such as libraries, archives, museums, and scientific institutes to share digital collections.</p>
-
-    <p>One of the key benefits of IIIF is that it is open source. This means that a variety of tools and platforms, such as the Mirador image viewer used by Canadiana, can be built to integrate with IIIF and can be freely used and adapted by other institutions and developers. Additionally, because institutions using IIIF are employing a collective standard to display digital objects, these digital objects can easily be shared between different platforms, different collections, and even different institutions.</p>
-
-    <p>IIIF began in 2011 as a collaboration between Bibliothèque nationale de France, the Bodleian Libraries, the British Library, Cornell University, Los Alamos National Laboratory Research Library, Nasjonalbiblioteket (National Library of Norway), and Stanford University. In 2015, the <a href="https://iiif.io/community/consortium/members/" target="_blank" rel="noopener">IIIF Consortium</a> was founded and now includes members from across the globe. CRKN has been an <a href="https://www.crkn-rcdr.ca/en/crkn-joins-iiif-consortium-associate-member" target="_blank" rel="noopener">Associate Member of IIIF</a> since 2024.</p>
-
-    <br/>
-
-    <h2 class="h2 mb-3">What IIIF tools are available on Canadiana?</h2>
-    <p>If you only need to view content on Canadiana, you can simply search and browse the collection as you normally would. However, Canadiana also offers several IIIF-enabled tools in the Toolbox section underneath the image viewer to enhance your research.</p>
-    <ul>
-      <li><strong>Copy Manifest Link:</strong> If you would like to use Canadiana content in other IIIF applications, you will need to copy the manifest of that item first. A manifest is an excerpt of JSON code containing all the information of the object, including its content and how it is structured (for example, a 125-page book) as well as associated metadata (creator, date, language, etc.).
-      <br/>
-      <br/>
-      On Canadiana, a link to the IIIF manifest for any item can be found in the Toolbox section. Click “Copy Manifest Link” and paste the link into the manifest URL field in any IIIF application. The application will then be able to read the manifest and display the item.
-      <br/>
-      <img src="/assets/iiif-copy-en.png" alt="The copy manifest link button can be found towards the bottom of the page.">
-      </li>
-      <li><strong>Crop Image:</strong> This tool allows you crop and save images from Canadiana items. Click “Crop Image,” then use the pencil icon to draw a rectangle around the part of the image you wish to crop. When you release your mouse, a toolbar at the bottom of the screen containing your cropped image will appear. Use the features in the toolbar to copy or save the cropped image.</li>
-      <li><strong>Generate PDF:</strong> The PDiiif tool allows you to generate custom PDFs from Canadiana items. After clicking “Generate PDF,” use the green settings icon to adjust the image size, page range, and optimization settings. Then, click the red Generate PDF button to download your PDF.</li>
-      <li><strong>Edit Copy of Manifest:</strong> This tool allows you to edit a copy of a Canadiana item’s manifest. Use the various features to annotate images, reorder and delete pages, add images from other resources, and more. You can then view your custom manifest in IIIF viewers, or copy and paste the manifest link into any other IIIF tool.</li>
-    </ul>
-
-    <br/>
-
-    <h2 class="h2 mb-3">What other IIIF tools are available to use?</h2>
-    <p>There are a wide variety of external IIIF applications available that allow you to view and compare images, build exhibitions, annotate documents, and more. Visit the IIIF website for a list of <a href="https://iiif.io/get-started/tools/" target="_blank" rel="noopener">popular IIIF tools</a> including image and A/V viewers, digital exhibit platforms, annotation platforms, and manifest editors, as well as useful <a href="https://iiif.io/get-started/training/" target="_blank" rel="noopener">IIIF training resources</a>.</p>
-
-    <br/>
-
-    <h2 class="h2 mb-3">Where can I find other IIIF-enabled collections?</h2>
-    <p>Institutions around the world use IIIF for their digital collections. IIIF maintains a partial list of <a href="https://iiif.io/guides/finding_resources/" target="_blank" rel="noopener">participating institutions</a>, and you can also keep an eye out for the IIIF logo when viewing material on digital collections websites. Additionally, the <a href="https://seige.digital/en/detektiiif/" target="_blank" rel="noopener">DetektIIIF browser extension</a> is a downloadable tool that automatically detects IIIF resources in websites.</p>
-    <p>CRKN has begun a list, maintained on GitHub, of <a href="https://github.com/crkn-rcdr/iiif-canada-directory?tab=readme-ov-file" target="_blank" rel="noopener">Canadian institutions using IIIF</a>. Do you know of an institution with IIIF-enabled collections, services, or tools that’s not listed here? Contact us via the instructions at our GitHub page, or email <a href="mailto:info@crkn.ca">info@crkn.ca</a> to let us know!</p>
-
-    <br/>
-
-    <h2 class="h2 mb-3">Where can I learn more?</h2>
-    <p>For more information, check out the resources below.</p>
-    <ul>
-      <li><a href="https://iiif.io/get-started/" target="_blank" rel="noopener">Get Started — IIIF</a></li>
-      <li><a href="https://gallerycollections.courtauld.ac.uk/iiif" target="_blank" rel="noopener">What is IIIF? — The Courtauld Gallery</a></li>
-      <li><a href="https://doc.biblissima.fr/iiif/introduction-iiif/" target="_blank" rel="noopener">Introduction à IIIF</a> — French language overview by Biblsissima+ (FR available)</li>
-      <li><a href="https://doc.biblissima.fr/formation-iiif/" target="_blank" rel="noopener">Module de formation à IIIF</a> — French language training module by Biblissima+ (FR available)</li>
-      <li><a href="https://collections.library.utoronto.ca/explore/faq/getting_started" target="_blank" rel="noopener">Reusing Collections of U of T Items with IIIF</a> — University of Toronto</li>
-      <li><a href="https://open.library.ubc.ca/docs#iiifapi" target="_blank" rel="noopener">The Open Collections IIIF API</a> — University of British Columbia</li>
-    </ul>
-
-    <p><strong>Videos:</strong></p>
-    <ul>
-      <li><a href="https://www.youtube.com/watch?v=AXkbQ8A3JC8" target="_blank" rel="noopener">IIIF Literacy, from ABC to PhD</a></li>
-      <li><a href="https://www.youtube.com/watch?v=2GbtdSAm8OY" target="_blank" rel="noopener">An Introduction to IIIF</a></li>
-      <li><a href="https://www.youtube.com/watch?v=UlNZR6FCmaU" target="_blank" rel="noopener">Accessible Digitization with the Digirati Manifest Editor</a></li>
-    </ul>
-
-    <br/>
-
-    <h2 class="h2 mb-3">Questions?</h2>
-    <p>Contact CRKN at <a href="mailto:info@crkn.ca">info@crkn.ca</a> for Canadiana research questions and website troubleshooting.</p>
-    <p>If you have questions for the broader IIIF community, consider joining the <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGV9QSFo8i2z1R5iIMP7B2JVhS9akHqcykWF5_y4mtWqVrBA/viewform" target="_blank" rel="noopener">IIIF Slack workspace</a>. A wide variety of channels are available to join, including <strong>#beginners</strong> and <strong>#canada</strong>, where you can ask questions and share updates with Canadian colleagues.</p>
-  </div>
-</section>
+  </section>
+</div>
