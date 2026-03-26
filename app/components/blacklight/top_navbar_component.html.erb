@@ -36,7 +36,9 @@
 
   <div class="topbar-main">
     <div class="canadiana-shell topbar-main-inner">
-      <%= logo_link %>
+      <%= link_to root_path(lang: current_lang), class: 'navbar-brand navbar-logo', aria: { label: application_name } do %>
+        <span class="visually-hidden"><%= application_name %></span>
+      <% end %>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#user-util-collapse" aria-controls="user-util-collapse" aria-expanded="false" aria-label="<%= menu_toggle_label %>">
         <span class="navbar-toggler-icon"></span>
       </button>

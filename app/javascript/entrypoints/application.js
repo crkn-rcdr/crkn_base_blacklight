@@ -1,3 +1,5 @@
+import Lenis from 'lenis'
+
 // To see this message, add the following to the `<head>` section in your
 // views/layouts/application.html.erb
 //
@@ -29,29 +31,260 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 //import "../javascript/application"
 console.log("mirador", Mirador)
 
-const syncHomeExhibitionPreviewInteractivity = () => {
-  const section = document.querySelector('.home-exhibition-preview')
-  const viewport = section?.querySelector('.home-exhibition-preview__viewport')
-  const frame = section?.querySelector('.home-exhibition-preview__frame')
+let lenisInstance = null
+let lenisRafStarted = false
+let homeExhibitionLenisUnsubscribe = null
+let homeExhibitionResizeBound = false
 
-  if (!section || !viewport || !frame) return
-
-  frame.classList.add('is-interactive')
-  frame.dataset.exhibitionInteractive = 'true'
+const rafLenis = (time) => {
+  if (lenisInstance) {
+    lenisInstance.raf(time)
+  }
+  window.requestAnimationFrame(rafLenis)
 }
 
-let homeExhibitionPreviewBehaviorInstalled = false
-
-const installHomeExhibitionPreviewBehavior = () => {
-  if (!document.querySelector('.home-exhibition-preview')) return
-
-  if (!homeExhibitionPreviewBehaviorInstalled) {
-    window.addEventListener('scroll', syncHomeExhibitionPreviewInteractivity, { passive: true })
-    window.addEventListener('resize', syncHomeExhibitionPreviewInteractivity)
-    homeExhibitionPreviewBehaviorInstalled = true
+const initLenis = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (lenisInstance) {
+      lenisInstance.destroy()
+      lenisInstance = null
+    }
+    return
   }
 
-  syncHomeExhibitionPreviewInteractivity()
+  if (!lenisInstance) {
+    lenisInstance = new Lenis({
+      duration: 1.05,
+      smoothWheel: true,
+      smoothTouch: false
+    })
+  }
+
+  if (!lenisRafStarted) {
+    lenisRafStarted = true
+    window.requestAnimationFrame(rafLenis)
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initLenis)
+document.addEventListener('turbo:load', initLenis)
+
+let activeHomeExhibitionCard = null
+let homeExhibitionPreviewBehaviorInstalled = false
+
+const setHomeExhibitionCardState = (card, isActive) => {
+  if (!card) return
+
+  const frame = card.querySelector('.home-exhibition-preview__frame')
+  if (!frame) return
+
+  card.classList.toggle('is-active', isActive)
+  frame.classList.toggle('is-interactive', isActive)
+  frame.dataset.exhibitionInteractive = isActive ? 'true' : 'false'
+  frame.tabIndex = isActive ? 0 : -1
+}
+
+const deactivateHomeExhibitionCard = (card) => {
+  if (!card) return
+  setHomeExhibitionCardState(card, false)
+  if (activeHomeExhibitionCard === card) activeHomeExhibitionCard = null
+}
+
+const activateHomeExhibitionCard = (card) => {
+  if (!card) return
+  if (activeHomeExhibitionCard && activeHomeExhibitionCard !== card) {
+    deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+  }
+
+  setHomeExhibitionCardState(card, true)
+  activeHomeExhibitionCard = card
+}
+
+const scrollToHomeExhibitionCard = (card) => {
+  if (!card) return
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+}
+
+const isDesktopHomeExhibitionLayout = () => window.matchMedia('(min-width: 993px)').matches
+
+const getHomeExhibitionStageMetrics = (section) => {
+  if (!section?.isConnected) return null
+
+  const stage = section.querySelector('.home-exhibition-preview__stage')
+  const pin = section.querySelector('.home-exhibition-preview__pin')
+  const grid = section.querySelector('.home-exhibition-preview__grid')
+  if (!stage || !pin || !grid) return null
+
+  const maxScrollLeft = Math.max(0, grid.scrollWidth - grid.clientWidth)
+  const pinTop = Number.parseFloat(window.getComputedStyle(pin).top) || 0
+  const scrollSpan = Math.max(1, maxScrollLeft)
+
+  return { stage, pin, grid, maxScrollLeft, pinTop, scrollSpan }
+}
+
+const layoutHomeExhibitionStage = (section) => {
+  const metrics = getHomeExhibitionStageMetrics(section)
+  if (!metrics) return null
+
+  const { stage, pin, maxScrollLeft, pinTop, scrollSpan } = metrics
+
+  if (!isDesktopHomeExhibitionLayout() || maxScrollLeft <= 0) {
+    stage.style.removeProperty('height')
+    pin.classList.remove('is-pinned')
+    metrics.grid.scrollLeft = 0
+    section.classList.remove('is-pinned')
+    return metrics
+  }
+
+  stage.style.height = `${pin.offsetHeight + scrollSpan + pinTop}px`
+  return metrics
+}
+
+const syncHomeExhibitionStage = (section, scrollY = window.scrollY) => {
+  const metrics = layoutHomeExhibitionStage(section)
+  if (!metrics) return
+
+  const { stage, pin, grid, maxScrollLeft, pinTop, scrollSpan } = metrics
+  if (!isDesktopHomeExhibitionLayout() || maxScrollLeft <= 0) return
+
+  const stageTop = scrollY + stage.getBoundingClientRect().top
+  const progressStart = stageTop - pinTop
+  const rawProgress = scrollY - progressStart
+  const clampedProgress = Math.max(0, Math.min(scrollSpan, rawProgress))
+  const scrollProgress = clampedProgress / scrollSpan
+
+  grid.scrollLeft = maxScrollLeft * scrollProgress
+
+  const isPinned = clampedProgress > 0 && clampedProgress < scrollSpan
+  pin.classList.toggle('is-pinned', isPinned)
+  section.classList.toggle('is-pinned', isPinned)
+}
+
+const bindHomeExhibitionPreviewToLenis = (section, grid) => {
+  if (homeExhibitionLenisUnsubscribe) {
+    homeExhibitionLenisUnsubscribe()
+    homeExhibitionLenisUnsubscribe = null
+  }
+
+  if (!section || !grid) return
+
+  const sync = (scrollY = lenisInstance?.scroll ?? window.scrollY) => {
+    syncHomeExhibitionStage(section, scrollY)
+  }
+
+  sync()
+
+  if (lenisInstance) {
+    homeExhibitionLenisUnsubscribe = lenisInstance.on('scroll', ({ scroll }) => {
+      sync(scroll)
+    })
+  }
+
+  if (!homeExhibitionResizeBound) {
+    window.addEventListener('resize', () => {
+      const previewSection = document.querySelector('.home-exhibition-preview')
+      if (!previewSection) return
+
+      layoutHomeExhibitionStage(previewSection)
+      syncHomeExhibitionStage(previewSection, lenisInstance?.scroll ?? window.scrollY)
+    })
+    homeExhibitionResizeBound = true
+  }
+}
+
+const resetHomeExhibitionPreview = () => {
+  document
+    .querySelectorAll('.home-exhibition-preview__card')
+    .forEach((card) => deactivateHomeExhibitionCard(card))
+}
+
+const installHomeExhibitionPreviewBehavior = () => {
+  const section = document.querySelector('.home-exhibition-preview')
+  if (!section) return
+  const grid = section.querySelector('.home-exhibition-preview__grid')
+
+  section.querySelectorAll('.home-exhibition-preview__card').forEach((card) => {
+    setHomeExhibitionCardState(card, false)
+  })
+  activeHomeExhibitionCard = null
+
+  bindHomeExhibitionPreviewToLenis(section, grid)
+
+  if (homeExhibitionPreviewBehaviorInstalled) return
+
+  document.addEventListener('click', (event) => {
+    const navButton = event.target.closest('.home-exhibition-preview__nav-button')
+    if (navButton) {
+      const currentCard = navButton.closest('.home-exhibition-preview__card')
+      if (!currentCard) return
+
+      const direction = navButton.dataset.exhibitNav
+      const targetCard = direction === 'prev'
+        ? currentCard.previousElementSibling
+        : currentCard.nextElementSibling
+
+      if (activeHomeExhibitionCard) {
+        deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+      }
+
+      if (targetCard?.classList.contains('home-exhibition-preview__card')) {
+        const previewSection = document.querySelector('.home-exhibition-preview')
+        const metrics = getHomeExhibitionStageMetrics(previewSection)
+
+        if (previewSection && metrics && isDesktopHomeExhibitionLayout() && metrics.maxScrollLeft > 0) {
+          const targetScrollLeft = targetCard.offsetLeft
+          const clampedScrollLeft = Math.max(0, Math.min(metrics.maxScrollLeft, targetScrollLeft))
+          const currentScrollY = lenisInstance?.scroll ?? window.scrollY
+          const stageTop = currentScrollY + metrics.stage.getBoundingClientRect().top
+          const progressStart = stageTop - metrics.pinTop
+          const targetScrollY = progressStart + clampedScrollLeft
+
+          if (lenisInstance) {
+            lenisInstance.scrollTo(targetScrollY)
+          } else {
+            window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+          }
+        } else {
+          scrollToHomeExhibitionCard(targetCard)
+        }
+      }
+      return
+    }
+
+    const activateButton = event.target.closest('.home-exhibition-preview__activate')
+    if (activateButton) {
+      const card = activateButton.closest('.home-exhibition-preview__card')
+      activateHomeExhibitionCard(card)
+      return
+    }
+
+    if (activeHomeExhibitionCard && !event.target.closest('.home-exhibition-preview__card')) {
+      deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+    }
+  })
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && activeHomeExhibitionCard) {
+      deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+    }
+  })
+
+  document.addEventListener('turbo:before-cache', () => {
+    resetHomeExhibitionPreview()
+    if (homeExhibitionLenisUnsubscribe) {
+      homeExhibitionLenisUnsubscribe()
+      homeExhibitionLenisUnsubscribe = null
+    }
+
+    const previewSection = document.querySelector('.home-exhibition-preview')
+    if (previewSection) {
+      const metrics = getHomeExhibitionStageMetrics(previewSection)
+      metrics?.stage.style.removeProperty('height')
+      metrics?.pin.classList.remove('is-pinned')
+      previewSection.classList.remove('is-pinned')
+    }
+  })
+  homeExhibitionPreviewBehaviorInstalled = true
 }
 
 document.addEventListener('DOMContentLoaded', installHomeExhibitionPreviewBehavior)

@@ -4347,6 +4347,7 @@ summary:focus-visible,
 }
 
 .home-page .home-featured .section-title,
+.home-page .home-exhibition-preview .section-title,
 .home-page .home-statement .section-title,
 .home-page .members-section .section-title {
   font-size: clamp(2.45rem, 3.55vw, 3.95rem);
@@ -4399,6 +4400,7 @@ summary:focus-visible,
   .home-page .home-intro--canadiana-clean .section-title,
   .home-page .home-intro--heritage-clean .section-title,
   .home-page .home-featured .section-title,
+  .home-page .home-exhibition-preview .section-title,
   .home-page .home-statement .section-title,
   .home-page .members-section .section-title {
     font-size: clamp(2rem, 7vw, 2.9rem);
@@ -5767,7 +5769,7 @@ summary:focus-visible,
   left: 100%;
   width: 1.5rem;
   height: 1.5rem;
-  background: no-repeat url("/assets/Frame 2.svg");
+  //background: no-repeat url("/assets/Frame 2.svg");
   background-size: contain;
 }
 .home-page .home-intro--canadiana-clean .home-canadiana-intro-grid > .home-canadiana-intro-copy::before {
@@ -5777,7 +5779,7 @@ summary:focus-visible,
   left: 0;
   width: 1.5rem;
   height: 1.5rem;
-  background: no-repeat url("/assets/Frame 2.svg");
+  //background: no-repeat url("/assets/Frame 2.svg");
   background-size: contain;
 }
 
@@ -5788,7 +5790,7 @@ summary:focus-visible,
   left: 100%;
   width: 1.5rem;
   height: 1.5rem;
-  background: no-repeat url("/assets/Frame 3.svg");
+  //background: no-repeat url("/assets/Frame 3.svg");
   background-size: contain;
 }
 .home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-intro-copy::before {
@@ -5798,7 +5800,7 @@ summary:focus-visible,
   left: -0.8rem;
   width: 1.5rem;
   height: 1.5rem;
-  background: no-repeat url("/assets/Frame 3.svg");
+  //background: no-repeat url("/assets/Frame 3.svg");
   background-size: contain;
   margin-left: var(--home-section-edge-margin);
 }
@@ -5809,7 +5811,7 @@ summary:focus-visible,
   left: calc(100% - (2.6rem  + clamp(0.8rem, 1.1vw, 1.15rem)));
   width: 1.5rem;
   height: 1.5rem;
-  background: no-repeat url("/assets/Frame 4.svg");
+  //background: no-repeat url("/assets/Frame 4.svg");
   background-size: contain;
 }
 .home-page .home-intro--heritage-clean .home-heritage-intro-grid > .home-heritage-logo-card::before {
@@ -5819,7 +5821,7 @@ summary:focus-visible,
   left: -1.5rem;
   width: 1.5rem;
   height: 1.5rem;
-  background: no-repeat url("/assets/Frame 4.svg");
+  //background: no-repeat url("/assets/Frame 4.svg");
   background-size: contain;
 }
 
@@ -6289,7 +6291,7 @@ summary:focus-visible,
     gap: 0;
     position: relative;
     overflow: visible;
-    min-height: clamp(440px, 34vw, 620px);
+    min-height: clamp(560px, 43vw, 875px);
     background: inherit;
   }
 
@@ -6327,7 +6329,7 @@ summary:focus-visible,
     gap: 0;
     position: relative;
     overflow: visible;
-    min-height: clamp(560px, 43vw, 760px);
+    min-height: clamp(560px, 43vw, 875px);
     background: inherit;
   }
 
@@ -6388,7 +6390,7 @@ summary:focus-visible,
     left: 100%;
     width: 1.5rem;
     height: 1.5rem;
-    background: no-repeat url("/assets/Frame 2.svg");
+    //background: no-repeat url("/assets/Frame 2.svg");
     background-size: contain;
   }
 
@@ -6399,7 +6401,7 @@ summary:focus-visible,
     left: 0;
     width: 1.5rem;
     height: 1.5rem;
-    background: no-repeat url("/assets/Frame 2.svg");
+    //background: no-repeat url("/assets/Frame 2.svg");
     background-size: contain;
   }
 
@@ -6410,7 +6412,7 @@ summary:focus-visible,
     left: 100%;
     width: 1.5rem;
     height: 1.5rem;
-    background: no-repeat url("/assets/Frame 3.svg");
+    //background: no-repeat url("/assets/Frame 3.svg");
     background-size: contain;
   }
 
@@ -6421,7 +6423,7 @@ summary:focus-visible,
     left: -0.8rem;
     width: 1.5rem;
     height: 1.5rem;
-    background: no-repeat url("/assets/Frame 3.svg");
+    //background: no-repeat url("/assets/Frame 3.svg");
     background-size: contain;
     margin-left: var(--home-section-edge-margin);
   }
@@ -6433,7 +6435,7 @@ summary:focus-visible,
     left: calc(100% - (0.6rem + clamp(0.8rem, 1.1vw, 1.15rem)));
     width: 1.5rem;
     height: 1.5rem;
-    background: no-repeat url("/assets/Frame 4.svg");
+    //background: no-repeat url("/assets/Frame 4.svg");
     background-size: contain;
   }
 
@@ -6444,14 +6446,8 @@ summary:focus-visible,
     left: -1.5rem;
     width: 1.5rem;
     height: 1.5rem;
-    background: no-repeat url("/assets/Frame 4.svg");
+    //background: no-repeat url("/assets/Frame 4.svg");
     background-size: contain;
-  }
-}
-
-@media (min-width: 1600px) {
-  .blacklight-pages-about_canadiana .about-intro-grid--canadiana {
-    min-height: 750px;
   }
 }
 
@@ -7427,45 +7423,235 @@ summary:focus-visible,
 }
 
 .home-page .home-exhibition-preview {
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
-  padding-bottom: 0;
+  padding-top: clamp(2rem, 3.2vw, 3rem);
+  padding-bottom: clamp(2.2rem, 3.4vw, 3.2rem);
   overflow: visible;
+  background: #dfe3e6;
 }
 
 .home-page .home-exhibition-preview > .canadiana-shell {
-  width: 100vw;
-  max-width: none;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding-left: 0;
-  padding-right: 0;
+  display: grid;
+  gap: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.home-page .home-exhibition-preview__stage {
+  position: relative;
+}
+
+.home-page .home-exhibition-preview__pin {
+  display: grid;
+}
+
+.home-page .home-exhibition-preview__intro {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 72rem;
+}
+
+.home-page .home-exhibition-preview__intro .section-title,
+.home-page .home-exhibition-preview__intro .section-lede {
+  margin: 0;
+}
+
+.home-page .home-exhibition-preview__intro .section-lede {
+  max-width: 68ch;
+}
+
+.home-page .home-exhibition-preview__grid {
+  --home-exhibit-peek: clamp(72px, 8vw, 160px);
+  --home-exhibit-start-inset: clamp(1.1rem, 3.2vw, 2.8rem);
+  --home-exhibit-end-inset: clamp(0.75rem, 2vw, 1.75rem);
+  display: flex;
+  gap: clamp(1.2rem, 1.8vw, 1.6rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  padding: 0 0 0.65rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.home-page .home-exhibition-preview__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.home-page .home-exhibition-preview__grid::before {
+  content: "";
+  flex: 0 0 var(--home-exhibit-start-inset);
+}
+
+.home-page .home-exhibition-preview__grid::after {
+  content: "";
+  flex: 0 0 var(--home-exhibit-end-inset);
+}
+
+.home-page .home-exhibition-preview__card {
+  display: grid;
+  gap: clamp(0.95rem, 1.5vw, 1.35rem);
+  flex: 0 0 calc((100% - var(--home-exhibit-peek)) * 1.1);
+  min-width: calc((100% - var(--home-exhibit-peek)) * 1.1);
+  padding: clamp(1rem, 1.6vw, 1.4rem);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.home-page .home-exhibition-preview__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.home-page .home-exhibition-preview__nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(17, 22, 29, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #161b21;
+  font-size: clamp(0.92rem, 0.92vw, 1rem);
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: 0 10px 24px rgba(16, 21, 27, 0.1);
+  white-space: nowrap;
+}
+
+.home-page .home-exhibition-preview__nav-button:hover,
+.home-page .home-exhibition-preview__nav-button:focus-visible {
+  background: #fff;
+}
+
+.home-page .home-exhibition-preview__card-copy {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 78ch;
+}
+
+.home-page .home-exhibition-preview__card-copy .home-eyebrow,
+.home-page .home-exhibition-preview__card-copy h3,
+.home-page .home-exhibition-preview__card-copy p {
+  margin: 0;
+}
+
+.home-page .home-exhibition-preview__card-copy h3 {
+  font-size: clamp(1.8rem, 3vw, 3.4rem);
+  line-height: 1.05;
+  font-weight: 700;
+  color: #46484b;
+}
+
+.home-page .home-exhibition-preview__card-copy p:not(.home-eyebrow) {
+  font-size: clamp(1.02rem, 1.45vw, 1.35rem);
+  line-height: 1.7;
+  color: #686b70;
 }
 
 .home-page .home-exhibition-preview__viewport {
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative;
+  height: 73vh;
+  min-height: 420px;
+  max-height: 73vh;
   overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgba(19, 24, 31, 0.12);
+  background: #e8eaed;
+  box-shadow: 0 24px 48px rgba(16, 21, 27, 0.08);
+}
+
+.home-page .home-exhibition-preview__viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(17, 22, 29, 0.12), rgba(17, 22, 29, 0.34));
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
 .home-page .home-exhibition-preview__frame {
   display: block;
-  width: 100vw;
-  margin-right: 0;
-  min-height: 100vh;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   border: 0;
   background: #fff;
   pointer-events: none;
+  transition: filter 0.2s ease;
+  filter: saturate(0.88);
 }
 
 .home-page .home-exhibition-preview__frame.is-interactive {
   pointer-events: auto;
+  filter: none;
+}
+
+.home-page .home-exhibition-preview__activate {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  padding: 0.95rem 1.25rem;
+  border: 1px solid rgba(17, 22, 29, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #161b21;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(16, 21, 27, 0.16);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.home-page .home-exhibition-preview__activate:hover,
+.home-page .home-exhibition-preview__activate:focus-visible {
+  background: #fff;
+}
+
+.home-page .home-exhibition-preview__card.is-active .home-exhibition-preview__viewport::after {
+  opacity: 0;
+}
+
+.home-page .home-exhibition-preview__card.is-active .home-exhibition-preview__activate {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, calc(-50% - 10px));
+}
+
+@media (min-width: 993px) and (max-width: 1360px) {
+  .home-page .home-exhibition-preview__viewport {
+    height: 80vh;
+    max-height: 80vh;
+  }
 }
 
 @media (min-width: 993px) {
   .home-page .home-exhibition-preview {
-    min-height: 200vh;
+    --home-exhibition-pin-top: clamp(0.85rem, 2vh, 1.5rem);
+  }
+
+  .home-page .home-exhibition-preview__stage {
+    margin-left: calc(50% - 50vw + 1rem);
+    width: calc(100vw - 2rem);
+  }
+
+  .home-page .home-exhibition-preview__grid {
+    --home-exhibit-start-inset: 0px;
+    --home-exhibit-end-inset: 0px;
+  }
+
+  .home-page .home-exhibition-preview__pin {
+    position: sticky;
+    top: var(--home-exhibition-pin-top);
+  }
+
+  .home-page .home-exhibition-preview__grid {
+    overflow-x: hidden;
+    padding-bottom: 0;
   }
 }
 
@@ -7477,33 +7663,61 @@ summary:focus-visible,
   }
 
   .home-page .home-exhibition-preview {
-    padding-top: 1.1rem;
+    padding-top: 1.35rem;
+    padding-bottom: 2rem;
   }
 
-  .home-page .home-exhibition-preview > .canadiana-shell {
-    width: auto;
-    margin-left: 0;
-    margin-right: 0;
+  .home-page .home-exhibition-preview__pin {
+    position: static;
+  }
+
+  .home-page .home-exhibition-preview__grid {
+    --home-exhibit-peek: clamp(56px, 10vw, 120px);
+    --home-exhibit-start-inset: clamp(0.85rem, 2.8vw, 1.8rem);
   }
 
   .home-page .home-exhibition-preview__viewport {
-    position: relative;
-    top: auto;
-    height: auto;
-  }
-
-  .home-page .home-exhibition-preview__frame {
-    width: 100%;
-    margin-right: 0;
-    min-height: 80vh;
-    height: 80vh;
-    pointer-events: auto;
+    min-height: 360px;
   }
 }
 
 @media (max-width: 768px) {
+  .home-page .home-exhibition-preview__grid {
+    --home-exhibit-peek: clamp(44px, 12vw, 84px);
+    --home-exhibit-start-inset: clamp(0.75rem, 4vw, 1.2rem);
+    padding-bottom: 0.45rem;
+  }
+
+  .home-page .home-exhibition-preview__nav {
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .home-page .home-exhibition-preview__nav-button {
+    flex: 1 1 0;
+    padding: 0.68rem 0.85rem;
+    font-size: 0.92rem;
+  }
+
+  .home-page .home-exhibition-preview__card {
+    padding: 0.9rem;
+    border-radius: 22px;
+  }
+
+  .home-page .home-exhibition-preview__card-copy h3 {
+    font-size: clamp(1.6rem, 8vw, 2.35rem);
+  }
+
+  .home-page .home-exhibition-preview__card-copy p:not(.home-eyebrow) {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .home-page .home-exhibition-preview__viewport {
+    min-height: 320px;
+  }
+
   .home-page .home-exhibition-preview__frame {
-    min-height: 70vh;
     height: 70vh;
   }
 
@@ -7770,6 +7984,12 @@ summary:focus-visible,
 .blacklight-pages-about_heritage .about-modern-card--heritage-list li {
   margin: 0;
   line-height: 1.4;
+}
+
+@media (min-width: 1201px) {
+  .blacklight-pages-about_heritage .about-modern-feature-grid--heritage-showcase {
+    grid-template-rows: clamp(320px, 25vw, 482px) minmax(clamp(240px, 22vw, 340px), auto);
+  }
 }
 
 .blacklight-pages-about_canadiana .about-modern-block,
@@ -8862,7 +9082,7 @@ summary:focus-visible,
   left: calc(100% - 1.5rem);
 }
 .blacklight-pages-about_heritage .about-intro-grid--heritage > .about-intro-copy--heritage::before {
-  left: calc(100% - 31.8rem);
+  left: -1.3rem;
 }
 
 .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
@@ -9038,5 +9258,5 @@ summary:focus-visible,
   padding-bottom: 0 !important;
 }
 .home-page .home-exhibition-preview {
-  padding-top: 0 !important;
+  padding-top: clamp(2rem, 3.2vw, 3rem) !important;
 }
