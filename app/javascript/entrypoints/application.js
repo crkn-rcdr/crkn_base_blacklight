@@ -29,6 +29,38 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 //import "../javascript/application"
 console.log("mirador", Mirador)
 
+const syncHomeExhibitionPreviewInteractivity = () => {
+  const section = document.querySelector('.home-exhibition-preview')
+  const viewport = section?.querySelector('.home-exhibition-preview__viewport')
+  const frame = section?.querySelector('.home-exhibition-preview__frame')
+
+  if (!section || !viewport || !frame) return
+
+  frame.classList.add('is-interactive')
+  frame.dataset.exhibitionInteractive = 'true'
+}
+
+let homeExhibitionPreviewBehaviorInstalled = false
+
+const installHomeExhibitionPreviewBehavior = () => {
+  if (!document.querySelector('.home-exhibition-preview')) return
+
+  if (!homeExhibitionPreviewBehaviorInstalled) {
+    window.addEventListener('scroll', syncHomeExhibitionPreviewInteractivity, { passive: true })
+    window.addEventListener('resize', syncHomeExhibitionPreviewInteractivity)
+    homeExhibitionPreviewBehaviorInstalled = true
+  }
+
+  syncHomeExhibitionPreviewInteractivity()
+}
+
+document.addEventListener('DOMContentLoaded', installHomeExhibitionPreviewBehavior)
+document.addEventListener('turbo:load', installHomeExhibitionPreviewBehavior)
+
+if (document.readyState !== 'loading') {
+  installHomeExhibitionPreviewBehavior()
+}
+
 let pageViewer = document.getElementById("my-mirador")
 if(pageViewer) {
     let language = document.documentElement.lang || "en";

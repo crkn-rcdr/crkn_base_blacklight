@@ -234,6 +234,12 @@ summary:focus-visible,
   }
 }
 
+@media (min-width: 1800px) {
+  .blacklight-catalog-index #main-container > .row.base-first-row {
+    grid-template-columns: minmax(310px, 380px) minmax(0, 1fr);
+  }
+}
+
 @media (min-width: 1620px) {
   .blacklight-catalog-index #main-container.container {
     max-width: 100%;
@@ -250,7 +256,7 @@ summary:focus-visible,
   }
 
   .blacklight-catalog-index .catalog-search-hero__lede {
-    max-width: 58ch;
+    max-width: 71ch;
     font-size: 1.08rem;
     line-height: 1.3;
   }
@@ -264,7 +270,7 @@ summary:focus-visible,
   .blacklight-catalog-index .catalog-search-hero__tile--one {
     width: 15rem !important;
     height: 15rem !important;
-    left: -18% !important;
+    left: -12% !important;
     top: 20% !important;
   }
 
@@ -279,7 +285,7 @@ summary:focus-visible,
     width: 15rem !important;
     height: 15rem !important;
     left: 73% !important;
-    top: 22% !important;
+    top: 16% !important;
   }
 
   .blacklight-catalog-index .catalog-search-hero__tile--four {
@@ -357,6 +363,16 @@ summary:focus-visible,
   background-color: rgba(182, 182, 182, .16);
 }
 
+@media (max-width: 1169px) {
+  .blacklight-catalog-index .catalog-search-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__art {
+    display: none;
+  }
+}
+
 @media (max-width: 991px) {
   .blacklight-catalog-index .catalog-search-hero {
     padding-bottom: .65rem;
@@ -364,10 +380,6 @@ summary:focus-visible,
 
   .blacklight-catalog-index .catalog-search-hero__grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .blacklight-catalog-index .catalog-search-hero__art {
-    display: none;
   }
 
   .blacklight-catalog-index .catalog-search-hero__title {
@@ -1173,106 +1185,6 @@ summary:focus-visible,
 .page-chip-list .page-chip[aria-current="page"] {
   background: var(--theme-primary); color: #fff; border-color: transparent;
   box-shadow: 0 10px 24px rgba(29,128,139,.35);
-}
-
-@media (min-width: 1620px) {
-  .blacklight-catalog-index .facets-header {
-    margin-bottom: 1rem;
-  }
-
-  .blacklight-catalog-index .catalog-search-hero__title {
-    font-size: clamp(3.2rem, 3vw, 4rem);
-    line-height: 1.04;
-  }
-
-  .blacklight-catalog-index .catalog-search-hero__lede {
-    font-size: 1.42rem;
-    line-height: 1.52;
-    max-width: 52ch;
-  }
-
-  .blacklight-catalog-index .catalog-search-hero__search .form-select,
-  .blacklight-catalog-index .catalog-search-hero__search .form-control,
-  .blacklight-catalog-index .catalog-search-hero__search .search-btn {
-    min-height: 78px;
-    font-size: 1.28rem;
-  }
-
-  .blacklight-catalog-index .facets-header h2,
-  .blacklight-catalog-index #sidebar h2 {
-    font-size: 2rem;
-    line-height: 1.15;
-  }
-
-  .blacklight-catalog-index .facet-limit {
-    margin-bottom: 1rem;
-  }
-
-  .blacklight-catalog-index .facet-limit .collapse-toggle {
-    min-height: 70px;
-    padding: 1rem 1.25rem;
-    font-size: 1.35rem;
-  }
-
-  .blacklight-catalog-index .facet-limit .card-body {
-    padding: 1.1rem 1.25rem;
-  }
-
-  .blacklight-catalog-index .facet-values {
-    font-size: 1.18rem;
-  }
-
-  .blacklight-catalog-index .facet-values li {
-    padding: .62rem .75rem;
-  }
-
-  .blacklight-catalog-index #sortAndPerPage {
-    padding-top: .95rem;
-    margin-bottom: .45rem;
-  }
-
-  .blacklight-catalog-index #sortAndPerPage .btn,
-  .blacklight-catalog-index #sortAndPerPage .dropdown-toggle,
-  .blacklight-catalog-index #sortAndPerPage .btn-outline-secondary {
-    min-height: 64px;
-    padding: .92rem 1.4rem;
-    font-size: 1.24rem;
-  }
-
-  .blacklight-catalog-index .paginate-section .page-links,
-  .blacklight-catalog-index .search-widgets .page-links {
-    font-size: 1.28rem;
-  }
-
-  .blacklight-catalog-index .documents-list article.document {
-    padding: 26px 30px 26px 118px;
-    margin-bottom: 1.1rem;
-  }
-
-  .blacklight-catalog-index .documents-list .document-counter {
-    font-size: 1.3rem;
-  }
-
-  .blacklight-catalog-index .documents-list .documentHeader h3 {
-    font-size: 2.15rem;
-    line-height: 1.2;
-    margin-bottom: .75rem;
-  }
-
-  .blacklight-catalog-index .documents-list .document-metadata {
-    font-size: 1.28rem;
-    line-height: 1.55;
-  }
-
-  .blacklight-catalog-index .documents-list .document-metadata dt {
-    margin-top: .72rem;
-    font-size: 1rem;
-    letter-spacing: .03em;
-  }
-
-  .blacklight-catalog-index .documents-list .document-metadata dd {
-    margin-bottom: .45rem;
-  }
 }
 
 .page-search-toggle { 
@@ -7514,15 +7426,87 @@ summary:focus-visible,
   padding-bottom: 0;
 }
 
+.home-page .home-exhibition-preview {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: 0;
+  overflow: visible;
+}
+
+.home-page .home-exhibition-preview > .canadiana-shell {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.home-page .home-exhibition-preview__viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.home-page .home-exhibition-preview__frame {
+  display: block;
+  width: 100vw;
+  margin-right: 0;
+  min-height: 100vh;
+  height: 100vh;
+  border: 0;
+  background: #fff;
+  pointer-events: none;
+}
+
+.home-page .home-exhibition-preview__frame.is-interactive {
+  pointer-events: auto;
+}
+
+@media (min-width: 993px) {
+  .home-page .home-exhibition-preview {
+    min-height: 200vh;
+  }
+}
+
 @media (max-width: 992px) {
   .home-page .home-intro--canadiana-clean,
   .home-page .home-intro--heritage-clean {
     padding-top: var(--home-sequence-gap-md);
     padding-bottom: 0;
   }
+
+  .home-page .home-exhibition-preview {
+    padding-top: 1.1rem;
+  }
+
+  .home-page .home-exhibition-preview > .canadiana-shell {
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .home-page .home-exhibition-preview__viewport {
+    position: relative;
+    top: auto;
+    height: auto;
+  }
+
+  .home-page .home-exhibition-preview__frame {
+    width: 100%;
+    margin-right: 0;
+    min-height: 80vh;
+    height: 80vh;
+    pointer-events: auto;
+  }
 }
 
 @media (max-width: 768px) {
+  .home-page .home-exhibition-preview__frame {
+    min-height: 70vh;
+    height: 70vh;
+  }
+
   /* Mobile polish for Explore sliders (Canadiana + Heritage) */
   .home-page .home-explore .home-slider {
     display: grid;
@@ -7796,7 +7780,8 @@ summary:focus-visible,
 
 .blacklight-pages-about_heritage .about-modern-block[aria-labelledby="heritage-areas-title"],
 .blacklight-pages-about_heritage .about-modern-block[aria-labelledby="heritage-areas-title-fr"] {
-  margin-top: clamp(1.6rem, 3vw, 2.8rem);
+  margin-top: clamp(2.4rem, 4.2vw, 4.4rem);
+  margin-bottom: clamp(2.2rem, 4vw, 4rem);
 }
 
 .blacklight-pages-about_canadiana .about-modern-block--use,
@@ -8886,8 +8871,16 @@ summary:focus-visible,
 
 
 .navbar-search {
+  padding-left: clamp(20px, 2.6vw, 46px) !important;
+  padding-right: clamp(20px, 2.6vw, 46px) !important;
   div {
     padding: 0 !important;
+  }
+}
+.catalog-search-hero {
+  .navbar-search {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 @media (min-width: 1400px) {
@@ -8900,4 +8893,150 @@ summary:focus-visible,
       padding: 0 !important;
     }
   }
+}
+@media(max-width: 1620px) {
+  .catalog-search-hero .navbar-search {
+    margin-top: 0 !important;
+  }
+}
+@media (min-width: 1620px) {
+  .blacklight-catalog-index .facets-header {
+    margin-bottom: 1rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__title {
+    font-size: clamp(3.2rem, 3vw, 4rem);
+    line-height: 1.04;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__lede {
+    font-size: 1.42rem;
+    line-height: 1.52;
+    max-width: 71ch;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__search .form-select,
+  .blacklight-catalog-index .catalog-search-hero__search .form-control,
+  .blacklight-catalog-index .catalog-search-hero__search .search-btn {
+    min-height: 78px;
+    font-size: 1.28rem;
+  }
+
+  .blacklight-catalog-show .navbar-search .form-select,
+  .blacklight-catalog-show .navbar-search .form-control,
+  .blacklight-catalog-show .navbar-search .search-btn {
+    min-height: 78px;
+    font-size: 1.28rem;
+  }
+
+  .blacklight-catalog-show .navbar-search .search-q.form-control {
+    height: 78px;
+  }
+
+  .blacklight-catalog-show .navbar-search #search.btn {
+    height: 78px;
+  }
+
+  .blacklight-catalog-index .facets-header h2,
+  .blacklight-catalog-index #sidebar h2 {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .blacklight-catalog-index .facet-limit {
+    margin-bottom: 1rem;
+  }
+
+  .blacklight-catalog-index .facet-limit .collapse-toggle {
+    min-height: 70px;
+    padding: 1rem 1.25rem;
+    font-size: 1.35rem;
+  }
+
+  .blacklight-catalog-index .facet-limit .card-body {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .blacklight-catalog-index .facet-values {
+    font-size: 1.18rem;
+  }
+
+  .blacklight-catalog-index .facet-values li {
+    padding: .62rem .75rem;
+  }
+
+  .blacklight-catalog-index #sortAndPerPage {
+    padding-top: .95rem;
+    margin-bottom: .45rem;
+  }
+
+  .blacklight-catalog-index #sortAndPerPage .btn,
+  .blacklight-catalog-index #sortAndPerPage .dropdown-toggle,
+  .blacklight-catalog-index #sortAndPerPage .btn-outline-secondary {
+    min-height: 64px;
+    padding: .92rem 1.4rem;
+    font-size: 1.24rem;
+  }
+
+  .blacklight-catalog-index .paginate-section .page-links,
+  .blacklight-catalog-index .search-widgets .page-links {
+    font-size: 1.28rem;
+  }
+
+  .blacklight-catalog-index .documents-list article.document {
+    padding: 26px 30px 26px 118px;
+    margin-bottom: 1.1rem;
+  }
+
+  .blacklight-catalog-index .documents-list .document-counter {
+    font-size: 1.3rem;
+  }
+
+  .blacklight-catalog-index .documents-list .documentHeader h3 {
+    font-size: 2.15rem;
+    line-height: 1.2;
+    margin-bottom: .75rem;
+  }
+
+  .blacklight-catalog-index .documents-list .document-metadata {
+    font-size: 1.28rem;
+    line-height: 1.55;
+  }
+
+  .blacklight-catalog-index .documents-list .document-metadata dt {
+    margin-top: .72rem;
+    font-size: 1rem;
+    letter-spacing: .03em;
+  }
+
+  .blacklight-catalog-index .documents-list .document-metadata dd {
+    margin-bottom: .45rem;
+  }
+  .search-btn {
+    min-width: 10rem;
+    justify-content: center;
+  }
+  .documents-list .blacklight-format li .icon {
+    width: 5rem !important;
+    height: 5rem !important;
+    margin-top: 1rem !important;
+ }
+ .blacklight-catalog-index .catalog-search-hero {
+    padding: clamp(1.2rem, 2.2vw, 2rem) 0 clamp(1.2rem, 2.2vw, 2rem) 0;
+  }
+  .blacklight-catalog-index .catalog-search-hero__grid {
+    padding-bottom: clamp(1.2rem, 2.2vw, 2rem);
+  }
+}
+@media (min-width: 2300px) {
+  .catalog-search-hero__art {
+    margin-left: 31%;
+  }
+}
+
+.home-page .home-featured {
+  padding-bottom: 0 !important;
+}
+.home-page .home-exhibition-preview {
+  padding-top: 0 !important;
 }
