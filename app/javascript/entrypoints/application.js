@@ -35,6 +35,10 @@ let lenisInstance = null
 let lenisRafStarted = false
 let homeExhibitionLenisUnsubscribe = null
 let homeExhibitionResizeBound = false
+let aboutCanadianaDetailStackUnsubscribe = null
+let aboutCanadianaDetailStackResizeBound = false
+let heritageCollectionClusterUnsubscribe = null
+let heritageCollectionClusterResizeBound = false
 
 const rafLenis = (time) => {
   if (lenisInstance) {
@@ -78,10 +82,26 @@ const setHomeExhibitionCardState = (card, isActive) => {
   const frame = card.querySelector('.home-exhibition-preview__frame')
   if (!frame) return
 
+  if (!frame.dataset.initialSrc) {
+    frame.dataset.initialSrc = frame.src
+  }
+
   card.classList.toggle('is-active', isActive)
   frame.classList.toggle('is-interactive', isActive)
   frame.dataset.exhibitionInteractive = isActive ? 'true' : 'false'
   frame.tabIndex = isActive ? 0 : -1
+}
+
+const resetHomeExhibitionCardFrame = (card) => {
+  if (!card) return
+
+  const frame = card.querySelector('.home-exhibition-preview__frame')
+  if (!frame) return
+
+  const initialSrc = frame.dataset.initialSrc || frame.getAttribute('src')
+  if (!initialSrc) return
+
+  frame.src = initialSrc
 }
 
 const deactivateHomeExhibitionCard = (card) => {
@@ -103,6 +123,39 @@ const activateHomeExhibitionCard = (card) => {
 const scrollToHomeExhibitionCard = (card) => {
   if (!card) return
   card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+}
+
+const scrollPageToHomeExhibitionCard = (card) => {
+  if (!card) return
+
+  const previewSection = document.querySelector('.home-exhibition-preview')
+  const metrics = getHomeExhibitionStageMetrics(previewSection)
+  if (previewSection && metrics && isDesktopHomeExhibitionLayout() && metrics.maxScrollLeft > 0) {
+    const targetScrollLeft = card.offsetLeft + (card.offsetWidth / 2) - (metrics.grid.clientWidth / 2)
+    const clampedScrollLeft = Math.max(0, Math.min(metrics.maxScrollLeft, targetScrollLeft))
+    const currentScrollY = lenisInstance?.scroll ?? window.scrollY
+    const stageTop = currentScrollY + metrics.stage.getBoundingClientRect().top
+    const progressStart = stageTop - metrics.pinTop
+    const targetScrollY = progressStart + clampedScrollLeft
+
+    if (lenisInstance) {
+      lenisInstance.scrollTo(targetScrollY)
+    } else {
+      window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+    }
+    return
+  }
+
+  const currentScrollY = lenisInstance?.scroll ?? window.scrollY
+  const cardRect = card.getBoundingClientRect()
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+  const targetScrollY = currentScrollY + cardRect.top - ((viewportHeight - cardRect.height) / 2)
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(targetScrollY)
+  } else {
+    window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+  }
 }
 
 const isDesktopHomeExhibitionLayout = () => window.matchMedia('(min-width: 993px)').matches
@@ -158,6 +211,12 @@ const syncHomeExhibitionStage = (section, scrollY = window.scrollY) => {
   const isPinned = clampedProgress > 0 && clampedProgress < scrollSpan
   pin.classList.toggle('is-pinned', isPinned)
   section.classList.toggle('is-pinned', isPinned)
+
+  if (!isPinned && activeHomeExhibitionCard) {
+    const cardToReset = activeHomeExhibitionCard
+    deactivateHomeExhibitionCard(cardToReset)
+    resetHomeExhibitionCardFrame(cardToReset)
+  }
 }
 
 const bindHomeExhibitionPreviewToLenis = (section, grid) => {
@@ -195,7 +254,10 @@ const bindHomeExhibitionPreviewToLenis = (section, grid) => {
 const resetHomeExhibitionPreview = () => {
   document
     .querySelectorAll('.home-exhibition-preview__card')
-    .forEach((card) => deactivateHomeExhibitionCard(card))
+    .forEach((card) => {
+      deactivateHomeExhibitionCard(card)
+      resetHomeExhibitionCardFrame(card)
+    })
 }
 
 const installHomeExhibitionPreviewBehavior = () => {
@@ -254,6 +316,7 @@ const installHomeExhibitionPreviewBehavior = () => {
     const activateButton = event.target.closest('.home-exhibition-preview__activate')
     if (activateButton) {
       const card = activateButton.closest('.home-exhibition-preview__card')
+      scrollPageToHomeExhibitionCard(card)
       activateHomeExhibitionCard(card)
       return
     }
@@ -293,6 +356,159 @@ document.addEventListener('turbo:load', installHomeExhibitionPreviewBehavior)
 if (document.readyState !== 'loading') {
   installHomeExhibitionPreviewBehavior()
 }
+
+const shouldInitAboutCanadianaDetailStack = () => {
+  const body = document.body
+  if (!body) return false
+  return body.classList.contains('blacklight-pages-about_canadiana')
+}
+
+const isDesktopAboutCanadianaDetailStackLayout = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  return window.matchMedia('(min-width: 993px)').matches
+}
+
+const getAboutCanadianaDetailStackMetrics = () => {
+  const stage = document.querySelector('.about-modern-detail-stack')
+  const pin = stage?.querySelector('.about-modern-detail-stack__pin')
+  const cards = pin ? Array.from(pin.querySelectorAll('.about-modern-card--detail')) : []
+  if (!stage || !pin || cards.length < 2) return null
+
+  const pinTop = Number.parseFloat(window.getComputedStyle(pin).top) || 0
+  return { stage, pin, cards, pinTop }
+}
+
+const resetAboutCanadianaDetailStack = () => {
+  const metrics = getAboutCanadianaDetailStackMetrics()
+  if (!metrics) return
+
+  metrics.stage.style.removeProperty('height')
+  metrics.pin.style.removeProperty('height')
+
+  metrics.cards.forEach((card) => {
+    card.style.removeProperty('transform')
+    card.style.removeProperty('opacity')
+    card.style.removeProperty('z-index')
+    card.style.removeProperty('pointer-events')
+  })
+}
+
+const layoutAboutCanadianaDetailStack = () => {
+  const metrics = getAboutCanadianaDetailStackMetrics()
+  if (!metrics) return null
+
+  const { stage, pin, cards, pinTop } = metrics
+  if (!shouldInitAboutCanadianaDetailStack() || !isDesktopAboutCanadianaDetailStackLayout()) {
+    resetAboutCanadianaDetailStack()
+    return metrics
+  }
+
+  const tallestCard = cards.reduce((max, card) => Math.max(max, card.offsetHeight), 0)
+  const revealStep = Math.max(520, Math.min(window.innerHeight * 0.84, 820))
+  const totalTravel = revealStep * (cards.length - 1)
+
+  pin.style.height = `${tallestCard}px`
+  stage.style.height = `${tallestCard + totalTravel + pinTop}px`
+
+  return {
+    ...metrics,
+    tallestCard,
+    revealStep,
+    totalTravel
+  }
+}
+
+const syncAboutCanadianaDetailStack = (scrollY = lenisInstance?.scroll ?? window.scrollY) => {
+  const metrics = layoutAboutCanadianaDetailStack()
+  if (!metrics) return
+  if (!shouldInitAboutCanadianaDetailStack() || !isDesktopAboutCanadianaDetailStackLayout()) return
+
+  const { stage, cards, pinTop, revealStep, totalTravel } = metrics
+  const stageTop = scrollY + stage.getBoundingClientRect().top
+  const progressStart = stageTop - pinTop
+  const rawProgress = scrollY - progressStart
+  const clampedProgress = Math.max(0, Math.min(totalTravel, rawProgress))
+  const activeIndex = Math.min(cards.length - 1, Math.floor(clampedProgress / revealStep))
+  const localProgress = revealStep === 0 ? 0 : (clampedProgress - (activeIndex * revealStep)) / revealStep
+
+  cards.forEach((card, index) => {
+    let translateY = 0
+    let translateX = 0
+    let rotate = 0
+    let scale = 1
+    let opacity = 1
+    let zIndex = cards.length - index
+
+    if (index < activeIndex) {
+      translateY = 0
+      translateX = 0
+      scale = 0.985
+      opacity = 0
+      zIndex = 1
+    } else if (index === activeIndex) {
+      translateY = 0
+      translateX = 0
+      scale = 1 - (localProgress * 0.02)
+      opacity = 1
+      zIndex = localProgress < 0.55 ? cards.length + 2 : cards.length + 1
+    } else if (index === activeIndex + 1) {
+      translateY = (1 - localProgress) * 42
+      translateX = 0
+      scale = 0.7 + (localProgress * 0.3)
+      opacity = 1
+      zIndex = localProgress < 0.55 ? cards.length + 1 : cards.length + 3
+    } else {
+      const depth = index - activeIndex - 1
+      translateY = Math.min(depth * 18, 42)
+      translateX = 0
+      scale = Math.max(0.7, 0.82 - (depth * 0.04))
+      opacity = 1
+      zIndex = cards.length - depth
+    }
+
+    card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotate}deg) scale(${scale})`
+    card.style.opacity = `${opacity}`
+    card.style.zIndex = `${zIndex}`
+    card.style.pointerEvents = index === activeIndex ? 'auto' : 'none'
+  })
+}
+
+const initAboutCanadianaDetailStack = () => {
+  if (aboutCanadianaDetailStackUnsubscribe) {
+    aboutCanadianaDetailStackUnsubscribe()
+    aboutCanadianaDetailStackUnsubscribe = null
+  }
+
+  if (!shouldInitAboutCanadianaDetailStack()) {
+    resetAboutCanadianaDetailStack()
+    return
+  }
+
+  syncAboutCanadianaDetailStack()
+
+  if (lenisInstance) {
+    aboutCanadianaDetailStackUnsubscribe = lenisInstance.on('scroll', ({ scroll }) => {
+      syncAboutCanadianaDetailStack(scroll)
+    })
+  }
+
+  if (!aboutCanadianaDetailStackResizeBound) {
+    window.addEventListener('resize', () => {
+      syncAboutCanadianaDetailStack(lenisInstance?.scroll ?? window.scrollY)
+    }, { passive: true })
+    aboutCanadianaDetailStackResizeBound = true
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initAboutCanadianaDetailStack)
+document.addEventListener('turbo:load', initAboutCanadianaDetailStack)
+document.addEventListener('turbo:before-cache', () => {
+  if (aboutCanadianaDetailStackUnsubscribe) {
+    aboutCanadianaDetailStackUnsubscribe()
+    aboutCanadianaDetailStackUnsubscribe = null
+  }
+  resetAboutCanadianaDetailStack()
+})
 
 let pageViewer = document.getElementById("my-mirador")
 if(pageViewer) {
@@ -1300,255 +1516,133 @@ function moveCatalogAppliedParams() {
 document.addEventListener('DOMContentLoaded', moveCatalogAppliedParams);
 document.addEventListener('turbo:load', moveCatalogAppliedParams);
 
-let heritageFloatingCardsState = null;
-let heritageFloatingCardsRefreshTimer = null;
-let heritageFloatingCardsViewportListenersBound = false;
+const shouldInitHeritageCollectionCluster = () => {
+  const body = document.body
+  if (!body) return false
+  return body.classList.contains('blacklight-pages-about_heritage')
+}
 
-function queueHeritageFloatingCardsRefresh() {
-  if (heritageFloatingCardsRefreshTimer !== null) {
-    window.clearTimeout(heritageFloatingCardsRefreshTimer);
+const isDesktopHeritageCollectionClusterLayout = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  return window.matchMedia('(min-width: 1101px)').matches
+}
+
+const getHeritageCollectionClusterMetrics = () => {
+  const section = document.querySelector('.about-modern-block--heritage-cluster')
+  const grid = section?.querySelector('[data-heritage-cluster-grid]')
+  const cards = grid ? Array.from(grid.querySelectorAll('.about-modern-card--collection')) : []
+  if (!section || !grid || cards.length < 2) return null
+
+  return { section, cards }
+}
+
+const resetHeritageCollectionCluster = () => {
+  const metrics = getHeritageCollectionClusterMetrics()
+  if (!metrics) return
+
+  metrics.cards.forEach((card) => {
+    card.classList.remove('is-lenis-clustered')
+    card.style.removeProperty('--heritage-cluster-x')
+    card.style.removeProperty('--heritage-cluster-y')
+    card.style.removeProperty('--heritage-cluster-scale')
+    card.style.removeProperty('--heritage-cluster-rotate')
+  })
+}
+
+const getHeritageCollectionClusterOffsets = () => {
+  const spreadX = Math.min(window.innerWidth * 0.12, 160)
+  const spreadY = Math.min(window.innerHeight * 0.12, 120)
+
+  return [
+    { x: -spreadX, y: -spreadY * 0.18, scale: 0.92, rotate: -4.5 },
+    { x: 0, y: -spreadY * 0.9, scale: 0.95, rotate: -1.75 },
+    { x: spreadX, y: -spreadY * 0.12, scale: 0.92, rotate: 4.2 },
+    { x: -spreadX * 0.9, y: spreadY, scale: 0.94, rotate: -3.6 },
+    { x: spreadX * 0.9, y: spreadY * 0.92, scale: 0.95, rotate: 2.5 }
+  ]
+}
+
+const getHeritageCollectionClusterGatherOffsets = () => {
+  const gatherX = Math.min(window.innerWidth * 0.094, 136)
+  const gatherY = Math.min(window.innerHeight * 0.113, 106)
+
+  return [
+    { x: gatherX * 1.1, y: gatherY * 0.55, scale: 1, rotate: 0 },
+    { x: 0, y: gatherY * 0.15, scale: 1, rotate: 0 },
+    { x: -gatherX * 1.1, y: gatherY * 0.55, scale: 1, rotate: 0 },
+    { x: gatherX * 1.04, y: -gatherY * 0.92, scale: 1, rotate: 0 },
+    { x: gatherX * 0.12, y: -gatherY * 0.98, scale: 1, rotate: 0 }
+  ]
+}
+
+const syncHeritageCollectionCluster = () => {
+  const metrics = getHeritageCollectionClusterMetrics()
+  if (!metrics) return
+
+  if (!shouldInitHeritageCollectionCluster() || !isDesktopHeritageCollectionClusterLayout()) {
+    resetHeritageCollectionCluster()
+    return
   }
 
-  heritageFloatingCardsRefreshTimer = window.setTimeout(() => {
-    heritageFloatingCardsRefreshTimer = null;
+  const { section, cards } = metrics
+  const sectionRect = section.getBoundingClientRect()
+  const viewportHeight = Math.max(window.innerHeight || 0, 1)
+  const start = viewportHeight * 0.9
+  const end = viewportHeight * 0.11
+  const progress = Math.max(0, Math.min(1, (start - sectionRect.top) / Math.max(1, start - end)))
+  const easedProgress = 1 - Math.pow(1 - progress, 3)
+  const spreadOffsets = getHeritageCollectionClusterOffsets()
+  const gatherOffsets = getHeritageCollectionClusterGatherOffsets()
 
-    if (!shouldInitHeritageFloatingCards()) {
-      destroyHeritageFloatingCards();
-      return;
-    }
+  cards.forEach((card, index) => {
+    const startOffset = spreadOffsets[index] || spreadOffsets[spreadOffsets.length - 1]
+    const endOffset = gatherOffsets[index] || gatherOffsets[gatherOffsets.length - 1]
+    const x = startOffset.x + ((endOffset.x - startOffset.x) * easedProgress)
+    const y = startOffset.y + ((endOffset.y - startOffset.y) * easedProgress)
+    const scale = startOffset.scale + ((endOffset.scale - startOffset.scale) * easedProgress)
+    const rotate = startOffset.rotate + ((endOffset.rotate - startOffset.rotate) * easedProgress)
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth < 1100) {
-      destroyHeritageFloatingCards();
-      return;
-    }
-
-    if (!heritageFloatingCardsState) {
-      initHeritageFloatingCards();
-      return;
-    }
-
-    if (typeof heritageFloatingCardsState.rebuildLayout === 'function') {
-      window.requestAnimationFrame(heritageFloatingCardsState.rebuildLayout);
-    }
-  }, 120);
+    card.classList.add('is-lenis-clustered')
+    card.style.setProperty('--heritage-cluster-x', `${x.toFixed(2)}px`)
+    card.style.setProperty('--heritage-cluster-y', `${y.toFixed(2)}px`)
+    card.style.setProperty('--heritage-cluster-scale', scale.toFixed(4))
+    card.style.setProperty('--heritage-cluster-rotate', `${rotate.toFixed(2)}deg`)
+  })
 }
 
-function bindHeritageFloatingCardsViewportListeners() {
-  if (heritageFloatingCardsViewportListenersBound) return;
-
-  window.addEventListener('resize', queueHeritageFloatingCardsRefresh, { passive: true });
-  window.addEventListener('orientationchange', queueHeritageFloatingCardsRefresh);
-
-  heritageFloatingCardsViewportListenersBound = true;
-}
-
-function shouldInitHeritageFloatingCards() {
-  const body = document.body;
-  if (!body) return false;
-  return body.classList.contains('blacklight-pages-about_heritage');
-}
-
-function destroyHeritageFloatingCards() {
-  if (heritageFloatingCardsRefreshTimer !== null) {
-    window.clearTimeout(heritageFloatingCardsRefreshTimer);
-    heritageFloatingCardsRefreshTimer = null;
+const initHeritageCollectionCluster = () => {
+  if (heritageCollectionClusterUnsubscribe) {
+    heritageCollectionClusterUnsubscribe()
+    heritageCollectionClusterUnsubscribe = null
   }
 
-  if (!heritageFloatingCardsState) return;
+  if (!shouldInitHeritageCollectionCluster()) {
+    resetHeritageCollectionCluster()
+    return
+  }
 
-  const state = heritageFloatingCardsState;
-  if (state.rafId !== null) window.cancelAnimationFrame(state.rafId);
-  if (state.resizeHandler) window.removeEventListener('resize', state.resizeHandler);
-  if (state.visibilityHandler) document.removeEventListener('visibilitychange', state.visibilityHandler);
+  syncHeritageCollectionCluster()
 
-  state.cards.forEach((card) => {
-    card.style.removeProperty('transform');
-    card.classList.remove('is-floating');
-  });
+  if (lenisInstance) {
+    heritageCollectionClusterUnsubscribe = lenisInstance.on('scroll', () => {
+      syncHeritageCollectionCluster()
+    })
+  }
 
-  heritageFloatingCardsState = null;
+  if (!heritageCollectionClusterResizeBound) {
+    window.addEventListener('resize', () => {
+      syncHeritageCollectionCluster()
+    }, { passive: true })
+    heritageCollectionClusterResizeBound = true
+  }
 }
 
-function initHeritageFloatingCards() {
-  destroyHeritageFloatingCards();
-  if (!shouldInitHeritageFloatingCards()) return;
-  bindHeritageFloatingCardsViewportListeners();
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (window.innerWidth < 1100) return;
-
-  const grid = document.querySelector('.about-modern-collection-grid--five');
-  if (!grid) return;
-
-  const cards = Array.from(grid.querySelectorAll('.about-modern-card--collection'));
-  if (cards.length < 2) return;
-
-  const randomBetween = (min, max) => min + Math.random() * (max - min);
-  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-
-  const state = {
-    grid,
-    cards,
-    items: [],
-    containerPadding: 14,
-    rafId: null,
-    lastTimestamp: null,
-    resizeHandler: null,
-    visibilityHandler: null,
-    rebuildLayout: null
-  };
-
-  const rebuildLayout = () => {
-    const gridRect = grid.getBoundingClientRect();
-    const padding = state.containerPadding;
-
-    const previous = new Map(state.items.map((item) => [item.card, item]));
-    state.items = cards.map((card) => {
-      const width = card.offsetWidth;
-      const height = card.offsetHeight;
-      const prior = previous.get(card);
-      const angle = randomBetween(0, Math.PI * 2);
-      const speed = randomBetween(0.009, 0.022);
-
-      const cardRect = card.getBoundingClientRect();
-      const baseX = card.offsetParent === grid ? card.offsetLeft : (cardRect.left - gridRect.left);
-      const baseY = card.offsetParent === grid ? card.offsetTop : (cardRect.top - gridRect.top);
-      let minX = padding - baseX;
-      let maxX = gridRect.width - padding - baseX - width;
-      let minY = padding - baseY;
-      let maxY = gridRect.height - padding - baseY - height;
-
-      if (minX > maxX) {
-        minX = 0;
-        maxX = 0;
-      }
-      if (minY > maxY) {
-        minY = 0;
-        maxY = 0;
-      }
-
-      card.classList.add('is-floating');
-
-      return {
-        card,
-        baseX,
-        baseY,
-        width,
-        height,
-        minX,
-        maxX,
-        minY,
-        maxY,
-        x: clamp(prior?.x ?? 0, minX, maxX),
-        y: clamp(prior?.y ?? 0, minY, maxY),
-        vx: prior?.vx ?? Math.cos(angle) * speed,
-        vy: prior?.vy ?? Math.sin(angle) * speed,
-        bobAmp: prior?.bobAmp ?? randomBetween(0.9, 2.6),
-        bobRate: prior?.bobRate ?? randomBetween(0.00032, 0.00062),
-        bobPhase: prior?.bobPhase ?? randomBetween(0, Math.PI * 2)
-      };
-    });
-  };
-  state.rebuildLayout = rebuildLayout;
-
-  const resolveCollisions = () => {
-    const items = state.items;
-    for (let i = 0; i < items.length; i += 1) {
-      for (let j = i + 1; j < items.length; j += 1) {
-        const a = items[i];
-        const b = items[j];
-
-        const aLeft = a.baseX + a.x;
-        const aTop = a.baseY + a.y;
-        const bLeft = b.baseX + b.x;
-        const bTop = b.baseY + b.y;
-
-        const overlapX = Math.min(aLeft + a.width, bLeft + b.width) - Math.max(aLeft, bLeft);
-        const overlapY = Math.min(aTop + a.height, bTop + b.height) - Math.max(aTop, bTop);
-        if (overlapX <= 0 || overlapY <= 0) continue;
-
-        if (overlapX < overlapY) {
-          const direction = (aLeft + a.width * 0.5) < (bLeft + b.width * 0.5) ? -1 : 1;
-          const push = overlapX * 0.52;
-          a.x += direction * push;
-          b.x -= direction * push;
-          const avx = a.vx;
-          a.vx = -b.vx * 0.92;
-          b.vx = -avx * 0.92;
-        } else {
-          const direction = (aTop + a.height * 0.5) < (bTop + b.height * 0.5) ? -1 : 1;
-          const push = overlapY * 0.52;
-          a.y += direction * push;
-          b.y -= direction * push;
-          const avy = a.vy;
-          a.vy = -b.vy * 0.92;
-          b.vy = -avy * 0.92;
-        }
-      }
-    }
-  };
-
-  const tick = (timestamp) => {
-    state.rafId = window.requestAnimationFrame(tick);
-    if (document.visibilityState === 'hidden') {
-      state.lastTimestamp = timestamp;
-      return;
-    }
-
-    const dt = Math.min(34, state.lastTimestamp ? (timestamp - state.lastTimestamp) : 16);
-    state.lastTimestamp = timestamp;
-
-    state.items.forEach((item) => {
-      item.x += item.vx * dt;
-      item.y += item.vy * dt;
-
-      if (item.x <= item.minX || item.x >= item.maxX) {
-        item.x = clamp(item.x, item.minX, item.maxX);
-        item.vx *= -1;
-      }
-      if (item.y <= item.minY || item.y >= item.maxY) {
-        item.y = clamp(item.y, item.minY, item.maxY);
-        item.vy *= -1;
-      }
-
-      const speed = Math.hypot(item.vx, item.vy);
-      if (speed < 0.0062) {
-        const resetAngle = randomBetween(0, Math.PI * 2);
-        item.vx = Math.cos(resetAngle) * 0.011;
-        item.vy = Math.sin(resetAngle) * 0.011;
-      }
-    });
-
-    resolveCollisions();
-
-    state.items.forEach((item) => {
-      item.x = clamp(item.x, item.minX, item.maxX);
-      item.y = clamp(item.y, item.minY, item.maxY);
-      const bob = Math.sin(timestamp * item.bobRate + item.bobPhase) * item.bobAmp;
-      item.card.style.transform = `translate3d(${item.x.toFixed(2)}px, ${(item.y + bob).toFixed(2)}px, 0)`;
-    });
-  };
-
-  state.resizeHandler = () => {
-    if (window.innerWidth < 1100) {
-      destroyHeritageFloatingCards();
-      return;
-    }
-    window.requestAnimationFrame(rebuildLayout);
-  };
-
-  state.visibilityHandler = () => {
-    if (document.visibilityState === 'visible') {
-      rebuildLayout();
-    }
-  };
-
-  rebuildLayout();
-  state.rafId = window.requestAnimationFrame(tick);
-  window.addEventListener('resize', state.resizeHandler);
-  document.addEventListener('visibilitychange', state.visibilityHandler);
-  heritageFloatingCardsState = state;
-}
-
-document.addEventListener('DOMContentLoaded', initHeritageFloatingCards);
-document.addEventListener('turbo:load', initHeritageFloatingCards);
-document.addEventListener('turbo:before-cache', destroyHeritageFloatingCards);
+document.addEventListener('DOMContentLoaded', initHeritageCollectionCluster)
+document.addEventListener('turbo:load', initHeritageCollectionCluster)
+document.addEventListener('turbo:before-cache', () => {
+  if (heritageCollectionClusterUnsubscribe) {
+    heritageCollectionClusterUnsubscribe()
+    heritageCollectionClusterUnsubscribe = null
+  }
+  resetHeritageCollectionCluster()
+})
