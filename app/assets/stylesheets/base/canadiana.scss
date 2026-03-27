@@ -2875,7 +2875,7 @@ summary:focus-visible,
   }
 
   .nav-list.nav-list-main .nav-dropdown-menu::before {
-    top: .72rem !important;
+    top: 2.5rem !important;
     bottom: .72rem !important;
     left: .42rem !important;
     width: 3px;
@@ -4331,6 +4331,7 @@ summary:focus-visible,
 
 .home-page .home-explore,
 .home-page .home-featured,
+.home-page .home-exhibition-preview-head,
 .home-page .members-section {
   padding-top: var(--home-sequence-gap-lg) !important;
   padding-bottom: var(--home-sequence-gap-lg) !important;
@@ -4347,6 +4348,7 @@ summary:focus-visible,
 }
 
 .home-page .home-featured .section-title,
+.home-page .home-exhibition-preview-head .section-title,
 .home-page .home-exhibition-preview .section-title,
 .home-page .home-statement .section-title,
 .home-page .members-section .section-title {
@@ -4391,6 +4393,7 @@ summary:focus-visible,
 @media (max-width: 992px) {
   .home-page .home-explore,
   .home-page .home-featured,
+  .home-page .home-exhibition-preview-head,
   .home-page .home-statement,
   .home-page .members-section {
     padding-top: var(--home-sequence-gap-md) !important;
@@ -4400,6 +4403,7 @@ summary:focus-visible,
   .home-page .home-intro--canadiana-clean .section-title,
   .home-page .home-intro--heritage-clean .section-title,
   .home-page .home-featured .section-title,
+  .home-page .home-exhibition-preview-head .section-title,
   .home-page .home-exhibition-preview .section-title,
   .home-page .home-statement .section-title,
   .home-page .members-section .section-title {
@@ -7422,14 +7426,23 @@ summary:focus-visible,
   padding-bottom: 0;
 }
 
-.home-page .home-exhibition-preview {
+.home-page .home-exhibition-preview-head {
   margin-top: clamp(2rem, 4vw, 3.5rem);
   padding-top: clamp(2rem, 3.2vw, 3rem);
+  padding-bottom: 0 !important;
+  overflow: visible;
+  background: #fff;
+}
+
+.home-page .home-exhibition-preview {
+  margin-top: 0;
+  padding-top: clamp(1rem, 1.6vw, 1.4rem);
   padding-bottom: clamp(2.2rem, 3.4vw, 3.2rem);
   overflow: visible;
   background: #fff;
 }
 
+.home-page .home-exhibition-preview-head > .canadiana-shell,
 .home-page .home-exhibition-preview > .canadiana-shell {
   display: grid;
   gap: clamp(1.25rem, 2vw, 1.75rem);
@@ -7448,6 +7461,8 @@ summary:focus-visible,
   display: grid;
   gap: 0.65rem;
   max-width: 72rem;
+  padding-left: var(--home-shell-pad-inline, 5%);
+  padding-right: var(--home-shell-pad-inline, 5%);
 }
 
 .home-page .home-exhibition-preview__intro .section-title,
@@ -7549,9 +7564,9 @@ summary:focus-visible,
 
 .home-page .home-exhibition-preview__viewport {
   position: relative;
-  height: 73vh;
-  min-height: 420px;
-  max-height: 73vh;
+  height: 95vh;
+  min-height: 73vh;
+  max-height: 95vh;
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid rgba(19, 24, 31, 0.12);
@@ -7624,8 +7639,9 @@ summary:focus-visible,
 
 @media (min-width: 993px) and (max-width: 1360px) {
   .home-page .home-exhibition-preview__viewport {
-    height: 80vh;
-    max-height: 80vh;
+    height: 95vh;
+    min-height: 80vh;
+    max-height: 95vh;
   }
 }
 
@@ -8364,6 +8380,15 @@ summary:focus-visible,
     will-change: transform, opacity;
     transform-origin: center center;
     box-shadow: 0 24px 44px rgba(17, 24, 33, 0.08);
+  }
+}
+
+@media (min-width: 1440px) {
+  .blacklight-pages-about_canadiana .about-modern-deep-dive > .about-modern-block-head,
+  .blacklight-pages-about_canadiana .about-modern-deep-dive > .about-modern-detail-stack {
+    width: 100%;
+    max-width: 112rem;
+    margin-inline: auto;
   }
 }
 

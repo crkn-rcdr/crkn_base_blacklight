@@ -60,7 +60,16 @@ const initLenis = () => {
     lenisInstance = new Lenis({
       duration: 1.05,
       smoothWheel: true,
-      smoothTouch: false
+      smoothTouch: false,
+      prevent: (node) => {
+        if (!(node instanceof Element)) return false
+
+        return Boolean(
+          node.closest(
+            '#my-mirador, .mirador-viewer, .mirador-window, .mirador-thumbnail-nav-container, [class*="GalleryView"], [class*="ThumbnailNav"], [class*="Thumbnail"], [data-lenis-prevent]'
+          )
+        )
+      }
     })
   }
 
@@ -75,6 +84,7 @@ document.addEventListener('turbo:load', initLenis)
 
 let activeHomeExhibitionCard = null
 let homeExhibitionPreviewBehaviorInstalled = false
+let homeExhibitionActivationLockUntil = 0
 
 const setHomeExhibitionCardState = (card, isActive) => {
   if (!card) return
@@ -119,6 +129,12 @@ const activateHomeExhibitionCard = (card) => {
   setHomeExhibitionCardState(card, true)
   activeHomeExhibitionCard = card
 }
+
+const lockHomeExhibitionActivation = (durationMs = 1400) => {
+  homeExhibitionActivationLockUntil = Date.now() + durationMs
+}
+
+const isHomeExhibitionActivationLocked = () => Date.now() < homeExhibitionActivationLockUntil
 
 const scrollToHomeExhibitionCard = (card) => {
   if (!card) return
@@ -212,7 +228,7 @@ const syncHomeExhibitionStage = (section, scrollY = window.scrollY) => {
   pin.classList.toggle('is-pinned', isPinned)
   section.classList.toggle('is-pinned', isPinned)
 
-  if (!isPinned && activeHomeExhibitionCard) {
+  if (!isPinned && activeHomeExhibitionCard && !isHomeExhibitionActivationLocked()) {
     const cardToReset = activeHomeExhibitionCard
     deactivateHomeExhibitionCard(cardToReset)
     resetHomeExhibitionCardFrame(cardToReset)
@@ -316,6 +332,7 @@ const installHomeExhibitionPreviewBehavior = () => {
     const activateButton = event.target.closest('.home-exhibition-preview__activate')
     if (activateButton) {
       const card = activateButton.closest('.home-exhibition-preview__card')
+      lockHomeExhibitionActivation()
       scrollPageToHomeExhibitionCard(card)
       activateHomeExhibitionCard(card)
       return
@@ -512,6 +529,7 @@ document.addEventListener('turbo:before-cache', () => {
 
 let pageViewer = document.getElementById("my-mirador")
 if(pageViewer) {
+    pageViewer.setAttribute('data-lenis-prevent', 'true')
     let language = document.documentElement.lang || "en";
     const workspaceLabel = language.startsWith('fr') ? 'Espace de travail' : 'Workspace';
 
