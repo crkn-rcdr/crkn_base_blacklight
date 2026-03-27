@@ -1571,7 +1571,7 @@ const getHeritageCollectionClusterGatherOffsets = () => {
     { x: 0, y: gatherY * 0.15, scale: 1, rotate: 0 },
     { x: -gatherX * 1.1, y: gatherY * 0.55, scale: 1, rotate: 0 },
     { x: gatherX * 1.04, y: -gatherY * 0.92, scale: 1, rotate: 0 },
-    { x: gatherX * 0.12, y: -gatherY * 0.98, scale: 1, rotate: 0 }
+    { x: 0, y: -gatherY * 0.98, scale: 1, rotate: 0 }
   ]
 }
 
