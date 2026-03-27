@@ -7432,6 +7432,7 @@ summary:focus-visible,
 .home-page .home-exhibition-preview > .canadiana-shell {
   display: grid;
   gap: clamp(1.25rem, 2vw, 1.75rem);
+  overflow: visible;
 }
 
 .home-page .home-exhibition-preview__stage {
@@ -7488,8 +7489,8 @@ summary:focus-visible,
 .home-page .home-exhibition-preview__card {
   display: grid;
   gap: clamp(0.95rem, 1.5vw, 1.35rem);
-  flex: 0 0 calc((100% - var(--home-exhibit-peek)) * 1.1);
-  min-width: calc((100% - var(--home-exhibit-peek)) * 1.1);
+  flex: 0 0 calc((100% - var(--home-exhibit-peek)) * 1.05);
+  min-width: calc((100% - var(--home-exhibit-peek)) * 1.05);
   padding: clamp(1rem, 1.6vw, 1.4rem);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.82);
@@ -7635,12 +7636,12 @@ summary:focus-visible,
   }
 
   .home-page .home-exhibition-preview__stage {
-    margin-left: calc(50% - 50vw + 1rem);
-    width: calc(100vw - 2rem);
+    margin-left: calc(50% - 50vw);
+    width: 100vw;
   }
 
   .home-page .home-exhibition-preview__grid {
-    --home-exhibit-start-inset: 0px;
+    --home-exhibit-start-inset: calc(50vw - 50%);
     --home-exhibit-end-inset: 0px;
   }
 
