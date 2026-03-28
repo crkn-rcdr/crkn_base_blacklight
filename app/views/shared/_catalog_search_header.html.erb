@@ -18,10 +18,12 @@ else
 end %>
 <%
   search_tile_images = [
-    'oocihm.9_01973_3_1.2.jpg',
-    'oocihm.8_06349_193304.1.jpg',
-    'olum.00001_19350626.1.jpg',
-    'oocihm.8_06967_385.1.jpg'
+    { href: 'https://www.canadiana.ca/view/oocihm.8_06061_102/10' },
+    { href: 'https://www.canadiana.ca/view/oocihm.8_06349_193304/1' },
+    { href: 'https://www.canadiana.ca/view/oocihm.8_04191_542/2' },
+    { href: 'https://www.canadiana.ca/view/oocihm.8_06967_385/1' },
+    { href: 'https://www.canadiana.ca/view/oocihm.9_09348/8' },
+    { href: 'https://www.canadiana.ca/view/oocihm.9_01973_3_1/2' },
   ]
 %>
 
@@ -41,17 +43,12 @@ end %>
     </div>
 
     <div class="catalog-search-hero__art" aria-hidden="true">
-      <% search_tile_images.each_with_index do |filename, index| %>
-        <% basename = File.basename(filename, File.extname(filename)) %>
-        <% match = basename.match(/\A(.+)\.(\d+)(?: \(\d+\))?\z/) %>
-        <% slug = match ? match[1] : basename %>
-        <% page = match ? match[2] : '1' %>
+      <% search_tile_images.each_with_index do |tile, index| %>
         <a
-          class="catalog-search-hero__tile catalog-search-hero__tile--<%= %w[one two three four][index] %>"
-          href="https://www.canadiana.ca/view/<%= slug %>/<%= page %>"
+          class="catalog-search-hero__tile catalog-search-hero__tile--<%= %w[one two three four five six][index] %>"
+          href="<%= tile[:href] %>"
           target="_blank"
           rel="noopener"
-          style="background-image: url('<%= asset_path("search/canadiana/#{filename}") %>');"
         >
           <span class="visually-hidden"><%= is_fr ? 'Ouvrir l image source dans un nouvel onglet' : 'Open source image in a new tab' %></span>
         </a>

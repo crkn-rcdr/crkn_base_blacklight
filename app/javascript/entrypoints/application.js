@@ -66,7 +66,7 @@ const initLenis = () => {
 
         return Boolean(
           node.closest(
-            '#my-mirador, .mirador-viewer, .mirador-window, .mirador-thumbnail-nav-container, [class*="GalleryView"], [class*="ThumbnailNav"], [class*="Thumbnail"], [data-lenis-prevent]'
+            '#my-mirador, .mirador-viewer, .mirador-window, .mirador-thumbnail-nav-container, [class*="GalleryView"], [class*="ThumbnailNav"], [class*="Thumbnail"], [data-lenis-prevent], .modal, dialog'
           )
         )
       }
@@ -401,8 +401,10 @@ const resetAboutCanadianaDetailStack = () => {
 
   metrics.stage.style.removeProperty('height')
   metrics.pin.style.removeProperty('height')
+  metrics.pin.style.removeProperty('top')
 
   metrics.cards.forEach((card) => {
+    card.style.removeProperty('height')
     card.style.removeProperty('transform')
     card.style.removeProperty('opacity')
     card.style.removeProperty('z-index')
@@ -414,21 +416,32 @@ const layoutAboutCanadianaDetailStack = () => {
   const metrics = getAboutCanadianaDetailStackMetrics()
   if (!metrics) return null
 
-  const { stage, pin, cards, pinTop } = metrics
+  const { stage, pin, cards } = metrics
   if (!shouldInitAboutCanadianaDetailStack() || !isDesktopAboutCanadianaDetailStackLayout()) {
     resetAboutCanadianaDetailStack()
     return metrics
   }
 
+  const deepDive = stage.closest('.about-modern-deep-dive')
+  const blockHead = deepDive ? deepDive.querySelector(':scope > .about-modern-block-head') : null
+  const blockHeadHeight = blockHead ? blockHead.offsetHeight : 0
+  const basePinOffset = 16
+  const effectivePinTop = blockHeadHeight > 0 ? blockHeadHeight + basePinOffset : basePinOffset
+  pin.style.top = `${effectivePinTop}px`
+
+  cards.forEach((card) => { card.style.removeProperty('height') })
   const tallestCard = cards.reduce((max, card) => Math.max(max, card.offsetHeight), 0)
+  cards.forEach((card) => { card.style.height = `${tallestCard}px` })
+
   const revealStep = Math.max(520, Math.min(window.innerHeight * 0.84, 820))
   const totalTravel = revealStep * (cards.length - 1)
 
   pin.style.height = `${tallestCard}px`
-  stage.style.height = `${tallestCard + totalTravel + pinTop}px`
+  stage.style.height = `${tallestCard + totalTravel + effectivePinTop}px`
 
   return {
     ...metrics,
+    pinTop: effectivePinTop,
     tallestCard,
     revealStep,
     totalTravel
@@ -488,6 +501,14 @@ const syncAboutCanadianaDetailStack = (scrollY = lenisInstance?.scroll ?? window
     card.style.zIndex = `${zIndex}`
     card.style.pointerEvents = index === activeIndex ? 'auto' : 'none'
   })
+
+  const deepDive = stage.closest('.about-modern-deep-dive')
+  const blockHead = deepDive?.querySelector(':scope > .about-modern-block-head')
+  if (blockHead) {
+    const postStackBuffer = Math.max(window.innerHeight * 0.1, 84)
+    blockHead.classList.toggle('is-stack-complete', clampedProgress >= totalTravel)
+    blockHead.classList.toggle('is-stack-past', rawProgress >= totalTravel + postStackBuffer)
+  }
 }
 
 const initAboutCanadianaDetailStack = () => {
@@ -1564,19 +1585,20 @@ const resetHeritageCollectionCluster = () => {
     card.style.removeProperty('--heritage-cluster-y')
     card.style.removeProperty('--heritage-cluster-scale')
     card.style.removeProperty('--heritage-cluster-rotate')
+    card.style.removeProperty('--heritage-cluster-opacity')
   })
 }
 
 const getHeritageCollectionClusterOffsets = () => {
-  const spreadX = Math.min(window.innerWidth * 0.12, 160)
-  const spreadY = Math.min(window.innerHeight * 0.12, 120)
+  const spreadX = Math.min(window.innerWidth * 0.17, 230)
+  const spreadY = Math.min(window.innerHeight * 0.16, 150)
 
   return [
-    { x: -spreadX, y: -spreadY * 0.18, scale: 0.92, rotate: -4.5 },
-    { x: 0, y: -spreadY * 0.9, scale: 0.95, rotate: -1.75 },
-    { x: spreadX, y: -spreadY * 0.12, scale: 0.92, rotate: 4.2 },
-    { x: -spreadX * 0.9, y: spreadY, scale: 0.94, rotate: -3.6 },
-    { x: spreadX * 0.9, y: spreadY * 0.92, scale: 0.95, rotate: 2.5 }
+    { x: -spreadX, y: -spreadY * 0.22, scale: 0.86, rotate: -7.0 },
+    { x: 0, y: -spreadY * 0.95, scale: 0.9, rotate: -2.5 },
+    { x: spreadX, y: -spreadY * 0.15, scale: 0.86, rotate: 6.5 },
+    { x: -spreadX * 0.92, y: spreadY, scale: 0.88, rotate: -5.5 },
+    { x: spreadX * 0.92, y: spreadY * 0.94, scale: 0.9, rotate: 4.0 }
   ]
 }
 
@@ -1620,11 +1642,13 @@ const syncHeritageCollectionCluster = () => {
     const scale = startOffset.scale + ((endOffset.scale - startOffset.scale) * easedProgress)
     const rotate = startOffset.rotate + ((endOffset.rotate - startOffset.rotate) * easedProgress)
 
+    const opacity = Math.min(1, easedProgress * 2.8)
     card.classList.add('is-lenis-clustered')
     card.style.setProperty('--heritage-cluster-x', `${x.toFixed(2)}px`)
     card.style.setProperty('--heritage-cluster-y', `${y.toFixed(2)}px`)
     card.style.setProperty('--heritage-cluster-scale', scale.toFixed(4))
     card.style.setProperty('--heritage-cluster-rotate', `${rotate.toFixed(2)}deg`)
+    card.style.setProperty('--heritage-cluster-opacity', opacity.toFixed(3))
   })
 }
 
