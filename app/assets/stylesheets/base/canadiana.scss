@@ -4556,6 +4556,11 @@ summary:focus-visible,
   text-wrap: balance;
 }
 
+html[lang="fr"] .home-page .home-hero h1 {
+  max-width: 19ch;
+  font-size: clamp(2.2rem, 5.1vw, 4.1rem);
+}
+
 .home-page .home-hero-copy {
   margin: 0;
   max-width: 58ch;
@@ -4690,6 +4695,11 @@ summary:focus-visible,
     font-size: clamp(2.2rem, 6.4vw, 3.65rem);
   }
 
+  html[lang="fr"] .home-page .home-hero h1 {
+    max-width: 19ch;
+    font-size: clamp(2.05rem, 5.8vw, 3.3rem);
+  }
+
   .home-page .home-hero-copy {
     max-width: 62ch;
     font-size: clamp(0.99rem, 1.8vw, 1.2rem);
@@ -4714,6 +4724,10 @@ summary:focus-visible,
     font-size: clamp(2rem, 8.8vw, 3.15rem);
     line-height: 1;
     text-wrap: pretty;
+  }
+
+  html[lang="fr"] .home-page .home-hero h1 {
+    font-size: clamp(1.85rem, 7.9vw, 2.85rem);
   }
 
   .home-page .home-hero-copy {
@@ -8298,9 +8312,9 @@ summary:focus-visible,
 
 .blacklight-pages-about_canadiana .about-modern-detail-size {
   margin: 0;
-  padding: 0.34rem 0.74rem;
+  padding: 0.36rem 0.72rem;
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.45rem;
 }
 
