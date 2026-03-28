@@ -273,6 +273,7 @@ summary:focus-visible,
 
 .blacklight-catalog-index .catalog-search-hero__art {
   position: relative;
+  right: clamp(3rem, 4.6vw, 5.5rem);
   width: 33rem;
   max-width: 55rem;
   min-height: 0;
@@ -325,7 +326,7 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--one::before {
-  background-image: image-url("backgrounds/canadiana/oocihm.8_06061_102.10.jpg");
+  background-image: image-url("search/canadiana/oocihm.8_06869_57.5.jpg");
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--two {
@@ -337,49 +338,49 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--two::before {
-  background-image: image-url("about/canadiana/oocihm.8_06349_193304.1.jpg");
+  background-image: image-url("search/canadiana/oocihm.8_06349_193304.1.jpg");
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--three {
   left: 49%;
   top: -5%;
-  width: 36%;
+  width: 37%;
   aspect-ratio: 0.74 / 1;
   z-index: 4;
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--three::before {
-  background-image: image-url("backgrounds/canadiana/oocihm.8_04191_542.2.jpg");
+  background-image: image-url("search/canadiana/oocihm.8_04191_542.2.jpg");
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--four {
-  right: -5%;
-  top: 0%;
-  width: 16.5%;
+  right: -13%;
+  top: -15%;
+  width: 29%;
   aspect-ratio: 0.86 / 1;
   z-index: 4;
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--four::before {
-  background-image: image-url("about/canadiana/oocihm.8_06967_385.1.jpg");
+  background-image: image-url("search/canadiana/oocihm.8_06967_385.1.jpg");
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--five {
-  left: -3%;
+  left: -6%;
   top: 49%;
   bottom: auto;
-  width: 40%;
-  aspect-ratio: 1.34 / 1;
+  width: 51%;
+  aspect-ratio: 1.65 / 1;
   z-index: 3;
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--five::before {
-  background-image: image-url("backgrounds/canadiana/oocihm.9_09348.8.jpg");
+  background-image: image-url("search/canadiana/oocihm.8_04048_394.31.jpg");
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--six {
-  right: -16%;
-  top: 51%;
+  right: -17%;
+  top: 52%;
   bottom: auto;
   width: 41%;
   aspect-ratio: 1.38 / 1;
@@ -387,7 +388,7 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--six::before {
-  background-image: image-url("about/canadiana/oocihm.9_01973_3_1.2.jpg");
+  background-image: image-url("search/canadiana/oon.00001_198104.1.jpg");
 }
 
 @media (max-width: 1169px) {
@@ -2383,8 +2384,8 @@ summary:focus-visible,
 
 .topbar-utility .canadiana-shell,
 .topbar-main .canadiana-shell {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
 .topbar-utility {
