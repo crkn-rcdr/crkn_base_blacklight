@@ -275,11 +275,11 @@ summary:focus-visible,
 
 .blacklight-catalog-index .catalog-search-hero__art {
   position: relative;
-  right: clamp(3rem, 4.6vw, 5.5rem);
+  right: 4rem;
   width: 33rem;
-  max-width: 55rem;
+  max-width: none;
   min-height: 0;
-  height: clamp(16rem, 20vw, 21rem);
+  height: 21rem;
   overflow: visible;
   justify-self: end;
   isolation: isolate;
@@ -320,9 +320,9 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--one {
-  left: -10%;
-  top: 2%;
-  width: 30%;
+  left: -3.3rem;
+  top: 2.8rem;
+  width: 9.9rem;
   aspect-ratio: 1.22 / 1;
   z-index: 2;
 }
@@ -332,9 +332,9 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--two {
-  left: 18.5%;
-  top: -15%;
-  width: 32%;
+  left: 6.11rem;
+  top: -0.15rem;
+  width: 10.56rem;
   aspect-ratio: 0.74 / 1;
   z-index: 5;
 }
@@ -344,9 +344,9 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--three {
-  left: 49%;
-  top: -5%;
-  width: 37%;
+  left: 16.17rem;
+  top: -1.05rem;
+  width: 12.21rem;
   aspect-ratio: 0.74 / 1;
   z-index: 4;
 }
@@ -356,9 +356,9 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--four {
-  right: -11%;
-  top: -7%;
-  width: 27%;
+  right: -3.63rem;
+  top: 1.2rem;
+  width: 8.91rem;
   aspect-ratio: 0.86 / 1;
   z-index: 4;
 }
@@ -368,10 +368,10 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--five {
-  left: -6%;
-  top: 49%;
+  left: -1.98rem;
+  top: 10.29rem;
   bottom: auto;
-  width: 51%;
+  width: 16.83rem;
   aspect-ratio: 1.65 / 1;
   z-index: 3;
 }
@@ -381,10 +381,10 @@ summary:focus-visible,
 }
 
 .blacklight-catalog-index .catalog-search-hero__tile--six {
-  right: -17%;
-  top: 52%;
+  right: -5.61rem;
+  top: 10.92rem;
   bottom: auto;
-  width: 41%;
+  width: 13.53rem;
   aspect-ratio: 1.38 / 1;
   z-index: 4;
 }
@@ -9528,22 +9528,46 @@ html[lang="fr"] .home-page .home-hero h1 {
 @media (min-width: 1550px) {
   .blacklight-catalog-index .catalog-search-hero__art {
     margin-left: 0;
-    right: clamp(3rem, 4.6vw, 5.5rem);
-    transform: scale(1.12);
-    transform-origin: top right;
+    right: 4.5rem;
+    width: 36.96rem;
+    height: 23.52rem;
+    transform: none;
   }
 
   .blacklight-catalog-index .catalog-search-hero__tile--one {
-    top: 15%;
+    left: -4rem;
+    top: 3rem;
+    width: 11.09rem;
   }
 
   .blacklight-catalog-index .catalog-search-hero__tile--two {
-    left: 17%;
-    top: -3%;
+    left: 6.28rem;
+    top: -0.71rem;
+    width: 11.83rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--three {
+    left: 17.5rem;
+    top: -1.18rem;
+    width: 13.68rem;
   }
 
   .blacklight-catalog-index .catalog-search-hero__tile--four {
-    top: 2%;
+    right: -3.5rem;
+    top: 1.4rem;
+    width: 9.98rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--five {
+    left: -2.22rem;
+    top: 11.52rem;
+    width: 18.85rem;
+  }
+
+  .blacklight-catalog-index .catalog-search-hero__tile--six {
+    right: -5.28rem;
+    top: 12.23rem;
+    width: 15.15rem;
   }
 }
 
