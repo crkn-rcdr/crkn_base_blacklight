@@ -8678,6 +8678,58 @@ html[lang="fr"] .home-page .home-hero h1 {
     font-size: 1.18rem;
   }
 
+  .blacklight-pages-about_canadiana .about-modern-deep-dive {
+    row-gap: clamp(1.1rem, 1.7vw, 1.5rem);
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-stack {
+    width: 66.666%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: visible;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-deep-dive > .about-modern-block-head {
+    width: 66.666%;
+    margin-left: auto;
+    margin-right: auto;
+    position: static;
+    top: auto;
+    z-index: auto;
+    padding-bottom: clamp(0.9rem, 1.3vw, 1.15rem);
+    text-align: center;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-deep-dive > .about-modern-block-head.is-stack-past {
+    position: static;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-stack__pin {
+    position: static;
+    top: auto;
+    display: grid;
+    gap: clamp(1.15rem, 1.8vw, 1.6rem);
+    height: auto;
+    overflow: visible;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-card--detail {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    margin: 0;
+    min-height: 0;
+    height: auto;
+    transform-origin: center center;
+  }
+
+  .blacklight-pages-about_canadiana .about-modern-detail-link {
+    padding: 0.82rem 1.35rem;
+    font-size: 1.08rem;
+  }
+
   .blacklight-pages-about_canadiana .about-intro-copy .section-title,
   .blacklight-pages-about_heritage .about-intro-copy .section-title {
     font-size: clamp(3.25rem, 3vw, 4.15rem);
@@ -8761,12 +8813,12 @@ html[lang="fr"] .home-page .home-hero h1 {
   }
 
   .blacklight-pages-about_canadiana .about-modern-card--detail {
-    padding: clamp(1.45rem, 1.8vw, 2rem);
+    padding: 1.2rem;
   }
 
   .blacklight-pages-about_canadiana .about-modern-card--detail h3,
   .blacklight-pages-about_canadiana .about-modern-card--detail h4 {
-    font-size: clamp(2.35rem, 2.15vw, 2.9rem);
+    font-size: clamp(1.95rem, 1.75vw, 2.35rem);
   }
 
   .blacklight-pages-about_canadiana .about-modern-detail-intro,
@@ -8778,8 +8830,8 @@ html[lang="fr"] .home-page .home-hero h1 {
   .blacklight-pages-about_canadiana .about-modern-detail-panel h5,
   .blacklight-pages-about_canadiana .about-modern-detail-panel p,
   .blacklight-pages-about_canadiana .about-modern-detail-list li {
-    font-size: 1.3rem;
-    line-height: 1.72;
+    font-size: 1.12rem;
+    line-height: 1.58;
   }
 
   .blacklight-pages-about_canadiana .about-modern-detail-chip,

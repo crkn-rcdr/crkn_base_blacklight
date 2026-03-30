@@ -385,6 +385,8 @@ const isDesktopAboutCanadianaDetailStackLayout = () => {
   return window.matchMedia('(min-width: 993px)').matches
 }
 
+const isWideAboutCanadianaDetailStackLayout = () => window.matchMedia('(min-width: 1600px)').matches
+
 const getAboutCanadianaDetailStackMetrics = () => {
   const stage = document.querySelector('.about-modern-detail-stack')
   const pin = stage?.querySelector('.about-modern-detail-stack__pin')
@@ -402,6 +404,13 @@ const resetAboutCanadianaDetailStack = () => {
   metrics.stage.style.removeProperty('height')
   metrics.pin.style.removeProperty('height')
   metrics.pin.style.removeProperty('top')
+
+  const deepDive = metrics.stage.closest('.about-modern-deep-dive')
+  const blockHead = deepDive?.querySelector(':scope > .about-modern-block-head')
+  if (blockHead) {
+    blockHead.classList.remove('is-stack-complete')
+    blockHead.classList.remove('is-stack-past')
+  }
 
   metrics.cards.forEach((card) => {
     card.style.removeProperty('height')
@@ -424,6 +433,26 @@ const layoutAboutCanadianaDetailStack = () => {
 
   const deepDive = stage.closest('.about-modern-deep-dive')
   const blockHead = deepDive ? deepDive.querySelector(':scope > .about-modern-block-head') : null
+  if (isWideAboutCanadianaDetailStackLayout()) {
+    pin.style.removeProperty('top')
+    pin.style.removeProperty('height')
+    stage.style.removeProperty('height')
+    cards.forEach((card) => { card.style.removeProperty('height') })
+
+    if (blockHead) {
+      blockHead.classList.remove('is-stack-complete')
+      blockHead.classList.remove('is-stack-past')
+    }
+
+    return {
+      ...metrics,
+      pinTop: 0,
+      tallestCard: 0,
+      revealStep: 0,
+      totalTravel: 0
+    }
+  }
+
   const blockHeadHeight = blockHead ? blockHead.offsetHeight : 0
   const basePinOffset = 16
   const effectivePinTop = blockHeadHeight > 0 ? blockHeadHeight + basePinOffset : basePinOffset
@@ -453,7 +482,37 @@ const syncAboutCanadianaDetailStack = (scrollY = lenisInstance?.scroll ?? window
   if (!metrics) return
   if (!shouldInitAboutCanadianaDetailStack() || !isDesktopAboutCanadianaDetailStackLayout()) return
 
-  const { stage, cards, pinTop, revealStep, totalTravel } = metrics
+  const { stage, cards } = metrics
+  const deepDive = stage.closest('.about-modern-deep-dive')
+  const blockHead = deepDive?.querySelector(':scope > .about-modern-block-head')
+
+  if (isWideAboutCanadianaDetailStackLayout()) {
+    const flyDistance = Math.min(window.innerWidth * 0.08, 128)
+    const revealStart = window.innerHeight * 0.92
+    const revealEnd = window.innerHeight * 0.56
+
+    cards.forEach((card, index) => {
+      const rect = card.getBoundingClientRect()
+      const progress = Math.max(0, Math.min(1, (revealStart - rect.top) / (revealStart - revealEnd)))
+      const direction = index % 2 === 0 ? -1 : 1
+      const translateX = direction * (1 - progress) * flyDistance
+      const opacity = 0.24 + (progress * 0.76)
+
+      card.style.transform = `translate3d(${translateX}px, 0, 0)`
+      card.style.opacity = `${opacity}`
+      card.style.removeProperty('z-index')
+      card.style.pointerEvents = 'auto'
+    })
+
+    if (blockHead) {
+      blockHead.classList.remove('is-stack-complete')
+      blockHead.classList.remove('is-stack-past')
+    }
+
+    return
+  }
+
+  const { pinTop, revealStep, totalTravel } = metrics
   const stageTop = scrollY + stage.getBoundingClientRect().top
   const progressStart = stageTop - pinTop
   const rawProgress = scrollY - progressStart
@@ -464,7 +523,6 @@ const syncAboutCanadianaDetailStack = (scrollY = lenisInstance?.scroll ?? window
   cards.forEach((card, index) => {
     let translateY = 0
     let translateX = 0
-    let rotate = 0
     let scale = 1
     let opacity = 1
     let zIndex = cards.length - index
@@ -496,14 +554,12 @@ const syncAboutCanadianaDetailStack = (scrollY = lenisInstance?.scroll ?? window
       zIndex = cards.length - depth
     }
 
-    card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotate}deg) scale(${scale})`
+    card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`
     card.style.opacity = `${opacity}`
     card.style.zIndex = `${zIndex}`
     card.style.pointerEvents = index === activeIndex ? 'auto' : 'none'
   })
 
-  const deepDive = stage.closest('.about-modern-deep-dive')
-  const blockHead = deepDive?.querySelector(':scope > .about-modern-block-head')
   if (blockHead) {
     const postStackBuffer = Math.max(window.innerHeight * 0.1, 84)
     blockHead.classList.toggle('is-stack-complete', clampedProgress >= totalTravel)
