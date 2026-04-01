@@ -23,5 +23,3 @@ module CrknCanadianaBlacklight
 
   end
 end
-
-config.force_ssl = true
