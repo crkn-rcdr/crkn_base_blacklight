@@ -24,6 +24,21 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
+# Bind the server to “url”. “tcp://”, “unix://” and “ssl://” are the only
+# accepted protocols.
+#
+# The default is “tcp://0.0.0.0:9292”.
+#
+# bind 'tcp://0.0.0.0:9292'
+# bind 'unix:///var/run/puma.sock'
+# bind 'unix:///var/run/puma.sock?umask=0777'
+# bind 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'
+
+# Instead of “bind 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'” you
+# can also use the “ssl_bind” option.
+#
+ssl_bind '0.0.0.0', '3000', { key: config/ssl/__canadiana_ca.crt, cert: config/ssl/__canadiana_ca.key }
+
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
 # the concurrency of the application would be max `threads` * `workers`.
