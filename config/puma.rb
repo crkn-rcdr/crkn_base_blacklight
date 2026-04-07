@@ -37,7 +37,7 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 # Instead of “bind 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'” you
 # can also use the “ssl_bind” option.
 #
-ssl_bind '0.0.0.0', '3000', { key: /app/config/ssl/__canadiana_ca.key, cert: /app/config/ssl/__canadiana_ca.crt }
+ssl_bind '0.0.0.0', '3000', { key: '/app/config/ssl/canadiana_ca.key', cert: '/app/config/ssl/canadiana_ca.crt' }
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together

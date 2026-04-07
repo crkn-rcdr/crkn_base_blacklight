@@ -1,12 +1,9 @@
-blacklight:
-  image:  <%= $dckimg_blacklight %>
-  restart: unless-stopped
-  ports:
-    - <%= $external_ip %>:443:3000
-  env_file:
-    - /etc/crkn/portals/www_canadiana_ca/crkn_blacklight.env
-  command: sh -lc "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3000"
-  volumes:
-    - /etc/crkn/portals/www_canadiana_ca/openssl.config:/app/config/ssl/openssl.config
-  networks:
-    - www_canadiana_ca
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
