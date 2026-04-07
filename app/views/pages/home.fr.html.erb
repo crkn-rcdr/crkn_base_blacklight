@@ -15,7 +15,7 @@
               Rechercher dans la collection Canadiana
             </a>
             <a class="btn hero-primary-btn" href="/#search-heritage">
-              Rechercher (bientôt disponible)
+              Rechercher dans la collection Héritage
             </a>
           </div>
 
@@ -340,12 +340,12 @@
   </section>
 
   <% featured_items = [
-    { id: 'oon.00001_198410', ark: 'https://n2t.net/ark:/69429/m0z31ng4pk4n', title: 'Science Dimension', description: 'Explorez des documents du Nord et du patrimoine documentaire associe.' },
-    { id: 'qmma.05919', ark: 'https://n2t.net/ark:/69429/m0736m04393j', title: '[Systeme topographique national, 1:50 000 : Canada : Heart\'s Content, Terre-Neuve]', description: 'Ressources topographiques et cartographiques de partout au Canada.' },
+    { id: 'oon.00001_198410', ark: 'https://n2t.net/ark:/69429/m0z31ng4pk4n', title: 'Science Dimension', description: 'Explorez des documents du Nord et du patrimoine documentaire associe.', start_page: 33 },
+    { id: 'qmma.06975', ark: 'https://n2t.net/ark:/69429/m08911n83382', title: 'Systeme topographique national, 1:50 000 : Canada : Rivière Du Loup, Quebec', description: 'Ressources topographiques et cartographiques de partout au Canada.' },
     { id: 'nswa.00001_192612', ark: 'https://n2t.net/ark:/69429/m2025000011pw36', title: 'Acadia athenaeum : The Acadia athenaeum', description: 'Publications universitaires et etudiantes issues des collections historiques.' },
     { id: 'oocihm.lac_reel_t1741', ark: 'https://n2t.net/ark:/69429/m07h1dj5927j', title: 'Herzberg Institute of Astrophysics', description: 'Publications scientifiques et documents de recherche astronomique.', start_page: 1734 },
     { id: 'oocihm.lac_reel_c13421', ark: 'https://n2t.net/ark:/69429/m0nv9959cv8t', title: 'Chinese immigration records: Sample Chinese immigration certificates : C-13421', description: 'Sources primaires preservees par des institutions partenaires.', start_page: 54 },
-    { id: 'oocihm.lac_reel_c1845', ark: 'https://n2t.net/ark:/69429/m0x05x63bt10', title: 'Joseph Howe fonds : C-1845', description: 'Manuscrits d\'archives sur l\'histoire sociale et politique du Canada.', start_page: 9 }
+    { id: 'oocihm.lac_reel_c15789', ark: 'https://n2t.net/ark:/69429/m0086348gv2j', title: 'Collection de la famille Papineau : C-15789', description: 'Cette collection contient une riche documentation axée sur Louis-Joseph Papineau.', start_page: 99 }
   ] %>
   <% featured_page = params[:featured_page].to_i %>
   <% featured_page = 1 if featured_page < 1 %>
