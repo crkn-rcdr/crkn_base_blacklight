@@ -75,7 +75,7 @@ These fields are referenced by the current catalog configuration, but they are n
 
 | Field | Where it is used | Notes |
 | --- | --- | --- |
-| `ark` | Index metadata, show metadata, IIIF viewer, downloads, citations, page search | Not indexed in this class. It appears to come from another ingest step, external index source, or Solr-side pipeline. |
+| `ark` | Index metadata, show metadata, IIIF viewer, downloads, citations, page search | Not indexed in this class. It comes from another ingest step, external index pipeline running on Windmill. |
 | `language_ssim_str` | Facet field | Controller comment suggests `_str` fields are docValues-backed copies. Not produced here. |
 | `depositor_tsim_str` | Facet field | Same pattern as above. |
 | `subject_ssim_str` | Facet field | Same pattern as above. |
