@@ -6,6 +6,8 @@ ul.document-metadata {
 }
 .document-title-heading {
     max-width: 755px;
+    font-size: clamp(1.08rem, calc(0.96rem + 0.42vw), 1.4rem);
+    line-height: 1.22;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -22,6 +24,12 @@ ul.document-metadata {
         text-overflow: unset;
         overflow: show;
         white-space: wrap;
+    }
+}
+
+@media (min-width: 1200px) {
+    .blacklight-catalog-index .document-title-heading {
+        font-size: 1.3rem;
     }
 }
 

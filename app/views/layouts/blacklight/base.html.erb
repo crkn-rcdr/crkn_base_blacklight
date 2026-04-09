@@ -54,9 +54,10 @@
     <%= content_tag main_tag, **main_container_opts do %>
       <%= content_for(:container_header) %>
 
-      <% if controller_name == 'catalog' && action_name == 'index' %>
-        <%= render 'shared/catalog_search_header' %>
-      <% end %>
+      <%# Custom catalog search hero disabled in favor of the shared navbar search used on catalog show pages. %>
+      <%# if controller_name == 'catalog' && action_name == 'index' %>
+      <%#   render 'shared/catalog_search_header' %>
+      <%# end %>
 
       <section role="region" aria-label="<%= t('blacklight.main.aria.flash_messages', default: 'Notifications') %>">
         <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>

@@ -35,10 +35,6 @@ let lenisInstance = null
 let lenisRafStarted = false
 let homeExhibitionLenisUnsubscribe = null
 let homeExhibitionResizeBound = false
-let aboutCanadianaDetailStackUnsubscribe = null
-let aboutCanadianaDetailStackResizeBound = false
-let heritageCollectionClusterUnsubscribe = null
-let heritageCollectionClusterResizeBound = false
 
 const rafLenis = (time) => {
   if (lenisInstance) {
@@ -374,236 +370,6 @@ if (document.readyState !== 'loading') {
   installHomeExhibitionPreviewBehavior()
 }
 
-const shouldInitAboutCanadianaDetailStack = () => {
-  const body = document.body
-  if (!body) return false
-  return body.classList.contains('blacklight-pages-about_canadiana')
-}
-
-const isDesktopAboutCanadianaDetailStackLayout = () => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
-  return window.matchMedia('(min-width: 993px)').matches
-}
-
-const isWideAboutCanadianaDetailStackLayout = () => window.matchMedia('(min-width: 1600px)').matches
-
-const getAboutCanadianaDetailStackMetrics = () => {
-  const stage = document.querySelector('.about-modern-detail-stack')
-  const pin = stage?.querySelector('.about-modern-detail-stack__pin')
-  const cards = pin ? Array.from(pin.querySelectorAll('.about-modern-card--detail')) : []
-  if (!stage || !pin || cards.length < 2) return null
-
-  const pinTop = Number.parseFloat(window.getComputedStyle(pin).top) || 0
-  return { stage, pin, cards, pinTop }
-}
-
-const resetAboutCanadianaDetailStack = () => {
-  const metrics = getAboutCanadianaDetailStackMetrics()
-  if (!metrics) return
-
-  metrics.stage.style.removeProperty('height')
-  metrics.pin.style.removeProperty('height')
-  metrics.pin.style.removeProperty('top')
-
-  const deepDive = metrics.stage.closest('.about-modern-deep-dive')
-  const blockHead = deepDive?.querySelector(':scope > .about-modern-block-head')
-  if (blockHead) {
-    blockHead.classList.remove('is-stack-complete')
-    blockHead.classList.remove('is-stack-past')
-  }
-
-  metrics.cards.forEach((card) => {
-    card.style.removeProperty('height')
-    card.style.removeProperty('transform')
-    card.style.removeProperty('opacity')
-    card.style.removeProperty('z-index')
-    card.style.removeProperty('pointer-events')
-  })
-}
-
-const layoutAboutCanadianaDetailStack = () => {
-  const metrics = getAboutCanadianaDetailStackMetrics()
-  if (!metrics) return null
-
-  const { stage, pin, cards } = metrics
-  if (!shouldInitAboutCanadianaDetailStack() || !isDesktopAboutCanadianaDetailStackLayout()) {
-    resetAboutCanadianaDetailStack()
-    return metrics
-  }
-
-  const deepDive = stage.closest('.about-modern-deep-dive')
-  const blockHead = deepDive ? deepDive.querySelector(':scope > .about-modern-block-head') : null
-  if (isWideAboutCanadianaDetailStackLayout()) {
-    pin.style.removeProperty('top')
-    pin.style.removeProperty('height')
-    stage.style.removeProperty('height')
-    cards.forEach((card) => { card.style.removeProperty('height') })
-
-    if (blockHead) {
-      blockHead.classList.remove('is-stack-complete')
-      blockHead.classList.remove('is-stack-past')
-    }
-
-    return {
-      ...metrics,
-      pinTop: 0,
-      tallestCard: 0,
-      revealStep: 0,
-      totalTravel: 0
-    }
-  }
-
-  const blockHeadHeight = blockHead ? blockHead.offsetHeight : 0
-  const basePinOffset = 16
-  const effectivePinTop = blockHeadHeight > 0 ? blockHeadHeight + basePinOffset : basePinOffset
-  pin.style.top = `${effectivePinTop}px`
-
-  cards.forEach((card) => { card.style.removeProperty('height') })
-  const tallestCard = cards.reduce((max, card) => Math.max(max, card.offsetHeight), 0)
-  cards.forEach((card) => { card.style.height = `${tallestCard}px` })
-
-  const revealStep = Math.max(520, Math.min(window.innerHeight * 0.84, 820))
-  const totalTravel = revealStep * (cards.length - 1)
-
-  pin.style.height = `${tallestCard}px`
-  stage.style.height = `${tallestCard + totalTravel + effectivePinTop}px`
-
-  return {
-    ...metrics,
-    pinTop: effectivePinTop,
-    tallestCard,
-    revealStep,
-    totalTravel
-  }
-}
-
-const syncAboutCanadianaDetailStack = (scrollY = lenisInstance?.scroll ?? window.scrollY) => {
-  const metrics = layoutAboutCanadianaDetailStack()
-  if (!metrics) return
-  if (!shouldInitAboutCanadianaDetailStack() || !isDesktopAboutCanadianaDetailStackLayout()) return
-
-  const { stage, cards } = metrics
-  const deepDive = stage.closest('.about-modern-deep-dive')
-  const blockHead = deepDive?.querySelector(':scope > .about-modern-block-head')
-
-  if (isWideAboutCanadianaDetailStackLayout()) {
-    const flyDistance = Math.min(window.innerWidth * 0.08, 128)
-    const revealStart = window.innerHeight * 0.92
-    const revealEnd = window.innerHeight * 0.56
-
-    cards.forEach((card, index) => {
-      const rect = card.getBoundingClientRect()
-      const progress = Math.max(0, Math.min(1, (revealStart - rect.top) / (revealStart - revealEnd)))
-      const direction = index % 2 === 0 ? -1 : 1
-      const translateX = direction * (1 - progress) * flyDistance
-      const opacity = 0.24 + (progress * 0.76)
-
-      card.style.transform = `translate3d(${translateX}px, 0, 0)`
-      card.style.opacity = `${opacity}`
-      card.style.removeProperty('z-index')
-      card.style.pointerEvents = 'auto'
-    })
-
-    if (blockHead) {
-      blockHead.classList.remove('is-stack-complete')
-      blockHead.classList.remove('is-stack-past')
-    }
-
-    return
-  }
-
-  const { pinTop, revealStep, totalTravel } = metrics
-  const stageTop = scrollY + stage.getBoundingClientRect().top
-  const progressStart = stageTop - pinTop
-  const rawProgress = scrollY - progressStart
-  const clampedProgress = Math.max(0, Math.min(totalTravel, rawProgress))
-  const activeIndex = Math.min(cards.length - 1, Math.floor(clampedProgress / revealStep))
-  const localProgress = revealStep === 0 ? 0 : (clampedProgress - (activeIndex * revealStep)) / revealStep
-
-  cards.forEach((card, index) => {
-    let translateY = 0
-    let translateX = 0
-    let scale = 1
-    let opacity = 1
-    let zIndex = cards.length - index
-
-    if (index < activeIndex) {
-      translateY = 0
-      translateX = 0
-      scale = 0.985
-      opacity = 0
-      zIndex = 1
-    } else if (index === activeIndex) {
-      translateY = 0
-      translateX = 0
-      scale = 1 - (localProgress * 0.02)
-      opacity = 1
-      zIndex = localProgress < 0.55 ? cards.length + 2 : cards.length + 1
-    } else if (index === activeIndex + 1) {
-      translateY = (1 - localProgress) * 42
-      translateX = 0
-      scale = 0.7 + (localProgress * 0.3)
-      opacity = 1
-      zIndex = localProgress < 0.55 ? cards.length + 1 : cards.length + 3
-    } else {
-      const depth = index - activeIndex - 1
-      translateY = Math.min(depth * 18, 42)
-      translateX = 0
-      scale = Math.max(0.7, 0.82 - (depth * 0.04))
-      opacity = 1
-      zIndex = cards.length - depth
-    }
-
-    card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`
-    card.style.opacity = `${opacity}`
-    card.style.zIndex = `${zIndex}`
-    card.style.pointerEvents = index === activeIndex ? 'auto' : 'none'
-  })
-
-  if (blockHead) {
-    const postStackBuffer = Math.max(window.innerHeight * 0.1, 84)
-    blockHead.classList.toggle('is-stack-complete', clampedProgress >= totalTravel)
-    blockHead.classList.toggle('is-stack-past', rawProgress >= totalTravel + postStackBuffer)
-  }
-}
-
-const initAboutCanadianaDetailStack = () => {
-  if (aboutCanadianaDetailStackUnsubscribe) {
-    aboutCanadianaDetailStackUnsubscribe()
-    aboutCanadianaDetailStackUnsubscribe = null
-  }
-
-  if (!shouldInitAboutCanadianaDetailStack()) {
-    resetAboutCanadianaDetailStack()
-    return
-  }
-
-  syncAboutCanadianaDetailStack()
-
-  if (lenisInstance) {
-    aboutCanadianaDetailStackUnsubscribe = lenisInstance.on('scroll', ({ scroll }) => {
-      syncAboutCanadianaDetailStack(scroll)
-    })
-  }
-
-  if (!aboutCanadianaDetailStackResizeBound) {
-    window.addEventListener('resize', () => {
-      syncAboutCanadianaDetailStack(lenisInstance?.scroll ?? window.scrollY)
-    }, { passive: true })
-    aboutCanadianaDetailStackResizeBound = true
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initAboutCanadianaDetailStack)
-document.addEventListener('turbo:load', initAboutCanadianaDetailStack)
-document.addEventListener('turbo:before-cache', () => {
-  if (aboutCanadianaDetailStackUnsubscribe) {
-    aboutCanadianaDetailStackUnsubscribe()
-    aboutCanadianaDetailStackUnsubscribe = null
-  }
-  resetAboutCanadianaDetailStack()
-})
-
 let pageViewer = document.getElementById("my-mirador")
 if(pageViewer) {
     pageViewer.setAttribute('data-lenis-prevent', 'true')
@@ -809,6 +575,29 @@ function enhanceSearchBar(rootSelector) {
   const submit = root.querySelector('#search');
   if (!form || !input || !submit) return;
 
+  const body = document.body;
+  const isCatalogPageSearch = root.matches('.navbar-search') && (
+    body.classList.contains('blacklight-catalog-show') ||
+    body.classList.contains('blacklight-catalog-index')
+  );
+
+  if (isCatalogPageSearch && !root.querySelector('.catalog-show-search-heading')) {
+    const headingContainer = document.createElement('div');
+    headingContainer.className = 'container';
+
+    const heading = document.createElement('h1');
+    heading.id = 'catalog-show-search-heading';
+    heading.className = 'catalog-show-search-heading';
+    heading.textContent = (document.documentElement.lang || 'en').startsWith('fr')
+      ? 'Rechercher dans la collection Canadiana'
+      : 'Search the Canadiana Collection';
+
+    headingContainer.appendChild(heading);
+    root.insertBefore(headingContainer, root.firstChild);
+    root.setAttribute('aria-labelledby', heading.id);
+    root.removeAttribute('aria-label');
+  }
+
   // Prevent duplicate clear button
   if (submit.previousElementSibling && submit.previousElementSibling.classList?.contains('btn-clear-search')) return;
 
@@ -943,12 +732,19 @@ function initTypedPlaceholders() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initSearchBarEnhancements() {
   enhanceSearchBar('.navbar-search');
   enhanceSearchBar('.home-search');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initSearchBarEnhancements();
   initTypedPlaceholders();
 });
-document.addEventListener('turbo:load', initTypedPlaceholders);
+document.addEventListener('turbo:load', () => {
+  initSearchBarEnhancements();
+  initTypedPlaceholders();
+});
 
 // Page search: fetch IIIF search + manifest on the client so the Rails render doesn't block
 function getMetaContent(name) {
@@ -1610,137 +1406,3 @@ function moveCatalogAppliedParams() {
 
 document.addEventListener('DOMContentLoaded', moveCatalogAppliedParams);
 document.addEventListener('turbo:load', moveCatalogAppliedParams);
-
-const shouldInitHeritageCollectionCluster = () => {
-  const body = document.body
-  if (!body) return false
-  return body.classList.contains('blacklight-pages-about_heritage')
-}
-
-const isDesktopHeritageCollectionClusterLayout = () => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
-  return window.matchMedia('(min-width: 1101px)').matches
-}
-
-const getHeritageCollectionClusterMetrics = () => {
-  const section = document.querySelector('.about-modern-block--heritage-cluster')
-  const grid = section?.querySelector('[data-heritage-cluster-grid]')
-  const cards = grid ? Array.from(grid.querySelectorAll('.about-modern-card--collection')) : []
-  if (!section || !grid || cards.length < 2) return null
-
-  return { section, cards }
-}
-
-const resetHeritageCollectionCluster = () => {
-  const metrics = getHeritageCollectionClusterMetrics()
-  if (!metrics) return
-
-  metrics.cards.forEach((card) => {
-    card.classList.remove('is-lenis-clustered')
-    card.style.removeProperty('--heritage-cluster-x')
-    card.style.removeProperty('--heritage-cluster-y')
-    card.style.removeProperty('--heritage-cluster-scale')
-    card.style.removeProperty('--heritage-cluster-rotate')
-    card.style.removeProperty('--heritage-cluster-opacity')
-  })
-}
-
-const getHeritageCollectionClusterOffsets = () => {
-  const spreadX = Math.min(window.innerWidth * 0.17, 230)
-  const spreadY = Math.min(window.innerHeight * 0.16, 150)
-
-  return [
-    { x: -spreadX, y: -spreadY * 0.22, scale: 0.86, rotate: -7.0 },
-    { x: 0, y: -spreadY * 0.95, scale: 0.9, rotate: -2.5 },
-    { x: spreadX, y: -spreadY * 0.15, scale: 0.86, rotate: 6.5 },
-    { x: -spreadX * 0.92, y: spreadY, scale: 0.88, rotate: -5.5 },
-    { x: spreadX * 0.92, y: spreadY * 0.94, scale: 0.9, rotate: 4.0 }
-  ]
-}
-
-const getHeritageCollectionClusterGatherOffsets = () => {
-  const gatherX = Math.min(window.innerWidth * 0.094, 136)
-  const gatherY = Math.min(window.innerHeight * 0.113, 106)
-
-  return [
-    { x: gatherX * 1.1, y: gatherY * 0.55, scale: 1, rotate: 0 },
-    { x: 0, y: gatherY * 0.15, scale: 1, rotate: 0 },
-    { x: -gatherX * 1.1, y: gatherY * 0.55, scale: 1, rotate: 0 },
-    { x: gatherX * 1.04, y: -gatherY * 0.92, scale: 1, rotate: 0 },
-    { x: 0, y: -gatherY * 0.98, scale: 1, rotate: 0 }
-  ]
-}
-
-const syncHeritageCollectionCluster = () => {
-  const metrics = getHeritageCollectionClusterMetrics()
-  if (!metrics) return
-
-  if (!shouldInitHeritageCollectionCluster() || !isDesktopHeritageCollectionClusterLayout()) {
-    resetHeritageCollectionCluster()
-    return
-  }
-
-  const { section, cards } = metrics
-  const sectionRect = section.getBoundingClientRect()
-  const viewportHeight = Math.max(window.innerHeight || 0, 1)
-  const start = viewportHeight * 0.9
-  const end = viewportHeight * 0.11
-  const progress = Math.max(0, Math.min(1, (start - sectionRect.top) / Math.max(1, start - end)))
-  const easedProgress = 1 - Math.pow(1 - progress, 3)
-  const spreadOffsets = getHeritageCollectionClusterOffsets()
-  const gatherOffsets = getHeritageCollectionClusterGatherOffsets()
-
-  cards.forEach((card, index) => {
-    const startOffset = spreadOffsets[index] || spreadOffsets[spreadOffsets.length - 1]
-    const endOffset = gatherOffsets[index] || gatherOffsets[gatherOffsets.length - 1]
-    const x = startOffset.x + ((endOffset.x - startOffset.x) * easedProgress)
-    const y = startOffset.y + ((endOffset.y - startOffset.y) * easedProgress)
-    const scale = startOffset.scale + ((endOffset.scale - startOffset.scale) * easedProgress)
-    const rotate = startOffset.rotate + ((endOffset.rotate - startOffset.rotate) * easedProgress)
-
-    const opacity = Math.min(1, easedProgress * 2.8)
-    card.classList.add('is-lenis-clustered')
-    card.style.setProperty('--heritage-cluster-x', `${x.toFixed(2)}px`)
-    card.style.setProperty('--heritage-cluster-y', `${y.toFixed(2)}px`)
-    card.style.setProperty('--heritage-cluster-scale', scale.toFixed(4))
-    card.style.setProperty('--heritage-cluster-rotate', `${rotate.toFixed(2)}deg`)
-    card.style.setProperty('--heritage-cluster-opacity', opacity.toFixed(3))
-  })
-}
-
-const initHeritageCollectionCluster = () => {
-  if (heritageCollectionClusterUnsubscribe) {
-    heritageCollectionClusterUnsubscribe()
-    heritageCollectionClusterUnsubscribe = null
-  }
-
-  if (!shouldInitHeritageCollectionCluster()) {
-    resetHeritageCollectionCluster()
-    return
-  }
-
-  syncHeritageCollectionCluster()
-
-  if (lenisInstance) {
-    heritageCollectionClusterUnsubscribe = lenisInstance.on('scroll', () => {
-      syncHeritageCollectionCluster()
-    })
-  }
-
-  if (!heritageCollectionClusterResizeBound) {
-    window.addEventListener('resize', () => {
-      syncHeritageCollectionCluster()
-    }, { passive: true })
-    heritageCollectionClusterResizeBound = true
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initHeritageCollectionCluster)
-document.addEventListener('turbo:load', initHeritageCollectionCluster)
-document.addEventListener('turbo:before-cache', () => {
-  if (heritageCollectionClusterUnsubscribe) {
-    heritageCollectionClusterUnsubscribe()
-    heritageCollectionClusterUnsubscribe = null
-  }
-  resetHeritageCollectionCluster()
-})
