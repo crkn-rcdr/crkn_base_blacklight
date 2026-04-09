@@ -5,9 +5,9 @@ CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and disco
 ## Quick Start (Docker, recommended)
 
 1. Install Docker Desktop.
-1. Copy `.env.example` to `.env`.
-1. Fill in the values in `.env`.
-1. Optional: create a master key if you plan to use encrypted credentials.
+2. Copy `.env.example` to `.env`.
+3. Fill in the values in `.env`.
+4. Optional: create a master key if you plan to use encrypted credentials.
    ```bash
    ruby -rsecurerandom -e 'puts SecureRandom.hex(64)'
    ```
@@ -24,6 +24,8 @@ CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and disco
 
 The app will be available at `http://localhost:3000`.
 
+Important for production mode: do not run `docker compose ... up` after the `run --rm` command above. The `run` command already starts the app container, and `db:prepare` must run in that same container.
+
 Note: Docker Compose only runs the Rails app. You must provide a Solr core and update `config/blacklight.yml` if needed.
 
 ## Docker Desktop + WSL2 (Windows + Ubuntu)
@@ -31,34 +33,34 @@ Note: Docker Compose only runs the Rails app. You must provide a Solr core and u
 These steps set up Docker Desktop to build containers in Ubuntu on WSL2.
 
 1. Install Docker Desktop (Windows).
-1. Ensure Docker Desktop uses the WSL2 engine: Docker Desktop -> Settings -> General -> check `Use the WSL 2 based engine`.
-1. Install WSL + Ubuntu in PowerShell (Admin).
+2. Ensure Docker Desktop uses the WSL2 engine: Docker Desktop -> Settings -> General -> check `Use the WSL 2 based engine`.
+3. Install WSL + Ubuntu in PowerShell (Admin).
    ```powershell
    wsl --install -d Ubuntu
    ```
 
-1. Reboot if prompted.
-1. Launch Ubuntu from the Start menu or run `wsl`.
-1. Update Ubuntu packages.
+4. Reboot if prompted.
+5. Launch Ubuntu from the Start menu or run `wsl`.
+6. Update Ubuntu packages.
    ```bash
    sudo apt update
    sudo apt upgrade -y
    ```
 
-1. In Ubuntu, navigate to the repo and build.
+7. In Ubuntu, navigate to the repo and build.
    ```bash
    cd /mnt/c/Users/BrittnyLapierre/Documents/github/crkn_canadiana_blacklight
-   docker compose build
+   docker compose -f docker-compose.dev.yml build
    ```
 
 ## Quick Start (Local Ruby)
 
 1. Install Ruby 3.4.1 and Bundler.
-1. Install Node.js and Yarn 4.2.2 (Corepack).
-1. Run `bundle install`.
-1. Run `yarn install`.
-1. Copy `.env.example` to `.env` and fill in values.
-1. Run `bin/rails server`.
+2. Install Node.js and Yarn 4.2.2 (Corepack).
+3. Run `bundle install`.
+4. Run `yarn install`.
+5. Copy `.env.example` to `.env` and fill in values.
+6. Run `bin/rails server`.
 
 Optional: run `yarn vite` in another terminal for faster frontend rebuilds.
 
@@ -148,6 +150,13 @@ Common in-container commands:
 - `bin/rails routes` - List routes and controllers.
 - `bin/rails test` - Run tests.
 - `yarn vite` - Run the Vite dev server.
+
+Run commands in the dev container:
+
+```bash
+docker compose -f docker-compose.dev.yml exec web bin/rails console
+docker compose -f docker-compose.dev.yml exec web bin/rails test
+```
 
 ## Deployment (CRKN Servers)
 
