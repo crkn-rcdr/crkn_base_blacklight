@@ -3,20 +3,33 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: build
       args:
         SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     ports:
       - "3000:3000"
+      - "3036:3036"
     env_file:
-      - .env
+      - .env.dev
+    environment:
+      BUNDLE_WITHOUT: ""
+      VITE_RUBY_AUTO_BUILD: "true"
     volumes:
-      - ./bin:/app/bin
-      - ./app:/app/app
-      - ./db:/app/db
-      - ./config:/app/config
-      - ./public:/app/public
-      - ./vite.config.js:/app/vite.config.js
-      - node_modules:/app/node_modules
-    command: sh -lc "if [ -f package.json ]; then yarn install --immutable; fi; bundle exec rails server -b 0.0.0.0 -p 3000"
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    command:
+      - sh
+      - -lc
+      - |
+        set -e
+        bundle config unset without || true
+        bundle install
+        if [ -f package.json ]; then yarn install --immutable; fi
+        rm -f tmp/pids/server.pid
+        bundle exec rails db:prepare
+        yarn vite --host 0.0.0.0 --port 3036 &
+        bundle exec rails server -b 0.0.0.0 -p 3000
 volumes:
   node_modules:
+  bundle_cache:
+

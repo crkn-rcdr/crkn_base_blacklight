@@ -2,7 +2,7 @@
 <% presenter = document_presenter(document) %>
 <% title = presenter.heading.presence || presenter.label %>
 
-<h3 class="document-title-heading">
+<h2 class="document-title-heading">
   <%= link_to title,
               url_for_document(document, q: params[:q].presence),
               document_link_params(document, counter: document_counter) %>
@@ -12,5 +12,5 @@
       <%= params[:q] %>
     </span>
   <% end %>
-</h3>
+</h2>
 

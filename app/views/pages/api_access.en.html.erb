@@ -1,0 +1,814 @@
+<section class="site-section api-site-section">
+  <div class="container api-access-page api-access-page--modern">
+    <header class="api-hero">
+      <div class="api-hero__grid api-hero__grid--single">
+        <div class="api-hero__copy">
+          <h1 class="section-title">
+            <span class="api-hero__eyebrow-text">Canadiana Collections And Infrastructure</span>
+            <span class="api-hero__title-main">API Access</span>
+          </h1>
+          <p class="api-lede">
+            CRKN provides programmatic access to discovery metadata through Canadiana Collections And Infrastructure APIs.
+            Combine these endpoints with search parameters, facets, paging, and sorting.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="api-layout">
+      <aside class="api-toc" aria-label="On this page">
+        <h2 class="api-toc__title">On this page</h2>
+        <a href="#api-json">Catalog API endpoints</a>
+        <a href="#api-params">Catalog query parameters</a>
+        <a href="#api-structure">Catalog response structure</a>
+        <a href="#api-examples">Catalog examples</a>
+        <a href="#iiif-endpoints">IIIF overview</a>
+        <a href="#iiif-image">IIIF Image API</a>
+        <a href="#iiif-manifest">IIIF Presentation API (Manifest)</a>
+        <a href="#iiif-content-search">IIIF Content Search API</a>
+      </aside>
+
+      <div class="api-content">
+        <section id="api-json" class="api-card">
+          <h2>Catalog API endpoints</h2>
+          <p>
+            Use these catalog endpoints for search, records, and facets.
+            The <code>format</code> query parameter is the most reliable option when IDs include dots
+            (for example <code>oocihm.N_00591</code>).
+          </p>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">Catalog API endpoints</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Method and path</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Search endpoint</th>
+                  <td><code>GET /catalog?search_field=all_fields&amp;q=&amp;format=json</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">Single record endpoint</th>
+                  <td><code>GET /catalog/:id?format=json</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">Facet endpoint</th>
+                  <td><code>GET /catalog/facet/:facet_id?search_field=all_fields&amp;q=&amp;format=json</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">Single record export endpoint</th>
+                  <td><code>GET /catalog/:id?format=marc|marcxml|xml</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 id="api-params">Catalog query parameters</h3>
+          <div class="api-table-wrap">
+            <table class="api-table api-table--params">
+              <caption class="visually-hidden">Catalog query parameters</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Parameter</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Values / Default</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><code>q</code></th>
+                  <td>string</td>
+                  <td>Search query text.</td>
+                  <td>Default: empty string</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>search_field</code></th>
+                  <td>enum</td>
+                  <td>Search field to run the query against.</td>
+                  <td><code>all_fields</code>, <code>full_title_tsim</code>, <code>author_tsim</code>, <code>subject_tsim</code>, <code>tx_gen</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>lang</code></th>
+                  <td>enum</td>
+                  <td>Response locale.</td>
+                  <td><code>en</code>, <code>fr</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>page</code></th>
+                  <td>integer</td>
+                  <td>Result page number (starts at 1).</td>
+                  <td>Default: <code>1</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>per_page</code></th>
+                  <td>integer</td>
+                  <td>Number of results per page.</td>
+                  <td><code>10</code>, <code>20</code>, <code>50</code>, <code>100</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>sort</code></th>
+                  <td>enum</td>
+                  <td>Sort key for result ordering.</td>
+                  <td><code>relevance</code>, <code>year-desc</code>, <code>year-asc</code>, <code>date-added-desc</code>, <code>date-added-asc</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>f[field_name][]=value</code></th>
+                  <td>array</td>
+                  <td>Facet filters to constrain results.</td>
+                  <td><code>pub_date_ssim</code>, <code>language_ssim_str</code>, <code>depositor_tsim_str</code>, <code>subject_ssim_str</code>, <code>author_ssm_str</code>, <code>collectionen_path</code>, <code>collectionfr_path</code>, <code>serial_title_str</code>, <code>is_issue_str</code>, <code>is_serial_str</code>. Example: <code>f[language_ssim_str][]=English</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>range[pub_date_ssim][begin]</code><br><code>range[pub_date_ssim][end]</code></th>
+                  <td>integer</td>
+                  <td>Publication-year range filter.</td>
+                  <td>Example: <code>1900</code> to <code>1910</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>format</code></th>
+                  <td>enum</td>
+                  <td>Output format for the response.</td>
+                  <td>Search: <code>html</code>, <code>json</code>; Single record: <code>html</code>, <code>json</code>, <code>marc</code>, <code>marcxml</code>, <code>xml</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 id="api-structure">Catalog response structure</h3>
+          <p>
+            A search request such as
+            <code>/catalog?search_field=all_fields&amp;q=&amp;format=json</code>
+            returns:
+          </p>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">Catalog response structure fields</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Field</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><code>links</code></th>
+                  <td>Navigation URLs (<code>self</code>, <code>next</code>, <code>last</code>).</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>meta.pages</code></th>
+                  <td>Page state and counts (<code>current_page</code>, <code>total_pages</code>, <code>limit_value</code>, <code>total_count</code>).</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>data[]</code></th>
+                  <td>Search result records with <code>id</code>, <code>type</code>, <code>attributes</code>, and <code>links.self</code>.</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>included[]</code></th>
+                  <td>Reusable API objects for facet definitions, search fields, and sort options.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Catalog response structure in JSON">
+            <figcaption>
+              <span class="api-snippet__label">Response</span>
+              <span class="api-snippet__lang">JSON</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>{
+    "links": {"self": "...", "next": "...", "last": "..."},
+    "meta": {
+        "pages": {
+            "current_page": 1,
+            "total_pages": 246,
+            "limit_value": 10,
+            "total_count": 2454
+        }
+    },
+    "data": [
+        {
+            "id": "oocihm.N_00591",
+            "type": "Newspaper",
+            "attributes": {
+                "title": "Keneder adler",
+                "published_ssm": {
+                    "type": "document_value",
+                    "attributes": {"label": "Published", "value": "..."}
+                },
+                "language_ssim": {
+                    "type": "document_value",
+                    "attributes": {"label": "Language", "value": "..."}
+                }
+            },
+            "links": {"self": "http://localhost:3000/catalog/oocihm.N_00591?lang=en"}
+        }
+    ],
+    "included": [
+        {"type": "facet", "id": "language_ssim_str"},
+        {"type": "search_field", "id": "all_fields"},
+        {"type": "sort", "id": "date-added-desc"}
+    ]
+}</code></pre>
+          </figure>
+          <p>
+            Many <code>attributes.*.attributes.value</code> values are HTML fragments for display.
+            If you are building a pure data pipeline, plan to strip or sanitize markup.
+          </p>
+          <h3 id="api-examples">Catalog examples</h3>
+          <h4>Example 1: Default catalog JSON response</h4>
+          <p>Fetch the default catalog payload and read total result count.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Catalog default JSON example">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+BASE_URL = "http://localhost:3000"
+
+response = requests.get(
+    f"{BASE_URL}/catalog",
+    params={"search_field": "all_fields", "q": "", "format": "json"},
+    timeout=30,
+)
+response.raise_for_status()
+catalog = response.json()
+print(catalog["meta"]["pages"]["total_count"])</code></pre>
+          </figure>
+          <h4>Example 2: Query with sorting and pagination</h4>
+          <p>Run a keyword query and control order, page size, and page number.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Catalog sorting and pagination example">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+BASE_URL = "http://localhost:3000"
+
+response = requests.get(
+    f"{BASE_URL}/catalog",
+    params={
+        "q": "maps",
+        "search_field": "all_fields",
+        "sort": "date-added-desc",
+        "per_page": 20,
+        "page": 1,
+        "format": "json",
+    },
+    timeout=30,
+)
+response.raise_for_status()
+maps = response.json()</code></pre>
+          </figure>
+          <h4>Example 3: Facet filters</h4>
+          <p>Apply facet constraints to narrow results by language and collection path.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Catalog facet filter examples">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+BASE_URL = "http://localhost:3000"
+
+english_response = requests.get(
+    f"{BASE_URL}/catalog",
+    params={
+        "q": "",
+        "search_field": "all_fields",
+        "f[language_ssim_str][]": "English",
+        "format": "json",
+    },
+    timeout=30,
+)
+english_response.raise_for_status()
+english_only = english_response.json()
+
+newspapers_response = requests.get(
+    f"{BASE_URL}/catalog",
+    params={
+        "q": "",
+        "search_field": "all_fields",
+        "f[collectionen_path][]": "Serials/Newspapers",
+        "format": "json",
+    },
+    timeout=30,
+)
+newspapers_response.raise_for_status()
+newspapers = newspapers_response.json()</code></pre>
+          </figure>
+          <h4>Example 4: Publication year range</h4>
+          <p>Filter records by year interval using the configured range facet field.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Catalog publication year range example">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+BASE_URL = "http://localhost:3000"
+
+response = requests.get(
+    f"{BASE_URL}/catalog",
+    params={
+        "q": "",
+        "search_field": "all_fields",
+        "range[pub_date_ssim][begin]": 1900,
+        "range[pub_date_ssim][end]": 1910,
+        "format": "json",
+    },
+    timeout=30,
+)
+response.raise_for_status()
+year_range = response.json()</code></pre>
+          </figure>
+          <h4>Example 5: Single record in multiple formats</h4>
+          <p>Retrieve the same record as JSON, MARC, and MARCXML from one endpoint.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Catalog single record format examples">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+BASE_URL = "http://localhost:3000"
+
+json_response = requests.get(
+    f"{BASE_URL}/catalog/oocihm.N_00591",
+    params={"format": "json"},
+    timeout=30,
+)
+json_response.raise_for_status()
+record_json = json_response.json()
+
+marc_response = requests.get(
+    f"{BASE_URL}/catalog/oocihm.N_00591",
+    params={"format": "marc"},
+    timeout=30,
+)
+marc_response.raise_for_status()
+record_marc = marc_response.text
+
+marcxml_response = requests.get(
+    f"{BASE_URL}/catalog/oocihm.N_00591",
+    params={"format": "marcxml"},
+    timeout=30,
+)
+marcxml_response.raise_for_status()
+record_marcxml = marcxml_response.text</code></pre>
+          </figure>
+        </section>
+
+        <section id="api-iiif-query" class="api-card">
+          <h2>IIIF API</h2>
+          <h3 id="iiif-endpoints">IIIF API endpoints</h3>
+          <p>
+            IIIF is a shared framework for publishing, linking, and reusing digital cultural heritage objects.
+            IIIF resources are published as Linked Open Data using
+            <a href="https://json-ld.org/">JSON-LD</a>, which is a JSON serialization of
+            <a href="https://www.w3.org/TR/rdf11-concepts/">RDF</a>.
+            This lets clients follow stable identifiers across manifests, canvases, annotations, and image services.
+          </p>
+          <p>Endpoints are grouped in the Image, Manifest, and Content Search sections below.</p>
+          <p>
+            Official IIIF API docs:
+            <a href="https://iiif.io/api/">iiif.io/api</a>.
+          </p>
+          <h3 id="iiif-image">IIIF Image API</h3>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Image API endpoints</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Path</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Image info endpoint</th>
+                  <td><code>GET {image_service}/info.json</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">Image render endpoint</th>
+                  <td><code>GET {image_service}/{region}/{size}/{rotation}/{quality}.{format}</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Full specification:
+            <a href="https://iiif.io/api/image/2.1/">IIIF Image API 2.1</a>.
+          </p>
+          <h4>Response formats</h4>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Image API response formats</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Response format</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Image info endpoint (<code>info.json</code>)</th>
+                  <td>JSON (IIIF Image API)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Image render endpoint</th>
+                  <td>Binary image bytes (for example <code>image/jpeg</code>)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="api-table-wrap">
+            <table class="api-table api-table--params">
+              <caption class="visually-hidden">IIIF Image API request parameters</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Parameter</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Values / Examples</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><code>region</code></th>
+                  <td>string</td>
+                  <td>Image region to extract.</td>
+                  <td><code>full</code>, <code>x,y,w,h</code>, <code>pct:x,y,w,h</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>size</code></th>
+                  <td>string</td>
+                  <td>Target output dimensions.</td>
+                  <td><code>full</code>, <code>w,</code>, <code>,h</code>, <code>w,h</code>, <code>pct:n</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>rotation</code></th>
+                  <td>number</td>
+                  <td>Output rotation angle.</td>
+                  <td><code>0</code>, <code>90</code>, <code>180</code>, <code>270</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>quality</code></th>
+                  <td>enum</td>
+                  <td>Rendering quality profile supported by the service.</td>
+                  <td><code>default</code>, <code>color</code>, <code>gray</code>, <code>bitonal</code></td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>format</code></th>
+                  <td>enum</td>
+                  <td>Binary image format returned by the endpoint.</td>
+                  <td><code>jpg</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>IIIF Image API response shape</h3>
+          <p><code>info.json</code> returns JSON metadata:</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="IIIF info.json response in JSON">
+            <figcaption>
+              <span class="api-snippet__label">Response</span>
+              <span class="api-snippet__lang">JSON</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>{
+    "@context": "http://iiif.io/api/image/2/context.json",
+    "@id": "{image_service}",
+    "protocol": "http://iiif.io/api/image",
+    "width": 3936,
+    "height": 3200,
+    "sizes": [{"width": 123, "height": 100}, "..."],
+    "tiles": [{"width": 512, "height": 512, "scaleFactors": [1, 2, 4, 8, 16, 32]}],
+    "profile": [
+        "http://iiif.io/api/image/2/level1.json",
+        {
+            "formats": ["jpg"],
+            "qualities": ["bitonal", "default", "gray", "color"],
+            "supports": ["regionByPx", "sizeByW", "rotationBy90s", "..."]
+        }
+	    ]
+}</code></pre>
+          </figure>
+          <h3 id="iiif-image-examples">IIIF Image API examples</h3>
+          <h4>Example: IIIF image requests</h4>
+          <p>Use the image service to inspect capabilities and request common derivatives.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="IIIF Image API requests in Python">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+def iiif_image_url(
+    service_id,
+    region="full",
+    size="full",
+    rotation="0",
+    quality="default",
+    fmt="jpg",
+):
+    return f"{service_id}/{region}/{size}/{rotation}/{quality}.{fmt}"
+
+service_id = "https://image-tor.canadiana.ca/iiif/2/69429%2Fc2025000026xr85"
+
+# Discover capabilities
+info = requests.get(f"{service_id}/info.json", timeout=30).json()
+print(info["width"], info["height"])  # 3936 3200
+
+# Full image resized to width 500
+img_small = requests.get(iiif_image_url(service_id, size="500,"), timeout=30)
+print(img_small.headers["Content-Type"])  # image/jpeg
+
+# Crop by percent region, then resize
+img_crop = requests.get(
+    iiif_image_url(service_id, region="pct:25,25,50,50", size="800,"),
+    timeout=30,
+)
+
+# Rotated output
+img_rotated = requests.get(iiif_image_url(service_id, size="500,", rotation="90"), timeout=30)
+
+# Alternate quality
+img_gray = requests.get(iiif_image_url(service_id, size="500,", quality="gray"), timeout=30)</code></pre>
+          </figure>
+          <h4>Example: Binary image response</h4>
+          <p>Read a rendered image response and verify MIME type before using raw bytes.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Binary image response in Python">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import requests
+
+response = requests.get(
+    "https://image-tor.canadiana.ca/iiif/2/69429%2Fc2025000026xr85/full/500,/0/default.jpg",
+    timeout=30,
+)
+response.raise_for_status()
+
+print(response.headers["Content-Type"])  # image/jpeg
+binary_jpeg = response.content            # bytes
+print(len(binary_jpeg))</code></pre>
+          </figure>
+          <h3 id="iiif-manifest">IIIF Presentation API (Manifest)</h3>
+          <p>
+            The example below is based on manifest <code>m2025000007606h</code>
+            (collection <code>69429</code>). It is a IIIF Presentation 3 manifest with
+            <code>842</code> canvases.
+          </p>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Manifest endpoint</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Path</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Manifest endpoint</th>
+                  <td><code>GET {presentation_service}/69429/m2025000007606h</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Full specification:
+            <a href="https://iiif.io/api/presentation/3.0/">IIIF Presentation API 3.0</a>.
+          </p>
+          <h4>Response formats</h4>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Manifest response formats</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Response format</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Manifest endpoint</th>
+                  <td>JSON (IIIF Presentation 3)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h4>Manifest response shape (Presentation 3)</h4>
+          <figure class="api-snippet api-snippet--docmost" aria-label="Manifest response shape in JSON">
+            <figcaption>
+              <span class="api-snippet__label">Response</span>
+              <span class="api-snippet__lang">JSON</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>{
+    "@context": "http://iiif.io/api/presentation/3/context.json",
+    "id": "{presentation_service}/69429/m2025000007606h",
+    "type": "Manifest",
+    "label": {"en": ["Census returns for the 1901 Canadian census"]},
+    "metadata": [
+        {
+            "label": {"en": ["Slug"]},
+            "value": {"en": ["oocihm.lac_reel_t6428"]}
+        }
+    ],
+    "summary": {"en": ["..."]},
+    "items": [
+        {
+            "id": "{presentation_service}/canvas/69429/c2025000026xr85",
+            "type": "Canvas",
+            "width": 3936,
+            "height": 3200,
+            "label": {"en": ["Image 1"]},
+            "items": [
+                {
+                    "type": "AnnotationPage",
+                    "items": [
+                        {
+                            "type": "Annotation",
+                            "motivation": "painting",
+                            "target": "{presentation_service}/canvas/69429/c2025000026xr85",
+                            "body": {
+                                "id": "{image_service}/full/max/0/default.jpg",
+                                "type": "Image",
+                                "format": "image/jpeg",
+                                "width": 3936,
+                                "height": 3200,
+                                "service": [
+                                    {
+                                        "id": "{image_service}",
+                                        "type": "ImageService2",
+                                        "profile": "level2"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "thumbnail": [{"id": "{image_service}/full/200,/0/default.jpg", "type": "Image", "format": "image/jpeg"}]
+        }
+	    ]
+}</code></pre>
+          </figure>
+          <h3 id="iiif-content-search">IIIF Content Search API</h3>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Content Search endpoint</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Path</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Content Search endpoint (template)</th>
+                  <td><code>GET /search/{repository_id}/{manifest_id}?q={term}</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">Content Search endpoint (example)</th>
+                  <td><code>GET https://crkn-iiif-content-search.azurewebsites.net/search/69429/m0tt4fn16j1j?q=roi</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Full specification:
+            <a href="https://iiif.io/api/search/2.0/">IIIF Content Search API 2.0</a>.
+          </p>
+          <h4>Response formats</h4>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Content Search response formats</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Response format</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Content Search endpoint</th>
+                  <td>JSON-LD (IIIF Search API 2.0); top-level <code>type</code> is <code>AnnotationPage</code>, <code>items</code> contains hit annotations, and <code>next</code> is present when results are paginated.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h4>Response shape (IIIF Search API 2.0)</h4>
+          <div class="api-table-wrap">
+            <table class="api-table">
+              <caption class="visually-hidden">IIIF Content Search response shape fields</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Field</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><code>@context</code></th>
+                  <td>JSON-LD context (for example <code>http://iiif.io/api/search/2/context.json</code>).</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>id</code></th>
+                  <td>Content Search endpoint URL for the manifest being searched.</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>type</code></th>
+                  <td><code>AnnotationPage</code>.</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>items[]</code></th>
+                  <td>Array of hit annotations; each item includes <code>motivation</code>, <code>body.value</code>, and <code>target</code> with an <code>#xywh=</code> selector.</td>
+                </tr>
+                <tr>
+                  <th scope="row"><code>next</code></th>
+                  <td>Optional pagination URL (for example <code>?start=100&amp;q=roi</code>).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="api-snippet api-snippet--docmost" aria-label="IIIF Content Search response example in JSON">
+            <figcaption>
+              <span class="api-snippet__label">Response</span>
+              <span class="api-snippet__lang">JSON</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>{
+    "@context": "http://iiif.io/api/search/2/context.json",
+    "id": "https://crkn-iiif-content-search.azurewebsites.net/search/69429/m0tt4fn16j1j",
+    "type": "AnnotationPage",
+    "items": [
+        {
+            "id": "https://crkn-iiif-api.azurewebsites.net/manifest/69429/m0tt4fn16j1j/canvas/69429/c05t3g16rb0q/text/at/667%2C253%2C100%2C110",
+            "type": "Annotation",
+            "motivation": "highlighting",
+            "body": {
+                "type": "TextualBody",
+                "value": "Roi",
+                "format": "text/plain"
+            },
+            "target": "https://crkn-iiif-api.azurewebsites.net/manifest/69429/m0tt4fn16j1j/canvas/69429/c05t3g16rb0q#xywh=667,253,100,110"
+        }
+    ],
+    "next": "https://crkn-iiif-content-search.azurewebsites.net/search/69429/m0tt4fn16j1j?start=100&amp;q=roi"
+}</code></pre>
+          </figure>
+          <h4>Example: ARK to manifest and content search</h4>
+          <p>Extract ARK from catalog metadata, build IIIF path, fetch manifest, then run content search.</p>
+          <figure class="api-snippet api-snippet--docmost" aria-label="IIIF workflow in Python">
+            <figcaption>
+              <span class="api-snippet__label">Code</span>
+              <span class="api-snippet__lang">python</span>
+            </figcaption>
+            <pre class="api-code api-code--docmost"><code>import re
+import requests
+
+BASE_URL = "http://localhost:3000"
+PRESENTATION_SERVICE = "{presentation_service}"
+CONTENT_SEARCH_SERVICE = "{content_search_service}"
+
+# 1) Get a catalog record and extract ARK href from HTML value
+record = requests.get(
+    f"{BASE_URL}/catalog/oocihm.N_00591",
+    params={"format": "json"},
+    timeout=30,
+).json()
+ark_html = record["data"]["attributes"]["ark"]["attributes"]["value"]
+ark_url = re.search(r'href="([^"]+)"', ark_html).group(1)
+
+# 2) Normalize ARK path for IIIF services
+ark_path = re.sub(r"^https?://n2t\\.net/ark:/?|^ark:/?", "", ark_url).lstrip("/")
+# "69429/m2025000007606h"
+
+# 3) Fetch manifest
+manifest = requests.get(f"{PRESENTATION_SERVICE}/{ark_path}", timeout=30).json()
+print(manifest["type"], len(manifest["items"]))  # Manifest 842
+
+# 4) Derive image service from first canvas
+image_service = manifest["items"][0]["items"][0]["items"][0]["body"]["service"][0]["id"]
+info = requests.get(f"{image_service}/info.json", timeout=30).json()
+print(info["width"], info["height"])
+
+# 5) Run IIIF Content Search
+search = requests.get(
+    f"{CONTENT_SEARCH_SERVICE}/{ark_path}",
+    params={"q": "canada"},
+    timeout=30,
+).json()
+print(search["type"], len(search["items"]))</code></pre>
+          </figure>
+          <p>
+            For a broader overview of IIIF concepts and tools, see
+            <a href="<%= what_is_iiif_path(lang: I18n.locale) %>">What is IIIF?</a>.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>

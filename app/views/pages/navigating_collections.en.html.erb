@@ -1,0 +1,243 @@
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Canadiana Collections And Infrastructure</span>
+              <span class="api-hero__title-main">Navigating the Collections</span>
+            </h1>
+            <p class="api-lede">
+              Browse, search, and explore material from the Canadiana collections by following these guidelines.
+              Additional guidance for navigating the Héritage collection in particular is offered in the section
+              "Navigating the Héritage Collection and Reference Guides."
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="api-layout">
+        <aside class="api-toc" aria-label="On this page">
+          <h2 class="api-toc__title">On this page</h2>
+          <a href="#nav-search">Searching the Collections</a>
+          <a href="#nav-downloads">Downloading PDFs</a>
+          <a href="#nav-purl">Persistent URLs</a>
+          <a href="#nav-heritage">Navigating the Héritage Collection and Reference Guides</a>
+        </aside>
+
+        <div class="api-content">
+          <section class="api-card">
+            <p>
+              <strong>Note: As of March 20, 2026, the PDiiiF multi-page download tool is experiencing an outage. As this tool is not maintained by CRKN staff, we are unable to resolve outages. This page will be updated when PDiiiF is once again functional. We apologize for any inconvenience.</strong>
+            </p>
+          </section>
+
+          <section id="nav-search" class="api-card">
+            <h2>Searching the Collections</h2>
+            <p>
+              Use the Canadiana search form to search for descriptive information and material metadata, such as titles,
+              author/creator names, subject keywords, or the text content of books and other documents, where available.
+              Search terms are not case- or accent-sensitive.
+            </p>
+            <p>The following features can be used within the search box to refine the results:</p>
+
+            <h3>Wildcards: <code>?</code> and <code>*</code></h3>
+            <p>
+              Use <code>?</code> in the middle or at the end of a word to match any one character.
+              Use <code>*</code> to match any number of characters (including zero).
+            </p>
+            <ul class="api-list">
+              <li>For example, to find either <code>defence</code> or <code>defense</code>: <a href="http://eco.canadiana.ca/search?q0.0=defen%3Fe" target="_blank" rel="noopener">defen?e</a></li>
+              <li>To find either <code>labour</code> or <code>labor</code>: <a href="http://eco.canadiana.ca/search?q0.0=labo*r" target="_blank" rel="noopener">labo*r</a></li>
+            </ul>
+
+            <h3>Phrases: <code>" "</code></h3>
+            <p>To search for an exact phrase, enclose all of the words in double quotes. You cannot use wildcards within a phrase.</p>
+            <ul class="api-list">
+              <li>For example, to find documents that contain the phrase <code>quebec city</code> and not just the individual terms <code>quebec</code> and <code>city</code>: <a href="http://eco.canadiana.ca/search?q0.0=%22quebec+city%22" target="_blank" rel="noopener">"quebec city"</a></li>
+            </ul>
+
+            <h3>Excluded terms: <code>-</code></h3>
+            <p>Use <code>-</code> in front of a word or phrase to indicate that the term must not appear in the record.</p>
+            <ul class="api-list">
+              <li>For example, to find documents that contain <code>paris</code> but not <code>france</code>: <a href="http://eco.canadiana.ca/search/?q0.0=paris&amp;q1.0=-france" target="_blank" rel="noopener">paris -france</a></li>
+            </ul>
+
+            <h3>Alternate terms: <code>|</code></h3>
+            <p>To match any one of a number of alternative terms, put a <code>|</code> between them.</p>
+            <ul class="api-list">
+              <li>For example, to find "ontario" and either "york" or "toronto": <a href="http://eco.canadiana.ca/search/?q0.0=canada&amp;q1.0=york&amp;q1.1=toronto" target="_blank" rel="noopener">ontario york | toronto</a></li>
+            </ul>
+
+            <h3>Field search: <code>ti:</code>, <code>au:</code>, <code>su:</code></h3>
+            <p>
+              Use <code>ti:</code> in front of a word or phrase to search only document titles.
+              Use <code>au:</code> and <code>su:</code> to do the same for author/creator names and subject headings/keywords.
+            </p>
+            <ul class="api-list">
+              <li>For example: to find documents that contain <code>vancouver</code> in the title: <a href="http://eco.canadiana.ca/search/?q0.0=ti%3Avancouver" target="_blank" rel="noopener">ti:vancouver</a></li>
+            </ul>
+
+            <h3>Searching for Maps:</h3>
+            <p>
+              To search for maps within the Canadiana collection, users may consult the collection page
+              <a href="https://www.canadiana.ca/collection-maps?usrlang=en" target="_blank" rel="noopener">(Maps - Canadiana)</a>
+              to browse by Province/Territory or to browse the collection as a whole.
+            </p>
+            <p>
+              Additionally, maps can be found by their National Topographic System (NTS) number. To locate the relevant NTS number
+              and general information about how to use the National Topographic System, please consult the
+              <a href="https://www.nrcan.gc.ca/earth-sciences/geography/topographic-information/maps/9765" target="_blank" rel="noopener">National Topographic System Index Maps</a>,
+              which are provided by Natural Resources Canada.
+            </p>
+            <p>
+              To search the Maps collection by National Topographic System (NTS) number, please enter <code>"x0"</code> before the 5-digit NTS number.
+              For example, to locate the map titled "Adair Creek, Alberta" please enter <code>"x084M01"</code> with quotation marks around the number in the search bar.
+            </p>
+
+            <h3>Searching Chinese-language Collections</h3>
+            <p>
+              CRKN uses Solr search which currently requires spaces between multi-character search terms.
+              You can also obtain better search results by using quotation marks around your search term.
+            </p>
+            <ul class="api-list">
+              <li>For example, use <code>"雜 貨 店"</code> to search for <code>雜貨店</code>.</li>
+            </ul>
+          </section>
+
+          <section id="nav-downloads" class="api-card">
+            <h2>Downloading PDFs</h2>
+            <p>
+              In addition to providing an image viewer for collection content, CRKN provides different options for downloading content.
+              <strong>Please note that some of the following options are available only for certain items.</strong>
+            </p>
+            <ul class="api-list">
+              <li class="navigating-downloads-inline">
+                <strong>Single image download:</strong>
+                <span class="navigating-download-option">
+                  <span class="navigating-download-option__text">in the <strong>Details</strong> section on the left-hand side of the page, click <code>IMG</code> to download the image.</span>
+                  <%= image_tag 'navigating-download-button-img.png',
+                                class: 'img-fluid rounded border navigating-download-option__img',
+                                alt: 'JPG button example for single image download.' %>
+                </span>
+              </li>
+              <li class="navigating-downloads-inline">
+                <strong>Single PDF page download:</strong>
+                <span class="navigating-download-option">
+                  <span class="navigating-download-option__text">in the <strong>Details</strong> section on the left-hand side of the page, click <code>PAGE</code> to download the current page as a PDF. This will generate a text-based PDF file of the page currently being viewed, and whose text can be searched using most common PDF readers.</span>
+                  <%= image_tag 'navigating-download-button-page.png',
+                                class: 'img-fluid rounded border navigating-download-option__img',
+                                alt: 'PDF button example for single-page PDF download.' %>
+                </span>
+              </li>
+              <li class="navigating-downloads-inline">
+                <strong>Multi-page PDF download:</strong>
+                <span class="navigating-download-option">
+                  <span class="navigating-download-option__text">in the <strong>Details</strong> section on the left-hand side of the page, click <code>FULL</code>, if available. This will generate a text-based PDF file of the entire item in question. The PDF text can be searched using most common PDF readers. Note that very large PDF files may not open properly on all computers or in all PDF readers.</span>
+                  <%= image_tag 'navigating-download-button-full.png',
+                                class: 'img-fluid rounded border navigating-download-option__img',
+                                alt: 'Multi-page PDF button example.' %>
+                </span>
+              </li>
+            </ul>
+
+            <p>For alternate multi-page download options, please read the section below.</p>
+
+            <h3>Downloading content using third-party tools</h3>
+            <p>
+              Not all items within our collections are available as either single or multi-page PDF downloads.
+              However, it is possible to download multi-page PDF versions of content from our collections using
+              alternative third-party tools, including reels or other items for which there is no multi-page PDF download option.
+              Third-party tools also make it possible to download page ranges rather than entire reels.
+              This can be helpful if only a subset of an otherwise unmanageably large reel is required.
+              We have provided a brief guide on using one such tool below.
+            </p>
+            <p>
+              <a href="https://pdiiif.jbaiter.de/" target="_blank" rel="noopener">PDiiiF</a>
+              is an open-source third-party tool that facilitates the creation of image-based PDF content from Canadiana.
+              This can permit you to create, download, and manipulate the page parameters of multi-page PDFs.
+              The developer of the PDiiiF tool has provided a public version of the tool at no charge (and with no warranty!).
+              However, CRKN staff endorse the use of this tool, and can field inquiries about the tool if questions or concerns arise.
+            </p>
+            <p>
+              <strong>Please note that this tool is not maintained or managed by CRKN staff, and thus errors or site outages are out of CRKN's control. The tool only generates image-based PDFs, whose text is not searchable from within a PDF reader without further manipulation.</strong>
+            </p>
+
+            <p>To use the PDiiiF tool, please follow these steps:</p>
+            <ol>
+              <li>Navigate to the item you wish to create a PDF for.</li>
+              <li>Then, modify the URL of the item to make it PDiiiF compliant. To do this, edit the URL in your search bar by changing the term <code>"view"</code> to <code>"iiif"</code>, and the page number (which is the final number in the URL) to <code>"manifest"</code>.</li>
+              <li>Navigate to <a href="https://pdiiif.jbaiter.de/" target="_blank" rel="noopener">pdiiif (jbaiter.de)</a>. Copy and paste the modified URL into the "Manifest URL" bar. The page should now look like this.</li>
+              <li>To download the full item, click the "Generate PDF" button.</li>
+              <li>If you wish to download a specific page range within the item, click the green Settings button in the lower right-hand corner of the tool. The tool will allow you to input single pages in addition to ranges (ex. <code>1, 10-200</code>).</li>
+            </ol>
+            <p>
+              For example:<br>
+              Original URL: <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h1023/1" target="_blank" rel="noopener">https://heritage.canadiana.ca/view/oocihm.lac_reel_h1023/1</a><br>
+              Modified URL: <a href="https://heritage.canadiana.ca/iiif/oocihm.lac_reel_h1023/manifest" target="_blank" rel="noopener">https://heritage.canadiana.ca/iiif/oocihm.lac_reel_h1023/manifest</a>
+            </p>
+            <p>You will be prompted to save the file based on your browser settings.</p>
+          </section>
+
+          <section id="nav-purl" class="api-card">
+            <h2>Persistent URLs</h2>
+            <p>
+              CRKN has implemented persistent URLs, a type of
+              <a href="https://www.crkn-rcdr.ca/en/persistent-identifiers" target="_blank" rel="noopener">persistent identifier</a>,
+              for all items in the collections on Canadiana portals. Persistent URLs are links that remain stable over time,
+              meaning that they will continue to lead you to the same content even if changes are made to the item record or to the portal.
+              This current implementation of persistent URLs is at the item level, but in the future, we will implement persistent URLs for the individual images in all collections.
+            </p>
+            <p>Persistent URLs are now available in the <strong>Details</strong> section on the left-hand side of each document record (see example below).</p>
+            <figure class="mt-3 mb-3">
+              <%= image_tag 'navigating-persistent-url-example-en.png',
+                            class: 'img-fluid rounded border',
+                            alt: 'Example document record with the Persistent URL highlighted in the Details panel.' %>
+            </figure>
+            <p>
+              CRKN commits to preserving existing URLs whenever possible, meaning you can continue to use the URLs in your browser for everyday purposes.
+              However, these links may occasionally break if CRKN needs to correct an item record or
+              <a href="https://www.crkn-rcdr.ca/en/canadiana-infrastructure-updates" target="_blank" rel="noopener">update Canadiana infrastructure</a>.
+              For this reason, we recommend using persistent URLs for citations and for keeping links to Canadiana materials over the long-term.
+              See more in our
+              <a href="https://www.crkn-rcdr.ca/en/canadiana-citation-guide" target="_blank" rel="noopener">Canadiana Citation Guide</a>.
+            </p>
+          </section>
+
+          <section id="nav-heritage" class="api-card">
+            <h2>Navigating the Héritage Collection and Reference Guides</h2>
+            <p>
+              Clicking on the About tab of an individual series and reading the notes in the Description field can provide hints on how those documents and reels are arranged and whether or not a finding aid or index has been created for it.
+            </p>
+            <p>
+              <strong>Finding aids:</strong> The collections in Héritage are digital versions of microfilm collections held at Library and Archives Canada (LAC).
+              LAC has created finding aids for many of these collections which can be found either on the digitized reels at Héritage or on the LAC website.
+            </p>
+            <ul class="api-list">
+              <li><strong>Finding aids available on Héritage:</strong> If a finding aid is available within the digitized reels on Héritage, the collection's description will list the reel in which the finding aid is located. For example, for the <a href="http://heritage.canadiana.ca/view/oocihm.lac_mikan_108977" target="_blank" rel="noopener">William Lyon Mackenzie King Collection</a>, the description section notes that a subject index is located on film reels C-4591 to C-4593.</li>
+              <li><strong>Finding aids available on Library and Archives Canada's website:</strong> LAC assigns an identifier to all of its collections, called a MIKAN number. This number can be found in the Identifier field in a collection's About tab at Héritage. For example, for the <a href="http://heritage.canadiana.ca/view/oocihm.lac_mikan_133507" target="_blank" rel="noopener">[Governor General] Numbered Files collection</a>, the MIKAN number is 133507. Using LAC's <a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/search" target="_blank" rel="noopener">Collection Search</a>, you can search for this number by typing it in the search box and selecting "Collections and Fonds" from the drop-down menu. Once you have retrieved the collection's record from LAC's search results, scroll down to the section entitled Record Information - Details, and under Finding Aid, click on Show Details. In many cases, LAC has made available a Finding Aid (presented as a PDF) for the collection.</li>
+            </ul>
+            <p>
+              <strong>Reference guides:</strong> Several reference guides have been developed to assist researchers with navigating the following series.
+              These guides have been developed by Library and Archives Canada (2013) or CRKN staff.
+            </p>
+            <ul class="api-list api-list--bulleted">
+              <li><a href="https://www.crkn-rcdr.ca/en/c-5694-index" target="_blank" rel="noopener">C-5694 Index</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/chinese-immigration-records-ci-44-forms-and-index-cards-rg76-d2j" target="_blank" rel="noopener">Chinese immigration records: C.I. 44 forms and index cards (RG76 D2j)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/chinese-times-research-guide" target="_blank" rel="noopener">Chinese Times Research Guide</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/reference-guide-heir-and-devisee-commission-1777-1854" target="_blank" rel="noopener">The Heir and Devisee Commission</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/jacques-henri-fabien-collection-mg-25-g231" target="_blank" rel="noopener">Jacques-Henri Fabien Collection (MG 25 G231)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/juvenile-inspection-reports-rg76-c4c" target="_blank" rel="noopener">Juvenile Inspection Reports (RG 76 C4c)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/manifest-indexes-1906-1920-index-passenger-lists-1906-1920" target="_blank" rel="noopener">Manifest Indexes,1906-1920 (Index Passenger Lists, 1906-1920)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/search-tips-icr-content" target="_blank" rel="noopener">Search Tips for ICR content</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/reference-guide-upper-canada-sundries-1766-1841" target="_blank" rel="noopener">Upper Canada Sundries</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/reference-guide-upper-canada-land-books-1787-1841" target="_blank" rel="noopener">Upper Canada Land Books</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/reference-guide-war-diaries-second-world-war" target="_blank" rel="noopener">War Diaries - Second World War</a></li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

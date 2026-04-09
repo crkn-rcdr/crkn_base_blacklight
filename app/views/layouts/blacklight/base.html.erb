@@ -1,5 +1,6 @@
-<!DOCTYPE html lang="<%= I18n.locale %>">
-<%= content_tag :html, class: 'no-js', **html_tag_attributes do %>
+<!DOCTYPE html>
+<% html_attrs = html_tag_attributes.merge(lang: I18n.locale.to_s) %>
+<%= content_tag :html, class: 'no-js', **html_attrs do %>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -44,15 +45,28 @@
     <%= render blacklight_config.header_component.new(blacklight_config: blacklight_config) %>
 
     <% is_home_page = controller_name == 'pages' && action_name == 'home' %>
-    <main id="main-container" class="<%= is_home_page ? 'canadiana-main' : container_classes %>" aria-label="<%= t('blacklight.main.aria.main_container') %>">
+    <% main_tag = :main %>
+    <% main_container_opts = {
+      id: "main-container",
+      class: (is_home_page ? "canadiana-main" : container_classes),
+      aria: { label: t('blacklight.main.aria.main_container') }
+    } %>
+    <%= content_tag main_tag, **main_container_opts do %>
       <%= content_for(:container_header) %>
 
-      <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>
+      <%# Custom catalog search hero disabled in favor of the shared navbar search used on catalog show pages. %>
+      <%# if controller_name == 'catalog' && action_name == 'index' %>
+      <%#   render 'shared/catalog_search_header' %>
+      <%# end %>
+
+      <section role="region" aria-label="<%= t('blacklight.main.aria.flash_messages', default: 'Notifications') %>">
+        <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>
+      </section>
 
       <div class="row base-first-row">
         <%= content_for?(:content) ? yield(:content) : yield %>
       </div>
-    </main>
+    <% end %>
 
     <%= render partial: 'shared/footer' %>
     <%= render partial: 'shared/modal' %>

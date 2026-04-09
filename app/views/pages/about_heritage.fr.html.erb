@@ -1,0 +1,153 @@
+<% content_for :page_title, "À propos de la collection Héritage - #{application_name}" %>
+
+<div class="home-page">
+  <section class="site-section about-intro about-intro--heritage">
+    <div class="canadiana-shell about-intro-grid about-intro-grid--heritage">
+      <div class="about-intro-media">
+        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
+      </div>
+      <div class="about-intro-copy about-intro-copy--heritage">
+        <h1 class="section-title">À propos de la collection Héritage</h1>
+        <p class="section-lede">
+          La collection Héritage est un projet conjoint soutenu par les membres du RCDR et <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliotheque et Archives
+          Canada</a> (BAC), et elle s'appuie sur les riches ressources de microfilms d'archives detenues par BAC. Avec plus
+          de 37.5 millions de pages de documents de source primaire, Héritage retrace le Canada et ses peuples
+          des annees 1600 aux annees 1980. Héritage est une ressource inegalee qui soutient les chercheurs et les
+          communautes partout au Canada. Le RCDR et BAC poursuivent ensemble le developpement de la collection, avec
+          environ 300 000 pages ajoutees chaque annee.
+        </p>
+      </div>
+      <div class="about-intro-logo-card" aria-hidden="true">
+        <img class="about-intro-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="site-section about-modern-section about-modern-section--heritage">
+  <div class="canadiana-shell about-modern-layout">
+    <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title-fr">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
+        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h1700/190" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h1700.190.jpg') %>" alt="Manuscrit d'archives de la collection Heritage" loading="lazy">
+        </a>
+      </article>
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
+        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_c15645/23" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c15645.23.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
+        </a>
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
+        <h2 class="visually-hidden">Collection Héritage en bref</h2>
+        <ul>
+          <li>Documents d'archives uniques numerises a partir des fonds de <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliotheque et Archives Canada</a></li>
+          <li>Environ 37.5 millions de pages de documents de source primaire</li>
+          <li>Couverture des annees 1600 au milieu du XXe siecle</li>
+          <li>Organisation en cinq grands volets thematiques pour faciliter l'exploration</li>
+          <li>Un corpus utile aux historiens, etudiants et genealogistes</li>
+        </ul>
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
+        <h2>Une ressource essentielle</h2>
+        <p>
+          Héritage se compose d'un vaste ensemble de documents uniques en cours de numerisation a partir des fonds
+          precieux de <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliotheque et Archives Canada</a>.
+        </p>
+      </article>
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
+        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h2270/233" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h2270.233.jpg') %>" alt="Image de source archivistique de la collection Heritage" loading="lazy">
+        </a>
+      </article>
+    </section>
+
+    <section class="about-modern-block about-modern-block--heritage-cluster" aria-labelledby="heritage-areas-title-fr">
+      <div class="about-modern-block-head">
+        <h2 id="heritage-areas-title-fr">Ce que vous pouvez trouver dans la collection Héritage</h2>
+      </div>
+      <div class="about-modern-collection-grid about-modern-collection-grid--five about-modern-collection-grid--heritage-cluster" data-heritage-cluster-grid>
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Materiaux genealogiques</h3>
+            <p>Dossiers d'immigration, registres d'eglise, titres fonciers, histoires et papiers de famille, listes electorales, etc.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Peuples autochtones</h3>
+            <p>Un important volume de documents concernant les Premieres Nations, les Metis et les Inuit du Canada.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Ministeres et administrations</h3>
+            <p>Documents precoces de ministeres cles : Affaires indiennes, Immigration, Sante, Agriculture, Canaux et chemins de fer, Peches et Ressources naturelles.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Histoire militaire</h3>
+            <p>Documents sur la guerre de 1812, la Premiere Guerre mondiale, la Seconde Guerre mondiale et l'administration militaire en temps de paix.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Personnalites canadiennes</h3>
+            <p>Papiers de premiers ministres, gouverneurs generaux, premiers ministres provinciaux, ministres, explorateurs, scientifiques, entrepreneurs, ecrivains et artistes.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-modern-block" aria-labelledby="heritage-use-title-fr">
+      <div class="about-modern-work-grid">
+        <article class="about-modern-card about-modern-card--media">
+          <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_c13421/55" target="_blank" rel="noopener">
+            <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c13421.55.jpg') %>" alt="Parcours de recherche dans la collection Heritage" loading="lazy">
+          </a>
+        </article>
+        <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title-fr">
+          <h2 id="heritage-use-title-fr">Comment exploiter la collection</h2>
+          <ol>
+            <li>Pour commencer, choisissez la collection qui correspond le mieux à votre domaine d’intérêt. Chaque page comprend des instruments de recherche et des conseils pour parcourir les bobines de microfilm numérisées. Ces informations proviennent de <a href="https://recherche-collection-search.bac-lac.gc.ca/fra" target="_blank" rel="noopener">MIKAN, le catalogue des fonds d’archives de Bibliothèque et Archives Canada</a>. Ce dernier a eu la générosité de partager ces informations avec vous pour en faciliter l’accès.</li>
+            <li>La recherche de base vous aide à repérer les collections correspondant à vos mots clés. Elle parcourt les informations descriptives, les métadonnées et, lorsque disponible, le texte des documents. Pour affiner la requête, appliquez les outils de <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, y compris les expressions exactes entre guillemets et les opérateurs <span style="white-space: nowrap;"><code>?</code>, <code>*</code>, <code>-</code> et <code>|</code></span>.</li>
+            <li>Lorsque vous trouvez des notices pertinentes, conservez vos preuves avec <code>IMG</code>, <code>PAGE</code> et <code>FULL</code> (si offert), puis copiez l’URL pérenne de la notice.</li>
+            <li>Pour la citation, suivez le <a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation</a> : citez Canadiana comme source et incluez l’URL pérenne. Pour les travaux rendus publics, veuillez envoyer une copie ou un lien au RCDR.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-modern-block about-modern-block--faq" aria-labelledby="heritage-fulltext-title-fr">
+      <div class="about-modern-block-head">
+        <h2 id="heritage-fulltext-title-fr">FAQ</h2>
+      </div>
+      <div class="about-modern-faq">
+        <details open>
+          <summary>La recherche plein texte est-elle disponible maintenant ?</summary>
+          <p>Tres peu de texte archivistique est actuellement visible dans nos outils de recherche.</p>
+        </details>
+        <details>
+          <summary>Qu'est-il prevu pour la decouverte en texte integral ?</summary>
+          <p>
+            La transcription de ces documents pour produire du texte interrogeable demandera du temps et des ressources
+            et demeure un objectif majeur du projet. Les futures versions de Héritage prendront en charge la
+            recherche en texte integral au fur et a mesure de la transcription des documents.
+          </p>
+        </details>
+        <details>
+          <summary>Quelles sont les prochaines etapes pour la recherche ?</summary>
+          <p>
+            Au cours des prochaines annees, de nouveaux outils de recherche et des infrastructures pour la creation et
+            l'interconnexion de metadonnees enrichies seront developpes par Canadiana et ses partenaires Héritage.
+          </p>
+        </details>
+      </div>
+    </section>
+  </div>
+</section>
+

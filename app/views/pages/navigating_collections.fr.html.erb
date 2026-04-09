@@ -1,0 +1,245 @@
+<div class="blacklight-pages-api_access">
+  <section class="site-section api-site-section">
+    <div class="container api-access-page api-access-page--modern">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
+              <span class="api-hero__title-main">Parcourir les collections</span>
+            </h1>
+            <p class="api-lede">
+              Explorez, recherchez, et parcourez les matériels de la collection de Canadiana en suivant ces directives.
+              Des conseils supplémentaires pour parcourir la collection Héritage en particulier sont offrits dans la section
+              « Parcourir la collection Héritage et guides de référence ».
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="api-layout">
+        <aside class="api-toc" aria-label="Sur cette page">
+          <h2 class="api-toc__title">Sur cette page</h2>
+          <a href="#nav-search">Rechercher dans les collections</a>
+          <a href="#nav-downloads">Télécharger des PDF</a>
+          <a href="#nav-purl">URLs pérennes</a>
+          <a href="#nav-heritage">Parcourir la collection Héritage et guides de référence</a>
+        </aside>
+
+        <div class="api-content">
+          <section class="api-card">
+            <p>
+              <strong>Depuis le 20 mars 2026, l'outil de téléchargement multipages PDiiiF est en panne. Cet outil est géré par un organisme tiers; le RCDR n'est donc pas en mesure de résoudre cette panne. Cette page sera mise à jour dès que PDiiiF sera à nouveau opérationnel. Nous nous excusons pour la gêne occasionnée.</strong>
+            </p>
+          </section>
+
+          <section id="nav-search" class="api-card">
+            <h2>Rechercher dans les collections</h2>
+            <p>
+              Utilisez le formulaire de recherche de Canadiana pour rechercher des informations descriptives et des métadonnées de matérielles,
+              telles que des titres, des noms d'auteurs et créateurs, des mots clés de sujet, ou le contenu textuel de livres et autres documents,
+              lorsqu'ils sont disponibles. Les termes de recherche ne sont pas sensibles à la casse ou aux accents.
+            </p>
+            <p>Les fonctions suivantes peuvent être utilisées dans le champ de recherche pour affiner les résultats :</p>
+
+            <h3>Caractères génériques : <code>?</code> et <code>*</code></h3>
+            <p>
+              Utilisez <code>?</code> au milieu ou à la fin d'un mot pour remplacer n'importe quel caractère.
+              Utilisez <code>*</code> pour remplacer un ou plusieurs caractères (y compris le zéro).
+            </p>
+            <ul class="api-list">
+              <li>Par exemple, pour trouver <code>défence</code> ou <code>défense</code> : <a href="http://eco.canadiana.ca/search?q0.0=defen%3Fe" target="_blank" rel="noopener">défen?e</a></li>
+              <li>Pour trouver <code>bateaux</code> ou <code>batteaux</code> : <a href="http://eco.canadiana.ca/search?q0.0=labo*r" target="_blank" rel="noopener">bat*eaux</a></li>
+            </ul>
+
+            <h3>Locutions : <code>""</code></h3>
+            <p>Pour chercher une locution exacte, placez tous les mots entre des guillemets doubles. Vous ne pouvez pas utiliser de caractères génériques dans une locution.</p>
+            <ul class="api-list">
+              <li>Par exemple, pour trouver des documents qui contiennent la locution <code>ville de québec</code> et non juste les mots individuels <code>ville</code> et <code>québec</code> : <a href="http://eco.canadiana.ca/search?q0.0=%22quebec+city%22" target="_blank" rel="noopener">"ville de québec"</a></li>
+            </ul>
+
+            <h3>Termes exclus : <code>-</code></h3>
+            <p>Utilisez <code>-</code> devant un mot ou une locution pour indiquer que le terme ne doit pas apparaitre dans le document.</p>
+            <ul class="api-list">
+              <li>Par exemple, pour trouver les documents qui contiennent le mot <code>paris</code> mais pas le mot <code>france</code> : <a href="http://eco.canadiana.ca/search/?q0.0=paris&amp;q1.0=-france" target="_blank" rel="noopener">paris -france</a></li>
+            </ul>
+
+            <h3>Termes alternatifs : <code>|</code></h3>
+            <p>Pour trouver un terme parmi un certain nombre d'autres, placez un <code>|</code> entre les termes.</p>
+            <ul class="api-list">
+              <li>Par exemple, pour trouver "ontario" et soit "york" ou "toronto" : <a href="http://eco.canadiana.ca/search/?q0.0=canada&amp;q1.0=york&amp;q1.1=toronto" target="_blank" rel="noopener">ontario york | toronto</a></li>
+            </ul>
+
+            <h3>Recherche par champs : <code>ti:</code>, <code>au:</code>, <code>su:</code></h3>
+            <p>
+              Utilisez <code>ti:</code> devant un mot ou une locution pour chercher uniquement les titres de documents.
+              Utilisez <code>au:</code> et <code>su:</code> pour le même type de recherche de noms d'auteurs et créateurs,
+              ainsi que les titres et mots clés.
+            </p>
+            <ul class="api-list">
+              <li>Par exemple : pour trouver les documents qui contiennent <code>vancouver</code> dans le titre : <a href="http://eco.canadiana.ca/search/?q0.0=ti%3Avancouver" target="_blank" rel="noopener">ti:vancouver</a></li>
+            </ul>
+
+            <h3>Recherche de cartes:</h3>
+            <p>
+              Pour rechercher des cartes dans la collection Canadiana, les utilisateurs peuvent consulter la page de la collection
+              <a href="https://www.canadiana.ca/collection-maps?usrlang=fr" target="_blank" rel="noopener">(Cartes - Canadiana)</a>
+              tpour parcourir par province/territoire ou pour parcourir la collection dans son ensemble.
+            </p>
+            <p>
+              De plus, les cartes peuvent être trouvées par leur numéro du Système national de référence cartographique (SNRC).
+              Pour trouver le numéro SNRC pertinent et des renseignements généraux sur la façon d'utiliser le Système national de référence cartographique,
+              veuillez consulter
+              <a href="https://ressources-naturelles.canada.ca/sciences-terre/geographie/information-topographique/cartes/9766" target="_blank" rel="noopener">consulter l'index des cartes du Système national de référence cartographique</a>,
+              qui est fourni par Ressources naturelles Canada.
+            </p>
+            <p>
+              Pour effectuer une recherche dans la collection de cartes par numéro du Système national de référence cartographique (SNRC),
+              veuillez entrer <code>« x0 »</code> avant le numéro à cinq chiffres du SNRC. Par exemple, pour trouver la carte intitulée
+              <code>« Adair Creek, Alberta »</code>, veuillez entrer <code>« x084M01 »</code> avec des guillemets autour du numéro dans la barre de recherche.
+            </p>
+
+            <h3>Recherche dans les collections en langue chinoise</h3>
+            <p>
+              Le RCDR utilise l'application de recherche Solr, qui nécessite actuellement des espaces entres les termes de recherche multicaractères.
+              Vous pouvez également obtenir de meilleurs résultats en utilisant des guillemets anglais autour de votre terme de recherche.
+            </p>
+            <ul class="api-list">
+              <li>Par exemple, utilisez <code>“雜 貨 店”</code> pour rechercher <code>雜貨店</code>.</li>
+            </ul>
+          </section>
+
+          <section id="nav-downloads" class="api-card">
+            <h2>Télécharger des PDF</h2>
+            <p>
+              En plus d'offrir une visionneuse d'images pour le contenu de la collection, le RCDR propose différentes options pour le téléchargement du contenu.
+              <strong>Veuillez noter que certaines des options suivantes ne sont disponibles que pour certains éléments.</strong>
+            </p>
+            <ul class="api-list">
+              <li class="navigating-downloads-inline">
+                <strong>Téléchargement d'une seule image :</strong>
+                <span class="navigating-download-option">
+                  <span class="navigating-download-option__text">dans la section <strong>Détails</strong>, du côté gauche de la page, appuyez sur <code>IMG</code> pour télécharger l'image.</span>
+                  <%= image_tag 'navigating-download-button-img-fr.png',
+                                class: 'img-fluid navigating-download-option__img',
+                                alt: 'Exemple du bouton JPG.' %>
+                </span>
+              </li>
+              <li class="navigating-downloads-inline">
+                <strong>Téléchargement d'une seule page PDF :</strong>
+                <span class="navigating-download-option">
+                  <span class="navigating-download-option__text">dans la section <strong>Détails</strong>, du côté gauche de la page, appuyez sur <code>PAGE</code> pour télécharger la page courante au format PDF. Cette opération génère un fichier PDF textuel de la page en cours de visualisation, dont le texte peut être recherché à l'aide des lecteurs PDF les plus courants.</span>
+                  <%= image_tag 'navigating-download-button-page-fr.png',
+                                class: 'img-fluid navigating-download-option__img',
+                                alt: 'Exemple du bouton PDF page.' %>
+                </span>
+              </li>
+              <li class="navigating-downloads-inline">
+                <strong>Téléchargement d'un fichier PDF à plusieurs pages :</strong>
+                <span class="navigating-download-option">
+                  <span class="navigating-download-option__text">dans la section <strong>Détails</strong>, du côté gauche de la page, appuyez sur <code>FULL</code>, le cas échéant. Cette opération génère un fichier PDF textuel de l'ensemble de l'article en question. Le texte du PDF peut être consulté à l'aide des lecteurs de PDF les plus courants. Notez que les fichiers PDF très volumineux peuvent ne pas s'ouvrir correctement sur tous les ordinateurs ou dans tous les lecteurs PDF.</span>
+                  <%= image_tag 'navigating-download-button-full-fr.png',
+                                class: 'img-fluid navigating-download-option__img',
+                                alt: 'Exemple du bouton PDF multipage.' %>
+                </span>
+              </li>
+            </ul>
+
+            <p>Pour d'autres options de téléchargement de plusieurs pages, veuillez lire la section ci-dessous.</p>
+
+            <h3>Téléchargement de contenu à l'aide d'outils tiers</h3>
+            <p>
+              Tous les éléments de nos collections ne sont pas disponibles sous forme de téléchargements PDF d'une ou plusieurs pages.
+              Toutefois, il est possible de télécharger des versions PDF à plusieurs pages du contenu de nos collections à l'aide d'outils tiers,
+              y compris des bobines ou d'autres éléments pour lesquels il n'existe pas d'option de téléchargement PDF à plusieurs pages.
+              Les outils tiers permettent également de télécharger des gammes de pages plutôt que des bobines entières.
+              Cela peut être utile si l'on n'a besoin que d'un sous-ensemble d'une bobine dont la taille serait ingérable.
+              Vous trouverez ci-dessous un bref guide d'utilisation de l'un de ces outils.
+            </p>
+            <p>
+              <a href="https://pdiiif.jbaiter.de/" target="_blank" rel="noopener">PDiiiF</a>
+              est un outil tiers à code source ouvert qui facilite la création de contenu PDF à base d'images à partir de Canadiana.
+              Cet outil peut vous permettre de créer, de télécharger et de manipuler les paramètres des pages d'un PDF à plusieurs pages.
+              Le développeur de l'outil PDiiiF a fourni une version publique de l'outil gratuitement (et sans garantie!).
+              Toutefois, le personnel du RCDR approuve l'utilisation de cet outil et peut répondre aux demandes de renseignements sur l'outil en cas de questions ou de préoccupations.
+            </p>
+
+            <p>Pour utiliser l'outil PDiiiF, veuillez suivre les étapes suivantes :</p>
+            <ol>
+              <li>Naviguez jusqu'à l'élément pour lequel vous souhaitez créer un PDF.</li>
+              <li>Ensuite, modifiez l'URL de l'élément pour le mettre en conformité avec PDiiiF. Pour ce faire, modifiez l'URL dans votre barre de recherche en remplaçant le terme <code>« view »</code> par <code>« iiif »</code> et le numéro de page (qui est le dernier numéro dans l'URL) par <code>« manifest »</code>.</li>
+              <li>Naviguez vers <a href="https://pdiiif.jbaiter.de/" target="_blank" rel="noopener">pdiiif (jbaiter.de)</a>. Copiez et collez l'URL modifiée dans la barre <code>« Manifest URL »</code>. La page devrait maintenant ressembler à ceci.</li>
+              <li>Pour télécharger l'article complet, cliquez sur le bouton <code>« Generate PDF »</code>.</li>
+              <li>Si vous souhaitez télécharger une gamme de pages spécifique dans l'article, cliquez sur le bouton vert <code>« Settings »</code> dans le coin inférieur droit de l'outil. L'outil vous permettra de saisir des pages individuelles en plus des gammes (ex. <code>1, 10-200</code>).</li>
+            </ol>
+            <p>
+              Par example:<br>
+              URL originale : <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h1023/1" target="_blank" rel="noopener">https://heritage.canadiana.ca/view/oocihm.lac_reel_h1023/1</a><br>
+              URL modifiée: <a href="https://heritage.canadiana.ca/iiif/oocihm.lac_reel_h1023/manifest" target="_blank" rel="noopener">https://heritage.canadiana.ca/iiif/oocihm.lac_reel_h1023/manifest</a>
+            </p>
+            <p>Vous serez invité à enregistrer le fichier en fonction des paramètres de votre navigateur.</p>
+          </section>
+
+          <section id="nav-purl" class="api-card">
+            <h2>URLs pérennes</h2>
+            <p>
+              Le RCDR a mis en place des URL pérennes, un type
+              <a href="https://www.crkn-rcdr.ca/fr/identifiants-perennes" target="_blank" rel="noopener">d'identifiant pérenne</a>,
+              pour tous les éléments des collections des portails Canadiana. Les URL pérennes sont des liens qui restent stables dans le temps,
+              ce qui signifie qu'ils continueront à vous conduire au même contenu même si des changements sont apportés à la fiche de l'article ou au portail.
+              La mise en œuvre actuelle des URL pérennes se fait au niveau de l'article, mais à l'avenir, nous mettrons en œuvre des URL pérennes pour les images individuelles dans toutes les collections.
+            </p>
+            <p>Les URL pérennes sont désormais disponibles dans la section <strong>Détails</strong>, du côté gauche de chaque notice bibliographique du document (voir l'exemple ci-dessous) :</p>
+            <figure class="mt-3 mb-3">
+              <%= image_tag 'navigating-persistent-url-example-fr.png',
+                            class: 'img-fluid rounded border',
+                            alt: 'Exemple de notice avec l URL pérenne surlignée dans le panneau Détails.' %>
+            </figure>
+            <p>
+              Le RCDR s'engage à préserver les URL existantes dans la mesure du possible, ce qui signifie que vous pouvez continuer à utiliser les URL dans votre navigateur pour vos besoins quotidiens.
+              Cependant, ces liens peuvent parfois se rompre si le RCDR doit corriger une notice ou
+              <a href="https://www.crkn-rcdr.ca/fr/mises-jour-de-linfrastructure-de-canadiana" target="_blank" rel="noopener">mettre à jour l'infrastructure de Canadiana</a>.
+              C'est pourquoi nous recommandons d'utiliser des URL pérennes pour les citations et pour conserver à long terme les liens vers les documents de Canadiana.
+              Pour en savoir plus, consultez notre
+              <a href="https://www.crkn-rcdr.ca/fr/guide-de-citation-canadiana" target="_blank" rel="noopener">Guide de citation Canadiana</a>.
+            </p>
+          </section>
+
+          <section id="nav-heritage" class="api-card">
+            <h2>Parcourir la collection Héritage et guides de référence</h2>
+            <p>
+              En cliquant sur l'onglet « À propos » d'une série individuelle, et en lisant les notes dans le champ Description,
+              vous pouvez obtenir des indications sur la façon dont ces documents et bobines sont disposés et savoir si
+              un instrument de recherche ou un index a été créé pour cette série.
+            </p>
+            <p>
+              <strong>Instruments de recherche :</strong> Les collections Héritage sont des versions numérisées de microfilms conservées à Bibliothèque et Archives Canada (BAC).
+              BAC a créée des instruments de recherche pour plusieurs de ces collections que l'on peut trouver sur les bobines numérisées d'Héritage ou sur le site web de BAC.
+            </p>
+            <ul class="api-list">
+              <li><strong>Instruments de recherche sur Héritage :</strong> Si un instrument de recherche est disponible dans les bobines numérisées sur Héritage, la description de la collection indique dans quelle bobine l'instrument de recherche se trouve. Par exemple, pour la collection <a href="http://heritage.canadiana.ca/view/oocihm.lac_mikan_108977" target="_blank" rel="noopener">William Lyon Mackenzie King</a>, la description indique que l'index se trouve sur les bobines C-4591 à C-4593.</li>
+              <li><strong>Instrument de recherche sur le site web de Bibliothèque et Archives Canada :</strong> BAC attribue un identifiant à toutes ses collections, qu'ils appellent un numéro MIKAN. Ce numéro peut être trouvé dans le champ Identifiant dans l'onglet « À propos » de la collection Héritage. Par exemple, pour la collection <a href="http://heritage.canadiana.ca/view/oocihm.lac_mikan_133507" target="_blank" rel="noopener">[Governor General] Numbered Files</a>, le numéro MIKAN est 133507. Utilisant l'outil <a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/search" target="_blank" rel="noopener">Recherche dans la collection</a> sur le site web de BAC, vous pouvez rechercher ce numéro en le tapant dans la case de recherche et choisissant en sélectionnant « Collections et Fonds » dans le menu déroulant. Lorsque vous avez trouvé le dossier d'une collection parmi les résultats de recherche, allez à la section « Notice descriptive - Détails » et sous « Instrument de recherche », cliquez sur « Afficher les détails ». Dans de nombreux cas, BAC a mis à votre disposition un instrument de recherche (présenté en format PDF) pour la collection.</li>
+            </ul>
+            <p>
+              <strong>Guides de référence:</strong> Quelques guides de références ont été préparés pour assister les chercheurs à parcourir les séries ci-dessous.
+              Ces guides ont été préparés par Bibliothèque et Archives Canada (en 2013) ou le personnel du RCDR.
+            </p>
+            <ul class="api-list api-list--bulleted">
+              <li><a href="https://www.crkn-rcdr.ca/fr/collection-jacques-henri-fabien-mg-25-g231" target="_blank" rel="noopener">Collection Jacques-Henri Fabien (MG 25 G231)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-la-commission-des-heritiers-et-legataires-1777-1854" target="_blank" rel="noopener">La Commission des héritiers et légataires</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/conseils-pour-la-recherche-du-contenu-de-la-ric" target="_blank" rel="noopener">Conseils pour la recherche du contenu de la RIC</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/fiches-dexamen-des-enfants-rg-76-c4c" target="_blank" rel="noopener">Fiches d'examen des enfants (RG 76 C4c)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/fiches-dimmigration-chinoises-formulaires-et-fiches-ci-44-rg76-d2j-0" target="_blank" rel="noopener">Fiches d'immigration chinoises : Formulaires et fiches C.I. 44 (RG76 D2j)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-recherche-pour-le-chinese-times" target="_blank" rel="noopener">Guide de recherche pour le Chinese Times</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/index-c-5694" target="_blank" rel="noopener">Index C-5694</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/index-des-manifestes-1906-1920-index-des-listes-de-passagers-1906-1920" target="_blank" rel="noopener">Index des manifests, 1906-1920 (Index des listes de passangers, 1906-1920)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-journaux-de-guerre-deuxieme-guerre-mondiale" target="_blank" rel="noopener">Journaux de guerre - Deuxième Guerre mondiale</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-les-upper-canada-land-books-1787-1841" target="_blank" rel="noopener">Les Upper Canada Land Books</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-les-upper-canada-sundries-1766-1841" target="_blank" rel="noopener">Les Upper Canada Sundries</a></li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

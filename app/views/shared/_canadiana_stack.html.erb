@@ -1,0 +1,135 @@
+<% slide_count = local_assigns.fetch(:count, 12) %>
+<% stack_collection = local_assigns.fetch(:collection, :canadiana) %>
+<% explore_text = I18n.locale.to_s.start_with?('fr') ? 'Explorer' : 'Explore' %>
+<% canadiana_slides = canadiana_stack_cards(slide_count, collection: stack_collection).map { |card| card.merge(image_url: asset_path(card[:image])) } %>
+<% initial_slide = canadiana_slides.first %>
+<% initial_button_text = initial_slide[:label].presence || explore_text %>
+<% initial_aria_label = initial_slide[:label].present? ? "#{explore_text}: #{initial_slide[:label]}" : explore_text %>
+
+<div class="home-canadiana-feature" data-canadiana-feature data-explore-label="<%= explore_text %>">
+  <script type="application/json" data-canadiana-feature-data><%= raw(json_escape(canadiana_slides.to_json)) %></script>
+  <div class="home-canadiana-feature__viewport">
+    <span
+      class="home-canadiana-feature__slide is-active"
+      data-canadiana-feature-slide="primary"
+      style="background-image: url('<%= initial_slide[:image_url] %>');"></span>
+    <span class="home-canadiana-feature__slide" data-canadiana-feature-slide="secondary" aria-hidden="true"></span>
+    <a
+      class="home-canadiana-feature__explore-btn"
+      data-canadiana-feature-link
+      href="<%= initial_slide[:url] %>"
+      target="_blank"
+      rel="noopener"
+      aria-label="<%= initial_aria_label %>"
+      title="<%= initial_button_text %>">
+      <span data-canadiana-feature-link-text><%= initial_button_text %></span>
+      <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+    </a>
+  </div>
+</div>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  (() => {
+    const script = document.currentScript;
+    if (!script) return;
+
+    const feature = script.previousElementSibling;
+    if (!feature || !feature.matches('[data-canadiana-feature]')) return;
+    if (feature.dataset.featureInlineInit === '1') return;
+    feature.dataset.featureInlineInit = '1';
+
+    const dataNode = feature.querySelector('[data-canadiana-feature-data]');
+    const featureLink = feature.querySelector('[data-canadiana-feature-link]');
+    const featureLinkText = feature.querySelector('[data-canadiana-feature-link-text]');
+    const primarySlide = feature.querySelector('[data-canadiana-feature-slide="primary"]');
+    const secondarySlide = feature.querySelector('[data-canadiana-feature-slide="secondary"]');
+    if (!dataNode || !featureLink || !primarySlide || !secondarySlide) return;
+
+    let slides = [];
+    try {
+      slides = JSON.parse(dataNode.textContent || '[]');
+    } catch (_error) {
+      return;
+    }
+
+    slides = slides.filter((slide) => (
+      slide &&
+      typeof slide.image_url === 'string' &&
+      slide.image_url.length > 0 &&
+      typeof slide.url === 'string' &&
+      slide.url.length > 0
+    ));
+    if (!slides.length) return;
+
+    const exploreLabel = feature.dataset.exploreLabel || 'Explore';
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let activeSlideEl = primarySlide;
+    let inactiveSlideEl = secondarySlide;
+    let currentIndex = 0;
+    let intervalId = null;
+
+    const applySlide = (slideEl, slide) => {
+      slideEl.style.backgroundImage = `url("${slide.image_url}")`;
+    };
+
+    const updateLink = (slide) => {
+      const buttonText = slide.label || exploreLabel;
+      const ariaLabel = slide.label ? `${exploreLabel}: ${slide.label}` : exploreLabel;
+      featureLink.href = slide.url;
+      featureLink.title = buttonText;
+      featureLink.setAttribute('aria-label', ariaLabel);
+      if (featureLinkText) featureLinkText.textContent = buttonText;
+    };
+
+    const showSlide = (nextIndex, immediate = false) => {
+      const slide = slides[nextIndex];
+      if (!slide) return;
+
+      currentIndex = nextIndex;
+      updateLink(slide);
+
+      if (immediate) {
+        applySlide(activeSlideEl, slide);
+        activeSlideEl.classList.add('is-active');
+        inactiveSlideEl.classList.remove('is-active');
+        return;
+      }
+
+      applySlide(inactiveSlideEl, slide);
+      inactiveSlideEl.classList.add('is-active');
+      activeSlideEl.classList.remove('is-active');
+      [activeSlideEl, inactiveSlideEl] = [inactiveSlideEl, activeSlideEl];
+    };
+
+    const start = () => {
+      if (intervalId !== null || slides.length < 2 || reduceMotion) return;
+      intervalId = window.setInterval(() => {
+        if (document.hidden) return;
+        const nextIndex = (currentIndex + 1) % slides.length;
+        showSlide(nextIndex);
+      }, 6500);
+    };
+
+    const stop = () => {
+      if (intervalId === null) return;
+      window.clearInterval(intervalId);
+      intervalId = null;
+    };
+
+    showSlide(0, true);
+    start();
+
+    feature.addEventListener('mouseenter', stop);
+    feature.addEventListener('mouseleave', start);
+    feature.addEventListener('focusin', stop);
+    feature.addEventListener('focusout', start);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    });
+  })();
+</script>

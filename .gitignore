@@ -42,3 +42,4 @@ config/master.key
 .env.local
 .env.*.local
 .env.example
+.env.dev

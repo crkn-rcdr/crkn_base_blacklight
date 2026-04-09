@@ -10,15 +10,15 @@ fr:
       range_end_short: Fin
       range_html: " %{begin_value} – %{end_value}"
     members:
-      title: Canadiana existe grâce aux bibliothèques membres du RCDR
+      title: Canadiana est rendu possible grâce aux bibliothèques membres du RCDR
       subtitle: Le RCDR est une communauté canadienne de bibliothèques, d’archives et d’institutions d’un océan à l’autre
       category_aria: Onglets de catégories de membres
-      institutional: Membres institutionnels
+      institutional: Établissements membres
       associate: Membres associés
       all: Tous
-      search_label: Filtrer les membres
-      search_placeholder: Rechercher des membres…
-      blurb_html: "Le RCDR réunit <strong>%{count}</strong> organisations membres d’un océan à l’autre : de grandes bibliothèques universitaires et de recherche, les deux bibliothèques nationales du Canada et le plus grand réseau de bibliothèques publiques du pays. Ensemble, nos membres rendent possibles les collections Canadiana — pour que chacun puisse explorer, découvrir et se connecter au patrimoine documentaire du Canada."
+      search_label: Rechercher les membres
+      search_placeholder: Rechercher les membres
+      blurb_html: "Les collections et l'infrastructure Canadiana existent grâce à l'engagement commun et au soutien financier des 88 bibliothèques membres du RCDR à travers le pays. Ensemble, elles permettent à chacun d'explorer, de découvrir et de se connecter au patrimoine documentaire du Canada. <a href='https://www.crkn-rcdr.ca/fr/a-propos-du-rcdr' target='blank'>En savoir plus sur le RCDR.</a>"
       visit_site_aria: "Visiter le site de %{name}"
     page_search:
       matching_pages_for_html: "Pages correspondantes pour <strong>%{term}</strong>"
@@ -31,11 +31,12 @@ fr:
       prev_hit_aria: Aller à l’occurrence précédente
       next_hit_aria: Aller à l’occurrence suivante
     tools:
-      download_image_aria: Télécharger l'image 
-      download_page_pdf_aria: Télécharger l'image en PDF
+      download_label: Téléchargements
+      download_image_aria: Télécharger l'image
+      download_page_pdf_aria: Télécharger la page en PDF
       download_full_pdf_aria: Télécharger le PDF complet
       download_unavailable: Non disponible pour cette page
-      download_checking: Vérification de la disponibilité des options de téléchargement
+      download_checking: Vérification de la disponibilité des téléchargements
       toolbox_title: Boîte à outils
       title: Outils
       subtitle: Exporter, modifier ou partager cet item
@@ -336,14 +337,14 @@ fr:
         go_to_next_page: Aller à la page suivante
         go_to_page: Aller à la page %{page}
         go_to_previous_page: Aller à la page précédente
-      first: "&laquo; Première"
-      last: Dernière &raquo;
-      next: Suivante &raquo;
-      previous: "&laquo; Précédente"
+      first: "« Première"
+      last: Dernière »
+      next: Suivante »
+      previous: "« Précédente"
       truncate: "…"
     pagination_compact:
-      next: Suivante &raquo;
-      previous: "&laquo; Précédente"
+      next: Suivante »
+      previous: "« Précédente"
   labels:
     L_ABOUT: À propos
     L_BROWSE: Parcourir
@@ -396,6 +397,7 @@ fr:
     URL_PARL_SENATE: "https://www.sencanada.ca/fr"
     URL_PARL_VISIT: "https://visitez.parl.ca/"
     URL_PARL_HELP: "/conseils-recherche"
+    URL_SYSTEM: "https://www.crkn-rcdr.ca/fr/status"
     URL_TERMS: "http://www.canadiana.ca/conditions"
     URL_CITATION_GUIDE: "https://www.crkn-rcdr.ca/fr/guide-de-citation-canadiana"
     URL_CITATION_GUIDE_HERITAGE: "https://bibliotheque-archives.canada.ca/fra/services/public/utiliser-documents-bac/crediting-citing-material/Pages/citation-documents.aspx"

@@ -41,24 +41,30 @@
         <% end %>
       <% end %>
 
-
-      <%= title %>
-      <%= embed %>
-      <%= content %>
+      <% if @component == :div %>
+        <section class="document-overview" role="region" aria-label="<%= t('blacklight.main.aria.record_overview', default: 'Record overview') %>">
+          <%= title %>
+          <%= embed %>
+          <%= content %>
+        </section>
+      <% else %>
+        <div class="document-overview">
+          <%= title %>
+          <%= embed %>
+          <%= content %>
+        </div>
+      <% end %>
 
       <% if @component == :div %>
         <div id="document-togglable-content" class="container-fluid">
           <div class="row flex-nowrap">
             <!-- Sidebar -->
-            <div id="toggle-menu" class="col collapse collapse-horizontal show">
+            <aside id="toggle-menu" class="col" aria-labelledby="details-heading">
               <div class="document-sidebar-header">
-                <h3><%= t('labels.L_SERIAL_RECORD') %></h3>
-                <button id="toggle-doc-metadata1" class="btn btn-outline-custom" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-menu" aria-expanded="true" aria-controls="toggle-menu">
-                    <i class="bi bi-arrow-left"></i>
-                </button>
+                <h3 id="details-heading" class="h3 mb-0"><%= t('labels.L_SERIAL_RECORD') %></h3>
               </div>
               <div>  
-              
+               
                 <ul class="list-unstyled mb-0" style="margin-top: 1rem;">
                   <li class="mb-1">
                     <a href="/catalog/<%= params[:id] %>/librarian_view" data-blacklight-modal="trigger" data-turbo="false">
@@ -73,158 +79,228 @@
                     </a>
                   </li>
                 </ul>
-                
+
+                <% if @document._source["is_serial"]&.first == "No" %>
+                  <div>
+                    <div class="mt-3 sidebar-downloads" id="download-toolbar" role="region" aria-label="<%= t('blacklight.tools.download_label', default: 'Downloads') %>"
+                         data-docid="<%= @document._source['id'] %>"
+                         data-arkpath="<%= @document._source['ark'].to_s.gsub('https://n2t.net/ark:/','') %>">
+                      <p class="download-toolbar-title"><%= t('blacklight.tools.download_label', default: 'Downloads') %>:</p>
+                      <div class="download-actions">
+                        <a id="btn-download-img" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" data-force-download="true">
+                          <span class="download-icon-group" aria-hidden="true">
+                            <i class="bi bi-download fs-5" aria-hidden="true"></i>
+                            <span class="download-kind">IMG</span>
+                          </span>
+                          <span class="download-label"><%= t('blacklight.tools.download_image_aria') %></span>
+                        </a>
+                        <a id="btn-download-page" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
+                          <span class="download-icon-group" aria-hidden="true">
+                            <i class="bi bi-download fs-5" aria-hidden="true"></i>
+                            <span class="download-kind">PAGE</span>
+                          </span>
+                          <span class="download-label"><%= t('blacklight.tools.download_page_pdf_aria') %></span>
+                        </a>
+                        <a id="btn-download-full" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
+                          <span class="download-icon-group" aria-hidden="true">
+                            <i class="bi bi-download fs-5" aria-hidden="true"></i>
+                            <span class="download-kind">FULL</span>
+                          </span>
+                          <span class="download-label"><%= t('blacklight.tools.download_full_pdf_aria') %></span>
+                        </a>
+                      </div>
+                      <span id="download-status" class="text-muted small d-inline-flex align-items-center gap-1" aria-live="polite" aria-atomic="true">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="download-status-text"><%= t('blacklight.tools.download_checking') %></span>
+                      </span>
+                    </div>
+                    <script>
+                      (function(){
+                        const bar = document.getElementById('download-toolbar');
+                        if(!bar) return;
+
+                        const docid = bar.dataset.docid;
+                        const ark = bar.dataset.arkpath;
+
+                        const full = document.getElementById('btn-download-full');
+                        const page = document.getElementById('btn-download-page');
+                        const pageImg = document.getElementById('btn-download-img');
+                        const invalidLinks = new Set();
+
+                        function disableLink(el) {
+                          if (!el) return;
+                          el.classList.add('disabled');
+                          el.setAttribute('aria-disabled', 'true');
+                          el.removeAttribute('href');
+                          el.removeAttribute('download');
+                        }
+
+                        function enableLink(el, href) {
+                          if (!el || !href) return;
+                          el.href = href;
+                          el.classList.remove('disabled');
+                          el.removeAttribute('aria-disabled');
+                          if (el.dataset.forceDownload === 'true') {
+                            el.setAttribute('download', '');
+                          }
+                        }
+
+                        function currentPageNum() {
+                          const p = parseInt(new URLSearchParams(window.location.search).get('pageNum') || '1', 10);
+                          return Number.isFinite(p) && p > 0 ? p : 1;
+                        }
+
+                        function safeDocId() {
+                          return String(docid || 'document').replace(/[^\w.-]+/g, '_');
+                        }
+
+                        function inferFileNameFromUrl(_url, fallbackExt) {
+                          const ext = (fallbackExt || 'jpg').replace(/^\./, '');
+                          return `${safeDocId()}.${currentPageNum()}.${ext}`;
+                        }
+
+                        async function forceFileDownload(url, fallbackExt) {
+                          const response = await fetch(url, { credentials: 'omit' });
+                          if (!response.ok) throw new Error(`Download failed: ${response.status}`);
+                          const blob = await response.blob();
+                          const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+                          const inferredExt =
+                            contentType.includes('png') ? 'png' :
+                            contentType.includes('webp') ? 'webp' :
+                            contentType.includes('tif') || contentType.includes('tiff') ? 'tif' :
+                            contentType.includes('jp2') ? 'jp2' :
+                            (fallbackExt || 'jpg');
+                          const blobUrl = URL.createObjectURL(blob);
+                          const link = document.createElement('a');
+                          link.href = blobUrl;
+                          link.download = inferFileNameFromUrl(url, inferredExt);
+                          document.body.appendChild(link);
+                          link.click();
+                          link.remove();
+                          setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
+                        }
+
+                        // Use backend existence flags; no client-side HEAD (avoids CORS).
+                        function setLinkState(el, href, exists) {
+                          if (!el || !href) return disableLink(el);
+                          // Only disable when we explicitly know it does not exist.
+                          if (exists === false) return disableLink(el);
+                          enableLink(el, href);
+                        }
+
+                        // Update links based on current pageNum in the URL
+                        function updateForCurrentPage(data){
+                          if (!data) return;
+                          const status = document.getElementById('download-status');
+                          const statusText = status?.querySelector('.download-status-text');
+                          const statusSpinner = status?.querySelector('.spinner-border');
+                          if (statusText) statusText.textContent = <%= raw t('blacklight.tools.download_checking', default: 'Checking availability...').to_json %>;
+                          if (statusSpinner) statusSpinner.hidden = false;
+
+                          // Full-document PDF (static once data is fetched)
+                          if (full) {
+                            setLinkState(full, data.docPdfUri, data.docPdfExists);
+                          }
+
+                          const params = new URLSearchParams(window.location.search);
+                          let idx = 0;
+                          if (params.has('pageNum')) {
+                            const p = parseInt(params.get('pageNum'), 10);
+                            if (!isNaN(p) && p > 0) idx = p - 1;
+                          }
+
+                          const listPdf = data.canvasDownloadPdfUris || [];
+                          const pdfExists = data.canvasPdfExists || [];
+                          setLinkState(page, listPdf[idx], pdfExists[idx]);
+
+                          const listImg = data.canvasDownloadImgUris || [];
+                          if (pageImg) {
+                            setLinkState(pageImg, listImg[idx], !!listImg[idx]);
+                          }
+
+                          if (status && statusText) {
+                            const anyEnabled = [full, page, pageImg].some(el => el && !el.classList.contains('disabled'));
+                            statusText.textContent = anyEnabled ? '' : <%= raw t('blacklight.tools.download_unavailable', default: 'Not available for this page.').to_json %>;
+                            if (statusSpinner) statusSpinner.hidden = true;
+                          }
+                        }
+
+                        // Fetch once, then update on URL changes
+                        let dlData = null;
+                        fetch(`/dl/${encodeURIComponent(docid)}/${ark}`)
+                          .then(r => r.json())
+                          .then(data => {
+                            dlData = data;
+                            updateForCurrentPage(dlData);
+                          })
+                          .catch(() => {});
+
+                        // Force image to download instead of opening in a new tab.
+                        if (pageImg) {
+                          pageImg.addEventListener('click', async (event) => {
+                            if (pageImg.classList.contains('disabled')) {
+                              event.preventDefault();
+                              return;
+                            }
+                            const href = pageImg.getAttribute('href');
+                            if (!href) {
+                              event.preventDefault();
+                              return;
+                            }
+                            event.preventDefault();
+                            try {
+                              await forceFileDownload(href, 'jpg');
+                            } catch (_error) {
+                              // Fallback for strict CORS setups: attempt native download attribute.
+                              const fallbackLink = document.createElement('a');
+                              fallbackLink.href = href;
+                              fallbackLink.download = inferFileNameFromUrl(href, 'jpg');
+                              document.body.appendChild(fallbackLink);
+                              fallbackLink.click();
+                              fallbackLink.remove();
+                            }
+                          });
+                        }
+
+                        // Listen for navigation events that may change the query string
+                        function onLocationChange(){ updateForCurrentPage(dlData); }
+                        window.addEventListener('popstate', onLocationChange);
+                        window.addEventListener('hashchange', onLocationChange);
+
+                        // Poll for pageNum changes (covers pushState/replaceState navigation in viewer)
+                        let lastSearch = window.location.search;
+                        setInterval(() => {
+                          if (window.location.search !== lastSearch) {
+                            lastSearch = window.location.search;
+                            onLocationChange();
+                          }
+                        }, 750);
+                      })();
+                    </script>
+                  </div>
+                <% end %>
+                 
                 <%= metadata %>
                 <% metadata_sections.each do |section| %>
                   <%= section %>
                 <% end %>
 
               </div>
-            </div>
+            </aside>
             <!-- Main Content -->
             <div id="doc-main" class="col">
 
               <% if @document._source["is_serial"]&.first == "No" %>
-              <div>
-                  
-                  <div class="mt-2 d-flex gap-2 flex-wrap" id="download-toolbar"
-                       data-docid="<%= @document._source['id'] %>"
-                       data-arkpath="<%= @document._source['ark'].to_s.gsub('https://n2t.net/ark:/','') %>">
-                   
-                      <button id="toggle-doc-metadata2" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-menu" aria-expanded="true" aria-controls="toggle-menu">
-                          <i class="bi bi-layout-sidebar fs-5" aria-hidden="true"></i><span><%= t('labels.L_RECORD') %></span>
-                      </button>
-                    <a id="btn-download-img" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener" aria-disabled="true">
-                      <i class="bi bi-image fs-5" aria-hidden="true"></i>
-                      <%= t('blacklight.tools.download_image_aria') %>
-                    </a>
-                    <a id="btn-download-page" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener" aria-disabled="true">
-                      <i class="bi bi-file-earmark-arrow-down fs-5" aria-hidden="true"></i>
-                      <%= t('blacklight.tools.download_page_pdf_aria') %>
-                    </a>
-                    <a id="btn-download-full" class="btn btn-outline-custom btn-sm d-inline-flex align-items-center gap-2 fs-6 disabled" target="_blank" rel="noopener" aria-disabled="true">
-                      <i class="bi bi-filetype-pdf fs-5" aria-hidden="true"></i>
-                      <%= t('blacklight.tools.download_full_pdf_aria') %>
-                    </a>
-                    <span id="download-status" class="text-muted small ms-2 d-inline-flex align-items-center gap-1" aria-live="polite" aria-atomic="true">
-                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                      <span class="download-status-text"><%= t('blacklight.tools.download_checking') %></span>
-                    </span>
-                  </div>
-                  <script>
-                    (function(){
-                      const bar = document.getElementById('download-toolbar');
-                      if(!bar) return;
-
-                      const docid = bar.dataset.docid;
-                      const ark = bar.dataset.arkpath;
-
-                      const full = document.getElementById('btn-download-full');
-                      const page = document.getElementById('btn-download-page');
-                      const pageImg = document.getElementById('btn-download-img');
-                      const invalidLinks = new Set();
-
-                      function disableLink(el) {
-                        if (!el) return;
-                        el.classList.add('disabled');
-                        el.setAttribute('aria-disabled', 'true');
-                        el.removeAttribute('href');
-                      }
-
-                      function enableLink(el, href) {
-                        if (!el || !href) return;
-                        el.href = href;
-                        el.classList.remove('disabled');
-                        el.removeAttribute('aria-disabled');
-                      }
-
-                      // Use backend existence flags; no client-side HEAD (avoids CORS).
-                      function setLinkState(el, href, exists) {
-                        if (!el || !href) return disableLink(el);
-                        // Only disable when we explicitly know it does not exist.
-                        if (exists === false) return disableLink(el);
-                        enableLink(el, href);
-                      }
-
-                      // Update links based on current pageNum in the URL
-                      function updateForCurrentPage(data){
-                        if (!data) return;
-                        const status = document.getElementById('download-status');
-                        const statusText = status?.querySelector('.download-status-text');
-                        const statusSpinner = status?.querySelector('.spinner-border');
-                        if (statusText) statusText.textContent = <%= raw t('blacklight.tools.download_checking', default: 'Checking availability...').to_json %>;
-                        if (statusSpinner) statusSpinner.hidden = false;
-
-                        // Full-document PDF (static once data is fetched)
-                        if (full) {
-                          setLinkState(full, data.docPdfUri, data.docPdfExists);
-                        }
-
-                        const params = new URLSearchParams(window.location.search);
-                        let idx = 0;
-                        if (params.has('pageNum')) {
-                          const p = parseInt(params.get('pageNum'), 10);
-                          if (!isNaN(p) && p > 0) idx = p - 1;
-                        }
-
-                        const listPdf = data.canvasDownloadPdfUris || [];
-                        const pdfExists = data.canvasPdfExists || [];
-                        setLinkState(page, listPdf[idx], pdfExists[idx]);
-
-                        const listImg = data.canvasDownloadImgUris || [];
-                        if (pageImg) {
-                          setLinkState(pageImg, listImg[idx], !!listImg[idx]);
-                        }
-
-                        if (status && statusText) {
-                          const anyEnabled = [full, page, pageImg].some(el => el && !el.classList.contains('disabled'));
-                          statusText.textContent = anyEnabled ? '' : <%= raw t('blacklight.tools.download_unavailable', default: 'Not available for this page.').to_json %>;
-                          if (statusSpinner) statusSpinner.hidden = true;
-                        }
-                      }
-
-                      // Fetch once, then update on URL changes
-                      let dlData = null;
-                      fetch(`/dl/${encodeURIComponent(docid)}/${ark}`)
-                        .then(r => r.json())
-                        .then(data => {
-                          dlData = data;
-                          updateForCurrentPage(dlData);
-                        })
-                        .catch(() => {});
-
-                      // Listen for navigation events that may change the query string
-                      function onLocationChange(){ updateForCurrentPage(dlData); }
-                      window.addEventListener('popstate', onLocationChange);
-                      window.addEventListener('hashchange', onLocationChange);
-
-                      // Poll for pageNum changes (covers pushState/replaceState navigation in viewer)
-                      let lastSearch = window.location.search;
-                      setInterval(() => {
-                        if (window.location.search !== lastSearch) {
-                          lastSearch = window.location.search;
-                          onLocationChange();
-                        }
-                      }, 750);
-                    })();
-                  </script>
-
-              </div>
-
-
                 <% if @document._source["ark"] %>
                   <div id="my-mirador" data-docid="<%= @document._source['ark'] %>"></div>
                   
                 <% else %>
-                  <img src="/assets/404.webp" class="not-found-icon"/>
+                  <img src="/assets/404.webp" class="not-found-icon" alt="Item image unavailable" />
                   <p>Sorry, there was a problem loading the images for this item.</p>
                 <% end %>
 
                 <%= render(::IiifComponent.new(document: @document, term: params[:q])) %>
               <% else %>
-              <button id="toggle-doc-metadata3" class="btn btn-outline-custom" type="button" data-bs-toggle="collapse" data-bs-target="#toggle-menu" aria-expanded="true" aria-controls="toggle-menu">
-                  <i class="bi bi-layout-sidebar"></i><span><%= t('labels.L_SERIAL_RECORD') %></span>
-              </button>
                 <%= render CollectionItemsComponent.new(
                   documentId: params[:id],
                   page: params[:page] || 1,

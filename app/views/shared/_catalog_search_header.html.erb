@@ -1,0 +1,90 @@
+<% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<% search_field_options = if is_fr
+  [
+    ['Tous les champs', 'all_fields'],
+    ['Titre', 'full_title_tsim'],
+    ['Createur', 'author_tsim'],
+    ['Sujet', 'subject_tsim'],
+    ['Texte integral', 'tx_gen']
+  ]
+else
+  [
+    ['All Fields', 'all_fields'],
+    ['Title', 'full_title_tsim'],
+    ['Creator', 'author_tsim'],
+    ['Subject', 'subject_tsim'],
+    ['Full Text', 'tx_gen']
+  ]
+end %>
+<%
+  search_tile_images = [
+    { href: 'https://www.canadiana.ca/view/oocihm.8_06061_102/10' },
+    { href: 'https://www.canadiana.ca/view/oocihm.8_06349_193304/1' },
+    { href: 'https://www.canadiana.ca/view/oocihm.8_04191_542/2' },
+    { href: 'https://www.canadiana.ca/view/oocihm.8_06967_385/1' },
+    { href: 'https://www.canadiana.ca/view/oocihm.9_09348/8' },
+    { href: 'https://www.canadiana.ca/view/oon.00001_198104/1' },
+  ]
+%>
+
+<section class="catalog-search-hero" aria-labelledby="catalog-search-hero-title">
+  <div class="catalog-search-hero__grid">
+    <div class="catalog-search-hero__copy">
+      <h1 id="catalog-search-hero-title" class="catalog-search-hero__title">
+        <%= is_fr ? 'Rechercher dans la collection Canadiana' : 'Search the Canadiana Collection' %>
+      </h1>
+      <p class="catalog-search-hero__lede">
+        <% if is_fr %>
+          Le contenu de cette collection comprend des livres, journaux, magazines, publications gouvernementales, cartes et bien plus, de 1500 à aujourd’hui. Le contenu de Canadiana provient en grande partie de la série sur microfiches de l’Institut canadien de microreproductions historiques (ICMH) et des <%= link_to 'bibliothèques membres du RCDR', '/#members-section' %>.
+        <% else %>
+          This collection includes books, newspapers, magazines, government documents, maps, and more from c. 1500 to the present day. Canadiana content is largely drawn from the Canadian Institute for Historic Microreproductions (CIHM) microfiche series and from <%= link_to 'CRKN member libraries', '/#members-section' %>.
+        <% end %>
+      </p>
+    </div>
+
+    <div class="catalog-search-hero__art" aria-hidden="true">
+      <% search_tile_images.each_with_index do |tile, index| %>
+        <a
+          class="catalog-search-hero__tile catalog-search-hero__tile--<%= %w[one two three four five six][index] %>"
+          href="<%= tile[:href] %>"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="visually-hidden"><%= is_fr ? 'Ouvrir l image source dans un nouvel onglet' : 'Open source image in a new tab' %></span>
+        </a>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="navbar-search catalog-search-hero__search" role="navigation" aria-label="<%= is_fr ? 'Recherche' : 'Search' %>">
+    <div class="container">
+      <search>
+        <form class="search-query-form" action="<%= url_for(controller: 'catalog', action: 'index', only_path: true, lang: I18n.locale) %>" accept-charset="UTF-8" method="get">
+          <label class="sr-only visually-hidden" for="catalog_search_field"><%= is_fr ? 'Rechercher dans' : 'Search in' %></label>
+          <div class="input-group">
+            <%= select_tag :search_field,
+                  options_for_select(search_field_options, params[:search_field].presence || 'all_fields'),
+                  id: 'catalog_search_field',
+                  title: (is_fr ? 'Options de recherche ciblees' : 'Targeted search options'),
+                  class: 'custom-select form-select search-field' %>
+
+            <label class="sr-only visually-hidden" for="catalog_search_q"><%= is_fr ? 'rechercher' : 'search for' %></label>
+            <auto-complete src="<%= url_for(controller: 'catalog', action: 'suggest', only_path: true, lang: I18n.locale) %>" for="catalog-autocomplete-popup" class="search-autocomplete-wrapper rounded-0">
+              <input value="<%= params[:q].to_s %>" placeholder="<%= is_fr ? 'Recherche...' : 'Search...' %>" class="search-q q form-control rounded-0" aria-label="<%= is_fr ? 'rechercher' : 'search for' %>" aria-autocomplete="list" aria-controls="catalog-autocomplete-popup" type="search" name="q" id="catalog_search_q" />
+              <ul id="catalog-autocomplete-popup" class="dropdown-menu" role="listbox" aria-label="<%= is_fr ? 'rechercher' : 'search for' %>" hidden></ul>
+            </auto-complete>
+
+            <button class="btn btn-primary search-btn" type="submit" id="catalog-search-submit">
+              <span class="visually-hidden-sm me-sm-1 submit-search-text"><%= is_fr ? 'Recherche' : 'Search' %></span>
+              <span class="blacklight-icons blacklight-icons-search"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="none" d="M0 0h24v24H0V0z"/><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+              </svg></span>
+            </button>
+          </div>
+        </form>
+      </search>
+    </div>
+  </div>
+
+  <div class="catalog-search-hero__applied" data-catalog-applied-params-target></div>
+</section>

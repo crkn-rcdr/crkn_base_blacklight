@@ -9,7 +9,7 @@
     height: 100vh !important;
 }
 .mirador-window-top-bar {
-    min-height: 3.5rem !important;
+    min-height: 4.5rem !important;
     border-top: none !important;
 }
 .mosaic-window {
@@ -39,6 +39,61 @@
         height: fit-content !important;
     }
 }
+
+#my-mirador .mirador-canvas-nav {
+    height: 64px !important;
+    min-height: 64px !important;
+}
+
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"],
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"] {
+    background-color: transparent !important;
+}
+
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"]:hover,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"]:hover,
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"]:active,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"]:active,
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"]:focus,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"]:focus,
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"]:focus-visible,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"]:focus-visible {
+    background-color: transparent !important;
+}
+
+/* Keep active next/prev arrows high-contrast */
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"] i,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"] i {
+    color: #6b7280 !important;
+}
+
+/* Disabled next/prev should look disabled */
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"].Mui-disabled,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"].Mui-disabled,
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"][disabled],
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"][disabled] {
+    opacity: 1 !important;
+    color: #b7bcc4 !important;
+}
+
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"].Mui-disabled i,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"].Mui-disabled i,
+#my-mirador .mirador-canvas-nav [class*="previous-canvas-button"][disabled] i,
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"][disabled] i {
+    color: #b7bcc4 !important;
+}
+
+/* Swap rotate-left / rotate-right icon visuals without changing behavior */
+#my-mirador button[aria-label="Rotate left"] svg,
+#my-mirador button[aria-label="Rotate right"] svg,
+#my-mirador button[aria-label="Tourner a gauche"] svg,
+#my-mirador button[aria-label="Tourner a droite"] svg,
+#my-mirador button[aria-label="Tourner à gauche"] svg,
+#my-mirador button[aria-label="Tourner à droite"] svg {
+    transform: scaleX(-1) !important;
+    transform-origin: center !important;
+}
+
 .mosaic-root {
     inset: 0px !important;
 }

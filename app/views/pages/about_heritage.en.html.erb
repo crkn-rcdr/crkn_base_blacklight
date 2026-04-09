@@ -1,0 +1,150 @@
+<% content_for :page_title, "About the Héritage Collection - #{application_name}" %>
+
+<div class="home-page">
+  <section class="site-section about-intro about-intro--heritage">
+    <div class="canadiana-shell about-intro-grid about-intro-grid--heritage">
+      <div class="about-intro-media">
+        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
+      </div>
+      <div class="about-intro-copy about-intro-copy--heritage">
+        <h1 class="section-title">About the Héritage Collection</h1>
+        <p class="section-lede">
+          The Héritage collection is a joint project supported by CRKN members and <a href="https://www.canada.ca/en/library-archives.html" target="_blank" rel="noopener">Library and Archives Canada</a>
+          (LAC) and draws from the rich resources of archival microfilm held by LAC. With more than 37.5 million pages
+          of primary-source documents, Héritage chronicles Canada and its peoples from the 1600s to the 1980s.
+          Héritage is an unparalleled resource supporting researchers and communities across Canada. CRKN and LAC
+          continue to work together to develop the collection, with approximately 300,000 pages added annually.
+        </p>
+      </div>
+      <div class="about-intro-logo-card" aria-hidden="true">
+        <img class="about-intro-logo" src="<%= asset_path('lac.jpg') %>" alt="Library and Archives Canada logo" loading="lazy">
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="site-section about-modern-section about-modern-section--heritage">
+  <div class="canadiana-shell about-modern-layout">
+    <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title">
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
+        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h1700/190" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h1700.190.jpg') %>" alt="Historic archival manuscript in the Heritage collection" loading="lazy">
+        </a>
+      </article>
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
+        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_c15645/23" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c15645.23.jpg') %>" alt="Government records from the Heritage collection" loading="lazy">
+        </a>
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
+        <h2 class="visually-hidden">Héritage Collection at a glance</h2>
+        <ul>
+          <li>Unique archival records digitized from <a href="https://www.canada.ca/en/library-archives.html" target="_blank" rel="noopener">Library and Archives Canada</a> holdings</li>
+          <li>Approximately 37.5 million pages of primary-source documents</li>
+          <li>Coverage from the 1600s to the mid-1900s</li>
+          <li>Organized into five core subject areas for easier exploration</li>
+          <li>Supports historians, students, and genealogists</li>
+        </ul>
+      </article>
+      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
+        <h2>An Essential Resource</h2>
+        <p>
+          Héritage consists of a wide variety of unique records now being digitized from the treasured holdings of
+          <a href="https://www.canada.ca/en/library-archives.html" target="_blank" rel="noopener">Library and Archives Canada</a>.
+        </p>
+      </article>
+      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
+        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h2270/233" target="_blank" rel="noopener">
+          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h2270.233.jpg') %>" alt="Archival source image from the Heritage collection" loading="lazy">
+        </a>
+      </article>
+    </section>
+
+    <section class="about-modern-block about-modern-block--heritage-cluster" aria-labelledby="heritage-areas-title">
+      <div class="about-modern-block-head">
+        <h2 id="heritage-areas-title">What you can find in the Héritage Collection</h2>
+      </div>
+      <div class="about-modern-collection-grid about-modern-collection-grid--five about-modern-collection-grid--heritage-cluster" data-heritage-cluster-grid>
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Genealogy Materials</h3>
+            <p>Immigration records, church records, land records, family histories and papers, and voters' lists.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Indigenous Peoples</h3>
+            <p>Extensive documents relating to First Nations, M&eacute;tis, and Inuit communities in Canada.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Government Departments</h3>
+            <p>Early records from Indian Affairs, Immigration, Health, Agriculture, Railways and Canals, Fisheries, and Natural Resources.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Military History</h3>
+            <p>Materials covering the War of 1812, First World War, World War II, and military administration in peacetime.</p>
+          </div>
+        </article>
+
+        <article class="about-modern-card about-modern-card--collection">
+          <div class="about-modern-card-body">
+            <h3>Prominent Canadians</h3>
+            <p>Papers from prime ministers, governors general, premiers, cabinet ministers, explorers, scientists, writers, and artists.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-modern-block" aria-labelledby="heritage-use-title">
+      <div class="about-modern-work-grid">
+        <article class="about-modern-card about-modern-card--media">
+          <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_c13421/55" target="_blank" rel="noopener">
+            <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c13421.55.jpg') %>" alt="Research workflow in the Heritage collection" loading="lazy">
+          </a>
+        </article>
+        <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title">
+          <h2 id="heritage-use-title">How to Work with the Collection</h2>
+          <ol>
+            <li>To get started, choose the collection that best matches your research interest. Each collection page includes finding aids and tips for navigating digitized microfilm rolls. This information, drawn from Library and Archives Canada’s <a href="https://recherche-collection-search.bac-lac.gc.ca/eng/home/index" target="_blank" rel="noopener">MIKAN archival catalogue</a>, was generously shared to help ease of access.</li>
+            <li>The basic Search helps guide you to collections that match your keywords. It searches descriptive information, metadata, and, where available, document text. To refine your query, use the tools from <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Navigating the Collections</a>, including exact phrases in quotes and operators like <span style="white-space: nowrap;"><code>?</code>, <code>*</code>, <code>-</code>, and <code>|</code></span>.</li>
+            <li>When you find relevant records, save your evidence using <code>IMG</code>, <code>PAGE</code>, and <code>FULL</code> (if available), and copy the persistent URL from the record.</li>
+            <li>For citation, follow the <a href="<%= citation_guide_path(lang: I18n.locale) %>">Citation Guide</a>: cite Canadiana as the source and include the persistent URL. For publicly available works, please send a copy or link to CRKN.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-modern-block about-modern-block--faq" aria-labelledby="heritage-fulltext-title">
+      <div class="about-modern-block-head">
+        <h2 id="heritage-fulltext-title">FAQ</h2>
+      </div>
+      <div class="about-modern-faq">
+        <details open>
+          <summary>Is full-text search available now?</summary>
+          <p>Very little archival text is currently visible to our search tools.</p>
+        </details>
+        <details>
+          <summary>What is planned for full-text discovery?</summary>
+          <p>
+            Transcribing these records to produce searchable text will take time and resources and remains a major project
+            objective. Future versions of Héritage will support full-text searching as records are transcribed.
+          </p>
+        </details>
+        <details>
+          <summary>What comes next for research support?</summary>
+          <p>
+            Over the coming years, additional research tools and infrastructure for enhanced metadata creation and linking
+            will be developed by Canadiana and its Héritage partners.
+          </p>
+        </details>
+      </div>
+    </section>
+  </div>
+</section>
