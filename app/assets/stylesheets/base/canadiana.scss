@@ -2853,18 +2853,33 @@ summary:focus-visible,
   }
 
   .nav-list.nav-list-main {
-    display: grid;
-    justify-content: start;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: .7rem;
     width: 100%;
   }
 
-  .nav-list.nav-list-main li {
+  .nav-list.nav-list-main > li {
+    display: block !important;
     width: 100%;
   }
 
   .nav-list.nav-list-main a {
     font-size: .96rem;
+  }
+
+  .nav-list.nav-list-main > li > a,
+  .nav-list.nav-list-main .nav-item-dropdown > .nav-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 52px;
+    padding-block: .75rem;
+  }
+
+  .nav-list.nav-list-main > li > a {
+    justify-content: flex-start;
   }
 
   .nav-list.nav-list-main .nav-item-dropdown {
@@ -2877,6 +2892,11 @@ summary:focus-visible,
     width: 100%;
     justify-content: space-between;
     font-size: .96rem;
+  }
+
+  .nav-list.nav-list-main .nav-dropdown-toggle::after {
+    margin-left: auto;
+    flex-shrink: 0;
   }
 
   .nav-list.nav-list-main .nav-dropdown-menu {
@@ -2901,7 +2921,7 @@ summary:focus-visible,
   }
 
   .nav-list.nav-list-main .nav-dropdown-menu::before {
-    top: 2.5rem !important;
+    top: 4.3rem !important;
     bottom: .72rem !important;
     left: .42rem !important;
     width: 3px;
