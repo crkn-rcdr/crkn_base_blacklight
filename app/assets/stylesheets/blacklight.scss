@@ -319,11 +319,11 @@ button i {
 
 #toggle-menu #download-toolbar .download-toolbar-title {
     margin: 1em 0 0;
-    color: inherit;
-    font-size: inherit;
+    color: var(--bl-field-name-color);
+    font-size: 1rem;
     font-weight: bold;
     letter-spacing: normal;
-    line-height: inherit;
+    line-height: 1.5;
 }
 
 #toggle-menu #download-toolbar .download-actions {
@@ -506,6 +506,24 @@ button i {
     border-color: var(--catalog-btn-outline) !important;
 }
 
+.blacklight-catalog-show .document-overview .top-content-title,
+.blacklight-catalog-show .document-overview h1 {
+    font-size: clamp(1.95rem, calc(1.7rem + 1vw), 2.85rem);
+    line-height: 1.1;
+}
+
+.blacklight-catalog-show .document-overview h2 {
+    font-size: clamp(1.35rem, calc(1.2rem + 0.55vw), 1.85rem);
+    line-height: 1.18;
+}
+
+.blacklight-catalog-show .document-overview h3,
+.blacklight-catalog-show #toggle-menu h2,
+.blacklight-catalog-show #toggle-menu h3 {
+    font-size: clamp(1.15rem, calc(1.06rem + 0.36vw), 1.5rem);
+    line-height: 1.2;
+}
+
 @media (min-width: 1400px) {
     .blacklight-catalog-show #main-container.container {
         font-size: 1.18rem;
@@ -516,17 +534,16 @@ button i {
         font-size: 1.2rem;
     }
 
-    .blacklight-catalog-show .top-content-title,
-    .blacklight-catalog-show h1 {
-        font-size: clamp(3rem, 3vw, 4.2rem);
+    .blacklight-catalog-show .document-overview .top-content-title,
+    .blacklight-catalog-show .document-overview h1 {
+        font-size: 2.85rem;
         line-height: 1.06;
     }
 
-    .blacklight-catalog-show h2,
-    .blacklight-catalog-show .document-sidebar-header h2,
+    .blacklight-catalog-show .document-overview h2,
     .blacklight-catalog-show #toggle-menu h2,
     .blacklight-catalog-show #toggle-menu h3 {
-        font-size: 2rem;
+        font-size: 1.6rem;
         line-height: 1.15;
     }
 
@@ -540,10 +557,6 @@ button i {
     .blacklight-catalog-show #toggle-menu .document-metadata dt {
         font-size: 1.02rem;
         margin-top: 1.15rem;
-    }
-
-    #toggle-menu #download-toolbar .download-toolbar-title {
-        font-size: 1.45rem;
     }
 
     #toggle-menu #download-toolbar .sidebar-download-btn {
