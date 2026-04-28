@@ -12,13 +12,14 @@ CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and disco
    ruby -rsecurerandom -e 'puts SecureRandom.hex(64)'
    ```
    Save that value to `config/master.key` or export it as `RAILS_MASTER_KEY`.
-5. Run in development mode (`docker-compose.dev.yml`).
+1. Run the app in development.
    ```bash
    docker compose -f docker-compose.dev.yml up --build --force-recreate
    ```
-6. Run in production mode (`docker-compose.prod.yml`) with DB prepare + server in one container.
+
+1. Run the app in production mode.
    ```bash
-   docker compose -f docker-compose.prod.yml run --rm --service-ports web sh -lc "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3000"
+   docker compose -f docker-compose.prod.yml up --build --force-recreate
    ```
 
 The app will be available at `http://localhost:3000`.
@@ -61,7 +62,7 @@ These steps set up Docker Desktop to build containers in Ubuntu on WSL2.
 5. Copy `.env.example` to `.env` and fill in values.
 6. Run `bin/rails server`.
 
-Optional: run `bin/vite dev` in another terminal for faster frontend rebuilds.
+Optional: run `yarn vite` in another terminal for faster frontend rebuilds.
 
 You can also run `bin/setup` to install dependencies.
 
@@ -132,9 +133,14 @@ High-level steps:
 
 ## Development
 
-Run the container:
+Run the development container:
 ```bash
-docker compose -f docker-compose.dev.yml up
+docker compose -f docker-compose.dev.yml up --build --force-recreate
+```
+
+Run the production container:
+```bash
+docker compose -f docker-compose.prod.yml up --build --force-recreate
 ```
 
 Common in-container commands:
@@ -143,7 +149,7 @@ Common in-container commands:
 - `bin/rails console` - Interactive Rails console.
 - `bin/rails routes` - List routes and controllers.
 - `bin/rails test` - Run tests.
-- `bin/vite dev` - Run the Vite dev server.
+- `yarn vite` - Run the Vite dev server.
 
 Run commands in the dev container:
 
@@ -172,6 +178,16 @@ Notes:
 
 - The script tags the image with a UTC timestamp and optional branch suffix.
 - The script prints a link to create a Systems-Administration issue. Create it and include the image tag.
+
+### Azure-Compatible Docker Build
+
+For Azure App Service / Azure Web App for Containers, build as Linux `amd64`.
+
+Build and push in one step:
+
+```bash
+docker buildx build --platform linux/amd64 -t brilap/crkn-demo:latest --push .
+```
 
 ## Docs
 

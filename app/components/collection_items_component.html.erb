@@ -6,21 +6,21 @@
         <% viewer_id = "osd-#{collection_item['id'].to_s.gsub(/[^a-zA-Z0-9_-]/, '-')}" %>
         <% ark_value = Array(collection_item['ark']).first.to_s.strip %>
         <% ark_id = ark_value.sub('https://n2t.net/ark:/', '') %>
-        <div class="card" style="width: 300px; margin: 0 1.4rem 1rem 0;">
+        <div class="card collection-item-card">
         <div
-          class="card-img-top collection-item__viewer"
+          class="card-img-top collection-item__viewer collection-item__viewer-frame"
           id="<%= viewer_id %>"
           data-ark-id="<%= ark_id %>"
-          style="height: 330px; border-bottom:none; margin-bottom: 0;">
-          <button type="button" class="collection-item__activate"><%= activate_zoom_label %></button>
+          >
+          <button type="button" class="collection-item__activate" aria-pressed="false"><%= activate_zoom_label %></button>
         </div>
           <div class="card-body">
             <% if collection_item['subtitle_tsim'] %>
-              <h5 class="card-title">
+              <h3 class="card-title h5">
                 <a class="" href="/catalog/<%= collection_item['id'] %>">
                   <%= collection_item['subtitle_tsim'][0] %>
                 </a>
-              </h5>
+              </h3>
             <% end %>
 
             <% if collection_item['pub_date_si'] %>
@@ -90,10 +90,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+function initializeCollectionItemViewers() {
   const hasOpenSeadragon = typeof OpenSeadragon !== "undefined";
   const list = document.getElementById("collection-items-list");
   if (!list || !hasOpenSeadragon) return;
+  if (list.dataset.collectionItemsInitialized === "1") return;
+  list.dataset.collectionItemsInitialized = "1";
 
   let activeViewerState = null;
 
@@ -110,7 +112,10 @@ document.addEventListener("DOMContentLoaded", function () {
       viewer.setMouseNavEnabled(false);
     } catch (_error) {}
     container.classList.remove("is-active");
-    if (overlay) overlay.hidden = false;
+    if (overlay) {
+      overlay.hidden = false;
+      overlay.setAttribute("aria-pressed", "false");
+    }
   };
 
   const activateViewer = (viewer, container, overlay) => {
@@ -121,7 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
       viewer.setMouseNavEnabled(true);
     } catch (_error) {}
     container.classList.add("is-active");
-    if (overlay) overlay.hidden = true;
+    if (overlay) {
+      overlay.hidden = true;
+      overlay.setAttribute("aria-pressed", "true");
+    }
     activeViewerState = { viewer, container, overlay };
   };
 
@@ -131,6 +139,14 @@ document.addEventListener("DOMContentLoaded", function () {
     deactivateViewer(activeViewerState);
     activeViewerState = null;
   }, true);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !activeViewerState) return;
+    const overlay = activeViewerState.overlay;
+    deactivateViewer(activeViewerState);
+    activeViewerState = null;
+    if (overlay) overlay.focus();
+  });
 
   list.querySelectorAll(".collection-item__viewer[data-ark-id]").forEach((container) => {
     const arkId = (container.dataset.arkId || "").trim();
@@ -177,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (overlay) {
           overlay.hidden = false;
+          overlay.setAttribute("aria-pressed", "false");
           overlay.addEventListener("click", (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -195,5 +212,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     })();
   });
-});
+}
+
+document.addEventListener("DOMContentLoaded", initializeCollectionItemViewers);
+document.addEventListener("turbo:load", initializeCollectionItemViewers);
+
+if (document.readyState !== "loading") {
+  initializeCollectionItemViewers();
+}
 </script>

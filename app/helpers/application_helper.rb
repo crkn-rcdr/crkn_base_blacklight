@@ -140,6 +140,188 @@ module ApplicationHelper
       "#{field_name}_str"
     end
   end
+
+  # Returns randomized card metadata for the Canadiana/Heritage intro stack.
+  # URL format: https://www.canadiana.ca/view/oocihm.<id>/<page>
+  # Parsing rule: the final numeric segment after the last dot is page,
+  # everything before that final dot is the identifier.
+  def canadiana_stack_cards(count = 12, collection: :canadiana)
+    count = count.to_i
+    count = 12 if count <= 0
+    collection_key = canadiana_stack_collection_key(collection)
+    view_host = canadiana_stack_view_host(collection_key)
+
+    cards = canadiana_stack_asset_names(collection_key)
+      .map { |image| canadiana_stack_card_from_image(image) }
+      .compact
+
+    if cards.empty?
+      cards = canadiana_stack_fallback_images(collection_key)
+        .map { |image| canadiana_stack_card_from_image(image) }
+        .compact
+    end
+
+    return [] if cards.empty?
+
+    cards = cards.map { |card| canadiana_stack_card_with_host(card, view_host) }
+    cards = cards.shuffle
+    return cards.take(count) if cards.length >= count
+
+    # Pad deterministically when fewer cards exist than requested.
+    padded = cards.dup
+    while padded.length < count
+      padded << cards[padded.length % cards.length]
+    end
+    padded
+  end
+
+  # Backward-compatible helper where only image names are needed.
+  def canadiana_stack_image_names(count = 3, collection: :canadiana)
+    canadiana_stack_cards(count, collection: collection).map { |card| card[:image] }
+  end
+
+  private
+
+  def canadiana_stack_asset_names(collection = :canadiana)
+    image_root = Rails.root.join('app/assets/images')
+    collection_key = canadiana_stack_collection_key(collection)
+    collection_root = image_root.join('backgrounds', collection_key)
+    return [] unless Dir.exist?(collection_root)
+
+    allowed_exts = %w[.jpg .jpeg .png .webp]
+
+    Dir.glob(collection_root.join('**/*').to_s)
+      .select { |path| File.file?(path) }
+      .select do |path|
+        ext = File.extname(path).downcase
+        allowed_exts.include?(ext)
+      end
+      .map { |path| path.delete_prefix("#{image_root.to_s}/").delete_prefix("#{image_root.to_s}\\") }
+      .sort
+      .uniq
+  end
+
+  def canadiana_stack_collection_key(collection)
+    key = collection.to_s.strip.downcase
+    return 'heritage' if key == 'heritage'
+
+    'canadiana'
+  end
+
+  def canadiana_stack_fallback_images(collection)
+    case canadiana_stack_collection_key(collection)
+    when 'heritage'
+      %w[
+        backgrounds/heritage/oocihm.lac_reel_c1845.9.jpg
+        backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg
+        backgrounds/heritage/oocihm.lac_reel_h1228.150.jpg
+      ]
+    else
+      %w[
+        backgrounds/canadiana/oocihm.8_06251_308.20.jpg
+        backgrounds/canadiana/oocihm.8_04191_542.2.jpg
+        backgrounds/canadiana/oocihm.08567.22.jpg
+      ]
+    end
+  end
+
+  def canadiana_stack_view_host(collection)
+    return 'https://heritage.canadiana.ca' if canadiana_stack_collection_key(collection) == 'heritage'
+
+    'https://www.canadiana.ca'
+  end
+
+  def canadiana_stack_card_with_host(card, view_host)
+    id = card[:id]
+    page = card[:page]
+    prefix = card[:prefix].presence || 'oocihm'
+    return card if id.blank? || page.blank?
+
+    id_path = "#{prefix}.#{id}/#{page}"
+    url = "#{view_host}/view/#{id_path}"
+    label = canadiana_stack_custom_label_for(url).presence || id_path
+
+    card.merge(
+      label: label,
+      url: url
+    )
+  end
+
+  def canadiana_stack_card_from_image(image)
+    stem = File.basename(image.to_s, File.extname(image.to_s))
+    match = stem.match(/\A(oocihm|oocigm)\.(.+)\z/i)
+    return nil unless match
+
+    prefix = match[1].downcase
+    remainder = match[2]
+    id, page = canadiana_stack_extract_id_and_page(remainder)
+    return nil if id.blank? || page.blank?
+
+    {
+      image: image,
+      prefix: prefix,
+      id: id,
+      page: page,
+      label: "#{prefix}.#{id}/#{page}",
+      url: "https://www.canadiana.ca/view/#{prefix}.#{id}/#{page}"
+    }
+  end
+
+  def canadiana_stack_extract_id_and_page(remainder)
+    text = remainder.to_s
+      .strip
+      .tr('@', '.')
+      .gsub(/\s+/, '')
+      .gsub(/[^0-9A-Za-z_.-]/, '')
+      .gsub(/\.+/, '.')
+      .sub(/\A\./, '')
+      .sub(/\.\z/, '')
+
+    if text.include?('.')
+      id_raw, _separator, page_raw = text.rpartition('.')
+      id_raw = text if id_raw.blank?
+    else
+      id_raw = text
+      page_raw = '1'
+    end
+
+    id = id_raw.to_s.gsub(/[^0-9A-Za-z_-]/, '')
+    page = page_raw.to_s.gsub(/[^0-9A-Za-z-]/, '')
+    page = '1' if page.blank?
+
+    [id, page]
+  end
+
+  def canadiana_stack_custom_label_for(url)
+    canadiana_stack_custom_label_lookup[canadiana_stack_normalize_url(url)]
+  end
+
+  def canadiana_stack_custom_label_lookup
+    @canadiana_stack_custom_label_lookup ||= begin
+      path = Rails.root.join('config', 'home_image_labels.csv')
+      lookup = {}
+      if File.exist?(path)
+        require 'csv'
+        CSV.foreach(path, headers: false, encoding: 'bom|utf-8') do |row|
+          label = row[0].to_s.strip
+          link = canadiana_stack_normalize_url(row[1])
+          next if label.blank? || link.blank?
+
+          lookup[link] = label
+        end
+      end
+      lookup
+    rescue StandardError
+      {}
+    end
+  end
+
+  def canadiana_stack_normalize_url(url)
+    value = url.to_s.strip
+    return '' if value.blank?
+
+    value.sub(%r{/\z}, '')
+  end
 end
 
 

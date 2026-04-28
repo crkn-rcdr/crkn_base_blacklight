@@ -1,0 +1,145 @@
+<% content_for :page_title, "Comparer les collections - #{application_name}" %>
+
+<section class="site-section compare-collections-section blacklight-pages-api_access">
+  <div class="container compare-collections-page api-access-page api-access-page--modern">
+    <div class="compare-frame">
+      <header class="api-hero">
+        <div class="api-hero__grid api-hero__grid--single">
+          <div class="api-hero__copy">
+            <h1 class="section-title">
+              <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
+              <span class="api-hero__title-main">Comparer les collections</span>
+            </h1>
+            <p class="api-lede">Decouvrez des publications numerisees et des archives de partout au Canada.</p>
+            <p>
+              Le RCDR donne acces a deux grandes collections numeriques de patrimoine : la collection Canadiana et la collection Heritage.
+              Les collections Canadiana figurent parmi les plus vastes collections de patrimoine documentaire canadien numerise au monde.
+              Offertes sans frais grace au soutien continu des membres du RCDR par l'entremise du fonds Heritage Content Access and Preservation (HCAP),
+              ces collections offrent des millions de pages de contenu patrimonial aux chercheurs du monde entier.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div class="compare-hero-grid">
+        <div class="compare-hero-spacer" aria-hidden="true"></div>
+        <article class="compare-collection-card">
+          <img src="<%= asset_path('monog.jpg') %>" alt="Livres et periodiques de la collection Canadiana" loading="lazy">
+          <div class="compare-collection-body">
+            <h3>Collection Canadiana</h3>
+            <p class="compare-collection-type">Patrimoine publie</p>
+            <p class="compare-collection-metric">31M+ pages</p>
+          </div>
+        </article>
+
+        <article class="compare-collection-card">
+          <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Documents d'archives de la collection Heritage" loading="lazy">
+          <div class="compare-collection-body">
+            <h3>Collection Heritage</h3>
+            <p class="compare-collection-type">Microfilms d'archives</p>
+            <p class="compare-collection-metric">60M pages projetees (37.5M pages actuelles)</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="compare-spec-scroll">
+        <table class="compare-spec-table">
+          <caption class="visually-hidden">Comparaison des collections Canadiana et Heritage</caption>
+          <colgroup>
+            <col class="compare-col-feature">
+            <col class="compare-col-value">
+            <col class="compare-col-value">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden">Critère</span></th>
+              <th scope="col"><span class="visually-hidden">Collection Canadiana</span></th>
+              <th scope="col"><span class="visually-hidden">Collection Héritage</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Orientation principale</th>
+              <td>Patrimoine canadien publie : livres, periodiques, cartes et publications gouvernementales.</td>
+              <td>Dossiers d'archives sur microfilm de Bibliotheque et Archives Canada et de partenaires.</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Periode couverte</th>
+              <td>v. 1500 a aujourd'hui</td>
+              <td>Des annees 1600 au milieu des annees 1900</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Taille de la collection</th>
+              <td>Environ 31 millions de pages</td>
+              <td>Environ 60 millions de pages projetees (37 millions de pages actuellement)</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Materiaux genealogiques</th>
+              <td>Limite</td>
+              <td>Couverture importante, incluant dossiers familiaux, immigration et listes electorales</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Histoire autochtone</th>
+              <td>Forte dans les publications de recherche et d'analyse</td>
+              <td>Forte dans les dossiers d'archives et les fonds gouvernementaux</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Journaux et magazines</th>
+              <td><span class="compare-token compare-token--yes">Oui</span></td>
+              <td><span class="compare-token compare-token--no">Non</span></td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Cartes</th>
+              <td><span class="compare-token compare-token--yes">Oui</span></td>
+              <td><span class="compare-token compare-token--no">Non</span></td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Documents militaires</th>
+              <td>Selection de publications historiques militaires</td>
+              <td>Documentation archivistique militaire etendue</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="true">
+              <th scope="row">Mode d'acces</th>
+              <td>Accessible via la plateforme Canadiana pour les communautes membres du RCDR</td>
+              <td>Accessible via la plateforme Canadiana pour les communautes membres du RCDR</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Ideale pour</th>
+              <td>La decouverte de sources publiees, la recherche periodique et l'analyse de la culture imprimee.</td>
+              <td>La recherche archivistique de sources primaires, la genealogie et l'histoire documentaire gouvernementale.</td>
+            </tr>
+            <tr class="compare-spec-row compare-spec-row--action" data-equal="false">
+              <th scope="row"><span class="visually-hidden">Parcourir</span></th>
+              <td><a class="compare-action-link" href="<%= about_canadiana_path(lang: I18n.locale) %>">Aller a Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link" href="<%= about_heritage_path(lang: I18n.locale) %>">Aller a Heritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <section class="api-card mt-3">
+        <p>
+          Le RCDR reconnaît que les collections Canadiana, en tant que ressources développées au cours de décennies de collecte
+          et de préservation de documents, contiennent des contenus offensifs et teintés de préjugés, contribuant à donner du
+          Canada une image incomplète, déformée et préjudiciable. Nous sommes déterminés à redéfinir les principes qui
+          sous-tendent les collections, en veillant à ce que leur développement soit fermement ancré dans notre engagement
+          envers la réconciliation et la justice. Le RCDR s'emploie actuellement à
+          <a href="https://www.crkn-rcdr.ca/fr/appel-de-projets-de-developpement-de-la-collection-canadiana" target="_blank" rel="noopener">développer la collection</a>
+          avec du contenu
+          provenant des collections des membres et des parties prenantes, tout en accordant la priorité aux documents à risque,
+          aux journaux et aux contenus représentatifs de la diversité de la population canadienne.
+        </p>
+        <p class="mb-0">
+          Les collections de Canadiana sont encadrées par le
+          <a href="https://www.crkn-rcdr.ca/fr/comite-de-preservation-et-dacces" target="_blank" rel="noopener">Comité de préservation et d'accès</a> (CPA)
+          et les sous-comités du CPA, le
+          <a href="https://www.crkn-rcdr.ca/fr/sous-comite-sur-le-contenu-de-canadiana-sccc" target="_blank" rel="noopener">Sous-comité sur le contenu de Canadiana</a>
+          et le
+          <a href="https://www.crkn-rcdr.ca/fr/sous-comite-technique-sur-les-plateformes-sctp" target="_blank" rel="noopener">Sous-comité technique sur les plateformes</a>.
+          Pour en savoir plus
+          sur les collections de Canadiana, contactez-nous à <a href="mailto:info@crkn.ca">info@crkn.ca</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</section>

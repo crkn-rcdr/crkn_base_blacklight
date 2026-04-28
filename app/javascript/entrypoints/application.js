@@ -1,3 +1,5 @@
+import Lenis from 'lenis'
+
 // To see this message, add the following to the `<head>` section in your
 // views/layouts/application.html.erb
 //
@@ -29,9 +31,372 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 //import "../javascript/application"
 console.log("mirador", Mirador)
 
+let lenisInstance = null
+let lenisRafStarted = false
+let homeExhibitionLenisUnsubscribe = null
+let homeExhibitionResizeBound = false
+
+const rafLenis = (time) => {
+  if (lenisInstance) {
+    lenisInstance.raf(time)
+  }
+  window.requestAnimationFrame(rafLenis)
+}
+
+const initLenis = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (lenisInstance) {
+      lenisInstance.destroy()
+      lenisInstance = null
+    }
+    return
+  }
+
+  if (!lenisInstance) {
+    lenisInstance = new Lenis({
+      duration: 1.05,
+      smoothWheel: true,
+      smoothTouch: false,
+      prevent: (node) => {
+        if (!(node instanceof Element)) return false
+
+        return Boolean(
+          node.closest(
+            '#my-mirador, .mirador-viewer, .mirador-window, .mirador-thumbnail-nav-container, [class*="GalleryView"], [class*="ThumbnailNav"], [class*="Thumbnail"], [data-lenis-prevent], .modal, dialog'
+          )
+        )
+      }
+    })
+  }
+
+  if (!lenisRafStarted) {
+    lenisRafStarted = true
+    window.requestAnimationFrame(rafLenis)
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initLenis)
+document.addEventListener('turbo:load', initLenis)
+
+let activeHomeExhibitionCard = null
+let homeExhibitionPreviewBehaviorInstalled = false
+let homeExhibitionActivationLockUntil = 0
+
+const setHomeExhibitionCardState = (card, isActive) => {
+  if (!card) return
+
+  const frame = card.querySelector('.home-exhibition-preview__frame')
+  if (!frame) return
+
+  if (!frame.dataset.initialSrc) {
+    frame.dataset.initialSrc = frame.src
+  }
+
+  card.classList.toggle('is-active', isActive)
+  frame.classList.toggle('is-interactive', isActive)
+  frame.dataset.exhibitionInteractive = isActive ? 'true' : 'false'
+  frame.tabIndex = isActive ? 0 : -1
+}
+
+const resetHomeExhibitionCardFrame = (card) => {
+  if (!card) return
+
+  const frame = card.querySelector('.home-exhibition-preview__frame')
+  if (!frame) return
+
+  const initialSrc = frame.dataset.initialSrc || frame.getAttribute('src')
+  if (!initialSrc) return
+
+  frame.src = initialSrc
+}
+
+const deactivateHomeExhibitionCard = (card) => {
+  if (!card) return
+  setHomeExhibitionCardState(card, false)
+  if (activeHomeExhibitionCard === card) activeHomeExhibitionCard = null
+}
+
+const activateHomeExhibitionCard = (card) => {
+  if (!card) return
+  if (activeHomeExhibitionCard && activeHomeExhibitionCard !== card) {
+    deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+  }
+
+  setHomeExhibitionCardState(card, true)
+  activeHomeExhibitionCard = card
+}
+
+const lockHomeExhibitionActivation = (durationMs = 1400) => {
+  homeExhibitionActivationLockUntil = Date.now() + durationMs
+}
+
+const isHomeExhibitionActivationLocked = () => Date.now() < homeExhibitionActivationLockUntil
+
+const scrollToHomeExhibitionCard = (card) => {
+  if (!card) return
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+}
+
+const scrollPageToHomeExhibitionCard = (card) => {
+  if (!card) return
+
+  const previewSection = document.querySelector('.home-exhibition-preview')
+  const metrics = getHomeExhibitionStageMetrics(previewSection)
+  if (previewSection && metrics && isDesktopHomeExhibitionLayout() && metrics.maxScrollLeft > 0) {
+    const targetScrollLeft = card.offsetLeft + (card.offsetWidth / 2) - (metrics.grid.clientWidth / 2)
+    const clampedScrollLeft = Math.max(0, Math.min(metrics.maxScrollLeft, targetScrollLeft))
+    const currentScrollY = lenisInstance?.scroll ?? window.scrollY
+    const stageTop = currentScrollY + metrics.stage.getBoundingClientRect().top
+    const progressStart = stageTop - metrics.pinTop
+    const targetScrollY = progressStart + clampedScrollLeft
+
+    if (lenisInstance) {
+      lenisInstance.scrollTo(targetScrollY)
+    } else {
+      window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+    }
+    return
+  }
+
+  const currentScrollY = lenisInstance?.scroll ?? window.scrollY
+  const cardRect = card.getBoundingClientRect()
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+  const targetScrollY = currentScrollY + cardRect.top - ((viewportHeight - cardRect.height) / 2)
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(targetScrollY)
+  } else {
+    window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+  }
+}
+
+const isDesktopHomeExhibitionLayout = () => window.matchMedia('(min-width: 993px)').matches
+
+const getHomeExhibitionStageMetrics = (section) => {
+  if (!section?.isConnected) return null
+
+  const stage = section.querySelector('.home-exhibition-preview__stage')
+  const pin = section.querySelector('.home-exhibition-preview__pin')
+  const grid = section.querySelector('.home-exhibition-preview__grid')
+  if (!stage || !pin || !grid) return null
+
+  const maxScrollLeft = Math.max(0, grid.scrollWidth - grid.clientWidth)
+  const pinTop = Number.parseFloat(window.getComputedStyle(pin).top) || 0
+  const scrollSpan = Math.max(1, maxScrollLeft)
+
+  return { stage, pin, grid, maxScrollLeft, pinTop, scrollSpan }
+}
+
+const layoutHomeExhibitionStage = (section) => {
+  const metrics = getHomeExhibitionStageMetrics(section)
+  if (!metrics) return null
+
+  const { stage, pin, maxScrollLeft, pinTop, scrollSpan } = metrics
+
+  if (!isDesktopHomeExhibitionLayout() || maxScrollLeft <= 0) {
+    stage.style.removeProperty('height')
+    pin.classList.remove('is-pinned')
+    metrics.grid.scrollLeft = 0
+    section.classList.remove('is-pinned')
+    return metrics
+  }
+
+  stage.style.height = `${pin.offsetHeight + scrollSpan + pinTop}px`
+  return metrics
+}
+
+const syncHomeExhibitionStage = (section, scrollY = window.scrollY) => {
+  const metrics = layoutHomeExhibitionStage(section)
+  if (!metrics) return
+
+  const { stage, pin, grid, maxScrollLeft, pinTop, scrollSpan } = metrics
+  if (!isDesktopHomeExhibitionLayout() || maxScrollLeft <= 0) return
+
+  const stageTop = scrollY + stage.getBoundingClientRect().top
+  const progressStart = stageTop - pinTop
+  const rawProgress = scrollY - progressStart
+  const clampedProgress = Math.max(0, Math.min(scrollSpan, rawProgress))
+  const scrollProgress = clampedProgress / scrollSpan
+
+  grid.scrollLeft = maxScrollLeft * scrollProgress
+
+  const isPinned = clampedProgress > 0 && clampedProgress < scrollSpan
+  pin.classList.toggle('is-pinned', isPinned)
+  section.classList.toggle('is-pinned', isPinned)
+
+  if (!isPinned && activeHomeExhibitionCard && !isHomeExhibitionActivationLocked()) {
+    const cardToReset = activeHomeExhibitionCard
+    deactivateHomeExhibitionCard(cardToReset)
+    resetHomeExhibitionCardFrame(cardToReset)
+  }
+}
+
+const bindHomeExhibitionPreviewToLenis = (section, grid) => {
+  if (homeExhibitionLenisUnsubscribe) {
+    homeExhibitionLenisUnsubscribe()
+    homeExhibitionLenisUnsubscribe = null
+  }
+
+  if (!section || !grid) return
+
+  const sync = (scrollY = lenisInstance?.scroll ?? window.scrollY) => {
+    syncHomeExhibitionStage(section, scrollY)
+  }
+
+  sync()
+
+  if (lenisInstance) {
+    homeExhibitionLenisUnsubscribe = lenisInstance.on('scroll', ({ scroll }) => {
+      sync(scroll)
+    })
+  }
+
+  if (!homeExhibitionResizeBound) {
+    window.addEventListener('resize', () => {
+      const previewSection = document.querySelector('.home-exhibition-preview')
+      if (!previewSection) return
+
+      layoutHomeExhibitionStage(previewSection)
+      syncHomeExhibitionStage(previewSection, lenisInstance?.scroll ?? window.scrollY)
+    })
+    homeExhibitionResizeBound = true
+  }
+}
+
+const resetHomeExhibitionPreview = () => {
+  document
+    .querySelectorAll('.home-exhibition-preview__card')
+    .forEach((card) => {
+      deactivateHomeExhibitionCard(card)
+      resetHomeExhibitionCardFrame(card)
+    })
+}
+
+const installHomeExhibitionPreviewBehavior = () => {
+  const section = document.querySelector('.home-exhibition-preview')
+  if (!section) return
+  const grid = section.querySelector('.home-exhibition-preview__grid')
+
+  section.querySelectorAll('.home-exhibition-preview__card').forEach((card) => {
+    setHomeExhibitionCardState(card, false)
+  })
+  activeHomeExhibitionCard = null
+
+  bindHomeExhibitionPreviewToLenis(section, grid)
+
+  if (homeExhibitionPreviewBehaviorInstalled) return
+
+  document.addEventListener('click', (event) => {
+    const navButton = event.target.closest('.home-exhibition-preview__nav-button')
+    if (navButton) {
+      const currentCard = navButton.closest('.home-exhibition-preview__card')
+      if (!currentCard) return
+
+      const direction = navButton.dataset.exhibitNav
+      const targetCard = direction === 'prev'
+        ? currentCard.previousElementSibling
+        : currentCard.nextElementSibling
+
+      if (activeHomeExhibitionCard) {
+        deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+      }
+
+      if (targetCard?.classList.contains('home-exhibition-preview__card')) {
+        const previewSection = document.querySelector('.home-exhibition-preview')
+        const metrics = getHomeExhibitionStageMetrics(previewSection)
+
+        if (previewSection && metrics && isDesktopHomeExhibitionLayout() && metrics.maxScrollLeft > 0) {
+          const targetScrollLeft = targetCard.offsetLeft
+          const clampedScrollLeft = Math.max(0, Math.min(metrics.maxScrollLeft, targetScrollLeft))
+          const currentScrollY = lenisInstance?.scroll ?? window.scrollY
+          const stageTop = currentScrollY + metrics.stage.getBoundingClientRect().top
+          const progressStart = stageTop - metrics.pinTop
+          const targetScrollY = progressStart + clampedScrollLeft
+
+          if (lenisInstance) {
+            lenisInstance.scrollTo(targetScrollY)
+          } else {
+            window.scrollTo({ top: targetScrollY, behavior: 'smooth' })
+          }
+        } else {
+          scrollToHomeExhibitionCard(targetCard)
+        }
+      }
+      return
+    }
+
+    const activateButton = event.target.closest('.home-exhibition-preview__activate')
+    if (activateButton) {
+      const card = activateButton.closest('.home-exhibition-preview__card')
+      lockHomeExhibitionActivation()
+      scrollPageToHomeExhibitionCard(card)
+      activateHomeExhibitionCard(card)
+      return
+    }
+
+    if (activeHomeExhibitionCard && !event.target.closest('.home-exhibition-preview__card')) {
+      deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+    }
+  })
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && activeHomeExhibitionCard) {
+      deactivateHomeExhibitionCard(activeHomeExhibitionCard)
+    }
+  })
+
+  document.addEventListener('turbo:before-cache', () => {
+    resetHomeExhibitionPreview()
+    if (homeExhibitionLenisUnsubscribe) {
+      homeExhibitionLenisUnsubscribe()
+      homeExhibitionLenisUnsubscribe = null
+    }
+
+    const previewSection = document.querySelector('.home-exhibition-preview')
+    if (previewSection) {
+      const metrics = getHomeExhibitionStageMetrics(previewSection)
+      metrics?.stage.style.removeProperty('height')
+      metrics?.pin.classList.remove('is-pinned')
+      previewSection.classList.remove('is-pinned')
+    }
+  })
+  homeExhibitionPreviewBehaviorInstalled = true
+}
+
+document.addEventListener('DOMContentLoaded', installHomeExhibitionPreviewBehavior)
+document.addEventListener('turbo:load', installHomeExhibitionPreviewBehavior)
+
+if (document.readyState !== 'loading') {
+  installHomeExhibitionPreviewBehavior()
+}
+
 let pageViewer = document.getElementById("my-mirador")
 if(pageViewer) {
+    pageViewer.setAttribute('data-lenis-prevent', 'true')
     let language = document.documentElement.lang || "en";
+    const workspaceLabel = language.startsWith('fr') ? 'Espace de travail' : 'Workspace';
+
+    const demoteMiradorMainLandmark = () => {
+      const nestedMain = pageViewer.querySelector('main.mirador-viewer');
+      if (!nestedMain) return;
+
+      const replacement = document.createElement('div');
+      Array.from(nestedMain.attributes).forEach(({ name, value }) => {
+        replacement.setAttribute(name, value);
+      });
+
+      replacement.removeAttribute('role');
+      replacement.setAttribute('role', 'region');
+      if (!replacement.hasAttribute('aria-label') && !replacement.hasAttribute('aria-labelledby')) {
+        replacement.setAttribute('aria-label', workspaceLabel);
+      }
+
+      while (nestedMain.firstChild) {
+        replacement.appendChild(nestedMain.firstChild);
+      }
+      nestedMain.replaceWith(replacement);
+    };
+
     const documentId = pageViewer.getAttribute("data-docid")
     let contentSearch = {}
     //let canvasIndex = 0
@@ -184,6 +549,13 @@ if(pageViewer) {
     let miradorViewer = Mirador.viewer(mconfig);
     console.log("miradorViewer", miradorViewer)
 
+    demoteMiradorMainLandmark();
+    const miradorLandmarkObserver = new MutationObserver(() => {
+      demoteMiradorMainLandmark();
+    });
+    miradorLandmarkObserver.observe(pageViewer, { childList: true, subtree: true });
+    window.addEventListener('beforeunload', () => miradorLandmarkObserver.disconnect(), { once: true });
+
     miradorViewer.store.subscribe((e) => {
       console.log("m?", e)
     })
@@ -202,6 +574,29 @@ function enhanceSearchBar(rootSelector) {
   const input = root.querySelector('input#q');
   const submit = root.querySelector('#search');
   if (!form || !input || !submit) return;
+
+  const body = document.body;
+  const isCatalogPageSearch = root.matches('.navbar-search') && (
+    body.classList.contains('blacklight-catalog-show') ||
+    body.classList.contains('blacklight-catalog-index')
+  );
+
+  if (isCatalogPageSearch && !root.querySelector('.catalog-show-search-heading')) {
+    const headingContainer = document.createElement('div');
+    headingContainer.className = 'container';
+
+    const heading = document.createElement('h1');
+    heading.id = 'catalog-show-search-heading';
+    heading.className = 'catalog-show-search-heading';
+    heading.textContent = (document.documentElement.lang || 'en').startsWith('fr')
+      ? 'Rechercher dans la collection Canadiana'
+      : 'Search the Canadiana Collection';
+
+    headingContainer.appendChild(heading);
+    root.insertBefore(headingContainer, root.firstChild);
+    root.setAttribute('aria-labelledby', heading.id);
+    root.removeAttribute('aria-label');
+  }
 
   // Prevent duplicate clear button
   if (submit.previousElementSibling && submit.previousElementSibling.classList?.contains('btn-clear-search')) return;
@@ -337,12 +732,19 @@ function initTypedPlaceholders() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initSearchBarEnhancements() {
   enhanceSearchBar('.navbar-search');
   enhanceSearchBar('.home-search');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initSearchBarEnhancements();
   initTypedPlaceholders();
 });
-document.addEventListener('turbo:load', initTypedPlaceholders);
+document.addEventListener('turbo:load', () => {
+  initSearchBarEnhancements();
+  initTypedPlaceholders();
+});
 
 // Page search: fetch IIIF search + manifest on the client so the Rails render doesn't block
 function getMetaContent(name) {
@@ -610,17 +1012,24 @@ function initMembersSection() {
     const clearBtn = section.querySelector('.btn-clear-members');
     const emptyState = section.querySelector('[data-members-empty]');
 
-    let activeGroup = 'institutional';
-    let activeProvince = 'all';
+    let activeGroup = section.querySelector('[data-members-tab].active')?.dataset.membersTab || 'institutional';
+    let activeProvince = section.querySelector('.chip-filter.active')?.dataset.province || 'all';
     let text = '';
 
     const applyFilters = () => {
       let hasVisibleItems = false;
+      const activeChip = section.querySelector('.chip-filter.active');
+      activeProvince = activeChip?.dataset?.province || activeProvince || 'all';
+      const hasActiveFilter = activeProvince !== 'all' || text !== '';
 
       groups.forEach((group) => {
         const isActiveGroup = group.dataset.membersGroup === activeGroup;
         group.classList.toggle('d-none', !isActiveGroup);
+        group.setAttribute('aria-hidden', isActiveGroup ? 'false' : 'true');
+        group.classList.toggle('is-filtered-view', isActiveGroup && hasActiveFilter);
         if (!isActiveGroup) return;
+
+        const seenMemberNames = new Set();
 
         group.querySelectorAll('.members-marquee-row').forEach((row) => {
           let rowHasVisibleItem = false;
@@ -628,13 +1037,18 @@ function initMembersSection() {
           row.querySelectorAll('.member-logo').forEach((logo) => {
             const prov = logo.dataset.province || '';
             const name = logo.dataset.memberName || '';
-            const isClone = logo.dataset.memberClone === 'true';
+            const isClone = logo.dataset.memberClone === 'true' || logo.getAttribute('tabindex') === '-1';
             const provinceMatch = activeProvince === 'all' || prov === activeProvince;
             const textMatch = text === '' || name.includes(text);
             const isVisible = provinceMatch && textMatch;
+            const isDuplicateName = hasActiveFilter && seenMemberNames.has(name);
+            const shouldShowLogo = isVisible && (!hasActiveFilter || (!isClone && !isDuplicateName));
 
-            logo.classList.toggle('is-filtered-out', !isVisible);
-            if (isVisible && !isClone) rowHasVisibleItem = true;
+            logo.classList.toggle('is-filtered-out', !shouldShowLogo);
+            if (shouldShowLogo && !isClone) {
+              seenMemberNames.add(name);
+              rowHasVisibleItem = true;
+            }
           });
 
           row.classList.toggle('d-none', !rowHasVisibleItem);
@@ -645,21 +1059,52 @@ function initMembersSection() {
       if (emptyState) emptyState.classList.toggle('d-none', hasVisibleItems);
     };
 
+    const activateTab = (btn) => {
+      tabs.forEach((item) => {
+        const selected = item === btn;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-selected', selected ? 'true' : 'false');
+        item.setAttribute('tabindex', selected ? '0' : '-1');
+      });
+      activeGroup = btn.dataset.membersTab || 'institutional';
+      applyFilters();
+    };
+
     tabs.forEach((btn) => {
       btn.addEventListener('click', () => {
-        tabs.forEach((item) => item.classList.remove('active'));
-        btn.classList.add('active');
-        activeGroup = btn.dataset.membersTab || 'institutional';
-        applyFilters();
+        activateTab(btn);
+      });
+      btn.addEventListener('keydown', (event) => {
+        const keys = ['ArrowRight', 'ArrowLeft', 'Home', 'End'];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+        const tabArray = Array.from(tabs);
+        const currentIndex = tabArray.indexOf(btn);
+        let nextIndex = currentIndex;
+        if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabArray.length;
+        if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabArray.length - 1;
+        const nextTab = tabArray[nextIndex];
+        if (!nextTab) return;
+        activateTab(nextTab);
+        nextTab.focus();
       });
     });
 
+    const activateProvince = (chip) => {
+      filterChips.forEach((item) => {
+        const selected = item === chip;
+        item.classList.toggle('active', selected);
+        item.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+      activeProvince = chip.dataset.province || 'all';
+      applyFilters();
+    };
+
     filterChips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        filterChips.forEach((item) => item.classList.remove('active'));
-        chip.classList.add('active');
-        activeProvince = chip.dataset.province || 'all';
-        applyFilters();
+        activateProvince(chip);
       });
     });
 
@@ -682,7 +1127,11 @@ function initMembersSection() {
       });
     }
 
-    applyFilters();
+    const selectedTab = section.querySelector('[data-members-tab].active') || tabs[0];
+    if (selectedTab) activateTab(selectedTab);
+    const selectedProvince = section.querySelector('.chip-filter.active') || filterChips[0];
+    if (selectedProvince) activateProvince(selectedProvince);
+    else applyFilters();
   });
 }
 
@@ -758,3 +1207,202 @@ function initExploreSliders() {
 }
 
 document.addEventListener('DOMContentLoaded', initExploreSliders);
+
+let scrollRevealObserver = null;
+
+function shouldInitScrollRevealText() {
+  const body = document.body;
+  if (!body) return false;
+  return (
+    body.classList.contains('blacklight-pages-home') ||
+    body.classList.contains('blacklight-pages-about_canadiana') ||
+    body.classList.contains('blacklight-pages-about_heritage')
+  );
+}
+
+function collectScrollRevealTargets(root) {
+  const selector = [
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'p',
+    'li',
+    'summary',
+    'blockquote',
+    'figcaption',
+    'a.home-inline-link',
+    'a.hero-secondary-link',
+    'a.hero-primary-btn',
+    'a.about-modern-cta',
+    'a.home-statement-cta'
+  ].join(', ');
+
+  return Array.from(root.querySelectorAll(selector)).filter((element) => {
+    if (element.dataset.scrollRevealBound === '1') return false;
+    if (element.classList.contains('visually-hidden') || element.closest('.visually-hidden')) return false;
+    return (element.textContent || '').trim().length > 0;
+  });
+}
+
+function initScrollRevealText() {
+  if (!shouldInitScrollRevealText()) return;
+
+  const body = document.body;
+  const isHome = body.classList.contains('blacklight-pages-home');
+  const isAbout =
+    body.classList.contains('blacklight-pages-about_canadiana') ||
+    body.classList.contains('blacklight-pages-about_heritage');
+
+  let roots = [];
+  if (isHome) {
+    roots = Array.from(document.querySelectorAll('.home-page'));
+  } else if (isAbout) {
+    roots = Array.from(document.querySelectorAll('#main-container'));
+  }
+
+  if (!roots.length) return;
+
+  const targets = [];
+  roots.forEach((root) => {
+    targets.push(...collectScrollRevealTargets(root));
+  });
+  if (!targets.length) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    targets.forEach((element) => {
+      element.dataset.scrollRevealBound = '1';
+      element.classList.add('scroll-reveal-text', 'is-visible');
+    });
+    return;
+  }
+
+  if (!scrollRevealObserver) {
+    scrollRevealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }
+    );
+  }
+
+  targets.forEach((element, index) => {
+    element.dataset.scrollRevealBound = '1';
+    element.classList.add('scroll-reveal-text');
+    element.style.setProperty('--scroll-reveal-delay', `${(index % 8) * 30}ms`);
+    scrollRevealObserver.observe(element);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initScrollRevealText);
+document.addEventListener('turbo:load', initScrollRevealText);
+
+let aboutFeaturePanTargets = [];
+let aboutFeaturePanRafId = null;
+let aboutFeaturePanListenersBound = false;
+
+function shouldInitAboutFeaturePan() {
+  const body = document.body;
+  if (!body) return false;
+  return (
+    body.classList.contains('blacklight-pages-about_canadiana') ||
+    body.classList.contains('blacklight-pages-about_heritage')
+  );
+}
+
+function queueAboutFeaturePanUpdate() {
+  if (aboutFeaturePanRafId !== null) return;
+  aboutFeaturePanRafId = window.requestAnimationFrame(() => {
+    aboutFeaturePanRafId = null;
+    if (!aboutFeaturePanTargets.length) return;
+
+    const viewportHeight = Math.max(window.innerHeight || 0, 1);
+    aboutFeaturePanTargets.forEach((img) => {
+      const mediaCard = img.closest('.about-modern-card--media');
+      if (!mediaCard) return;
+
+      const rect = mediaCard.getBoundingClientRect();
+      const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+      const clamped = Math.max(0, Math.min(1, progress));
+      img.style.setProperty('--about-scroll-pan-y', `${(clamped * 100).toFixed(2)}%`);
+    });
+  });
+}
+
+function initAboutFeaturePan() {
+  if (!shouldInitAboutFeaturePan()) {
+    aboutFeaturePanTargets = [];
+    return;
+  }
+
+  aboutFeaturePanTargets = Array.from(
+    document.querySelectorAll(
+      '.about-modern-feature-grid .about-modern-card--media img, .about-modern-work-grid .about-modern-card--media img'
+    )
+  );
+  if (!aboutFeaturePanTargets.length) return;
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  aboutFeaturePanTargets.forEach((img) => {
+    img.dataset.scrollPan = '1';
+    img.style.setProperty('--about-scroll-pan-y', prefersReducedMotion ? '50%' : '0%');
+  });
+
+  if (prefersReducedMotion) return;
+
+  queueAboutFeaturePanUpdate();
+
+  if (aboutFeaturePanListenersBound) return;
+
+  window.addEventListener('scroll', queueAboutFeaturePanUpdate, { passive: true });
+  window.addEventListener('resize', queueAboutFeaturePanUpdate);
+  aboutFeaturePanListenersBound = true;
+}
+
+document.addEventListener('DOMContentLoaded', initAboutFeaturePan);
+document.addEventListener('turbo:load', initAboutFeaturePan);
+
+function syncCanadianaWorkGridHeights() {
+  const body = document.body;
+  if (!body || !body.classList.contains('blacklight-pages-about_canadiana')) return;
+
+  const workGrid = document.querySelector('.about-modern-work-grid');
+  if (!workGrid) return;
+
+  const mediaCard = workGrid.querySelector('.about-modern-card--media');
+  const stepsCard = workGrid.querySelector('.about-modern-card--steps');
+  if (!mediaCard || !stepsCard) return;
+
+  mediaCard.style.removeProperty('--canadiana-work-card-height');
+
+  if (window.innerWidth < 993) return;
+
+  const stepsHeight = stepsCard.getBoundingClientRect().height;
+  if (stepsHeight > 0) {
+    mediaCard.style.setProperty('--canadiana-work-card-height', `${stepsHeight}px`);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', syncCanadianaWorkGridHeights);
+document.addEventListener('turbo:load', syncCanadianaWorkGridHeights);
+window.addEventListener('resize', syncCanadianaWorkGridHeights);
+
+function moveCatalogAppliedParams() {
+  const target = document.querySelector('[data-catalog-applied-params-target]');
+  const appliedParams = document.querySelector('.blacklight-catalog-index #appliedParams');
+
+  if (!target || !appliedParams) return;
+  if (target.contains(appliedParams)) return;
+
+  target.appendChild(appliedParams);
+}
+
+document.addEventListener('DOMContentLoaded', moveCatalogAppliedParams);
+document.addEventListener('turbo:load', moveCatalogAppliedParams);

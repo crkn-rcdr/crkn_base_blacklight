@@ -3,6 +3,7 @@ FROM ruby:3.4.1-slim AS base
 
 ENV RAILS_ENV=production \
     NODE_ENV=production \
+    RAILS_SERVE_STATIC_FILES=true \
     BUNDLE_WITHOUT="development:test" \
     BUNDLE_PATH=/usr/local/bundle
 
@@ -62,7 +63,10 @@ COPY --from=build /app/Rakefile /app/Rakefile
 COPY --from=build /app/config.ru /app/config.ru
 
 RUN mkdir -p /app/tmp /app/log /app/storage
+RUN sed -i 's/\r$//' /app/bin/* \
+  && sed -i '1s/ruby\.exe/ruby/' /app/bin/rails /app/bin/rake /app/bin/setup
 
 EXPOSE 3000
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+CMD ["sh", "-c", "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3000"]
+

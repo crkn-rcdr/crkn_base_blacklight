@@ -16,8 +16,8 @@ en:
       institutional: Institutional Members
       associate: Associate Members
       all: All
-      search_label: Filter members
-      search_placeholder: Search members…
+      search_label: Search Members
+      search_placeholder: Search Members
       blurb_html: "The Canadiana Collections and Infrastructure exist because of the shared commitment and financial support of CRKN’s 88 member libraries from across the country. Together, they make it possible for everyone to explore, discover, and connect with Canada’s documentary heritage. <a href='https://www.crkn-rcdr.ca/en/about-crkn' target='blank'>Learn more about CRKN.</a>"
       visit_site_aria: "Visit %{name} website"
     page_search:
@@ -31,11 +31,12 @@ en:
       prev_hit_aria: Go to previous match
       next_hit_aria: Go to next match
     tools:
-      download_image_aria: Download current image
-      download_page_pdf_aria: Download current image as PDF
-      download_full_pdf_aria: Download full searchable PDF
+      download_label: Downloads
+      download_image_aria: Download image
+      download_page_pdf_aria: Download page PDF
+      download_full_pdf_aria: Download full PDF
       download_unavailable: Not available for this page.
-      download_checking: Checking availability of download options...
+      download_checking: Checking download availability...
       toolbox_title: Toolbox
       title: Tools
       subtitle: Export, edit, or share this item
@@ -351,14 +352,14 @@ en:
         go_to_next_page: Go to next page
         go_to_page: Go to page %{page}
         go_to_previous_page: Go to previous page
-      first: "&laquo; First"
-      last: Last &raquo;
-      next: Next &raquo;
-      previous: "&laquo; Previous"
+      first: "« First"
+      last: Last »
+      next: Next »
+      previous: "« Previous"
       truncate: "…"
     pagination_compact:
-      next: Next &raquo;
-      previous: "&laquo; Previous"
+      next: Next »
+      previous: "« Previous"
   layouts:
     catalog_result:
       aria:
@@ -415,6 +416,7 @@ en:
     URL_PARL_SENATE: "https://www.sencanada.ca/en"
     URL_PARL_VISIT: "https://visit.parl.ca/"
     URL_PARL_HELP: "/search-tips"
+    URL_SYSTEM: "https://www.crkn-rcdr.ca/en/status"
     URL_TERMS: "http://www.canadiana.ca/terms"
     URL_CITATION_GUIDE: "https://www.crkn-rcdr.ca/en/canadiana-citation-guide"
     URL_CITATION_GUIDE_HERITAGE: "https://library-archives.canada.ca/eng/services/public/using-lac-material/crediting-citing-material/Pages/credit-citing-material.aspx"

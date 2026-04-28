@@ -1,0 +1,77 @@
+<% button_text = local_assigns[:text].presence || (I18n.locale.to_s.start_with?('fr') ? 'Retour en haut' : 'Jump to top') %>
+<% aria_label = local_assigns[:aria_label].presence || button_text %>
+<% trigger_selector = local_assigns.fetch(:trigger_selector, '#search-canadiana') %>
+<div
+  class="home-jump-top-wrap"
+  data-home-jump-top
+  data-home-jump-top-trigger="<%= trigger_selector %>">
+  <a class="home-jump-top" href="#home-page-top" aria-label="<%= aria_label %>">
+    <span class="home-jump-top__icon" aria-hidden="true">
+      <i class="bi bi-arrow-up"></i>
+    </span>
+    <span><%= button_text %></span>
+  </a>
+</div>
+
+<%= javascript_tag nonce: true do %>
+  (function () {
+    function initHomeJumpTop() {
+      var wrap = document.querySelector('[data-home-jump-top]');
+      if (!wrap || wrap.dataset.jumpTopReady === '1') return;
+      wrap.dataset.jumpTopReady = '1';
+
+      var triggerSelector = wrap.dataset.homeJumpTopTrigger || '#search-canadiana';
+      var trigger = document.querySelector(triggerSelector);
+      var link = wrap.querySelector('.home-jump-top');
+      var previousHandlers = window.__homeJumpTopHandlers;
+      if (previousHandlers && previousHandlers.onViewportChange) {
+        window.removeEventListener('scroll', previousHandlers.onViewportChange);
+        window.removeEventListener('resize', previousHandlers.onViewportChange);
+      }
+
+      function threshold() {
+        if (!trigger) return 320;
+        var triggerTop = trigger.getBoundingClientRect().top + window.pageYOffset;
+        return Math.max(120, Math.round(triggerTop - (window.innerHeight * 0.22)));
+      }
+
+      function syncVisibility() {
+        if (!document.body.contains(wrap)) {
+          window.removeEventListener('scroll', onViewportChange);
+          window.removeEventListener('resize', onViewportChange);
+          if (window.__homeJumpTopHandlers && window.__homeJumpTopHandlers.onViewportChange === onViewportChange) {
+            window.__homeJumpTopHandlers = null;
+          }
+          return;
+        }
+
+        var isVisible = (window.pageYOffset || 0) >= threshold();
+        wrap.classList.toggle('is-visible', isVisible);
+        wrap.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+        if (link) link.tabIndex = isVisible ? 0 : -1;
+      }
+
+      var ticking = false;
+      function onViewportChange() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function() {
+          ticking = false;
+          syncVisibility();
+        });
+      }
+
+      window.addEventListener('scroll', onViewportChange, { passive: true });
+      window.addEventListener('resize', onViewportChange);
+      window.__homeJumpTopHandlers = { onViewportChange: onViewportChange };
+      syncVisibility();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHomeJumpTop, { once: true });
+    } else {
+      initHomeJumpTop();
+    }
+    document.addEventListener('turbo:load', initHomeJumpTop);
+  })();
+<% end %>

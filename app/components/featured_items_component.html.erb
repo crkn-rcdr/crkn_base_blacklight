@@ -8,7 +8,7 @@
           id="<%= viewer_id_for(record) %>"
           data-ark-id="<%= ark_identifier_for(record) %>"
           data-start-page="<%= start_page_for(record) %>">
-          <button type="button" class="featured-item__activate"><%= activate_zoom_label %></button>
+          <button type="button" class="featured-item__activate" aria-pressed="false"><%= activate_zoom_label %></button>
         </div>
         <div class="featured-item__meta">
           <h3>
@@ -59,7 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
       viewer.setMouseNavEnabled(false);
     } catch (_error) {}
     container.classList.remove("is-active");
-    if (overlay) overlay.hidden = false;
+    if (overlay) {
+      overlay.hidden = false;
+      overlay.setAttribute("aria-pressed", "false");
+    }
   };
 
   const activateViewer = (viewer, container, overlay) => {
@@ -71,7 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
       viewer.setMouseNavEnabled(true);
     } catch (_error) {}
     container.classList.add("is-active");
-    if (overlay) overlay.hidden = true;
+    if (overlay) {
+      overlay.hidden = true;
+      overlay.setAttribute("aria-pressed", "true");
+    }
     activeViewerState = { viewer, container, overlay };
   };
 
@@ -81,6 +87,14 @@ document.addEventListener("DOMContentLoaded", function () {
     deactivateViewer(activeViewerState);
     activeViewerState = null;
   }, true);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !activeViewerState) return;
+    const overlay = activeViewerState.overlay;
+    deactivateViewer(activeViewerState);
+    activeViewerState = null;
+    if (overlay) overlay.focus();
+  });
 
   document.querySelectorAll(".featured-item__viewer[data-ark-id]").forEach((container) => {
     const arkId = (container.dataset.arkId || "").trim();
@@ -142,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
         container.classList.remove("is-active");
         if (overlay) {
           overlay.hidden = false;
+          overlay.setAttribute("aria-pressed", "false");
           overlay.addEventListener("click", (event) => {
             event.preventDefault();
             event.stopPropagation();

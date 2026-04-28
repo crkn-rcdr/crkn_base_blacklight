@@ -1,11 +1,10 @@
-<div class="col-12 p-0 home-page">
+<div id="home-page-top" class="col-12 p-0 home-page">
   <section class="home-hero" aria-labelledby="home-hero-title">
     <div class="canadiana-shell">
       <div class="row g-4 align-items-start">
         <div class="col-lg-8">
-          <p class="home-eyebrow">Canadiana collections and infrastructure</p>
-          <h1 id="home-hero-title">Discover digitized publications and 
-archival records from across Canada</h1>
+          <p class="home-eyebrow">Canadiana Collections and Infrastructure</p>
+          <h1 id="home-hero-title">Discover digitized publications and archival records from across Canada</h1>
           <p class="home-hero-copy">
             Canadiana provides access to two major collections: the Canadiana Collection and the Héritage Collection. Each collection has its own independent search and can be accessed through the Canadiana APIs.
           </p>
@@ -20,11 +19,11 @@ archival records from across Canada</h1>
           </div>
 
           <div class="hero-secondary-actions">
-            <a class="hero-secondary-link" href="/about/monographs?lang=<%= I18n.locale %>">
+            <a class="hero-secondary-link" href="<%= compare_collections_path(lang: I18n.locale) %>">
               Compare the two collections
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
-            <a class="hero-secondary-link" href="<%= what_is_iiif_path(lang: I18n.locale) %>">
+            <a class="hero-secondary-link" href="<%= api_access_path(lang: I18n.locale) %>">
               Learn about API access
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
@@ -32,35 +31,37 @@ archival records from across Canada</h1>
         </div>
 
         <div class="col-lg-4">
-          <aside class="hero-stat-card" aria-label="Collection statistics">
-            <h2>68 million +</h2>
-            <p class="mb-2">Digitized pages available online</p>
+          <div class="hero-stat-card">
+            <h2>69 million+</h2>
+            <p class="mb-2">digitized pages available online</p>
             <p class="mb-0">
               Content contributed by
               <a href="/#members-section">CRKN member libraries</a>
               and
               <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Library and Archives Canada</a>.
             </p>
-          </aside>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="site-section home-intro home-intro--canadiana">
+  <section class="site-section home-intro home-intro--canadiana-clean">
     <div class="canadiana-shell">
-      <h2 class="section-title">Canadiana Collection</h2>
-      <p class="section-lede">
-        Approximately 31 million pages of publications that show how knowledge, stories, and information were shared over time. This collection includes books, newspapers, magazines, government documents, maps, and more from c. 1500 to the present day. Canadiana content is largely drawn from the Canadian Institute for Historic Micro-reproductions (CIHM) microfiche series.
-      </p>
-      <a class="home-inline-link home-inline-link--arrow" href="/about/monographs?lang=<%= I18n.locale %>">
-        Learn more
-        <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
-      </a>
+      <div class="home-canadiana-intro-copy">
+        <h2 class="section-title">Canadiana Collection</h2>
+        <p class="section-lede">
+          Approximately 31.5 million pages of publications that show how knowledge, stories, and information were shared over time. This collection includes books, newspapers, magazines, government documents, maps, and more from c. 1500 to the present day. Canadiana content is largely drawn from the Canadian Institute for Historic Micro-reproductions (CIHM) microfiche series.
+        </p>
+        <a class="home-inline-link home-inline-link--arrow" href="<%= about_canadiana_path(lang: I18n.locale) %>">
+          Learn more
+          <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
+        </a>
+      </div>
     </div>
   </section>
 
-  <section id="search-canadiana" class="home-collection-band home-collection-band--teal home-collection-band--canadiana">
+  <section id="search-canadiana" class="home-collection-band home-collection-band--canadiana-clean">
     <div class="canadiana-shell">
       <div class="home-collection-band__panel">
         <div class="home-collection-band__copy">
@@ -78,27 +79,26 @@ archival records from across Canada</h1>
               <option value="tx_gen">Full text</option>
             </select>
             <label class="visually-hidden" for="canadiana-band-q">Search the Canadiana Collection</label>
-            <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Sessional Papers of the Dominon of Canada|The Toronto World|大漢公報 (Chinese Times)|The Dawn of Tomorrow|Anne of the Island">
+            <input id="canadiana-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Sessional Papers of the Dominon of Canada|The Toronto World|&#22823;&#28450;&#20844;&#22577; (Chinese Times)|The Dawn of Tomorrow|Anne of the Island">
             <button type="submit" class="btn btn-primary btn-sm">Search</button>
           </form>
 
-          <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
+          <div class="home-collection-band__meta-row">
+            <div class="home-walkthrough-inline canadiana-walkthrough">
+              <a href="/">
+                <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+                Short walk-through: How to use the Canadiana Collection search
+              </a>
+            </div>
+            <a class="home-inline-link home-inline-link--history" href="/search_history">My recent searches</a>
+          </div>
         </div>
-        <div class="home-collection-band__image">
+        <!--div class="home-collection-band__image">
           
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit" title="Canadiana collection slideshow preview" width="440" height="560" loading="lazy" scrolling="no" aria-hidden="true" tabindex="-1"></iframe>
 
-        </div>
+        </div-->
       </div>
-    </div>
-  </section>
-
-  <section class="site-section home-walkthrough canadiana-walkthrough py-0">
-    <div class="canadiana-shell">
-      <a href="<%= I18n.t('links.URL_DOWNLOAD_DOCS') %>" target="_blank" rel="noopener">
-        <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-        Short walk-through: How to use the Canadiana Collection search
-      </a>
     </div>
   </section>
 
@@ -145,7 +145,7 @@ archival records from across Canada</h1>
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Government Publications</h3>
-                  <p class="home-split-card__text">See how Canada was governed through acts, debates, reports, and treaties created by colonial, provincial, and federal offices.</p>
+                  <p class="home-split-card__text">See how Canada was governed and shaped through acts, debates, reports, and treaties created by colonial, provincial, and federal offices before 1900.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta">Browse</a>
@@ -179,30 +179,27 @@ archival records from across Canada</h1>
     </div>
   </section>
 
-  <section class="site-section home-intro home-intro--heritage">
-    <div class="canadiana-shell home-heritage-intro-grid">
+  <section class="site-section home-intro home-intro--heritage-clean">
+    <div class="canadiana-shell">
       <div class="home-heritage-intro-copy">
-        <h2 class="section-title">Heritage Collection</h2>
+        <h2 class="section-title">Héritage Collection</h2>
         <p class="section-lede">
-        The Héritage collection is a partnership with <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Library and Archives Canada</a> (LAC) to digitize and make accessible the rich resources of archival microfilm held by LAC. With more than 37 million pages of primary-source documents, Héritage chronicles Canada and its peoples from the 1600s to the 1980s. Héritage is an unparalleled resource supporting researchers and communities across Canada.
+        The Héritage collection is a partnership with <a href="https://library-archives.canada.ca" target="_blank" rel="noopener">Library and Archives Canada</a> (LAC) to digitize and make accessible the rich resources of archival microfilm held by LAC. With more than 37.5 million pages of primary-source documents, Héritage chronicles Canada and its peoples from c. 1500 to the 1980s. Héritage is an unparalleled resource supporting researchers and communities across Canada.
         </p>
-        <a class="home-inline-link home-inline-link--arrow" href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
+        <a class="home-inline-link home-inline-link--arrow" href="<%= about_heritage_path(lang: I18n.locale) %>">
           Learn more
           <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
         </a>
       </div>
-      <div class="home-heritage-logo-card" aria-hidden="true">
-        <img class="home-heritage-logo" src="/assets/canada-wordmark.svg" alt="Government of Canada symbol" loading="lazy">
-      </div>
     </div>
   </section>
 
-  <section id="search-heritage" class="home-collection-band home-collection-band--green home-collection-band--reverse home-collection-band--heritage">
+  <section id="search-heritage" class="home-collection-band home-collection-band--heritage-clean">
     <div class="canadiana-shell">
       <div class="home-collection-band__panel">
         <div class="home-collection-band__copy">
           <p class="home-eyebrow">Search the Héritage Collection</p>
-          <h3>Four centuries of archival materials, from landmark papers and government files to Indigenous affairs and genealogy.</h3>
+          <h3>Five centuries of archival materials, from historic papers and government files to Indigenous affairs and genealogy.</h3>
 
           <form class="band-search-form band-search-form--heritage" action="/catalog" method="get">
             <input type="hidden" name="lang" value="<%= I18n.locale %>">
@@ -214,41 +211,40 @@ archival records from across Canada</h1>
               <option value="subject_tsim">Subject</option>
               <option value="tx_gen">Full text</option>
             </select>
-            <label class="visually-hidden" for="heritage-band-q">Search the Heritage Collection</label>
+            <label class="visually-hidden" for="heritage-band-q">Search the Héritage Collection</label>
             <input id="heritage-band-q" class="band-search-input js-typed-placeholder" type="search" name="q" placeholder="Search..." data-typed-placeholder-phrases="Lower Canada Land Grants|War Diaries, 1939-1945|Passenger Lists|Chinese immigration records|Parish registers: New Brunswick">
             <button
               type="submit"
               class="btn btn-primary btn-sm"
               disabled
               aria-disabled="true"
-              title="Coming soon: Heritage search is not available yet.">
-              Search (Coming soon)
+              title="Coming soon: Héritage search is not available yet.">
+              Search (Coming Soon)
             </button>
           </form>
 
-          <a class="home-inline-link home-inline-link--history" href="/search_history">My Recent Searches</a>
+          <div class="home-collection-band__meta-row">
+            <div class="home-walkthrough-inline heritage-bg">
+              <a href="/">
+                <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
+                Short walk-through: How to use the Héritage Collection search
+              </a>
+            </div>
+            <span class="home-inline-link home-inline-link--history is-disabled" aria-disabled="true">My recent searches</span>
+          </div>
         </div>
-        <div class="home-collection-band__image">
+        <!--div class="home-collection-band__image">
           
-          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor.digirati.services/api/iiif/p3/5d697a9dafc09660ad9f1f4fce3c7c12/1771509193491&minimal=true" class="exhibit"></iframe>
+          <iframe src="https://preview.exhibitionviewer.org/preview/slideshow?manifest=https://manifest-editor-preview.digirati.workers.dev/api/iiif/p3/8b7f3a9c5384cf9ba64d820d916f2ac7/1773692327640" class="exhibit" title="Heritage collection slideshow preview" width="440" height="560" loading="lazy" scrolling="no" aria-hidden="true" tabindex="-1"></iframe>
      
-        </div>
+        </div-->
       </div>
-    </div>
-  </section>
-
-  <section class="site-section home-walkthrough heritage-bg py-0">
-    <div class="canadiana-shell">
-      <a href="<%= I18n.t('links.URL_HERITAGE') %>" target="_blank" rel="noopener">
-        <i class="bi bi-play-circle home-walkthrough__icon" aria-hidden="true"></i>
-        Short walk-through: How to use the Héritage Collection search
-      </a>
     </div>
   </section>
 
   <section class="site-section home-explore heritage-bg">
     <div class="canadiana-shell">
-      <h3 class="section-title">Explore Archival Materials</h3>
+      <h3 class="section-title">Explore archival materials</h3>
       <div class="home-slider" data-slider="explore">
         <button type="button" class="home-slider__nav home-slider__nav--prev" data-slider-prev aria-label="Previous cards">
           <i class="bi bi-chevron-left" aria-hidden="true"></i>
@@ -259,7 +255,7 @@ archival records from across Canada</h1>
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Family and Community History</h3>
-                  <p class="home-split-card__text">Browse records about genealogy, immigration, land ownership, settlements, and more.</p>
+                  <p class="home-split-card__text">Look through records about early families, land, and settlements.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?lang=<%= I18n.locale %>&q=genealogy+immigration+settlements&search_field=all_fields" class="btn btn-sm home-split-card__cta">Browse</a>
@@ -274,7 +270,7 @@ archival records from across Canada</h1>
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Indigenous History</h3>
-                  <p class="home-split-card__text">Explore historical records about how governments interacted with Indigenous communities. See how those actions affected land, education, and community life.</p>
+                  <p class="home-split-card__text">Explore records about how governments interacted with Indigenous communities. See how those actions affected land, education, and community life.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?lang=<%= I18n.locale %>&q=indigenous+history+land+education&search_field=all_fields" class="btn btn-sm home-split-card__cta">Browse</a>
@@ -288,7 +284,7 @@ archival records from across Canada</h1>
             <article class="home-split-card home-split-card--green">
               <div class="home-split-card__content">
                 <div>
-                  <h3 class="home-split-card__title">Government Documents</h3>
+                  <h3 class="home-split-card__title">Government Records</h3>
                   <p class="home-split-card__text">Explore records from Canada’s departments, Crown corporations, and agencies during times of industrial, political, and social change.</p>
                 </div>
                 <div class="home-split-card__actions">
@@ -296,7 +292,7 @@ archival records from across Canada</h1>
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/government_documents.jpg" alt="Government documents" loading="lazy">
+                <img src="/assets/government_documents.jpg" alt="Government records" loading="lazy">
               </div>
             </article>
 
@@ -304,7 +300,7 @@ archival records from across Canada</h1>
               <div class="home-split-card__content">
                 <div>
                   <h3 class="home-split-card__title">Military History</h3>
-                  <p class="home-split-card__text">Find documents, reports, and service records from Canada’s military past. Learn what life was like during wars, conflicts, and times of peace.</p>
+                  <p class="home-split-card__text">Find letters, reports, and service records from Canada’s military past. Learn what life was like during wars, conflicts, and times of peace.</p>
                 </div>
                 <div class="home-split-card__actions">
                   <a href="/catalog?lang=<%= I18n.locale %>&q=military+history&search_field=all_fields" class="btn btn-sm home-split-card__cta">Browse</a>
@@ -318,7 +314,7 @@ archival records from across Canada</h1>
             <article class="home-split-card home-split-card--green">
               <div class="home-split-card__content">
                 <div>
-                  <h3 class="home-split-card__title">Landmark Papers</h3>
+                  <h3 class="home-split-card__title">People and Organizations</h3>
                   <p class="home-split-card__text">Read personal papers from people and groups who helped shape Canada. Discover voices from politics, the arts, labour, social justice, and women’s movements.</p>
                 </div>
                 <div class="home-split-card__actions">
@@ -326,7 +322,7 @@ archival records from across Canada</h1>
                 </div>
               </div>
               <div class="home-split-card__media">
-                <img src="/assets/landmark_papers.jpg" alt="Landmark papers and personal archives" loading="lazy">
+                <img src="/assets/landmark_papers.jpg" alt="People and organizations records" loading="lazy">
               </div>
             </article>
 
@@ -341,7 +337,7 @@ archival records from across Canada</h1>
 
   <% featured_items = [
     { id: 'oon.00001_198410', ark: 'https://n2t.net/ark:/69429/m0z31ng4pk4n', start_page: 1, title: 'Science Dimension', description: 'Explore records from the North and related documentary heritage.' },
-    { id: 'qmma.05919', ark: 'https://n2t.net/ark:/69429/m0736m04393j', title: '[National Topographic System, 1:50,000 : Canada : Heart\'s Content, Newfoundland]', description: 'Topographic and regional mapping resources from across Canada.' },
+    { id: 'qmma.05919', ark: 'https://n2t.net/ark:/69429/m0736m04393j', title: 'National Topographic System, 1:50,000 : Canada : Heart\'s Content, Newfoundland', description: 'Topographic and regional mapping resources from across Canada.' },
     { id: 'nswa.00001_192612', ark: 'https://n2t.net/ark:/69429/m2025000011pw36', title: 'Acadia athenaeum : The Acadia athenaeum', description: 'University and student publications from historical collections.' },
     { id: 'oocihm.lac_reel_t1741', ark: 'https://n2t.net/ark:/69429/m07h1dj5927j', title: 'Herzberg Institute of Astrophysics', description: 'Scientific publications and astronomical research materials.', start_page: 1734 },
     { id: 'oocihm.lac_reel_c13421', ark: 'https://n2t.net/ark:/69429/m0nv9959cv8t', title: 'Chinese immigration records: Sample Chinese immigration certificates : C-13421', description: 'Primary-source records preserved through partner institutions.', start_page: 54 },
@@ -368,22 +364,24 @@ archival records from across Canada</h1>
         <h2 class="section-title">Featured Content</h2>
         <% if show_featured_pagination %>
           <div class="home-featured-nav">
-            <a
-              class="home-slider__nav home-featured-nav__icon <%= 'is-disabled' if prev_featured_disabled %>"
-              href="<%= prev_featured_disabled ? '#' : url_for(prev_featured_params) %>"
-              aria-label="Previous featured items"
-              aria-disabled="<%= prev_featured_disabled %>"
-              <%= 'tabindex="-1"' if prev_featured_disabled %>>
-              <i class="bi bi-chevron-left" aria-hidden="true"></i>
-            </a>
-            <a
-              class="home-slider__nav home-featured-nav__icon <%= 'is-disabled' if next_featured_disabled %>"
-              href="<%= next_featured_disabled ? '#' : url_for(next_featured_params) %>"
-              aria-label="Next featured items"
-              aria-disabled="<%= next_featured_disabled %>"
-              <%= 'tabindex="-1"' if next_featured_disabled %>>
-              <i class="bi bi-chevron-right" aria-hidden="true"></i>
-            </a>
+            <% if prev_featured_disabled %>
+              <span class="home-slider__nav home-featured-nav__icon is-disabled" aria-hidden="true">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </span>
+            <% else %>
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(prev_featured_params) %>" aria-label="Previous featured items">
+                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+              </a>
+            <% end %>
+            <% if next_featured_disabled %>
+              <span class="home-slider__nav home-featured-nav__icon is-disabled" aria-hidden="true">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </span>
+            <% else %>
+              <a class="home-slider__nav home-featured-nav__icon" href="<%= url_for(next_featured_params) %>" aria-label="Next featured items">
+                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+              </a>
+            <% end %>
           </div>
         <% end %>
       </div>
@@ -391,27 +389,71 @@ archival records from across Canada</h1>
     </div>
   </section>
 
+  <section class="site-section home-exhibition-preview-head" aria-labelledby="home-exhibition-preview-title">
+    <div class="home-exhibition-preview__intro">
+      <h2 id="home-exhibition-preview-title" class="section-title">Step Inside Our Digital Exhibits</h2>
+    </div>
+  </section>
+
+  <section class="site-section home-exhibition-preview" aria-labelledby="home-exhibition-preview-title">
+    <div class="canadiana-shell">
+      <div class="home-exhibition-preview__stage">
+        <div class="home-exhibition-preview__pin">
+          <div class="home-exhibition-preview__grid">
+            <article class="home-exhibition-preview__card">
+              <div class="home-exhibition-preview__nav" aria-label="Exhibit navigation">
+                <button type="button" class="home-exhibition-preview__nav-button" data-exhibit-nav="prev">Previous exhibit</button>
+                <button type="button" class="home-exhibition-preview__nav-button" data-exhibit-nav="next">Next exhibit</button>
+              </div>
+              <div class="home-exhibition-preview__viewport">
+                <button type="button" class="home-exhibition-preview__activate" aria-label="Activate exhibit and explore by scrolling">
+                  Click to explore exhibit
+                </button>
+                <iframe
+                  class="home-exhibition-preview__frame"
+                  src="https://preview.exhibitionviewer.org/preview/scroll?manifest=https://crkn-iiif-api.azurewebsites.net/manifest/69429/m2026000088n389"
+                  title="Exploring Historical Scientific Publications in the Canadiana Collection"
+                  loading="lazy"
+                  tabindex="-1"
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="site-section home-statement">
     <div class="canadiana-shell">
-      <h2 class="section-title">Statement on Problematic Content and Descriptions in Canadiana</h2>
-      <p class="section-lede">
-        The Canadiana Collections contain content created over five centuries that tell an incomplete, oftentimes distorted and, sometimes harmful, story of Canada.
-        The content, metadata, and resource descriptions in the Canadiana Collections contain language that reflects the biases, norms, and perspectives of the time
-        in which they were created. This includes harmful and offensive wording, cultural references, and stereotypes.
-      </p>
-      <ul>
-        <li>support and actively participate in efforts to update and change international standards for descriptions to ensure that descriptions are inclusive, respectful, and do not cause harm</li>
-        <li>replace inappropriate language in metadata and resource descriptions introduced during legacy cataloguing practices</li>
-      </ul>
-      <p>
-        This is an ongoing process. If you see records with inappropriate language or content that you think CRKN should review,
-        please fill out our
-        <a href="https://www.crkn-rcdr.ca/sites/crkn/files/2021-09/Final%20-%20Review%20Request%20Process%20for%20the%20Canadiana%20Collection%20-%20EN.pdf" target="_blank" rel="noopener">
-          Review Submission Form
-        </a>.
-      </p>
+      <div class="home-statement-layout">
+        <article class="home-statement-card">
+          <h2 class="section-title">Statement on Problematic Content and Descriptions in Canadiana</h2>
+          <p class="section-lede">
+            The Canadiana Collections contain content created over five centuries that tell an incomplete, oftentimes distorted and, sometimes harmful, story of Canada.
+            The content, metadata, and resource descriptions in the Canadiana Collections contain language that reflects the biases, norms, and perspectives of the time
+            in which they were created. This includes harmful and offensive wording, cultural references, and stereotypes.
+          </p>
+          <ul>
+            <li>support and actively participate in efforts to update and change international standards for descriptions to ensure that descriptions are inclusive, respectful, and do not cause harm</li>
+            <li>replace inappropriate language in metadata and resource descriptions introduced during legacy cataloguing practices</li>
+          </ul>
+          <p>
+            This is an ongoing process. If you see records with inappropriate language or content that you think CRKN should review.
+          </p>
+          <a class="home-statement-cta" href="https://www.crkn-rcdr.ca/sites/crkn/files/2021-09/Final%20-%20Review%20Request%20Process%20for%20the%20Canadiana%20Collection%20-%20EN.pdf" target="_blank" rel="noopener">
+            Review submission form
+            <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+          </a>
+        </article>
+        <div class="home-statement-media">
+          <img src="<%= asset_path('statement.png') %>" alt="Person reviewing archival documents at a worktable" loading="lazy">
+        </div>
+      </div>
     </div>
   </section>
 
   <%= render(MembersComponent.new) %>
+  <%= render partial: 'shared/home_jump_top', locals: { text: 'Jump to Top', aria_label: 'Jump to Top', trigger_selector: '#search-canadiana' } %>
 </div>
