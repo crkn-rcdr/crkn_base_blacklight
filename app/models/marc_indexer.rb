@@ -399,10 +399,16 @@ class MarcIndexer < Blacklight::Marc::Indexer
   end
 
   def rights_statement_facet_values(record)
-    record.fields('540').flat_map do |field|
+    values = record.fields('540').flat_map do |field|
       field.find_all { |subfield| subfield.code == 'u' }
-           .filter_map { |subfield| RightsStatementLabeler.label_for_url(subfield.value) }
+           .filter_map { |subfield| RightsStatementLabeler.label_for_url(subfield.value, :en) }
     end.uniq
+    return values if values.present?
+
+    record.fields('540').flat_map do |field|
+      texts = field.subfields.select { |s| %w[a f].include?(s.code) }.map(&:value)
+      texts.flat_map { |t| RightsStatementLabeler.labels_for_text(t) }
+    end.compact_blank.uniq
   end
 
   def resource_type_facet_values(record)
