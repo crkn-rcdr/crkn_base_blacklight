@@ -27,13 +27,16 @@
     <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : (I18n.locale.to_s.start_with?('fr') ? 'Canadiana offre un accès libre à plus de 69 millions de pages de documents historiques et de publications canadiennes numérisées.' : 'Canadiana provides open access to more than 69 million pages of digitized Canadian documentary heritage and historical publications.') %>">
     <meta name="iiif-manifest-base" content="<%= Rails.configuration.x.iiif_manifest_base %>">
     <meta name="iiif-content-search-base" content="<%= Rails.configuration.x.iiif_content_search_base %>">
+    <meta name="iiif-image-base" content="<%= Rails.configuration.x.iiif_image_base %>">
     <%= content_for(:head) %>
 
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'application' %>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
-    <script src="/assets/mirador.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js" defer></script>
+    <link rel="stylesheet" href="/assets/mirador.css?v=<%= File.exist?(Rails.root.join('app/assets/javascripts/mirador.css')) ? File.mtime(Rails.root.join('app/assets/javascripts/mirador.css')).to_i : 1 %>" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="/assets/mirador.css?v=<%= File.exist?(Rails.root.join('app/assets/javascripts/mirador.css')) ? File.mtime(Rails.root.join('app/assets/javascripts/mirador.css')).to_i : 1 %>"></noscript>
+    <script src="/assets/mirador.min.js?v=<%= File.exist?(Rails.root.join('app/assets/javascripts/mirador.min.js')) ? File.mtime(Rails.root.join('app/assets/javascripts/mirador.min.js')).to_i : 1 %>" defer></script>
   </head>
   <body class="<%= render_body_class %>">
     <%= render blacklight_config.skip_link_component.new do %>

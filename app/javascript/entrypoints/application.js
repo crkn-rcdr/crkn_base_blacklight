@@ -32,9 +32,16 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 function initMiradorViewer() {
   const pageViewer = document.getElementById("my-mirador");
   if (!pageViewer) return;
-  if (typeof Mirador === 'undefined') return;
+  pageViewer.setAttribute('data-lenis-prevent', '');
+  if (typeof Mirador === 'undefined') {
+    if (!window.__miradorRetryCount || window.__miradorRetryCount < 20) {
+      window.__miradorRetryCount = (window.__miradorRetryCount || 0) + 1;
+      setTimeout(initMiradorViewer, 50);
+    }
+    return;
+  }
+  window.__miradorRetryCount = 0;
 
-  pageViewer.setAttribute('data-lenis-prevent', 'true');
   let language = document.documentElement.lang || "en";
   const workspaceLabel = language.startsWith('fr') ? 'Espace de travail' : 'Workspace';
 
@@ -67,7 +74,8 @@ function initMiradorViewer() {
   if (params.has("q")) contentSearch = { query: params.get("q") };
   const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www-iiif-pres.canadiana.ca/manifest";
   let normalizedBase = manifestBase.endsWith('/') ? manifestBase : manifestBase + '/';
-  let manifest = documentId.replace("https://n2t.net/ark:/", normalizedBase);
+  let cleanDocId = documentId.replace(/^https?:\/\/[^/]+\//, '').replace(/^ark:?\/?/, '').replace(/^\/+/, '');
+  let manifest = `${normalizedBase}${cleanDocId}`;
   const manifestList = {};
   manifestList[manifest] = { "provider": "Canadian Research Knowledge Network" };
 
@@ -83,6 +91,18 @@ function initMiradorViewer() {
     view: "catalogueView",
     selectedTheme: 'light',
     language,
+    translations: {
+      en: {
+        searchUnavailable: 'Searchable text unavailable',
+        searchUnavailableTooltip: 'Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.',
+        pdfDisabledTooltip: 'Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.'
+      },
+      fr: {
+        searchUnavailable: 'Texte interrogeable non disponible',
+        searchUnavailableTooltip: "Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC).",
+        pdfDisabledTooltip: "Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC)."
+      }
+    },
     window: {
       imageToolsOpen: false,
       allowClose: false,
@@ -144,9 +164,49 @@ function initMiradorViewer() {
 
   let miradorViewer = Mirador.viewer(mconfig);
 
+  const isFr = (language || '').startsWith('fr');
+  const searchableTextUnavailableText = pageViewer.getAttribute('data-searchable-text-unavailable') ||
+    (isFr ? 'Texte interrogeable non disponible' : 'Searchable text unavailable');
+  const searchUnavailableTooltipText = pageViewer.getAttribute('data-pdf-disabled-tooltip') ||
+    pageViewer.getAttribute('data-searchable-text-unavailable-tooltip') ||
+    (isFr ? "Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC)." : "Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.");
+
+  const enhanceMiradorSearchControls = () => {
+    const unavailableNotes = pageViewer.querySelectorAll('.SearchPanelControls-unavailableNote, [class*="SearchPanelControls-unavailableNote"]');
+    unavailableNotes.forEach((note) => {
+      const text = note.textContent.trim();
+      if (text === 'Search is not available' || text === 'La recherche n\'est pas disponible' || !text) {
+        note.textContent = searchableTextUnavailableText;
+      }
+      if (!note.getAttribute('title')) {
+        note.setAttribute('title', searchUnavailableTooltipText);
+      }
+      const currentAria = note.getAttribute('aria-label') || '';
+      if (!currentAria || currentAria.includes('Search is not available') || currentAria.includes('La recherche')) {
+        note.setAttribute('aria-label', `${searchableTextUnavailableText}: ${searchUnavailableTooltipText}`);
+      }
+      note.setAttribute('role', 'status');
+      note.setAttribute('tabindex', '0');
+    });
+
+    const disabledInputs = pageViewer.querySelectorAll('form[aria-label="Search"] input:disabled, form[aria-label="Recherche"] input:disabled, .SearchPanelControls-form input:disabled, input[aria-label*="Search"]:disabled');
+    disabledInputs.forEach((input) => {
+      input.setAttribute('title', searchUnavailableTooltipText);
+      input.setAttribute('aria-label', `${searchableTextUnavailableText}: ${searchUnavailableTooltipText}`);
+    });
+
+    const disabledButtons = pageViewer.querySelectorAll('form[aria-label="Search"] button:disabled, form[aria-label="Recherche"] button:disabled, .SearchPanelControls-form button:disabled, button[aria-label*="Search"]:disabled');
+    disabledButtons.forEach((btn) => {
+      btn.setAttribute('title', searchUnavailableTooltipText);
+      btn.setAttribute('aria-label', `${searchableTextUnavailableText}: ${searchUnavailableTooltipText}`);
+    });
+  };
+
   demoteMiradorMainLandmark();
+  enhanceMiradorSearchControls();
   const miradorLandmarkObserver = new MutationObserver(() => {
     demoteMiradorMainLandmark();
+    enhanceMiradorSearchControls();
   });
   miradorLandmarkObserver.observe(pageViewer, { childList: true, subtree: true });
   window.addEventListener('beforeunload', () => miradorLandmarkObserver.disconnect(), { once: true });
@@ -182,9 +242,19 @@ const initLenis = () => {
       prevent: (node) => {
         if (!(node instanceof Element)) return false
 
+        const collectionViewer = node.closest('.collection-item__viewer')
+        if (collectionViewer) {
+          return collectionViewer.classList.contains('is-active')
+        }
+
+        const featuredViewer = node.closest('.featured-item__viewer')
+        if (featuredViewer) {
+          return featuredViewer.classList.contains('is-active')
+        }
+
         return Boolean(
           node.closest(
-            '#my-mirador, .mirador-viewer, .mirador-window, .mirador-thumbnail-nav-container, [class*="GalleryView"], [class*="ThumbnailNav"], [class*="Thumbnail"], [data-lenis-prevent], .modal, dialog'
+            '#my-mirador, .mirador-viewer, .mirador-canvas-container, .mirador-companion-window, .modal, dialog, [data-lenis-prevent]'
           )
         )
       }
@@ -204,7 +274,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import BlacklightRangeLimit from 'blacklight-range-limit';
 //Blacklight.onLoad(() => {});
 BlacklightRangeLimit.init({ onLoadHandler: Blacklight.onLoad });
-console.log("here???")
 
 // Enhance search bars (navbar + home hero) consistently
 function enhanceSearchBar(rootSelector) {
@@ -1217,12 +1286,12 @@ function adjustCatalogShowBreadcrumbActions() {
     viewAllIssues.className = 'btn btn-outline-secondary btn-sm view-all-issues-link';
     viewAllIssues.href = `/catalogue/${encodeURIComponent(parentSerialId)}?lang=${encodeURIComponent(lang)}`;
     const viewAllIssuesIcon = document.createElement('i');
-    viewAllIssuesIcon.className = 'bi bi-arrow-90deg-up me-1';
+    viewAllIssuesIcon.className = 'bi bi-arrow-left me-1';
     viewAllIssuesIcon.setAttribute('aria-hidden', 'true');
     const viewAllIssuesLabel = document.createElement('span');
     viewAllIssuesLabel.textContent = isFr
-      ? `Voir le catalogue complet de "${serialTitle || 'ce titre de périodique'}"`
-      : `View full catalogue of "${serialTitle || 'this serial title'}"`;
+      ? `Voir tous les numéros de "${serialTitle || 'ce titre de périodique'}"`
+      : `View all issues of "${serialTitle || 'this serial title'}"`;
     viewAllIssues.append(viewAllIssuesIcon, viewAllIssuesLabel);
     actionRow.insertBefore(viewAllIssues, actionRow.firstChild);
   }

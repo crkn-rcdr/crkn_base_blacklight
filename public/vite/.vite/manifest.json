@@ -1,8 +1,23 @@
 {
+  "../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
+    "file": "assets/bootstrap-icons-BeopsB42.woff",
+    "src": "../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff"
+  },
+  "../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2": {
+    "file": "assets/bootstrap-icons-mSm7cUeB.woff2",
+    "src": "../../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
+  },
   "entrypoints/application.js": {
-    "file": "assets/application-D2HUwVfw.js",
+    "file": "assets/application-CSI0vEh8.js",
     "name": "entrypoints/application.js",
     "src": "entrypoints/application.js",
-    "isEntry": true
+    "isEntry": true,
+    "css": [
+      "assets/application-xUXp-6nh.css"
+    ],
+    "assets": [
+      "assets/bootstrap-icons-mSm7cUeB.woff2",
+      "assets/bootstrap-icons-BeopsB42.woff"
+    ]
   }
 }

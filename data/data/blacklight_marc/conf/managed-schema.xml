@@ -1,4 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!-- # Distributed by puppet - no local edit please -->
+<!-- Solr managed schema - automatically generated - DO NOT EDIT -->
 <schema name="default-config" version="1.7">
   <uniqueKey>id</uniqueKey>
   <fieldType name="_nest_path_" class="solr.NestPathField" maxCharsForDocValues="-1" omitNorms="true" omitTermFreqAndPositions="true" stored="false" multiValued="false" />
@@ -521,6 +523,7 @@
   <field name="published_ssm" type="text_general" />
   <field name="rights_stat_tsim" type="text_general" />
   <field name="rights_statement_ssim" type="text_general" />
+  <field name="resource_type_ssim" type="text_general" />
   <field name="serial_key" type="text_general" />
   <field name="serial_title" type="text_general" />
   <field name="source_of_description_tsim" type="text_general" />
@@ -632,6 +635,7 @@
   <dynamicField name="*_d" type="pdouble" indexed="true" stored="true" />
   <dynamicField name="*_t" type="text_general" multiValued="false" indexed="true" stored="true" />
   <dynamicField name="*_p" type="location" indexed="true" stored="true" />
+  <dynamicField name="*_ssim" type="text_general" indexed="true" stored="true" multiValued="true" />
   <copyField source="is_serial" dest="is_serial_str" maxChars="256" />
   <copyField source="is_issue" dest="is_issue_str" maxChars="256" />
   <copyField source="title_tsim" dest="title_tsim_str" maxChars="256" />
@@ -665,152 +669,6 @@
   <copyField source="subject_era_ssim" dest="subject_era_ssim_str" maxChars="256" />
   <copyField source="title_added_entry_tsim" dest="title_added_entry_tsim_str" maxChars="256" />
   <copyField source="original_version_note_tsim" dest="original_version_note_tsim_str" maxChars="256" />
-  <copyField source="serial_key" dest="serial_key_str" maxChars="256" />
-  <copyField source="depositor_tsim" dest="depositor_tsim_str" maxChars="256" />
-  <field name="serial_title" type="text_general" />
-  <field name="source_of_description_tsim" type="text_general" />
-  <field name="subject_addl_tsim" type="text_general" />
-  <field name="subject_era_ssim" type="text_general" />
-  <field name="subject_geo_ssim" type="text_general" />
-  <field name="subject_ssim" type="text_general" />
-  <field name="subject_tsim" type="text_general" />
-  <field name="subtitle_ssm" type="text_general" />
-  <field name="subtitle_tsim" type="text_general" />
-  <field name="title_added_entry_tsim" type="text_general" />
-  <field name="title_addl_tsim" type="text_general" />
-  <field name="title_series_tsim" type="text_general" />
-  <field name="title_si" type="text_general" />
-  <field name="title_ssm" type="text_general" />
-  <field name="title_tsim" type="text_general" />
-  <field name="url_fulltext_ssm" type="text_general" />
-  <field name="url_suppl_ssm" type="text_general" />
-  <field name="tx_gen" type="text_general" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_hant" type="text_zh_hant" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_cjk" type="text_cjk" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_ja" type="text_ja" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_ko" type="text_ko" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_th" type="text_th" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_indic" type="text_indic" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_cyrl" type="text_cyrl" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_he" type="text_he" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_el" type="text_el" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_fr" type="text_fr" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_de" type="text_de" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_nl" type="text_nl" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_da" type="text_da" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_fi" type="text_fi" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_sv" type="text_sv" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_es" type="text_es" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_it" type="text_it" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_hu" type="text_hu" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_ga" type="text_ga" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_general_lang" type="text_general" indexed="true" stored="false" multiValued="true" />
-  <field name="tx_indigenous" type="text_general" indexed="true" stored="false" multiValued="true" />
-  <field name="collectionen_path" type="strings" indexed="true" stored="true" multiValued="true" docValues="true" />
-  <field name="collectionfr_path" type="strings" indexed="true" stored="true" multiValued="true" docValues="true" />
-  <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true" />
-  <dynamicField name="*_descendent_path" type="descendent_path" indexed="true" stored="true" />
-  <dynamicField name="*_ancestor_path" type="ancestor_path" indexed="true" stored="true" />
-  <dynamicField name="*_txt_en_split" type="text_en_splitting" indexed="true" stored="true" />
-  <dynamicField name="*_txt_sort" type="text_gen_sort" indexed="true" stored="true" />
-  <dynamicField name="ignored_*" type="ignored" />
-  <dynamicField name="*_txt_rev" type="text_general_rev" indexed="true" stored="true" />
-  <dynamicField name="*_phon_en" type="phonetic_en" indexed="true" stored="true" />
-  <dynamicField name="*_s_lower" type="lowercase" indexed="true" stored="true" />
-  <dynamicField name="*_txt_cjk" type="text_cjk" indexed="true" stored="true" />
-  <dynamicField name="random_*" type="random" />
-  <dynamicField name="*_t_sort" type="text_gen_sort" multiValued="false" indexed="true" stored="true" />
-  <dynamicField name="*_txt_en" type="text_en" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ar" type="text_ar" indexed="true" stored="true" />
-  <dynamicField name="*_txt_bg" type="text_bg" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ca" type="text_ca" indexed="true" stored="true" />
-  <dynamicField name="*_txt_cz" type="text_cz" indexed="true" stored="true" />
-  <dynamicField name="*_txt_da" type="text_da" indexed="true" stored="true" />
-  <dynamicField name="*_txt_de" type="text_de" indexed="true" stored="true" />
-  <dynamicField name="*_txt_el" type="text_el" indexed="true" stored="true" />
-  <dynamicField name="*_txt_es" type="text_es" indexed="true" stored="true" />
-  <dynamicField name="*_txt_et" type="text_et" indexed="true" stored="true" />
-  <dynamicField name="*_txt_eu" type="text_eu" indexed="true" stored="true" />
-  <dynamicField name="*_txt_fa" type="text_fa" indexed="true" stored="true" />
-  <dynamicField name="*_txt_fi" type="text_fi" indexed="true" stored="true" />
-  <dynamicField name="*_txt_fr" type="text_fr" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ga" type="text_ga" indexed="true" stored="true" />
-  <dynamicField name="*_txt_gl" type="text_gl" indexed="true" stored="true" />
-  <dynamicField name="*_txt_hi" type="text_hi" indexed="true" stored="true" />
-  <dynamicField name="*_txt_hu" type="text_hu" indexed="true" stored="true" />
-  <dynamicField name="*_txt_hy" type="text_hy" indexed="true" stored="true" />
-  <dynamicField name="*_txt_id" type="text_id" indexed="true" stored="true" />
-  <dynamicField name="*_txt_it" type="text_it" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ja" type="text_ja" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ko" type="text_ko" indexed="true" stored="true" />
-  <dynamicField name="*_txt_lv" type="text_lv" indexed="true" stored="true" />
-  <dynamicField name="*_txt_nl" type="text_nl" indexed="true" stored="true" />
-  <dynamicField name="*_txt_no" type="text_no" indexed="true" stored="true" />
-  <dynamicField name="*_txt_pt" type="text_pt" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ro" type="text_ro" indexed="true" stored="true" />
-  <dynamicField name="*_txt_ru" type="text_ru" indexed="true" stored="true" />
-  <dynamicField name="*_txt_sv" type="text_sv" indexed="true" stored="true" />
-  <dynamicField name="*_txt_th" type="text_th" indexed="true" stored="true" />
-  <dynamicField name="*_txt_tr" type="text_tr" indexed="true" stored="true" />
-  <dynamicField name="*_point" type="point" indexed="true" stored="true" />
-  <dynamicField name="*_srpt" type="location_rpt" indexed="true" stored="true" />
-  <dynamicField name="attr_*" type="text_general" multiValued="true" indexed="true" stored="true" />
-  <dynamicField name="*_dts" type="pdates" indexed="true" stored="true" />
-  <dynamicField name="*_txt" type="text_general" indexed="true" stored="true" />
-  <dynamicField name="*_str" type="strings" docValues="true" indexed="false" stored="false" useDocValuesAsStored="false" />
-  <dynamicField name="*_dpf" type="delimited_payloads_float" indexed="true" stored="true" />
-  <dynamicField name="*_dpi" type="delimited_payloads_int" indexed="true" stored="true" />
-  <dynamicField name="*_dps" type="delimited_payloads_string" indexed="true" stored="true" />
-  <dynamicField name="*_is" type="pints" indexed="true" stored="true" />
-  <dynamicField name="*_ss" type="strings" indexed="true" stored="true" />
-  <dynamicField name="*_ls" type="plongs" indexed="true" stored="true" />
-  <dynamicField name="*_bs" type="booleans" indexed="true" stored="true" />
-  <dynamicField name="*_fs" type="pfloats" indexed="true" stored="true" />
-  <dynamicField name="*_ds" type="pdoubles" indexed="true" stored="true" />
-  <dynamicField name="*_dt" type="pdate" indexed="true" stored="true" />
-  <dynamicField name="*_ws" type="text_ws" indexed="true" stored="true" />
-  <dynamicField name="*_i" type="pint" indexed="true" stored="true" />
-  <dynamicField name="*_s" type="string" indexed="true" stored="true" />
-  <dynamicField name="*_l" type="plong" indexed="true" stored="true" />
-  <dynamicField name="*_b" type="boolean" indexed="true" stored="true" />
-  <dynamicField name="*_f" type="pfloat" indexed="true" stored="true" />
-  <dynamicField name="*_d" type="pdouble" indexed="true" stored="true" />
-  <dynamicField name="*_t" type="text_general" multiValued="false" indexed="true" stored="true" />
-  <dynamicField name="*_p" type="location" indexed="true" stored="true" />
-  <copyField source="is_serial" dest="is_serial_str" maxChars="256" />
-  <copyField source="is_issue" dest="is_issue_str" maxChars="256" />
-  <copyField source="title_tsim" dest="title_tsim_str" maxChars="256" />
-  <copyField source="language_ssim" dest="language_ssim_str" maxChars="256" />
-  <copyField source="notes_tsim" dest="notes_tsim_str" maxChars="256" />
-  <copyField source="format" dest="format_str" maxChars="256" />
-  <copyField source="all_text_timv" dest="all_text_timv_str" maxChars="256" />
-  <copyField source="doc_source_tsim" dest="doc_source_tsim_str" maxChars="256" />
-  <copyField source="title_addl_tsim" dest="title_addl_tsim_str" maxChars="256" />
-  <copyField source="published_ssm" dest="published_ssm_str" maxChars="256" />
-  <copyField source="url_fulltext_ssm" dest="url_fulltext_ssm_str" maxChars="256" />
-  <copyField source="title_series_tsim" dest="title_series_tsim_str" maxChars="256" />
-  <copyField source="title_si" dest="title_si_str" maxChars="256" />
-  <copyField source="author_si" dest="author_si_str" maxChars="256" />
-  <copyField source="title_ssm" dest="title_ssm_str" maxChars="256" />
-  <copyField source="author_ssm" dest="author_ssm_str" maxChars="256" />
-  <copyField source="author_tsim" dest="author_tsim_str" maxChars="256" />
-  <copyField source="material_type_ssm" dest="material_type_ssm_str" maxChars="256" />
-  <copyField source="serial_title" dest="serial_title_str" maxChars="256" />
-  <copyField source="subtitle_ssm" dest="subtitle_ssm_str" maxChars="256" />
-  <copyField source="subtitle_tsim" dest="subtitle_tsim_str" maxChars="256" />
-  <copyField source="subject_tsim" dest="subject_tsim_str" maxChars="256" />
-  <copyField source="subject_ssim" dest="subject_ssim_str" maxChars="256" />
-  <copyField source="lc_1letter_ssim" dest="lc_1letter_ssim_str" maxChars="256" />
-  <copyField source="lc_alpha_ssim" dest="lc_alpha_ssim_str" maxChars="256" />
-  <copyField source="lc_b4cutter_ssim" dest="lc_b4cutter_ssim_str" maxChars="256" />
-  <copyField source="lc_callnum_ssm" dest="lc_callnum_ssm_str" maxChars="256" />
-  <copyField source="subject_addl_tsim" dest="subject_addl_tsim_str" maxChars="256" />
-  <copyField source="subject_geo_ssim" dest="subject_geo_ssim_str" maxChars="256" />
-  <copyField source="author_addl_tsim" dest="author_addl_tsim_str" maxChars="256" />
-  <copyField source="subject_era_ssim" dest="subject_era_ssim_str" maxChars="256" />
-  <copyField source="title_added_entry_tsim" dest="title_added_entry_tsim_str" maxChars="256" />
-  <copyField source="original_version_note_tsim" dest="original_version_note_tsim_str" maxChars="256" />
-  <copyField source="serial_key" dest="serial_key_str" maxChars="256" />
   <copyField source="depositor_tsim" dest="depositor_tsim_str" maxChars="256" />
   <copyField source="access_note_tsim" dest="access_note_tsim_str" maxChars="256" />
   <copyField source="rights_stat_tsim" dest="rights_stat_tsim_str" maxChars="256" />

@@ -204,7 +204,7 @@ module RightsStatementLabeler
       ['CC0 1.0 Universal']
     elsif t =~ /no known copyright/i
       ['No Known Copyright']
-    elsif t =~ /in copyright|all rights reserved|tous droits/i
+    elsif t =~ /in copyright|all rights reserved|tous droits|copyright on each article|republication rights|rights retained|©/i
       ['In Copyright']
     elsif t.present?
       cleaned = t.gsub(%r{https?://\S+}, '').strip
@@ -240,7 +240,7 @@ module RightsStatementLabeler
       found << STATEMENTS_BY_CODE['nkc']
     end
 
-    if t =~ /in copyright|protégé par le droit d'auteur|all rights reserved|tous droits réservés/i
+    if t =~ /in copyright|protégé par le droit d'auteur|all rights reserved|tous droits réservés|copyright on each article|republication rights|rights retained|©/i
       found << STATEMENTS_BY_CODE['inc']
     end
 

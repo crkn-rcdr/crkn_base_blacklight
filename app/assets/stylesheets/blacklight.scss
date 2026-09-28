@@ -218,8 +218,17 @@ i {
 #collection-items-list .collection-item__viewer {
     position: relative;
 }
-#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container {
-    pointer-events: none;
+#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container,
+#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container * {
+    pointer-events: none !important;
+}
+#collection-items-list .collection-item__viewer.is-active {
+    overscroll-behavior: contain;
+    touch-action: pan-y pinch-zoom;
+}
+#collection-items-list .collection-item__viewer.is-active .openseadragon-container,
+#collection-items-list .collection-item__viewer.is-active .openseadragon-container * {
+    pointer-events: auto;
 }
 #collection-items-list .collection-item__activate {
     display: none !important;
@@ -635,9 +644,20 @@ button i {
     background-color: #fff2e8;
 }
 #download-toolbar .btn.disabled,
-#download-toolbar .btn[aria-disabled="true"] {
-    cursor: not-allowed;
+#download-toolbar .btn[aria-disabled="true"],
+#toggle-menu #download-toolbar .sidebar-download-btn.disabled,
+#toggle-menu #download-toolbar .sidebar-download-btn[aria-disabled="true"] {
+    pointer-events: auto !important;
+    cursor: not-allowed !important;
     opacity: 0.6;
+}
+
+#download-toolbar .btn.disabled *,
+#download-toolbar .btn[aria-disabled="true"] *,
+#toggle-menu #download-toolbar .sidebar-download-btn.disabled *,
+#toggle-menu #download-toolbar .sidebar-download-btn[aria-disabled="true"] * {
+    pointer-events: auto !important;
+    cursor: not-allowed !important;
 }
 #download-toolbar .btn,
 .toolbox-actions .btn {
@@ -1091,4 +1111,59 @@ button i {
             margin-left: -1px !important;
         }
     }
+}
+
+/* Prominent badge for items without OCR text */
+#my-mirador .SearchPanelControls-unavailableNote,
+#my-mirador [class*="SearchPanelControls-unavailableNote"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.35rem 0.85rem !important;
+    margin: 4px 8px !important;
+    background-color: #fff8e6 !important;
+    color: #7a4700 !important;
+    border: 1px solid #f6cf7a !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 3px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    cursor: help !important;
+    white-space: nowrap !important;
+    pointer-events: auto !important;
+    user-select: text !important;
+    transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+
+#my-mirador .SearchPanelControls-unavailableNote:hover,
+#my-mirador .SearchPanelControls-unavailableNote:focus,
+#my-mirador .SearchPanelControls-unavailableNote:focus-visible,
+#my-mirador [class*="SearchPanelControls-unavailableNote"]:hover,
+#my-mirador [class*="SearchPanelControls-unavailableNote"]:focus,
+#my-mirador [class*="SearchPanelControls-unavailableNote"]:focus-visible {
+    background-color: #fff3d1 !important;
+    border: 1px solid #f6cf7a !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 3px !important;
+}
+
+#my-mirador .SearchPanelControls-unavailableNote::before,
+#my-mirador [class*="SearchPanelControls-unavailableNote"]::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 17px !important;
+    height: 17px !important;
+    flex-shrink: 0 !important;
+    background-color: #b46b00 !important;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath d='m8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z'/%3E%3C/svg%3E") no-repeat center / contain !important;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath d='m8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z'/%3E%3C/svg%3E") no-repeat center / contain !important;
+}
+
+#my-mirador .SearchPanelControls-form {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
