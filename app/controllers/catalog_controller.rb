@@ -112,7 +112,13 @@ class CatalogController < ApplicationController
                            
     # Publication year (range)
     config.add_facet_field 'pub_date_ssim',
-                           label: ->(_c) { I18n.t('blacklight.metadata.date_range.label') },
+                           label: ->(context) {
+                             if CatalogController.heritage?(context)
+                               I18n.t('blacklight.metadata.date_range_heritage.label', default: 'Date of Creation')
+                             else
+                               I18n.t('blacklight.metadata.date_range.label', default: 'Publication Date')
+                             end
+                           },
                            range: {
                              num_segments: 10,
                              segments: true,
@@ -529,6 +535,15 @@ class CatalogController < ApplicationController
       end
 
     lang.to_s.downcase
+  end
+
+  def self.heritage?(context = nil)
+    return true if ENV['SOLR_URL']&.include?('heritage')
+    return true if ENV['BLACKLIGHT_HOST_ADDR']&.include?('heritage')
+    if context.respond_to?(:request) && context.request
+      return true if context.request.host.to_s.include?('heritage')
+    end
+    false
   end
 end
 

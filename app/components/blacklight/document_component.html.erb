@@ -165,6 +165,9 @@
                             el.setAttribute('title', tooltip);
                             const label = el.querySelector('.download-label')?.textContent || '';
                             el.setAttribute('aria-label', `${label}: ${tooltip}`.trim());
+                            el.querySelectorAll('*').forEach((child) => {
+                              child.setAttribute('title', tooltip);
+                            });
                           }
                         }
 
@@ -175,6 +178,9 @@
                           el.removeAttribute('aria-disabled');
                           el.removeAttribute('title');
                           el.removeAttribute('aria-label');
+                          el.querySelectorAll('*').forEach((child) => {
+                            child.removeAttribute('title');
+                          });
                         }
 
                         function currentPageNum() {
@@ -296,7 +302,7 @@
 
               <% if @document._source["is_serial"]&.first == "No" %>
                 <% if @document._source["ark"] %>
-                  <div id="my-mirador" data-docid="<%= @document._source['ark'] %>"></div>
+                  <div id="my-mirador" data-lenis-prevent data-docid="<%= @document._source['ark'] %>"></div>
                   
                 <% else %>
                   <img src="/assets/404.webp" class="not-found-icon" alt="Item image unavailable" />

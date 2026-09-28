@@ -8,11 +8,11 @@
           id="<%= viewer_id_for(record) %>"
           data-ark-id="<%= ark_identifier_for(record) %>"
           data-start-page="<%= start_page_for(record) %>">
-          <button type="button" class="featured-item__activate" aria-pressed="false"><%= activate_zoom_label %></button>
+          <button type="button" class="featured-item__activate" aria-pressed="false" title="<%= activate_zoom_label %>"><%= activate_zoom_label %></button>
         </div>
         <div class="featured-item__meta">
           <h3>
-            <a href="<%= record_link(record) %>"><%= title_for(record) %></a>
+            <a href="<%= record_link(record) %>" title="<%= title_for(record) %>"><%= title_for(record) %></a>
           </h3>
           <% description = description_for(record) %>
           <% if description.present? %>
@@ -57,8 +57,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const { viewer, container, overlay } = state;
     try {
       viewer.setMouseNavEnabled(false);
+      if (viewer.gestureSettingsMouse) {
+        viewer.gestureSettingsMouse.scrollToZoom = false;
+      }
     } catch (_error) {}
     container.classList.remove("is-active");
+    container.removeAttribute("data-lenis-prevent");
+    const card = container.closest(".card, .home-featured-card");
+    if (card) {
+      card.classList.remove("is-active");
+      card.removeAttribute("data-lenis-prevent");
+    }
     if (overlay) {
       overlay.hidden = false;
       overlay.setAttribute("aria-pressed", "false");
@@ -72,8 +81,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       viewer.setMouseNavEnabled(true);
+      if (viewer.gestureSettingsMouse) {
+        viewer.gestureSettingsMouse.scrollToZoom = true;
+      }
     } catch (_error) {}
     container.classList.add("is-active");
+    container.setAttribute("data-lenis-prevent", "true");
+    const card = container.closest(".card, .home-featured-card");
+    if (card) {
+      card.classList.add("is-active");
+      card.setAttribute("data-lenis-prevent", "true");
+    }
     if (overlay) {
       overlay.hidden = true;
       overlay.setAttribute("aria-pressed", "true");
@@ -103,7 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const overlay = container.querySelector(".featured-item__activate");
 
     (async function () {
-      const manifestUrl = `https://www-iiif-pres.canadiana.ca/manifest/${arkId}`;
+      const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.getAttribute('content')?.replace(/\/+$/, '') || 'https://www-iiif-pres.canadiana.ca/manifest';
+      const imageBase = document.querySelector('meta[name="iiif-image-base"]')?.getAttribute('content')?.replace(/\/+$/, '') || 'https://image-tor.canadiana.ca/iiif/2';
+      const manifestUrl = `${manifestBase}/${arkId}`;
       try {
         const response = await fetch(manifestUrl);
         const manifest = await response.json();
@@ -122,10 +142,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const tileSources = canvases.map((canvas) => {
+          const serviceId = canvas?.items?.[0]?.items?.[0]?.body?.service?.[0]?.['@id'] ||
+                            canvas?.items?.[0]?.items?.[0]?.body?.service?.[0]?.id ||
+                            canvas?.images?.[0]?.resource?.service?.['@id'] ||
+                            canvas?.images?.[0]?.resource?.service?.id;
+          if (serviceId) {
+            return `${serviceId.replace(/\/+$/, '')}/info.json`;
+          }
           const canvasId = String(canvas.id || canvas["@id"] || "");
           const parts = canvasId.split("/");
           const lastTwoParts = parts.slice(-2).join("/");
-          return `https://image-tor.canadiana.ca/iiif/2/${encodeURIComponent(lastTwoParts)}/info.json`;
+          return `${imageBase}/${encodeURIComponent(lastTwoParts)}/info.json`;
         }).filter(Boolean);
         const boundedStartPage = Math.min(startPageIndex, Math.max(tileSources.length - 1, 0));
 
@@ -145,15 +172,39 @@ document.addEventListener("DOMContentLoaded", function () {
           showZoomControl: false,
           showFullPageControl: false,
           initialPage: boundedStartPage,
-          defaultZoomLevel: 1.1
+          defaultZoomLevel: 1.1,
+          gestureSettingsMouse: {
+            scrollToZoom: false
+          }
         });
         if (!viewer) return;
         if (boundedStartPage > 0) {
           viewer.addOnceHandler("open", () => viewer.goToPage(boundedStartPage));
         }
 
+        viewer.addHandler("canvas-scroll", (event) => {
+          if (!container.classList.contains("is-active")) return;
+          if (event.originalEvent) {
+            if (typeof event.originalEvent.stopPropagation === "function") {
+              event.originalEvent.stopPropagation();
+            }
+            if (typeof event.originalEvent.preventDefault === "function") {
+              event.originalEvent.preventDefault();
+            }
+          }
+          event.preventDefault = true;
+        });
+
+        container.addEventListener("wheel", (event) => {
+          if (container.classList.contains("is-active")) {
+            event.stopPropagation();
+            event.preventDefault();
+          }
+        }, { passive: false });
+
         viewer.setMouseNavEnabled(false);
         container.classList.remove("is-active");
+        container.removeAttribute("data-lenis-prevent");
         if (overlay) {
           overlay.hidden = false;
           overlay.setAttribute("aria-pressed", "false");

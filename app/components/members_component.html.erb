@@ -10,16 +10,16 @@
 
     <div class="members-controls">
       <div class="members-tabs members-segmented btn-group" role="tablist" aria-label="<%= t('blacklight.members.category_aria') %>">
-        <button type="button" id="members-tab-institutional" class="btn btn-outline-secondary btn-sm active" data-members-tab="institutional" role="tab" aria-selected="true" aria-controls="members-panel-institutional"><%= t('blacklight.members.institutional') %></button>
-        <button type="button" id="members-tab-associate" class="btn btn-outline-secondary btn-sm" data-members-tab="associate" role="tab" aria-selected="false" aria-controls="members-panel-associate"><%= t('blacklight.members.associate') %></button>
+        <button type="button" id="members-tab-institutional" class="btn btn-outline-secondary btn-sm active" data-members-tab="institutional" role="tab" aria-selected="true" aria-controls="members-panel-institutional" title="<%= t('blacklight.members.institutional') %>"><%= t('blacklight.members.institutional') %></button>
+        <button type="button" id="members-tab-associate" class="btn btn-outline-secondary btn-sm" data-members-tab="associate" role="tab" aria-selected="false" aria-controls="members-panel-associate" title="<%= t('blacklight.members.associate') %>"><%= t('blacklight.members.associate') %></button>
       </div>
 
       <div class="members-search">
         <div class="input-group input-group-sm">
           <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
           <label for="members-filter-input" class="visually-hidden"><%= t('blacklight.members.search_label') %></label>
-          <input id="members-filter-input" class="form-control" type="search" placeholder="<%= t('blacklight.members.search_placeholder') %>">
-          <button type="button" class="btn btn-outline-secondary btn-clear-search btn-clear-members" hidden aria-label="<%= t('blacklight.members.clear_search', default: 'Clear search') %>">
+          <input id="members-filter-input" class="form-control" type="search" placeholder="<%= t('blacklight.members.search_placeholder') %>" title="<%= t('blacklight.members.search_placeholder') %>">
+          <button type="button" class="btn btn-outline-secondary btn-clear-search btn-clear-members" hidden aria-label="<%= t('blacklight.members.clear_search', default: 'Clear search') %>" title="<%= t('blacklight.members.clear_search', default: 'Clear search') %>">
             <i class="bi bi-x-lg" aria-hidden="true"></i>
             <span class="visually-hidden"><%= t('blacklight.members.clear', default: 'Clear') %></span>
           </button>
@@ -28,12 +28,12 @@
     </div>
 
     <div class="members-filters d-flex flex-wrap align-items-center gap-2 mb-3" role="group" aria-label="<%= t('blacklight.members.province_filter_aria', default: 'Filter members by province') %>">
-      <button type="button" class="chip chip-filter active" data-province="all" aria-pressed="true">
+      <button type="button" class="chip chip-filter active" data-province="all" aria-pressed="true" title="<%= t('blacklight.members.all') %>">
         <i class="bi bi-mortarboard" aria-hidden="true"></i>
         <span><%= t('blacklight.members.all') %></span>
       </button>
       <% @provinces.each do |prov| %>
-        <button type="button" class="chip chip-filter" data-province="<%= prov %>" aria-pressed="false"><%= prov %></button>
+        <button type="button" class="chip chip-filter" data-province="<%= prov %>" aria-pressed="false" title="<%= prov %>"><%= prov %></button>
       <% end %>
     </div>
 
@@ -64,7 +64,8 @@
                 <% logo_attrs[:'aria-hidden'] = true if duplicate %>
 
                 <% if member_href.present? %>
-                  <a <%= tag.attributes(logo_attrs.merge(href: member_href, target: '_blank', rel: 'noopener noreferrer', aria: { label: t('blacklight.members.visit_site_aria', name: member['name']) })) %>>
+                  <% member_label = t('blacklight.members.visit_site_aria', name: member['name']) %>
+                  <a <%= tag.attributes(logo_attrs.merge(href: member_href, target: '_blank', rel: 'noopener noreferrer', aria: { label: member_label }, title: (duplicate ? nil : member_label)).compact) %>>
                     <% if logo_src.present? %>
                       <%= image_tag logo_src, class: 'member-logo__image', alt: '', width: '200', height: '55', loading: 'lazy', decoding: 'async' %>
                       <span class="visually-hidden"><%= member['name'] %></span>
