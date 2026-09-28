@@ -67,7 +67,8 @@ function initMiradorViewer() {
   if (params.has("q")) contentSearch = { query: params.get("q") };
   const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www-iiif-pres.canadiana.ca/manifest";
   let normalizedBase = manifestBase.endsWith('/') ? manifestBase : manifestBase + '/';
-  let manifest = documentId.replace("https://n2t.net/ark:/", normalizedBase);
+  let cleanDocId = documentId.replace(/^https?:\/\/[^/]+\//, '').replace(/^ark:?\/?/, '').replace(/^\/+/, '');
+  let manifest = `${normalizedBase}${cleanDocId}`;
   const manifestList = {};
   manifestList[manifest] = { "provider": "Canadian Research Knowledge Network" };
 
@@ -181,6 +182,16 @@ const initLenis = () => {
       smoothTouch: false,
       prevent: (node) => {
         if (!(node instanceof Element)) return false
+
+        const collectionViewer = node.closest('.collection-item__viewer')
+        if (collectionViewer) {
+          return collectionViewer.classList.contains('is-active')
+        }
+
+        const featuredViewer = node.closest('.featured-item__viewer')
+        if (featuredViewer) {
+          return featuredViewer.classList.contains('is-active')
+        }
 
         return Boolean(
           node.closest(
@@ -1217,12 +1228,12 @@ function adjustCatalogShowBreadcrumbActions() {
     viewAllIssues.className = 'btn btn-outline-secondary btn-sm view-all-issues-link';
     viewAllIssues.href = `/catalogue/${encodeURIComponent(parentSerialId)}?lang=${encodeURIComponent(lang)}`;
     const viewAllIssuesIcon = document.createElement('i');
-    viewAllIssuesIcon.className = 'bi bi-arrow-90deg-up me-1';
+    viewAllIssuesIcon.className = 'bi bi-arrow-left me-1';
     viewAllIssuesIcon.setAttribute('aria-hidden', 'true');
     const viewAllIssuesLabel = document.createElement('span');
     viewAllIssuesLabel.textContent = isFr
-      ? `Voir le catalogue complet de "${serialTitle || 'ce titre de périodique'}"`
-      : `View full catalogue of "${serialTitle || 'this serial title'}"`;
+      ? `Voir tous les numéros de "${serialTitle || 'ce titre de périodique'}"`
+      : `View all issues of "${serialTitle || 'this serial title'}"`;
     viewAllIssues.append(viewAllIssuesIcon, viewAllIssuesLabel);
     actionRow.insertBefore(viewAllIssues, actionRow.firstChild);
   }

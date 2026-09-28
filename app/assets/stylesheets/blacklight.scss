@@ -218,8 +218,17 @@ i {
 #collection-items-list .collection-item__viewer {
     position: relative;
 }
-#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container {
-    pointer-events: none;
+#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container,
+#collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container * {
+    pointer-events: none !important;
+}
+#collection-items-list .collection-item__viewer.is-active {
+    overscroll-behavior: contain;
+    touch-action: pan-y pinch-zoom;
+}
+#collection-items-list .collection-item__viewer.is-active .openseadragon-container,
+#collection-items-list .collection-item__viewer.is-active .openseadragon-container * {
+    pointer-events: auto;
 }
 #collection-items-list .collection-item__activate {
     display: none !important;

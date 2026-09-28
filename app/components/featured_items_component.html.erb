@@ -103,7 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const overlay = container.querySelector(".featured-item__activate");
 
     (async function () {
-      const manifestUrl = `https://www-iiif-pres.canadiana.ca/manifest/${arkId}`;
+      const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.getAttribute('content')?.replace(/\/+$/, '') || 'https://www-iiif-pres.canadiana.ca/manifest';
+      const imageBase = document.querySelector('meta[name="iiif-image-base"]')?.getAttribute('content')?.replace(/\/+$/, '') || 'https://image-tor.canadiana.ca/iiif/2';
+      const manifestUrl = `${manifestBase}/${arkId}`;
       try {
         const response = await fetch(manifestUrl);
         const manifest = await response.json();
@@ -122,10 +124,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const tileSources = canvases.map((canvas) => {
+          const serviceId = canvas?.items?.[0]?.items?.[0]?.body?.service?.[0]?.['@id'] ||
+                            canvas?.items?.[0]?.items?.[0]?.body?.service?.[0]?.id ||
+                            canvas?.images?.[0]?.resource?.service?.['@id'] ||
+                            canvas?.images?.[0]?.resource?.service?.id;
+          if (serviceId) {
+            return `${serviceId.replace(/\/+$/, '')}/info.json`;
+          }
           const canvasId = String(canvas.id || canvas["@id"] || "");
           const parts = canvasId.split("/");
           const lastTwoParts = parts.slice(-2).join("/");
-          return `https://image-tor.canadiana.ca/iiif/2/${encodeURIComponent(lastTwoParts)}/info.json`;
+          return `${imageBase}/${encodeURIComponent(lastTwoParts)}/info.json`;
         }).filter(Boolean);
         const boundedStartPage = Math.min(startPageIndex, Math.max(tileSources.length - 1, 0));
 

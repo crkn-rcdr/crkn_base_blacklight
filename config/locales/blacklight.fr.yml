@@ -21,7 +21,7 @@ fr:
       blurb_html: "Les collections et l'infrastructure Canadiana existent grâce à l'engagement commun et au soutien financier des 88 bibliothèques membres du RCDR à travers le pays. Ensemble, elles permettent à chacun d'explorer, de découvrir et de se connecter au patrimoine documentaire du Canada. <a href='https://www.crkn-rcdr.ca/fr/a-propos-du-rcdr' target='blank'>En savoir plus sur le RCDR.</a>"
       visit_site_aria: "Visiter le site de %{name}"
     page_search:
-      matching_pages_for_html: "Résultats de la recherche en texte intégral pour <strong>%{term}</strong>"
+      matching_pages_for_html: "Pages avec <strong>%{term}</strong>"
       no_results_html: "Aucun résultat dans cet élément"
       show_more: Afficher plus
       show_less: Afficher moins
@@ -65,6 +65,8 @@ fr:
       clear: Effacer
       email: Envoyer
       sms: SMS
+    advanced_search:
+      or_html: " OU "
     and: et
     application_name: Canadiana
     back_to_bookmarks: Retour aux favoris
@@ -174,6 +176,7 @@ fr:
         title: Limiter votre recherche
       filters:
         label: "%{label}:"
+        or_html: " OU "
         remove:
           label_value: "Supprimer la restriction %{label}: %{value}"
           value: Supprimer la restriction %{value}
@@ -282,11 +285,11 @@ fr:
       creator:
         label: Créateur
       published:
-        label: Adresse bibliographique
+        label: Publication
       date:
         label: Date de numérisation
       id:
-        label: Identificateur
+        label: Identifiant
       subject:
         label: Sujet
       material:
@@ -294,7 +297,7 @@ fr:
       material_language:
         label: Langue du document
       depositor:
-        label: Institution source
+        label: Établissement d'origine
       notes:
         label: Notes
       original_version_note:
@@ -306,7 +309,7 @@ fr:
       right_statements:
         label: Droits
       persistent_url:
-        label: URL stable
+        label: Lien stable
       serial_msg:
         label: Est-ce une publication en série
       issue_msg:
@@ -320,7 +323,7 @@ fr:
       description:
         label: Description
       date_range:
-        label: Période
+        label: Date de création
       all_fields:
         label: Tous
       serial_title:
