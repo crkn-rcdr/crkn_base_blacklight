@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   concern :range_searchable, BlacklightRangeLimit::Routes::RangeSearchable.new
-  get '/catalog/:id.txt', to: 'catalog#tx_gen', as: :catalog_tx_gen, constraints: { id: /[^\/]+/ }, defaults: { format: :txt }
+  get '/catalogue/:id.txt', to: 'catalog#tx_gen', as: :catalog_tx_gen, constraints: { id: /[^\/]+/ }, defaults: { format: :txt }
+  get '/catalog/:id.txt', to: 'catalog#tx_gen', constraints: { id: /[^\/]+/ }, defaults: { format: :txt }
   mount Blacklight::Engine => '/'
   root to: "pages#home"
   # Simple about pages for collections
@@ -21,17 +22,35 @@ Rails.application.routes.draw do
   concern :marc_viewable, Blacklight::Marc::Routes::MarcViewable.new
   concern :searchable, Blacklight::Routes::Searchable.new
 
-  resource :catalog, only: [], as: 'catalog', path: '/catalog', controller: 'catalog', id: /[^\/]+/ do
+  resource :catalog, only: [], as: 'catalog', path: '/catalogue', controller: 'catalog', id: /[^\/]+/ do
     concerns :searchable
     concerns :range_searchable
-
   end
 
   concern :exportable, Blacklight::Routes::Exportable.new
 
-  resources :solr_documents, only: [:show], path: '/catalog', controller: 'catalog', id: /[^\/]+/  do
+  resources :solr_documents, only: [:show], path: '/catalogue', controller: 'catalog', id: /[^\/]+/  do
     concerns [:exportable, :marc_viewable]
   end
+
+  # Legacy/redirect routes for /catalog -> /catalogue
+  get '/catalog', to: redirect(->(_params, req) {
+    req.query_string.present? ? "/catalogue?#{req.query_string}" : "/catalogue"
+  })
+  get '/catalog/:id', to: redirect(->(params, req) {
+    req.query_string.present? ? "/catalogue/#{params[:id]}?#{req.query_string}" : "/catalogue/#{params[:id]}"
+  }), constraints: { id: /[^\/]+/ }
+  get '/catalog/:id/citation', to: redirect(->(params, req) {
+    req.query_string.present? ? "/catalogue/#{params[:id]}/citation?#{req.query_string}" : "/catalogue/#{params[:id]}/citation"
+  }), constraints: { id: /[^\/]+/ }
+  get '/catalog/:id/librarian_view', to: redirect(->(params, req) {
+    req.query_string.present? ? "/catalogue/#{params[:id]}/librarian_view?#{req.query_string}" : "/catalogue/#{params[:id]}/librarian_view"
+  }), constraints: { id: /[^\/]+/ }
+  get '/catalog/facet/:id', to: redirect(->(params, req) {
+    req.query_string.present? ? "/catalogue/facet/#{params[:id]}?#{req.query_string}" : "/catalogue/facet/#{params[:id]}"
+  })
+  get '/catalog/facet_suggest/:id(/:query_fragment)', to: 'catalog#facet', defaults: { only_values: true }, constraints: { id: /[^\/]+/ }
+  get '/catalogue/facet_suggest/:id(/:query_fragment)', to: 'catalog#facet', defaults: { only_values: true }, constraints: { id: /[^\/]+/ }
 
   resources :bookmarks, only: [:index, :update, :create, :destroy] do
     concerns :exportable

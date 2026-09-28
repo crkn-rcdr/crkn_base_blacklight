@@ -1,0 +1,22 @@
+<div class="card facet-limit checkbox-facet-limit blacklight-<%= @facet_field.key %> <%= 'facet-limit-active' if @facet_field.active? %>">
+  <h3 class="card-header p-0 facet-field-heading" id="<%= header_html_id %>">
+    <button
+      type="button"
+      class="btn w-100 d-block btn-block p-2 text-start text-left collapse-toggle <%= "collapsed" if @facet_field.collapsed? %>"
+      data-toggle="collapse"
+      data-bs-toggle="collapse"
+      data-target="#<%= html_id %>"
+      data-bs-target="#<%= html_id %>"
+      aria-expanded="<%= @facet_field.collapsed? ? 'false' : 'true' %>"
+      aria-controls="<%= html_id %>"
+    >
+      <%= label %>
+    </button>
+  </h3>
+
+  <div id="<%= html_id %>" role="region" aria-labelledby="<%= header_html_id %>" class="panel-collapse facet-content collapse <%= "show" unless @facet_field.collapsed? %>">
+    <div class="card-body">
+      <%= body %>
+    </div>
+  </div>
+</div>

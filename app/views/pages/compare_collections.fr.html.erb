@@ -1,6 +1,9 @@
 <% content_for :page_title, "Comparer les collections - #{application_name}" %>
 
-<section class="site-section compare-collections-section blacklight-pages-api_access">
+<section
+  class="site-section compare-collections-section blacklight-pages-api_access"
+  style="--about-canadiana-hero-image: url('<%= asset_path('backgrounds/canadiana/oocihm.8_04048_394.31.jpg') %>'); --about-heritage-hero-image: url('<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg') %>');"
+>
   <div class="container compare-collections-page api-access-page api-access-page--modern">
     <div class="compare-frame">
       <header class="api-hero">
@@ -10,12 +13,8 @@
               <span class="api-hero__eyebrow-text">Collections et infrastructure Canadiana</span>
               <span class="api-hero__title-main">Comparer les collections</span>
             </h1>
-            <p class="api-lede">Decouvrez des publications numerisees et des archives de partout au Canada.</p>
             <p>
-              Le RCDR donne acces a deux grandes collections numeriques de patrimoine : la collection Canadiana et la collection Heritage.
-              Les collections Canadiana figurent parmi les plus vastes collections de patrimoine documentaire canadien numerise au monde.
-              Offertes sans frais grace au soutien continu des membres du RCDR par l'entremise du fonds Heritage Content Access and Preservation (HCAP),
-              ces collections offrent des millions de pages de contenu patrimonial aux chercheurs du monde entier.
+              Canadiana est composée de deux collections distinctes, Canadiana et Héritage. Gérées par le Réseau canadien de documentation pour la recherche (RCDR), ces collections contiennent plus de 69 millions de pages de documents divers qui témoignent de l'histoire du Canada et des expériences vécues par ses populations et qui sont accessibles gratuitement grâce au soutien financier des bibliothèques membres du RCDR. Comparez les points forts des deux collections ci-dessous pour en savoir plus sur ce qui les rend distinctes.
             </p>
           </div>
         </div>
@@ -23,28 +22,22 @@
 
       <div class="compare-hero-grid">
         <div class="compare-hero-spacer" aria-hidden="true"></div>
-        <article class="compare-collection-card">
-          <img src="<%= asset_path('monog.jpg') %>" alt="Livres et periodiques de la collection Canadiana" loading="lazy">
+        <article class="compare-collection-card compare-collection-card--canadiana">
           <div class="compare-collection-body">
             <h3>Collection Canadiana</h3>
-            <p class="compare-collection-type">Patrimoine publie</p>
-            <p class="compare-collection-metric">31M+ pages</p>
           </div>
         </article>
 
-        <article class="compare-collection-card">
-          <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Documents d'archives de la collection Heritage" loading="lazy">
+        <article class="compare-collection-card compare-collection-card--heritage">
           <div class="compare-collection-body">
-            <h3>Collection Heritage</h3>
-            <p class="compare-collection-type">Microfilms d'archives</p>
-            <p class="compare-collection-metric">60M pages projetees (37.5M pages actuelles)</p>
+            <h3>Collection Héritage</h3>
           </div>
         </article>
       </div>
 
       <div class="compare-spec-scroll">
         <table class="compare-spec-table">
-          <caption class="visually-hidden">Comparaison des collections Canadiana et Heritage</caption>
+          <caption class="visually-hidden">Comparaison des collections Canadiana et Héritage</caption>
           <colgroup>
             <col class="compare-col-feature">
             <col class="compare-col-value">
@@ -60,28 +53,33 @@
           <tbody>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Orientation principale</th>
-              <td>Patrimoine canadien publie : livres, periodiques, cartes et publications gouvernementales.</td>
-              <td>Dossiers d'archives sur microfilm de Bibliotheque et Archives Canada et de partenaires.</td>
+              <td>Patrimoine canadien publié y compris des livres, des périodiques, des cartes et des publications gouvernementales</td>
+              <td>Dossiers d'archives sur microfilm de Bibliothèque et Archives Canada</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
-              <th scope="row">Periode couverte</th>
-              <td>v. 1500 a aujourd'hui</td>
-              <td>Des annees 1600 au milieu des annees 1900</td>
+              <th scope="row">Période couverte</th>
+              <td>Environ 1500 à nos jours</td>
+              <td>Environ 1500 à 1985</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Taille de la collection</th>
-              <td>Environ 31 millions de pages</td>
-              <td>Environ 60 millions de pages projetees (37 millions de pages actuellement)</td>
+              <td>Environ 31,7 millions de pages (98 000 titres)</td>
+              <td>Environ 37,8 millions de pages (plus de 1 000 collections d'archives)</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
-              <th scope="row">Materiaux genealogiques</th>
-              <td>Limite</td>
-              <td>Couverture importante, incluant dossiers familiaux, immigration et listes electorales</td>
+              <th scope="row">Matériaux généalogiques</th>
+              <td>Certaines publications généalogiques (telles que les annuaires municipaux)</td>
+              <td>Un large éventail de matériaux, y compris des documents familiaux, des dossiers d'immigration et des listes électorales</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
-              <th scope="row">Histoire autochtone</th>
-              <td>Forte dans les publications de recherche et d'analyse</td>
-              <td>Forte dans les dossiers d'archives et les fonds gouvernementaux</td>
+              <th scope="row">Histoire autochtone</th> 
+              <td>Livres et périodiques en langues autochtones, ainsi que des ouvrages sélectionnés d'auteurs autochtones</td>
+              <td>Forte concentration de documents d'archives et de dossiers du gouvernement fédéral</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Documents militaires</th>
+              <td>Sélection de publications historiques militaires</td>
+              <td>Documentation archivistique militaire étendue</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Journaux et magazines</th>
@@ -93,25 +91,20 @@
               <td><span class="compare-token compare-token--yes">Oui</span></td>
               <td><span class="compare-token compare-token--no">Non</span></td>
             </tr>
-            <tr class="compare-spec-row" data-equal="false">
-              <th scope="row">Documents militaires</th>
-              <td>Selection de publications historiques militaires</td>
-              <td>Documentation archivistique militaire etendue</td>
-            </tr>
             <tr class="compare-spec-row" data-equal="true">
-              <th scope="row">Mode d'acces</th>
-              <td>Accessible via la plateforme Canadiana pour les communautes membres du RCDR</td>
-              <td>Accessible via la plateforme Canadiana pour les communautes membres du RCDR</td>
+              <th scope="row">Mode d'accès</th>
+              <td>Accessible gratuitement via la plateforme Canadiana</td>
+              <td>Accessible gratuitement via la plateforme Canadiana</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
-              <th scope="row">Ideale pour</th>
-              <td>La decouverte de sources publiees, la recherche periodique et l'analyse de la culture imprimee.</td>
-              <td>La recherche archivistique de sources primaires, la genealogie et l'histoire documentaire gouvernementale.</td>
+              <th scope="row">Idéale pour</th>
+              <td>Recherche dans les journaux et les périodiques, littérature canadienne et publications gouvernementales, ainsi que l'analyse de la culture de l'imprimé</td>
+              <td>La recherche archivistique de sources primaires, la généalogie et l'histoire gouvernementale</td>
             </tr>
             <tr class="compare-spec-row compare-spec-row--action" data-equal="false">
               <th scope="row"><span class="visually-hidden">Parcourir</span></th>
-              <td><a class="compare-action-link" href="<%= about_canadiana_path(lang: I18n.locale) %>">Aller a Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
-              <td><a class="compare-action-link" href="<%= about_heritage_path(lang: I18n.locale) %>">Aller a Heritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link compare-action-link--canadiana" href="<%= about_canadiana_path(lang: I18n.locale) %>">En savoir plus sur Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link compare-action-link--heritage" href="<%= about_heritage_path(lang: I18n.locale) %>">En savoir plus sur Héritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
             </tr>
           </tbody>
         </table>
@@ -130,7 +123,7 @@
           aux journaux et aux contenus représentatifs de la diversité de la population canadienne.
         </p>
         <p class="mb-0">
-          Les collections de Canadiana sont encadrées par le
+          Les collections Canadiana sont encadrées par le
           <a href="https://www.crkn-rcdr.ca/fr/comite-de-preservation-et-dacces" target="_blank" rel="noopener">Comité de préservation et d'accès</a> (CPA)
           et les sous-comités du CPA, le
           <a href="https://www.crkn-rcdr.ca/fr/sous-comite-sur-le-contenu-de-canadiana-sccc" target="_blank" rel="noopener">Sous-comité sur le contenu de Canadiana</a>

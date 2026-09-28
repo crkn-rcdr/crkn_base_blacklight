@@ -1,12 +1,12 @@
-@import 'bootstrap';
-@import 'blacklight/blacklight';
-@import 'blacklight_marc';
+@import "bootstrap";
+@import "blacklight/blacklight";
+@import "blacklight_marc";
 
 i {
     font-family: "bootstrap-icons" !important;
 }
 .show-document {
-    width:100%;
+    width: 100%;
 }
 .main-container > .row {
     flex-direction: column !important;
@@ -35,7 +35,86 @@ i {
     }
 }
 
-.page-sidebar[aria-label="Tools"], .page-sidebar[aria-label="Outils"] {
+.blacklight-catalog-show .document-main-section {
+    margin-top: 0.5rem;
+}
+
+.blacklight-catalog-show .collection-breadcrumbs {
+    margin: 0 0 0.7rem;
+    padding: 0.8rem 0 0.65rem;
+    background: transparent;
+    border-bottom: 3px solid #f3f3f3;
+}
+
+.blacklight-catalog-show .collection-breadcrumbs .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    margin: 0 !important;
+    background: transparent;
+    font-size: 1.05rem;
+    line-height: 1.35;
+}
+
+.blacklight-catalog-show .collection-breadcrumbs .breadcrumb-item {
+    margin: 0;
+    color: var(--brand-teal);
+}
+
+.blacklight-catalog-show .collection-breadcrumbs .breadcrumb-item + .breadcrumb-item::before {
+    padding-right: 0.7rem;
+    color: var(--brand-teal);
+}
+
+.blacklight-catalog-show .collection-breadcrumbs .collection-breadcrumbs__root {
+    font-weight: 700;
+}
+
+.blacklight-catalog-show .collection-breadcrumbs a {
+    color: var(--brand-teal);
+    text-decoration: none;
+}
+
+.blacklight-catalog-show .collection-breadcrumbs a:hover,
+.blacklight-catalog-show .collection-breadcrumbs a:focus-visible {
+    color: var(--brand-teal-search-hover);
+    text-decoration: underline;
+}
+
+.blacklight-catalog-show #appliedParams.catalog-show-breadcrumb-actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.blacklight-catalog-show .catalog-show-breadcrumb-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 1rem;
+}
+
+/* Hide prev/next item pagination on item and serial display pages */
+.blacklight-catalog-show .pagination-search-widgets,
+.blacklight-catalog-show #previousNextDocument,
+.blacklight-catalog-show .search-context.page-links,
+.blacklight-catalog-show .catalog-show-pagination-before-breadcrumb {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    border: none !important;
+    visibility: hidden !important;
+}
+
+.page-sidebar[aria-label="Tools"],
+.page-sidebar[aria-label="Outils"] {
     width: 100%;
     .card {
         border: none;
@@ -48,17 +127,59 @@ i {
     .card .list-group-item {
         padding: var(--bs-list-group-item-padding-y) 0;
     }
-    h2, .h2 {
-        font-size: calc(1.325rem + 0.9vw)  !important;
+    h2,
+    .h2 {
+        font-size: calc(1.325rem + 0.9vw) !important;
     }
     @media (min-width: 1200px) {
-        h2, .h2 {
+        h2,
+        .h2 {
             font-size: 2rem !important;
         }
     }
 }
 /* Hide separate sidebar Tools; links live in the Toolbox card to avoid duplication */
-.blacklight-catalog-show .page-sidebar[aria-label="Tools"],  .blacklight-catalog-show .page-sidebar[aria-label="Outils"] { display: none; }
+.blacklight-catalog-show .page-sidebar[aria-label="Tools"],
+.blacklight-catalog-show .page-sidebar[aria-label="Outils"] {
+    display: none;
+}
+
+.catalog-show-breadcrumb-row .view-all-issues-link,
+.view-all-issues-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.62rem !important;
+    font-size: 0.93rem !important;
+    font-weight: 600 !important;
+    line-height: 1.24;
+    color: #25303a !important;
+    background-color: #fff !important;
+    border: 1px solid #bec7d2 !important;
+    border-radius: var(--site-radius, 3px);
+    padding: 0.5rem 0.75rem !important;
+    min-height: 2.8rem;
+    margin-bottom: 1rem;
+    text-decoration: none !important;
+    white-space: normal;
+    text-align: left;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    .bi,
+    i {
+        color: #3b4450 !important;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+        background-color: #f6f9fc !important;
+        border-color: #a5b2c2 !important;
+        color: #25303a !important;
+        text-decoration: none !important;
+    }
+}
 
 /* Make show page content span full page width (mobile only; see block at bottom) */
 @media only screen and (max-width: 1024px) {
@@ -78,6 +199,11 @@ i {
 #collection-items-list .card {
     padding: 0;
 }
+#collection-items-list .card-title,
+#collection-items-list .card-title a {
+    font-size: 20px !important;
+    line-height: 1.2;
+}
 .collection-item-card {
     width: 100% !important;
     margin: 0 !important;
@@ -86,6 +212,8 @@ i {
     height: 440px;
     border-bottom: none;
     margin-bottom: 0;
+    border-radius: 3px;
+    overflow: hidden;
 }
 #collection-items-list .collection-item__viewer {
     position: relative;
@@ -113,16 +241,20 @@ i {
     margin: 0 !important;
 }
 
-
-#collection-items-list .card .openseadragon-canvas+div>div:last-child>div, 
-.home-featured-grid .openseadragon-container>div:nth-child(2)>div:nth-child(2)> div {
+#collection-items-list .card .openseadragon-canvas + div > div:last-child > div,
+.home-featured-grid .openseadragon-container > div:nth-child(2) > div:nth-child(2) > div {
     display: flex !important;
     align-items: center;
     justify-content: center;
 }
 
+.home-page #featured-items-list .openseadragon-canvas + div {
+    display: none !important;
+}
+
 .page-sidebar {
-    .endnote, .refworks {
+    .endnote,
+    .refworks {
         display: none; /* TODO: find how to disable in src code */
     }
 }
@@ -130,15 +262,15 @@ i {
 /* Sidebar styles */
 #toggle-menu {
     //position: sticky;
-    top: 0;                /* stick to the top of the viewport */
-    height: fit-content;   /* allow sidebar height to follow its content */
-    overflow-y: visible;   /* let nested content flow naturally */
-    transform: translateX(0); 
+    top: 0; /* stick to the top of the viewport */
+    height: fit-content; /* allow sidebar height to follow its content */
+    overflow-y: visible; /* let nested content flow naturally */
+    transform: translateX(0);
     transition: transform 0.3s ease-in-out;
     max-width: 276px;
     /*border: 1px solid rgba(0, 0, 0, 0.175);*/
     background-color: #fff; /* to cover content underneath */
-    z-index: 1020;          /* keep above main content when sliding */
+    z-index: 1020; /* keep above main content when sliding */
     padding-left: 0 !important;
     padding-top: 1rem !important;
     overflow-wrap: break-word;
@@ -174,14 +306,23 @@ button i {
     padding: 0 !important;
     position: relative;
 
-    .card { border: none; }
-    .card-img-top { margin-bottom: 0; border-bottom: none; }
-    h5 { margin-top: 0; }
-    .openseadragon-container { border-radius: 10px; }
+    .card {
+        border: none;
+    }
+    .card-img-top {
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+    h5 {
+        margin-top: 0;
+    }
+    .openseadragon-container {
+        border-radius: 3px;
+    }
 }
 
-#doc-main #collection-items-list { 
-    margin-left:0.5rem;
+#doc-main #collection-items-list {
+    margin-left: 0.5rem;
 }
 
 @media (min-width: 900px) {
@@ -210,16 +351,23 @@ button i {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  /* Make show page take full width on mobile */
-  .blacklight-catalog-show #main-container.container {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding-left: .75rem; padding-right: .75rem;
-  }
-  .blacklight-catalog-show .document-main-section { max-width: 100% !important; }
+    /* Make show page take full width on mobile */
+    .blacklight-catalog-show #main-container.container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    .blacklight-catalog-show .document-main-section {
+        max-width: 100% !important;
+    }
     /* Reflow details + viewer vertically on mobile */
-    #document-togglable-content .row { flex-wrap: wrap !important; }
-    #document-togglable-content .row.flex-nowrap { flex-wrap: wrap !important; }
+    #document-togglable-content .row {
+        flex-wrap: wrap !important;
+    }
+    #document-togglable-content .row.flex-nowrap {
+        flex-wrap: wrap !important;
+    }
     /* Each section (details + viewer) should consume full row */
     #document-togglable-content #toggle-menu,
     #document-togglable-content #doc-main {
@@ -227,32 +375,55 @@ button i {
         max-width: 100% !important;
     }
     /* Show viewer first, then details */
-    #document-togglable-content #doc-main { order: 1 !important; }
-    #document-togglable-content #toggle-menu { order: 2 !important; }
+    #document-togglable-content #doc-main {
+        order: 1 !important;
+    }
+    #document-togglable-content #toggle-menu {
+        order: 2 !important;
+    }
     #toggle-menu {
         position: relative !important;
-        top: auto; height: auto; transform: none !important;
-        width: 100%; min-width: auto; max-width: none;
+        top: auto;
+        height: auto;
+        transform: none !important;
+        width: 100%;
+        min-width: auto;
+        max-width: none;
         z-index: 1; /* sit under any floating viewer UI */
-        box-shadow: 0 4px 16px rgba(0,0,0,.06);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
         border-radius: 8px;
-        margin-bottom: .75rem;
+        margin-bottom: 0.75rem;
         overflow: visible !important; /* remove inner scrolling on mobile */
     }
-    #doc-main { margin: 0 !important; padding: 0 !important; width: 100%; }
+    #doc-main {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
+    }
     /* viewer height on small screens */
-    #doc-main #my-mirador, .mirador-osd-container { min-height: 60vh; width: 100% !important; }
-    /* ensure inner mirador wrappers stretch full width */
-    #doc-main .mirador-viewer, #doc-main .viewer-wrap, #doc-main .mirador-mosaic, #doc-main .mosaic-root {
+    #doc-main #my-mirador,
+    .mirador-osd-container {
+        min-height: 60vh;
         width: 100% !important;
     }
-
+    /* ensure inner mirador wrappers stretch full width */
+    #doc-main .mirador-viewer,
+    #doc-main .viewer-wrap,
+    #doc-main .mirador-mosaic,
+    #doc-main .mosaic-root {
+        width: 100% !important;
+    }
 }
 
 /* Strong mobile overrides placed at end to beat earlier rules */
 @media (max-width: 768px) {
-  #document-togglable-content #toggle-menu { height: auto !important; overflow: visible !important; }
-  .blacklight-catalog-show .document-main-section { max-width: 100% !important; }
+    #document-togglable-content #toggle-menu {
+        height: auto !important;
+        overflow: visible !important;
+    }
+    .blacklight-catalog-show .document-main-section {
+        max-width: 100% !important;
+    }
 }
 #download-toolbar {
     margin-bottom: 0.5rem;
@@ -352,6 +523,46 @@ button i {
     white-space: normal;
 }
 
+#toggle-menu .sidebar-cite-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.93rem;
+    font-weight: 600;
+    justify-content: flex-start;
+    gap: 0.62rem !important;
+    min-height: 2.9rem;
+    padding: 0.5rem 0.72rem;
+    border-radius: 999px;
+    border: 1px solid #bec7d2 !important;
+    background: #fff;
+    color: #25303a;
+    line-height: 1.24;
+    text-align: left;
+    white-space: normal;
+}
+
+#toggle-menu .citation-toolbar-title {
+    margin: 1rem 0 0.45rem;
+    color: var(--bl-field-name-color);
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: normal;
+    line-height: 1.5;
+}
+
+
+#toggle-menu .sidebar-cite-btn .bi::before {
+    color: #3b4450 !important;
+}
+
+#toggle-menu .sidebar-cite-btn:hover,
+#toggle-menu .sidebar-cite-btn:focus {
+    background-color: #f6f9fc !important;
+    border-color: #a5b2c2 !important;
+    text-decoration: none !important;
+}
+
 #toggle-menu #download-toolbar .sidebar-download-btn:hover,
 #toggle-menu #download-toolbar .sidebar-download-btn:focus {
     background-color: #f6f9fc !important;
@@ -373,6 +584,12 @@ button i {
 #toggle-menu #download-toolbar .download-icon-group i {
     color: #3b4450;
     font-size: 1.28rem !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    height: 1em;
+    width: 1em;
 }
 
 #toggle-menu #download-toolbar .download-kind {
@@ -439,14 +656,14 @@ button i {
 #toggle-menu {
     .document-metadata dt,
     .document-metadata dd {
-    display: block;   /* stack instead of inline/grid */
-    width: 100%;      /* full width */
-    margin: 0;        /* reset Bootstrap spacing */
+        display: block; /* stack instead of inline/grid */
+        width: 100%; /* full width */
+        margin: 0; /* reset Bootstrap spacing */
     }
 
     .document-metadata dt {
-    font-weight: bold; /* optional, to keep label distinct */
-    margin-top: 1em;   /* add spacing before each section */
+        font-weight: bold; /* optional, to keep label distinct */
+        margin-top: 1em; /* add spacing before each section */
     }
 }
 
@@ -457,20 +674,21 @@ button i {
 }
 
 .btn-outline-custom {
-    border: 1px solid rgba(0, 0, 0, 0.175);
+    border: 1px solid #bec7d2;
 }
 .btn-outline-custom:hover {
-    background-color: rgba(0, 0, 0, 0.175);
+    background-color: rgba(0, 0, 0, 0.04);
 }
 
 /* Catalog show: keep toolbox/download controls visually consistent */
 .blacklight-catalog-show {
-    --catalog-btn-outline: #bfc5cc;
+    --catalog-btn-outline: #bec7d2;
 }
 
 .blacklight-catalog-show .btn-outline-custom,
-.blacklight-catalog-show .copy-link-btn {
-    border: 1px solid var(--catalog-btn-outline) !important;
+.blacklight-catalog-show .copy-link-btn,
+.blacklight-catalog-show .view-all-issues-link {
+    border: 1px solid #bec7d2 !important;
 }
 
 .blacklight-catalog-show .toolbox-card .toolbox-actions .btn {
@@ -484,19 +702,22 @@ button i {
     gap: 0.45rem !important;
 }
 
-/* Hover treatment requested: white background + underlined text */
+/* Hover treatment: clean background without underlines */
 .blacklight-catalog-show .btn-outline-custom:hover,
-.blacklight-catalog-show .copy-link-btn:hover {
+.blacklight-catalog-show .copy-link-btn:hover,
+.blacklight-catalog-show .toolbox-actions .btn:hover,
+.blacklight-catalog-show .toolbox-actions a:hover {
     background-color: #fff !important;
     border-color: var(--catalog-btn-outline) !important;
     border-style: solid !important;
+    text-decoration: none !important;
 }
 
-.blacklight-catalog-show .btn-outline-custom:hover,
-.blacklight-catalog-show .copy-link-btn:hover,
-.blacklight-catalog-show .btn-outline-custom:hover span,
-.blacklight-catalog-show .copy-link-btn:hover span {
-    text-decoration: underline !important;
+.blacklight-catalog-show .btn-outline-custom:hover *,
+.blacklight-catalog-show .copy-link-btn:hover *,
+.blacklight-catalog-show .toolbox-actions .btn:hover *,
+.blacklight-catalog-show .toolbox-actions a:hover * {
+    text-decoration: none !important;
 }
 
 .blacklight-catalog-show .btn-outline-custom:focus-visible,
@@ -510,6 +731,17 @@ button i {
 .blacklight-catalog-show .document-overview h1 {
     font-size: clamp(1.95rem, calc(1.7rem + 1vw), 2.85rem);
     line-height: 1.1;
+}
+
+.blacklight-catalog-show .document-overview .documentHeader.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.blacklight-catalog-show .document-overview .documentHeader .document-title-heading,
+.blacklight-catalog-show .document-overview .documentHeader h2 {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
 }
 
 .blacklight-catalog-show .document-overview h2 {
@@ -594,7 +826,8 @@ button i {
     color: #00695c !important;
 }
 
-.card, .card-img-top {
+.card,
+.card-img-top {
     div[title="Zoom in"] img,
     div[title="Zoom out"] img,
     div[title="Go home"] img,
@@ -624,7 +857,11 @@ button i {
         background-color: rgba(255, 255, 255, 0.98);
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: none;
-        transition: background-color .12s ease, box-shadow .12s ease, transform .06s ease, color .12s ease;
+        transition:
+            background-color 0.12s ease,
+            box-shadow 0.12s ease,
+            transform 0.06s ease,
+            color 0.12s ease;
 
         &::before {
             content: "";
@@ -644,9 +881,13 @@ button i {
             background-color: #ffffff;
             box-shadow: none;
         }
-        &:active { transform: translateY(1px); }
+        &:active {
+            transform: translateY(1px);
+        }
         &:focus-visible {
-            box-shadow: 0 0 0 3px rgba(0, 95, 204, 0.35), 0 6px 18px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 0 0 3px rgba(0, 95, 204, 0.35),
+                0 6px 18px rgba(0, 0, 0, 0.2);
         }
     }
 
@@ -676,14 +917,15 @@ button i {
     }
 
     // Fullscreen override icon
-    .card-img-top.fullpage div[title="Toggle full page"]::before, .mirador-osd-container.fullpage div[title="Toggle full page"]::before {
+    .card-img-top.fullpage div[title="Toggle full page"]::before,
+    .mirador-osd-container.fullpage div[title="Toggle full page"]::before {
         content: "\f149";
     }
 
     // Style toolbar container
     .openseadragon-canvas + div {
         top: calc(100% - 62px) !important;
-        border-radius: 50px !important;
+        border-radius: var(--site-radius) !important;
         overflow: visible !important;
         margin: 0.5rem !important;
         /* ensure the group wrappers are fully opaque and neatly laid out */
@@ -692,11 +934,11 @@ button i {
         gap: 10px;
         align-items: center;
         /* drop shadow to lift from the image */
-        filter: drop-shadow(0 6px 18px rgba(0,0,0,.18));
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.18));
         > div:last-child {
             background-color: rgba(255, 255, 255, 0.98) !important;
-            border: 1px solid rgba(0,0,0,.08);
-            border-radius: 999px !important;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: var(--site-radius) !important;
             padding: 6px !important;
             display: flex !important;
             gap: 4px;
@@ -708,7 +950,7 @@ button i {
     /* Tablet: slightly smaller controls and tighter layout */
     @media (max-width: 1024px) {
         .openseadragon-canvas + div {
-            top: auto !important;           /* anchor using bottom for stability */
+            top: auto !important; /* anchor using bottom for stability */
             bottom: 10px !important;
             margin: 0.35rem !important;
             gap: 8px;
@@ -722,9 +964,15 @@ button i {
             height: 31px;
             width: 35px;
             margin: 2px; /* reduce outer spacing */
-            &::before { width: 24px; height: 24px; font-size: 20px; }
+            &::before {
+                width: 24px;
+                height: 24px;
+                font-size: 20px;
+            }
         }
-        .openseadragon-canvas + div > div { padding: 4px !important; }
+        .openseadragon-canvas + div > div {
+            padding: 4px !important;
+        }
     }
 
     /* Mobile: compact controls to avoid wrapping/overlap */
@@ -743,9 +991,15 @@ button i {
             height: 31px;
             width: 35px;
             margin: 2px;
-            &::before { width: 24px; height: 24px; font-size: 18px; }
+            &::before {
+                width: 24px;
+                height: 24px;
+                font-size: 18px;
+            }
         }
-        .openseadragon-canvas + div > div { padding: 3px !important; }
+        .openseadragon-canvas + div > div {
+            padding: 3px !important;
+        }
     }
 
     // Make disabled nav (often inline-styled with low opacity) clearly disabled
@@ -765,7 +1019,11 @@ button i {
         div[title="Next page"] {
             height: 31px;
             width: 35px;
-            &::before { width: 24px; height: 24px; font-size: 24px; }
+            &::before {
+                width: 24px;
+                height: 24px;
+                font-size: 24px;
+            }
         }
     }
 }
@@ -786,7 +1044,7 @@ button i {
 #collection-items-list .card .openseadragon-canvas + div > div:last-child {
     padding: 6px !important;
     gap: 1px !important;
-    border-radius: 999px !important;
+    border-radius: var(--site-radius) !important;
 }
 #collection-items-list .card .openseadragon-canvas + div div[title="Previous page"],
 #collection-items-list .card .openseadragon-canvas + div div[title="Next page"] {
@@ -795,6 +1053,42 @@ button i {
     margin: 0 !important;
 }
 
-#my-mirador div.MuiToggleButtonGroup-root.MuiToggleButtonGroup-horizontal.mui-lbxqhe-MuiToggleButtonGroup-root > button.MuiButtonBase-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal.MuiToggleButton-root.MuiToggleButton-sizeSmall.MuiToggleButton-standard.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal.MuiToggleButtonGroup-middleButton.mui-1hfzhaz-MuiButtonBase-root-MuiToggleButton-root {
+#my-mirador
+    div.MuiToggleButtonGroup-root.MuiToggleButtonGroup-horizontal.mui-lbxqhe-MuiToggleButtonGroup-root
+    > button.MuiButtonBase-root.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal.MuiToggleButton-root.MuiToggleButton-sizeSmall.MuiToggleButton-standard.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal.MuiToggleButtonGroup-middleButton.mui-1hfzhaz-MuiButtonBase-root-MuiToggleButton-root {
     display: none;
+}
+
+.catalog-search-hero__applied-shell {
+    .mx-1, .search-widgets > *, .applied-filter {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .applied-filter.btn-group,
+    .applied-filter,
+    .btn-group.constraint {
+        border-radius: 0 !important;
+
+        > .constraint-value,
+        > .btn:first-child:not(:last-child),
+        > :first-child:not(:last-child) {
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        > .remove,
+        > .btn:last-child:not(:first-child),
+        > :last-child:not(:first-child) {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            margin-left: -1px !important;
+        }
+
+        > .btn:not(:first-child):not(:last-child),
+        > :not(:first-child):not(:last-child) {
+            border-radius: 0 !important;
+            margin-left: -1px !important;
+        }
+    }
 }

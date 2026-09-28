@@ -66,7 +66,7 @@
                 <% if member_href.present? %>
                   <a <%= tag.attributes(logo_attrs.merge(href: member_href, target: '_blank', rel: 'noopener noreferrer', aria: { label: t('blacklight.members.visit_site_aria', name: member['name']) })) %>>
                     <% if logo_src.present? %>
-                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
+                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', width: '200', height: '55', loading: 'lazy', decoding: 'async' %>
                       <span class="visually-hidden"><%= member['name'] %></span>
                     <% else %>
                       <span class="member-logo__text"><%= wordmark %></span>
@@ -75,7 +75,7 @@
                 <% else %>
                   <span <%= tag.attributes(logo_attrs) %>>
                     <% if logo_src.present? %>
-                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', loading: 'lazy', decoding: 'async' %>
+                      <%= image_tag logo_src, class: 'member-logo__image', alt: '', width: '200', height: '55', loading: 'lazy', decoding: 'async' %>
                       <span class="visually-hidden"><%= member['name'] %></span>
                     <% else %>
                       <span class="member-logo__text"><%= wordmark %></span>

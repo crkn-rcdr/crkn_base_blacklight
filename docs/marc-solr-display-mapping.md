@@ -47,10 +47,8 @@ It reflects the code currently in the repository, not older comments or prior in
 | `subject_ssim` | Subject display/facet source | `600-658`, `662`, `688` across all subfields (`#{ATOZ}`) | Punctuation trimmed. Used in index/show metadata and facet copy field source. |
 | `published_ssm` | Publication statement display (roman); index/show metadata | `260abcefg`, `264abc` | Roman script only; punctuation trimmed. |
 | `published_vern_ssm` | Publication statement display (vernacular) | `260abcefg`, `264abc` | Vernacular only; punctuation trimmed. |
-| `pub_date_si` | Sortable publication date key | Derived | Uses `marc_publication_date`. |
-| `pub_date_ssim` | Publication year facet/display/sort source | Derived | Uses `marc_publication_date`. Used in index/show metadata, year range facet, and year sorts. |
-| `collectionen_path` | English hierarchical collection facet + breadcrumb input | `999$e` | Built from ordered English `999$e` segments. Stores cumulative prefixes like `Serials` and `Serials/Newspapers`, not just the leaf path. |
-| `collectionfr_path` | French hierarchical collection facet + breadcrumb input | `999$f` | Built from ordered French `999$f` segments. Stores cumulative prefixes like `Publications en serie` and `Publications en serie/Journaux`. |
+| `pub_date_si` | Sortable publication date key | Derived | Uses custom `extract_original_publication_year` (prioritizes original publication year from 264$c, 260$c, 008 Date 2, 534$c, 500$a over digitization/reproduction dates). |
+| `pub_date_ssim` | Publication year facet/display/sort source | Derived | Uses custom `extract_original_publication_year` (prioritizes original publication year from 264$c, 260$c, 008 Date 2, 534$c, 500$a over digitization/reproduction dates). Used in index/show metadata, year range facet, and year sorts. |
 | `depositor_tsim` | Depositor metadata and facet source | `590$a` | Used in index/show metadata and facet copy field source. |
 | `doc_source_tsim` | Reproduction/source note | `533abcdu` | Indexed only in current catalog config. |
 | `rights_stat_tsim` | Rights statement display | `540abcdfgqu` | Used on the show page metadata panel. |
@@ -91,7 +89,7 @@ These appear in the file but are currently disabled:
 
 | Field | MARC source(s) | Status / notes |
 | --- | --- | --- |
-| `isbn_tsim` | `020$a` | Commented out in the current indexer. The older `MarcIndexerOriginal` normalized ISBNs, but that logic is not active now. |
+| `isbn_tsim` | `020$a` | Commented out in the current indexer. There is no active ISBN indexing logic in `app/models/marc_indexer.rb`. |
 | `materials_ssim_en` | Derived from `999$e` | Commented out. |
 | `materials_ssm_en` | Derived from `999$e` | Commented out. |
 | `materials_ssim_fr` | Derived from `999$f` | Commented out. |
@@ -99,8 +97,6 @@ These appear in the file but are currently disabled:
 
 ## Code observations worth keeping in mind
 
-- `serial_key` comment drift: the comment says it should prefer `902$b` and fall back to the left side of `001`, but the code only implements `902$b`.
-- `is_serial` comment drift: the current code checks only whether `901` equals `Is series`; it does not combine `999` plus `901`.
 - `collectionen_path` / `collectionfr_path` are built from literal `999$e` / `999$f` sequences and expanded into prefix paths with `/` separators for `blacklight-hierarchy`.
 - `materials_by_language`, `detect_language_code`, `opposite_language_code`, and `HIER_DELIM` are present but currently unused by the active mappings.
 - `marc_ss` is the field used by `app/models/solr_document.rb` for MARC document extension behavior.

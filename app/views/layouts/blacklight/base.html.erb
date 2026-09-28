@@ -24,6 +24,7 @@
     <% end %>
 
     <%= csrf_meta_tags %>
+    <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : (I18n.locale.to_s.start_with?('fr') ? 'Canadiana offre un accès libre à plus de 69 millions de pages de documents historiques et de publications canadiennes numérisées.' : 'Canadiana provides open access to more than 69 million pages of digitized Canadian documentary heritage and historical publications.') %>">
     <meta name="iiif-manifest-base" content="<%= Rails.configuration.x.iiif_manifest_base %>">
     <meta name="iiif-content-search-base" content="<%= Rails.configuration.x.iiif_content_search_base %>">
     <%= content_for(:head) %>
@@ -32,10 +33,7 @@
     <%= vite_javascript_tag 'application' %>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
-
-
     <script src="/assets/mirador.min.js"></script>
-   
   </head>
   <body class="<%= render_body_class %>">
     <%= render blacklight_config.skip_link_component.new do %>
@@ -54,10 +52,9 @@
     <%= content_tag main_tag, **main_container_opts do %>
       <%= content_for(:container_header) %>
 
-      <%# Custom catalog search hero disabled in favor of the shared navbar search used on catalog show pages. %>
-      <%# if controller_name == 'catalog' && action_name == 'index' %>
-      <%#   render 'shared/catalog_search_header' %>
-      <%# end %>
+      <% if controller_name == 'catalog' && action_name == 'index' %>
+        <%= render 'shared/catalog_search_header' %>
+      <% end %>
 
       <section role="region" aria-label="<%= t('blacklight.main.aria.flash_messages', default: 'Notifications') %>">
         <%= render partial: 'shared/flash_msg', layout: 'shared/flash_messages' %>

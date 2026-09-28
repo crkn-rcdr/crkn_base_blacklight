@@ -303,6 +303,10 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
+    redis (6.0.0)
+      redis-client (= 0.30.1)
+    redis-client (0.30.1)
+      connection_pool
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
@@ -406,6 +410,7 @@ DEPENDENCIES
   bootsnap
   bootstrap (~> 5.2.0)
   capybara
+  connection_pool
   cssbundling-rails
   debug
   dotenv-rails
@@ -414,6 +419,7 @@ DEPENDENCIES
   puma (~> 6.4)
   rack (>= 2.2.4, < 3.0)
   rails (~> 7.2.2)
+  redis
   rsolr
   sassc-rails
   selenium-webdriver

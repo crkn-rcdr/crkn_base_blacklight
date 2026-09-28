@@ -2,7 +2,10 @@
   id: @id,
   data: {
     'document-id': @document.id.to_s.parameterize,
-    'document-counter': @counter
+    'document-counter': @counter,
+    'is-issue': @document._source['is_issue']&.first == 'Yes',
+    'parent-serial-id': @document._source['serial_key']&.first,
+    'serial-title': @document._source['serial_title']&.first
   },
   itemscope: true,
   itemtype: @document.itemtype,
@@ -17,11 +20,13 @@
 
       <% if @component.to_s == 'div' %>
         <% breadcrumb_paths = helpers.collection_breadcrumb_paths(@document) %>
-        <% if breadcrumb_paths.present? %>
-          <nav class="collection-breadcrumbs mb-3" aria-label="<%= t('breadcrumbs.collections', default: 'Collections') %>">
+        <% root_breadcrumb_label = I18n.locale.to_s.start_with?('fr') ? 'Collection Canadiana - Résultats de recherche' : 'Canadiana Collection - Search Results' %>
+        <% root_breadcrumb_url = helpers.back_to_search_url %>
+        <nav class="collection-breadcrumbs mb-3" aria-label="<%= t('breadcrumbs.collections', default: 'Collections') %>">
+          <% if breadcrumb_paths.present? %>
             <% breadcrumb_paths.each do |path| %>
               <ol class="breadcrumb mb-1">
-                <li class="breadcrumb-item"><a href="/catalog"><%= t('labels.L_SEARCH_BREADCRUMB') %></a></li>
+                <li class="breadcrumb-item collection-breadcrumbs__root"><%= link_to root_breadcrumb_label, root_breadcrumb_url %></li>
                 <% path.each_with_index do |segment, idx| %>
                   <% active = (idx == path.length - 1) %>
                   <li class="breadcrumb-item <%= 'active' if active %>">
@@ -32,13 +37,17 @@
                 <% end %>
                 <% if @document._source['is_issue']&.first == "Yes" && @document._source['serial_title'] %>
                   <li class="breadcrumb-item">
-                    <a href="/catalog/<%= @document._source['serial_key'][0] %>"><%= @document._source['serial_title'][0] %></a>
+                    <a href="/catalogue/<%= @document._source['serial_key'][0] %>"><%= @document._source['serial_title'][0] %></a>
                   </li> 
                 <% end %>
               </ol>
             <% end %>
-          </nav>
-        <% end %>
+          <% else %>
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item collection-breadcrumbs__root"><%= link_to root_breadcrumb_label, root_breadcrumb_url %></li>
+            </ol>
+          <% end %>
+        </nav>
       <% end %>
 
       <% if @component == :div %>
@@ -61,19 +70,31 @@
             <!-- Sidebar -->
             <aside id="toggle-menu" class="col" aria-labelledby="details-heading">
               <div class="document-sidebar-header">
-                <h3 id="details-heading" class="h3 mb-0"><%= t('labels.L_SERIAL_RECORD') %></h3>
+                <h3 id="details-heading" class="h3 mb-0"><%= t(@document._source["is_serial"]&.first == "Yes" ? 'labels.L_SERIAL_RECORD' : 'labels.L_RECORD') %></h3>
               </div>
+              <% if @document._source["is_serial"]&.first != "Yes" %>
+                <% has_ocr = Array(@document['notes_tsim']).any? { |n| n.to_s.match?(/OCR|optical character|ROC|reconnaissance optique/i) } || @document['all_text_timv'].present? %>
+                <div class="sidebar-full-text-status mt-2 mb-2">
+                  <% if has_ocr %>
+                    <!--span class="result-chip result-chip--full-text" title="<%= t('blacklight.tools.full_text_available_tooltip') %>">
+                      <%= t('blacklight.tools.full_text_available') %>
+                    </span-->
+                  <% else %>
+                    <!-span class="result-chip result-chip--full-text-unavailable" title="<%= t('blacklight.tools.full_text_unavailable_tooltip') %>">
+                      <%= t('blacklight.tools.full_text_unavailable') %>
+                    </span-->
+                  <% end %>
+                </div>
+              <% end %>
               <div>  
                
-                <ul class="list-unstyled mb-0" style="margin-top: 1rem;">
-                  <li class="mb-1">
-                    <a href="/catalog/<%= params[:id] %>/librarian_view" data-blacklight-modal="trigger" data-turbo="false">
-                      <i class="bi bi-journal-text me-1" aria-hidden="true"></i>
-                      <%= t('blacklight.tools.librarian_view') %>
-                    </a>
-                  </li>
+                <p class="download-toolbar-title citation-toolbar-title"><%= t('blacklight.tools.citation_label', default: 'Generate citation') %>:</p>
+                <ul class="list-unstyled mb-0">
                   <li>
-                    <a href="/catalog/<%= params[:id] %>/citation" data-blacklight-modal="trigger" data-turbo="false">
+                    <a class="btn btn-outline-custom btn-sm sidebar-cite-btn"
+                       href="/catalogue/<%= params[:id] %>/citation"
+                       data-blacklight-modal="trigger"
+                       data-turbo="false">
                       <i class="bi bi-quote me-1" aria-hidden="true"></i>
                       <%= t('blacklight.tools.cite') %>
                     </a>
@@ -87,21 +108,21 @@
                          data-arkpath="<%= @document._source['ark'].to_s.gsub('https://n2t.net/ark:/','') %>">
                       <p class="download-toolbar-title"><%= t('blacklight.tools.download_label', default: 'Downloads') %>:</p>
                       <div class="download-actions">
-                        <a id="btn-download-img" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" data-force-download="true">
+                        <a id="btn-download-img" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.img_disabled_tooltip') %>">
                           <span class="download-icon-group" aria-hidden="true">
                             <i class="bi bi-download fs-5" aria-hidden="true"></i>
                             <span class="download-kind">IMG</span>
                           </span>
                           <span class="download-label"><%= t('blacklight.tools.download_image_aria') %></span>
                         </a>
-                        <a id="btn-download-page" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
+                        <a id="btn-download-page" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.pdf_disabled_tooltip') %>">
                           <span class="download-icon-group" aria-hidden="true">
                             <i class="bi bi-download fs-5" aria-hidden="true"></i>
                             <span class="download-kind">PAGE</span>
                           </span>
                           <span class="download-label"><%= t('blacklight.tools.download_page_pdf_aria') %></span>
                         </a>
-                        <a id="btn-download-full" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" target="_blank" rel="noopener noreferrer" aria-disabled="true">
+                        <a id="btn-download-full" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.pdf_disabled_tooltip') %>">
                           <span class="download-icon-group" aria-hidden="true">
                             <i class="bi bi-download fs-5" aria-hidden="true"></i>
                             <span class="download-kind">FULL</span>
@@ -125,14 +146,26 @@
                         const full = document.getElementById('btn-download-full');
                         const page = document.getElementById('btn-download-page');
                         const pageImg = document.getElementById('btn-download-img');
-                        const invalidLinks = new Set();
+                        const status = document.getElementById('download-status');
+                        const statusText = status?.querySelector('.download-status-text');
+                        const statusSpinner = status?.querySelector('.spinner-border');
+                        const checkingText = <%= raw t('blacklight.tools.download_checking', default: 'Checking download availability...').to_json %>;
+                        const unavailableText = <%= raw t('blacklight.tools.download_unavailable', default: 'Not available for this page.').to_json %>;
+                        const pdfDisabledTooltip = <%= raw t('blacklight.tools.pdf_disabled_tooltip', default: 'Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.').to_json %>;
+                        const imgDisabledTooltip = <%= raw t('blacklight.tools.img_disabled_tooltip', default: 'Image download is unavailable for this page.').to_json %>;
+                        let availabilityRun = 0;
 
-                        function disableLink(el) {
+                        function disableLink(el, tooltip) {
                           if (!el) return;
                           el.classList.add('disabled');
                           el.setAttribute('aria-disabled', 'true');
                           el.removeAttribute('href');
                           el.removeAttribute('download');
+                          if (tooltip) {
+                            el.setAttribute('title', tooltip);
+                            const label = el.querySelector('.download-label')?.textContent || '';
+                            el.setAttribute('aria-label', `${label}: ${tooltip}`.trim());
+                          }
                         }
 
                         function enableLink(el, href) {
@@ -140,9 +173,8 @@
                           el.href = href;
                           el.classList.remove('disabled');
                           el.removeAttribute('aria-disabled');
-                          if (el.dataset.forceDownload === 'true') {
-                            el.setAttribute('download', '');
-                          }
+                          el.removeAttribute('title');
+                          el.removeAttribute('aria-label');
                         }
 
                         function currentPageNum() {
@@ -150,120 +182,83 @@
                           return Number.isFinite(p) && p > 0 ? p : 1;
                         }
 
-                        function safeDocId() {
-                          return String(docid || 'document').replace(/[^\w.-]+/g, '_');
+                        function setStatus(message, loading) {
+                          if (statusText) statusText.textContent = message || '';
+                          if (statusSpinner) statusSpinner.hidden = !loading;
                         }
 
-                        function inferFileNameFromUrl(_url, fallbackExt) {
-                          const ext = (fallbackExt || 'jpg').replace(/^\./, '');
-                          return `${safeDocId()}.${currentPageNum()}.${ext}`;
-                        }
-
-                        async function forceFileDownload(url, fallbackExt) {
-                          const response = await fetch(url, { credentials: 'omit' });
-                          if (!response.ok) throw new Error(`Download failed: ${response.status}`);
-                          const blob = await response.blob();
-                          const contentType = String(response.headers.get('content-type') || '').toLowerCase();
-                          const inferredExt =
-                            contentType.includes('png') ? 'png' :
-                            contentType.includes('webp') ? 'webp' :
-                            contentType.includes('tif') || contentType.includes('tiff') ? 'tif' :
-                            contentType.includes('jp2') ? 'jp2' :
-                            (fallbackExt || 'jpg');
-                          const blobUrl = URL.createObjectURL(blob);
-                          const link = document.createElement('a');
-                          link.href = blobUrl;
-                          link.download = inferFileNameFromUrl(url, inferredExt);
-                          document.body.appendChild(link);
-                          link.click();
-                          link.remove();
-                          setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
-                        }
-
-                        // Use backend existence flags; no client-side HEAD (avoids CORS).
-                        function setLinkState(el, href, exists) {
-                          if (!el || !href) return disableLink(el);
-                          // Only disable when we explicitly know it does not exist.
-                          if (exists === false) return disableLink(el);
+                        function setLinkState(el, href, tooltip) {
+                          if (!el || !href) return disableLink(el, tooltip);
                           enableLink(el, href);
                         }
 
-                        // Update links based on current pageNum in the URL
-                        function updateForCurrentPage(data){
-                          if (!data) return;
-                          const status = document.getElementById('download-status');
-                          const statusText = status?.querySelector('.download-status-text');
-                          const statusSpinner = status?.querySelector('.spinner-border');
-                          if (statusText) statusText.textContent = <%= raw t('blacklight.tools.download_checking', default: 'Checking availability...').to_json %>;
-                          if (statusSpinner) statusSpinner.hidden = false;
-
-                          // Full-document PDF (static once data is fetched)
-                          if (full) {
-                            setLinkState(full, data.docPdfUri, data.docPdfExists);
-                          }
-
-                          const params = new URLSearchParams(window.location.search);
-                          let idx = 0;
-                          if (params.has('pageNum')) {
-                            const p = parseInt(params.get('pageNum'), 10);
-                            if (!isNaN(p) && p > 0) idx = p - 1;
-                          }
-
-                          const listPdf = data.canvasDownloadPdfUris || [];
-                          const pdfExists = data.canvasPdfExists || [];
-                          setLinkState(page, listPdf[idx], pdfExists[idx]);
-
-                          const listImg = data.canvasDownloadImgUris || [];
-                          if (pageImg) {
-                            setLinkState(pageImg, listImg[idx], !!listImg[idx]);
-                          }
-
-                          if (status && statusText) {
-                            const anyEnabled = [full, page, pageImg].some(el => el && !el.classList.contains('disabled'));
-                            statusText.textContent = anyEnabled ? '' : <%= raw t('blacklight.tools.download_unavailable', default: 'Not available for this page.').to_json %>;
-                            if (statusSpinner) statusSpinner.hidden = true;
-                          }
+                        function isEnabled(el) {
+                          return !!(el && el.getAttribute('href') && !el.classList.contains('disabled'));
                         }
 
-                        // Fetch once, then update on URL changes
-                        let dlData = null;
-                        fetch(`/dl/${encodeURIComponent(docid)}/${ark}`)
-                          .then(r => r.json())
-                          .then(data => {
-                            dlData = data;
-                            updateForCurrentPage(dlData);
-                          })
-                          .catch(() => {});
+                        function showFinalStatus() {
+                          const anyEnabled = [full, page, pageImg].some(isEnabled);
+                          setStatus(anyEnabled ? '' : unavailableText, false);
+                        }
 
-                        // Force image to download instead of opening in a new tab.
-                        if (pageImg) {
-                          pageImg.addEventListener('click', async (event) => {
-                            if (pageImg.classList.contains('disabled')) {
-                              event.preventDefault();
-                              return;
-                            }
-                            const href = pageImg.getAttribute('href');
-                            if (!href) {
-                              event.preventDefault();
-                              return;
-                            }
-                            event.preventDefault();
-                            try {
-                              await forceFileDownload(href, 'jpg');
-                            } catch (_error) {
-                              // Fallback for strict CORS setups: attempt native download attribute.
-                              const fallbackLink = document.createElement('a');
-                              fallbackLink.href = href;
-                              fallbackLink.download = inferFileNameFromUrl(href, 'jpg');
-                              document.body.appendChild(fallbackLink);
-                              fallbackLink.click();
-                              fallbackLink.remove();
-                            }
+                        function encodedArkPath() {
+                          return String(ark || '').split('/').map(encodeURIComponent).join('/');
+                        }
+
+                        function downloadDataUrl() {
+                          const params = new URLSearchParams({
+                            pageNum: String(currentPageNum()),
+                            _: String(Date.now())
                           });
+                          return `/dl/${encodeURIComponent(docid)}/${encodedArkPath()}?${params.toString()}`;
                         }
+
+                        async function fetchDownloadData() {
+                          const response = await fetch(downloadDataUrl(), {
+                            credentials: 'same-origin',
+                            cache: 'no-store'
+                          });
+                          if (!response.ok) throw new Error(`Download metadata failed: ${response.status}`);
+                          return response.json();
+                        }
+
+                        async function updateForCurrentPage(){
+                          const run = ++availabilityRun;
+
+                          setStatus(checkingText, true);
+                          disableLink(full, pdfDisabledTooltip);
+                          disableLink(page, pdfDisabledTooltip);
+                          disableLink(pageImg, imgDisabledTooltip);
+
+                          try {
+                            const data = await fetchDownloadData();
+                            if (run !== availabilityRun) return;
+
+                            setLinkState(full, data?.docPdfUri, pdfDisabledTooltip);
+                            setLinkState(page, data?.pagePdfUri, pdfDisabledTooltip);
+                            setLinkState(pageImg, data?.pageImgUri, imgDisabledTooltip);
+                            showFinalStatus();
+                          } catch (_error) {
+                            if (run !== availabilityRun) return;
+                            disableLink(full, pdfDisabledTooltip);
+                            disableLink(page, pdfDisabledTooltip);
+                            disableLink(pageImg, imgDisabledTooltip);
+                            setStatus(unavailableText, false);
+                          }
+                        }
+
+                        function preventDisabledDownload(event) {
+                          if (!isEnabled(event.currentTarget)) event.preventDefault();
+                        }
+
+                        [full, page, pageImg].forEach((link) => {
+                          if (link) link.addEventListener('click', preventDisabledDownload);
+                        });
+
+                        updateForCurrentPage();
 
                         // Listen for navigation events that may change the query string
-                        function onLocationChange(){ updateForCurrentPage(dlData); }
+                        function onLocationChange(){ updateForCurrentPage(); }
                         window.addEventListener('popstate', onLocationChange);
                         window.addEventListener('hashchange', onLocationChange);
 
@@ -284,6 +279,15 @@
                 <% metadata_sections.each do |section| %>
                   <%= section %>
                 <% end %>
+
+                <ul class="list-unstyled mb-0">
+                  <li>
+                    <a href="/catalogue/<%= params[:id] %>/librarian_view" data-blacklight-modal="trigger" data-turbo="false">
+                      <i class="bi bi-journal-text me-1" aria-hidden="true"></i>
+                      <%= t('blacklight.tools.librarian_view') %>
+                    </a>
+                  </li>
+                </ul>
 
               </div>
             </aside>

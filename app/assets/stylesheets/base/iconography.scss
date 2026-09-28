@@ -71,13 +71,55 @@
 
 /* Mobile: prevent big format icon from overlapping content */
 @media (max-width: 600px) {
-  .documents-list article.document { padding-left: 0; }
-  .documents-list dt.blacklight-format { position: static; visibility: hidden; height: 0; margin: 0; padding: 0; }
-  .documents-list dd.blacklight-format { position: static; margin: 0 0 .5rem 0; padding: 0; width: auto; }
-  .documents-list .blacklight-format li .icon {
-    width: 28px; height: 28px; opacity: .6; margin-right: .35rem; vertical-align: middle;
-  }
-  .documents-list .blacklight-format li .format-text {
-    visibility: visible; font-size: .9rem; color: #6c757d;
-  }
+    .documents-list article.document {
+        padding-left: 0;
+    }
+    .documents-list dt.blacklight-format {
+        position: static;
+        visibility: hidden;
+        height: 0;
+        margin: 0;
+        padding: 0;
+    }
+    .documents-list dd.blacklight-format {
+        position: static;
+        margin: 0 0 0.5rem 0;
+        padding: 0;
+        width: auto;
+    }
+    .documents-list .blacklight-format li .icon {
+        width: 28px;
+        height: 28px;
+        opacity: 0.6;
+        margin-right: 0.35rem;
+        vertical-align: middle;
+    }
+    .documents-list .blacklight-format li .format-text {
+        visibility: visible;
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+}
+
+/* Bootstrap icons: ensure bounding box tightly wraps the icon and prevents underlines */
+i.bi,
+.bi,
+[class^="bi-"],
+[class*=" bi-"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    height: 1em;
+    width: 1em;
+    vertical-align: -0.125em;
+    box-sizing: content-box;
+    text-decoration: none !important;
+
+    &::before {
+        display: inline-block;
+        line-height: 1;
+        vertical-align: 0;
+        text-decoration: none !important;
+    }
 }

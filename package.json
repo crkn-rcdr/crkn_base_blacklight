@@ -9,9 +9,10 @@
     "vite-plugin-ruby": "^5.1.1"
   },
   "scripts": {
-    "dev": "cross-env DEBUG=vite-plugin-ruby:* vite --open",
-    "build": "cross-env DEBUG=vite-plugin-ruby:* vite build --mode production --emptyOutDir",
-    "preview": "cross-env RAILS_ENV=production DEBUG=vite-plugin-ruby:* vite preview --open"
+    "dev": "vite",
+    "build": "vite build --mode production --emptyOutDir",
+    "build:css": "true",
+    "preview": "vite preview"
   },
   "dependencies": {
     "blacklight-range-limit": "^9.0.0",

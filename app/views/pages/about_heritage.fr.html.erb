@@ -1,153 +1,292 @@
 <% content_for :page_title, "À propos de la collection Héritage - #{application_name}" %>
 
-<div class="home-page">
-  <section class="site-section about-intro about-intro--heritage">
-    <div class="canadiana-shell about-intro-grid about-intro-grid--heritage">
-      <div class="about-intro-media">
-        <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :heritage } %>
-      </div>
-      <div class="about-intro-copy about-intro-copy--heritage">
-        <h1 class="section-title">À propos de la collection Héritage</h1>
-        <p class="section-lede">
-          La collection Héritage est un projet conjoint soutenu par les membres du RCDR et <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliotheque et Archives
-          Canada</a> (BAC), et elle s'appuie sur les riches ressources de microfilms d'archives detenues par BAC. Avec plus
-          de 37.5 millions de pages de documents de source primaire, Héritage retrace le Canada et ses peuples
-          des annees 1600 aux annees 1980. Héritage est une ressource inegalee qui soutient les chercheurs et les
-          communautes partout au Canada. Le RCDR et BAC poursuivent ensemble le developpement de la collection, avec
-          environ 300 000 pages ajoutees chaque annee.
+<div class="about-heritage-page">
+  <section
+    class="site-section about-heritage-hero"
+    style="--about-heritage-hero-image: url('<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg') %>');"
+  >
+    <div class="canadiana-shell">
+      <div class="about-heritage-hero__layout">
+        <div class="about-heritage-hero__copy">
+          <h1 class="about-heritage-hero__title">À propos de la collection Héritage</h1>
+          <p class="about-heritage-hero__text">
+            La collection Héritage comprend environ 37,8 millions de pages (plus de 1&nbsp;000 fonds d'archives)
+            datant d'environ 1500 à 1985, numérisées à partir des fonds de microfilms de Bibliothèque et Archives
+            Canada.
+          </p>
+          <div class="about-heritage-hero__actions">
+            <button class="about-heritage-hero__cta about-heritage-hero__cta--disabled" type="button" disabled>
+              <span>Rechercher dans la collection Héritage</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <p class="about-heritage-hero__credit">
+          Dossiers d'immigration chinoise : certificats d'immigration chinoise, échantillon : C-13421
         </p>
+
+        <aside class="about-heritage-hero__partner-card" aria-label="En partenariat avec Bibliothèque et Archives Canada">
+          <img src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliothèque et Archives Canada" loading="lazy">
+          <p>
+            En partenariat avec
+            <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliothèque et Archives Canada</a>,
+            avec le soutien des
+            <a href="https://www.crkn-rcdr.ca/en/our-crkn-members" target="_blank" rel="noopener">membres du RCDR</a>.
+          </p>
+        </aside>
       </div>
-      <div class="about-intro-logo-card" aria-hidden="true">
-        <img class="about-intro-logo" src="<%= asset_path('lac.jpg') %>" alt="Logo de Bibliotheque et Archives Canada" loading="lazy">
+    </div>
+  </section>
+
+  <section class="site-section about-heritage-essentials">
+    <div class="canadiana-shell">
+      <div class="about-heritage-section-head">
+        <h2>La collection Héritage en bref</h2>
+      </div>
+
+      <div class="about-heritage-essentials__grid">
+        <article class="about-heritage-essential-card">
+          <a href="https://n2t.net/ark:/69429/s0vd6nz81w71" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/heritage/oocihm.lac_reel_c15645.23.png') %>"
+              alt="Manuscrit d'archives de la collection Héritage"
+              loading="lazy"
+            >
+          </a>
+          <p>
+            Des documents d'archives uniques numérisés à partir des fonds de
+            <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliothèque et Archives Canada</a>,
+            auxquels s'ajoutent régulièrement de nouveaux documents.
+          </p>
+        </article>
+
+        <article class="about-heritage-essential-card">
+          <a href="https://n2t.net/ark:/69429/s09k45q4sk37" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/heritage/oocihm.lac_reel_h1700.190.png') %>"
+              alt="Image d'archives de la collection Héritage"
+              loading="lazy"
+            >
+          </a>
+          <p>
+            Environ 37,8 millions de pages de sources primaires, comprenant des archives gouvernementales, des documents
+            relatifs à l'histoire des peuples autochtones, des ressources généalogiques, des archives militaires et
+            des documents personnels manuscrits.
+          </p>
+        </article>
+
+        <article class="about-heritage-essential-card">
+          <a href="https://n2t.net/ark:/69429/s0pk06w97d5b" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/heritage/oocihm.lac_reel_h2270.233.png') %>"
+              alt="Fiche manuscrite de la collection Héritage"
+              loading="lazy"
+            >
+          </a>
+          <p>Période couverte : de 1500 environ à 1985.</p>
+        </article>
+
+        <article class="about-heritage-essential-card">
+          <a href="https://n2t.net/ark:/69429/s0kw57d2rg3v" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/heritage/oocihm.lac_reel_t1741.1734.png') %>"
+              alt="Notes historiques de la collection Héritage"
+              loading="lazy"
+            >
+          </a>
+          <p>Un outil important pour les historiens, les chercheurs et chercheuses, les étudiants et étudiantes et les généalogistes.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-section about-heritage-topics">
+    <div class="canadiana-shell">
+      <div class="about-heritage-section-head">
+        <h2>À découvrir dans la collection Héritage</h2>
+      </div>
+
+      <div class="about-heritage-topic-list">
+        <article class="about-heritage-topic">
+          <div class="about-heritage-topic__media">
+            <a href="https://n2t.net/ark:/69429/s0f76639mb6v" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/heritage/oocihm.lac_reel_c13421.55.png') %>"
+                alt="Document généalogique de la collection Héritage"
+                loading="lazy"
+              >
+            </a>
+          </div>
+          <div class="about-heritage-topic__copy">
+            <h3>Documents généalogiques</h3>
+            <p>Des dossiers d'immigration, des registres paroissiaux, des registres fonciers, des histoires et documents familiaux, ainsi que des listes électorales.</p>
+            <button class="about-heritage-browse" type="button" disabled>
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </article>
+
+        <article class="about-heritage-topic about-heritage-topic--reverse">
+          <div class="about-heritage-topic__media">
+            <a href="https://n2t.net/ark:/69429/s0f47gq6s52m" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/heritage/oocihm.lac_reel_c6818.72.png') %>"
+                alt="Document d'histoire autochtone de la collection Héritage"
+                loading="lazy"
+              >
+            </a>
+          </div>
+          <div class="about-heritage-topic__copy">
+            <h3>Peuples autochtones</h3>
+            <p>Une vaste documentation sur les communautés des Premières Nations, des Métis et des Inuits au Canada.</p>
+            <button class="about-heritage-browse" type="button" disabled>
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </article>
+
+        <article class="about-heritage-topic">
+          <div class="about-heritage-topic__media">
+            <a href="https://n2t.net/ark:/69429/s0xs5j961h6p" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/heritage/oocihm.lac_reel_c6997.97.png') %>"
+                alt="Dossier gouvernemental de la collection Héritage"
+                loading="lazy"
+              >
+            </a>
+          </div>
+          <div class="about-heritage-topic__copy">
+            <h3>Services gouvernementaux</h3>
+            <p>Des documents anciens provenant des Affaires indiennes, de l'Immigration, de la Santé, de l'Agriculture, des Chemins de fer et Canaux, des Pêches et des Ressources naturelles.</p>
+            <button class="about-heritage-browse" type="button" disabled>
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </article>
+
+        <article class="about-heritage-topic about-heritage-topic--reverse">
+          <div class="about-heritage-topic__media">
+            <a href="https://n2t.net/ark:/69429/s0gh9b56f913" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/heritage/oocihm.lac_mikan_196647.png') %>"
+                alt="Document militaire de la collection Héritage"
+                loading="lazy"
+              >
+            </a>
+          </div>
+          <div class="about-heritage-topic__copy">
+            <h3>Histoire militaire</h3>
+            <p>Des documents consacrés à la Guerre de 1812, à la Première Guerre mondiale, à la Seconde Guerre mondiale et à l'administration militaire en temps de paix.</p>
+            <button class="about-heritage-browse" type="button" disabled>
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </article>
+
+        <article class="about-heritage-topic">
+          <div class="about-heritage-topic__media">
+            <a href="https://n2t.net/ark:/69429/s0pv6b27r05f" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/heritage/oocihm.lac_reel_h2297.42.png') %>"
+                alt="Document sur une personnalité canadienne dans la collection Héritage"
+                loading="lazy"
+              >
+            </a>
+          </div>
+          <div class="about-heritage-topic__copy">
+            <h3>Personnalités canadiennes</h3>
+            <p>Des documents provenant de premiers ministres, de gouverneurs généraux, de premiers ministres provinciaux, de ministres, d'explorateurs, de scientifiques, d'écrivains et d'artistes.</p>
+            <button class="about-heritage-browse" type="button" disabled>
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-section about-heritage-work">
+    <div class="canadiana-shell">
+      <div class="about-heritage-work__grid">
+        <div class="about-heritage-work__media">
+          <a href="https://n2t.net/ark:/69429/m0zp3vt1hc62" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/heritage/oocihm.lac_reel_c13525.63.png') %>"
+              alt="Lettre manuscrite d'archives de la collection Héritage"
+              loading="lazy"
+            >
+          </a>
+        </div>
+
+        <article class="about-heritage-work__copy" aria-labelledby="heritage-work-title-fr">
+          <h2 id="heritage-work-title-fr">Comment utiliser Héritage</h2>
+          <ol>
+            <li>
+              Commencez par saisir vos termes de recherche dans le champ de recherche d'Héritage. La recherche
+              simple vous aide à trouver des collections correspondant à vos mots-clés. Elle porte sur les informations
+              descriptives, les numéros de bobines de microfilm, les métadonnées et, le cas échéant, le texte des
+              documents. Pour affiner votre recherche, utilisez les techniques décrites dans la section <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, notamment
+              les expressions exactes entre guillemets et les opérateurs tels que <code>?</code>, <code>*</code>,
+              <code>-</code> et <code>|</code>. Vous pouvez aussi parcourir Héritage par sujet, en explorant les cinq
+              domaines thématiques ci-dessus (Documents généalogiques, Peuples autochtones, Services gouvernementaux,
+              Histoire militaire et Personnalités canadiennes).
+            </li>
+            <li>
+              Choisissez ensuite la collection d'archives qui correspond le mieux à votre sujet de recherche.
+              Chaque page de collection contient des renseignements sur la collection ainsi que des références
+              d'archives. Ces informations, issues de la <a href="https://recherche-collection-search.bac-lac.gc.ca/fra" target="_blank" rel="noopener">Recherche dans la collection de Bibliothèque et Archives Canada</a>,
+              ont été généreusement mises à disposition pour faciliter l'accès. Si vous avez commencé votre recherche sur l'outil « Collection Search » de LAC, veuillez saisir des identifiants tels que le numéro de bobine (par ex. C-1234) ou le numéro MIKAN (par ex. MIKAN 56789) dans la barre de recherche afin d'affiner vos résultats.
+            </li>
+            <li>
+              Lorsque vous trouvez des documents pertinents, téléchargez-les en utilisant les options <code>IMG</code>,
+              <code>PAGE</code> et <code>FULL</code> (si disponibles), puis copiez l'URL pérenne du document.
+            </li>
+            <li>
+              Pour citer une source, veuillez suivre le <a href="<%= citation_guide_path(lang: I18n.locale) %>">guide de citation</a> :
+              indiquez Canadiana comme source et ajoutez l'URL pérenne. Pour les œuvres accessibles au public,
+              veuillez transmettre un exemplaire ou un lien au RCDR.
+            </li>
+          </ol>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-section about-heritage-faq">
+    <div class="canadiana-shell">
+      <h2>FAQ</h2>
+
+      <div class="about-heritage-faq__list">
+        <details open>
+          <summary>La recherche en texte intégral est-elle possible en ce moment ?</summary>
+          <p>En raison de la nature manuscrite des documents, il n'est pas encore possible d'effectuer une recherche en texte intégral sur la majeure partie du contenu de la collection Héritage.</p>
+        </details>
+
+        <details>
+          <summary>Une recherche en texte intégral sera-t-elle possible à l'avenir ?</summary>
+          <p>
+            La transcription de ces documents en vue de générer un texte consultable demandera du temps et des
+            ressources; elle s'inscrit dans le cadre de notre travail à long terme sur
+            l'<a href="https://www.crkn-rcdr.ca/en/future-canadiana" target="_blank" rel="noopener">avenir de Canadiana</a>.
+            À mesure que les documents seront transcrits, les prochaines versions d'Héritage prendront en charge
+            la recherche en texte intégral.
+          </p>
+        </details>
+
+        <details>
+          <summary>Que réserve l'avenir pour le soutien à la recherche ?</summary>
+          <p>
+            Au cours des prochaines années, le RCDR mettra au point de nouveaux outils de recherche et de nouvelles
+            infrastructures afin d'améliorer la création et l'interconnexion des métadonnées.
+          </p>
+        </details>
       </div>
     </div>
   </section>
 </div>
-
-<section class="site-section about-modern-section about-modern-section--heritage">
-  <div class="canadiana-shell about-modern-layout">
-    <section class="about-modern-feature-grid about-modern-feature-grid--heritage-showcase" aria-labelledby="heritage-overview-title-fr">
-      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-left">
-        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h1700/190" target="_blank" rel="noopener">
-          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h1700.190.jpg') %>" alt="Manuscrit d'archives de la collection Heritage" loading="lazy">
-        </a>
-      </article>
-      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-tall">
-        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_c15645/23" target="_blank" rel="noopener">
-          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c15645.23.jpg') %>" alt="Documents gouvernementaux de la collection Heritage" loading="lazy">
-        </a>
-      </article>
-      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-list">
-        <h2 class="visually-hidden">Collection Héritage en bref</h2>
-        <ul>
-          <li>Documents d'archives uniques numerises a partir des fonds de <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliotheque et Archives Canada</a></li>
-          <li>Environ 37.5 millions de pages de documents de source primaire</li>
-          <li>Couverture des annees 1600 au milieu du XXe siecle</li>
-          <li>Organisation en cinq grands volets thematiques pour faciliter l'exploration</li>
-          <li>Un corpus utile aux historiens, etudiants et genealogistes</li>
-        </ul>
-      </article>
-      <article class="about-modern-card about-modern-card--copy about-modern-card--heritage-note">
-        <h2>Une ressource essentielle</h2>
-        <p>
-          Héritage se compose d'un vaste ensemble de documents uniques en cours de numerisation a partir des fonds
-          precieux de <a href="https://www.canada.ca/fr/bibliotheque-archives.html" target="_blank" rel="noopener">Bibliotheque et Archives Canada</a>.
-        </p>
-      </article>
-      <article class="about-modern-card about-modern-card--media about-modern-card--heritage-image-right">
-        <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_h2270/233" target="_blank" rel="noopener">
-          <img src="<%= asset_path('about/heritage/oocihm.lac_reel_h2270.233.jpg') %>" alt="Image de source archivistique de la collection Heritage" loading="lazy">
-        </a>
-      </article>
-    </section>
-
-    <section class="about-modern-block about-modern-block--heritage-cluster" aria-labelledby="heritage-areas-title-fr">
-      <div class="about-modern-block-head">
-        <h2 id="heritage-areas-title-fr">Ce que vous pouvez trouver dans la collection Héritage</h2>
-      </div>
-      <div class="about-modern-collection-grid about-modern-collection-grid--five about-modern-collection-grid--heritage-cluster" data-heritage-cluster-grid>
-        <article class="about-modern-card about-modern-card--collection">
-          <div class="about-modern-card-body">
-            <h3>Materiaux genealogiques</h3>
-            <p>Dossiers d'immigration, registres d'eglise, titres fonciers, histoires et papiers de famille, listes electorales, etc.</p>
-          </div>
-        </article>
-
-        <article class="about-modern-card about-modern-card--collection">
-          <div class="about-modern-card-body">
-            <h3>Peuples autochtones</h3>
-            <p>Un important volume de documents concernant les Premieres Nations, les Metis et les Inuit du Canada.</p>
-          </div>
-        </article>
-
-        <article class="about-modern-card about-modern-card--collection">
-          <div class="about-modern-card-body">
-            <h3>Ministeres et administrations</h3>
-            <p>Documents precoces de ministeres cles : Affaires indiennes, Immigration, Sante, Agriculture, Canaux et chemins de fer, Peches et Ressources naturelles.</p>
-          </div>
-        </article>
-
-        <article class="about-modern-card about-modern-card--collection">
-          <div class="about-modern-card-body">
-            <h3>Histoire militaire</h3>
-            <p>Documents sur la guerre de 1812, la Premiere Guerre mondiale, la Seconde Guerre mondiale et l'administration militaire en temps de paix.</p>
-          </div>
-        </article>
-
-        <article class="about-modern-card about-modern-card--collection">
-          <div class="about-modern-card-body">
-            <h3>Personnalites canadiennes</h3>
-            <p>Papiers de premiers ministres, gouverneurs generaux, premiers ministres provinciaux, ministres, explorateurs, scientifiques, entrepreneurs, ecrivains et artistes.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="about-modern-block" aria-labelledby="heritage-use-title-fr">
-      <div class="about-modern-work-grid">
-        <article class="about-modern-card about-modern-card--media">
-          <a href="https://heritage.canadiana.ca/view/oocihm.lac_reel_c13421/55" target="_blank" rel="noopener">
-            <img src="<%= asset_path('about/heritage/oocihm.lac_reel_c13421.55.jpg') %>" alt="Parcours de recherche dans la collection Heritage" loading="lazy">
-          </a>
-        </article>
-        <article class="about-modern-card about-modern-card--steps" aria-labelledby="heritage-use-title-fr">
-          <h2 id="heritage-use-title-fr">Comment exploiter la collection</h2>
-          <ol>
-            <li>Pour commencer, choisissez la collection qui correspond le mieux à votre domaine d’intérêt. Chaque page comprend des instruments de recherche et des conseils pour parcourir les bobines de microfilm numérisées. Ces informations proviennent de <a href="https://recherche-collection-search.bac-lac.gc.ca/fra" target="_blank" rel="noopener">MIKAN, le catalogue des fonds d’archives de Bibliothèque et Archives Canada</a>. Ce dernier a eu la générosité de partager ces informations avec vous pour en faciliter l’accès.</li>
-            <li>La recherche de base vous aide à repérer les collections correspondant à vos mots clés. Elle parcourt les informations descriptives, les métadonnées et, lorsque disponible, le texte des documents. Pour affiner la requête, appliquez les outils de <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, y compris les expressions exactes entre guillemets et les opérateurs <span style="white-space: nowrap;"><code>?</code>, <code>*</code>, <code>-</code> et <code>|</code></span>.</li>
-            <li>Lorsque vous trouvez des notices pertinentes, conservez vos preuves avec <code>IMG</code>, <code>PAGE</code> et <code>FULL</code> (si offert), puis copiez l’URL pérenne de la notice.</li>
-            <li>Pour la citation, suivez le <a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation</a> : citez Canadiana comme source et incluez l’URL pérenne. Pour les travaux rendus publics, veuillez envoyer une copie ou un lien au RCDR.</li>
-          </ol>
-        </article>
-      </div>
-    </section>
-
-    <section class="about-modern-block about-modern-block--faq" aria-labelledby="heritage-fulltext-title-fr">
-      <div class="about-modern-block-head">
-        <h2 id="heritage-fulltext-title-fr">FAQ</h2>
-      </div>
-      <div class="about-modern-faq">
-        <details open>
-          <summary>La recherche plein texte est-elle disponible maintenant ?</summary>
-          <p>Tres peu de texte archivistique est actuellement visible dans nos outils de recherche.</p>
-        </details>
-        <details>
-          <summary>Qu'est-il prevu pour la decouverte en texte integral ?</summary>
-          <p>
-            La transcription de ces documents pour produire du texte interrogeable demandera du temps et des ressources
-            et demeure un objectif majeur du projet. Les futures versions de Héritage prendront en charge la
-            recherche en texte integral au fur et a mesure de la transcription des documents.
-          </p>
-        </details>
-        <details>
-          <summary>Quelles sont les prochaines etapes pour la recherche ?</summary>
-          <p>
-            Au cours des prochaines annees, de nouveaux outils de recherche et des infrastructures pour la creation et
-            l'interconnexion de metadonnees enrichies seront developpes par Canadiana et ses partenaires Héritage.
-          </p>
-        </details>
-      </div>
-    </section>
-  </div>
-</section>
-

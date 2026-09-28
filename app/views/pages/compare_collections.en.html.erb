@@ -1,6 +1,9 @@
 <% content_for :page_title, "Comparing the Collections - #{application_name}" %>
 
-<section class="site-section compare-collections-section blacklight-pages-api_access">
+<section
+  class="site-section compare-collections-section blacklight-pages-api_access"
+  style="--about-canadiana-hero-image: url('<%= asset_path('backgrounds/canadiana/oocihm.8_04048_394.31.jpg') %>'); --about-heritage-hero-image: url('<%= asset_path('backgrounds/heritage/oocihm.lac_reel_c13421.54.jpg') %>');"
+>
   <div class="container compare-collections-page api-access-page api-access-page--modern">
     <div class="compare-frame">
       <header class="api-hero">
@@ -10,12 +13,8 @@
               <span class="api-hero__eyebrow-text">Canadiana Collections and Infrastructure</span>
               <span class="api-hero__title-main">Comparing the Collections</span>
             </h1>
-            <p class="api-lede">Discover digitized publications and archival records from across Canada.</p>
             <p>
-              CRKN provides access to two major digital heritage collections: the Canadiana Collection and the Heritage Collection.
-              The Canadiana collections are one of the largest collections of digitized Canadian documentary heritage in the world.
-              Available at no charge thanks to the ongoing support of CRKN members through the Heritage Content Access and Preservation (HCAP) fund,
-              the collections offer millions of pages of heritage content to researchers around the globe.
+              Canadiana includes two distinct collections, Canadiana and Héritage. Stewarded by the Canadian Research Knowledge Network (CRKN), these collections are more than 69 million pages of diverse materials that reflect Canada's history and the experiences of its peoples, made freely available through the financial support of CRKN member libraries. Compare highlights of the two collections below to learn more about what makes them distinct.
             </p>
           </div>
         </div>
@@ -23,28 +22,22 @@
 
       <div class="compare-hero-grid">
         <div class="compare-hero-spacer" aria-hidden="true"></div>
-        <article class="compare-collection-card">
-          <img src="<%= asset_path('monog.jpg') %>" alt="Books and periodicals in the Canadiana Collection" loading="lazy">
+        <article class="compare-collection-card compare-collection-card--canadiana">
           <div class="compare-collection-body">
             <h3>Canadiana Collection</h3>
-            <p class="compare-collection-type">Published Heritage</p>
-            <p class="compare-collection-metric">31M+ pages</p>
           </div>
         </article>
 
-        <article class="compare-collection-card">
-          <img src="<%= asset_path('heritage-manuscript.jpg') %>" alt="Archival documents in the Heritage Collection" loading="lazy">
+        <article class="compare-collection-card compare-collection-card--heritage">
           <div class="compare-collection-body">
-            <h3>Heritage Collection</h3>
-            <p class="compare-collection-type">Archival Microfilm</p>
-            <p class="compare-collection-metric">60M projected (37.5M current)</p>
+            <h3>Héritage Collection</h3>
           </div>
         </article>
       </div>
 
       <div class="compare-spec-scroll">
         <table class="compare-spec-table">
-          <caption class="visually-hidden">Comparison of Canadiana and Heritage collections</caption>
+          <caption class="visually-hidden">Comparison of Canadiana and Héritage collections</caption>
           <colgroup>
             <col class="compare-col-feature">
             <col class="compare-col-value">
@@ -54,34 +47,39 @@
             <tr>
               <th scope="col"><span class="visually-hidden">Feature</span></th>
               <th scope="col"><span class="visually-hidden">Canadiana Collection</span></th>
-              <th scope="col"><span class="visually-hidden">Heritage Collection</span></th>
+              <th scope="col"><span class="visually-hidden">Héritage Collection</span></th>
             </tr>
           </thead>
           <tbody>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Primary focus</th>
-              <td>Published Canadian heritage: books, serials, maps, and government publications.</td>
-              <td>Archival microfilm records from Library and Archives Canada and partners.</td>
+              <td>Published Canadian materials including books, serials, maps, and government publications</td>
+              <td>Archival microfilm records from Library and Archives Canada</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Date range</th>
               <td>c. 1500 to present day</td>
-              <td>1600s to mid-1900s</td>
+              <td>c. 1500 to 1985</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Collection size</th>
-              <td>Approximately 31 million pages</td>
-              <td>Approximately 60 million pages projected (37 million pages current)</td>
+              <td>Approximately 31.7 million pages (98,000 titles)</td>
+              <td>Approximately 37.8 million pages (over 1,000 archival collections)</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Genealogy materials</th>
-              <td>Limited</td>
+              <td>Some published genealogical materials (such as city directories)</td>
               <td>Strong coverage, including family, immigration, and voters' records</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Indigenous history</th>
-              <td>Strong in published scholarship and commentary</td>
-              <td>Strong in archival records and government files</td>
+              <td>Books and periodicals in Indigenous languages and selected materials by Indigenous authors</td>
+              <td>Strong in archival records and federal government files</td>
+            </tr>
+            <tr class="compare-spec-row" data-equal="false">
+              <th scope="row">Military records</th>
+              <td>Selected published military histories</td>
+              <td>Extensive military archival documentation</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Newspapers and magazines</th>
@@ -93,25 +91,20 @@
               <td><span class="compare-token compare-token--yes">Yes</span></td>
               <td><span class="compare-token compare-token--no">No</span></td>
             </tr>
-            <tr class="compare-spec-row" data-equal="false">
-              <th scope="row">Military records</th>
-              <td>Selected published military histories</td>
-              <td>Extensive military archival documentation</td>
-            </tr>
             <tr class="compare-spec-row" data-equal="true">
               <th scope="row">Access model</th>
-              <td>Available through the Canadiana platform for CRKN member communities</td>
-              <td>Available through the Canadiana platform for CRKN member communities</td>
+              <td>Available at no charge through the Canadiana platform</td>
+              <td>Available at no charge through the Canadiana platform</td>
             </tr>
             <tr class="compare-spec-row" data-equal="false">
               <th scope="row">Best for</th>
-              <td>Published source discovery, periodical research, and print culture analysis.</td>
-              <td>Primary archival research, genealogy, and government documentary history.</td>
+              <td>Newspaper and periodical research, Canadian literature and government publications, and print culture analysis</td>
+              <td>Primary source archival research, genealogy, and government history</td>
             </tr>
             <tr class="compare-spec-row compare-spec-row--action" data-equal="false">
               <th scope="row"><span class="visually-hidden">Browse now</span></th>
-              <td><a class="compare-action-link" href="<%= about_canadiana_path(lang: I18n.locale) %>">Go to Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
-              <td><a class="compare-action-link" href="<%= about_heritage_path(lang: I18n.locale) %>">Go to Heritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link compare-action-link--canadiana" href="<%= about_canadiana_path(lang: I18n.locale) %>">More about Canadiana <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
+              <td><a class="compare-action-link compare-action-link--heritage" href="<%= about_heritage_path(lang: I18n.locale) %>">More about Héritage <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></td>
             </tr>
           </tbody>
         </table>
@@ -120,7 +113,7 @@
       <section class="api-card mt-3">
         <p>
           As resources developed over decades of collecting and preserving documents, CRKN acknowledges that the Canadiana
-          collections contain material that is offensive and biased, contributing to an incomplete, distorted, and harmful
+          Collections contain material that is offensive and biased, contributing to an incomplete, distorted, and harmful
           story of Canada. We are dedicated to redefining the principles guiding the collections, helping to ensure that
           future development is firmly grounded in our commitment to reconciliation and justice. Currently, CRKN is
           <a href="https://www.crkn-rcdr.ca/en/call-canadiana-collection-development-projects" target="_blank" rel="noopener">expanding the collection</a>
@@ -128,14 +121,14 @@
           and content that represents the diversity of the Canadian population.
         </p>
         <p class="mb-0">
-          The Canadiana collections are overseen by the
+          The Canadiana Collections are overseen by the
           <a href="https://www.crkn-rcdr.ca/en/preservation-and-access-committee" target="_blank" rel="noopener">Preservation and Access Committee</a> (PAC)
           and the PAC's sub-committees, the
           <a href="https://www.crkn-rcdr.ca/en/canadiana-content-sub-committee-ccsc" target="_blank" rel="noopener">Canadiana Content Sub-Committee</a>
           and the
           <a href="https://www.crkn-rcdr.ca/en/platform-technical-sub-committee-ptsc" target="_blank" rel="noopener">Platform Technical Sub-Committee</a>.
           To learn more about the Canadiana
-          collections, contact us at <a href="mailto:info@crkn.ca">info@crkn.ca</a>.
+          Collections, contact us at <a href="mailto:info@crkn.ca">info@crkn.ca</a>.
         </p>
       </section>
     </div>

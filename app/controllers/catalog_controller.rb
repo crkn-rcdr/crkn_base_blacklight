@@ -14,6 +14,69 @@ class CatalogController < ApplicationController
   IIIF_CONTENT_SEARCH_MAX_PAGES = 20
   IIIF_CONTENT_SEARCH_MAX_SNIPPETS = 5_000
   TX_GEN_SEPARATOR = '-' * 40
+  # Keep these query-field weights aligned with the text-aware Solr handlers.
+  TEXT_SEARCH_QF_FIELDS = %w[
+    all_text_timv
+    tx_gen^2
+    tx_hant
+    tx_cjk
+    tx_ja
+    tx_ko
+    tx_th
+    tx_indic
+    tx_cyrl
+    tx_he
+    tx_el
+    tx_fr
+    tx_de
+    tx_nl
+    tx_da
+    tx_fi
+    tx_sv
+    tx_es
+    tx_it
+    tx_hu
+    tx_ga
+    tx_general_lang
+    tx_indigenous
+  ].freeze
+  TEXT_SEARCH_PF_FIELDS = %w[
+    all_text_timv^10
+    tx_gen^8
+    tx_hant^8
+    tx_cjk^8
+    tx_ja^8
+    tx_ko^8
+    tx_th^8
+    tx_indic^8
+    tx_cyrl^8
+    tx_he^8
+    tx_el^8
+    tx_fr^8
+    tx_de^8
+    tx_nl^8
+    tx_da^8
+    tx_fi^8
+    tx_sv^8
+    tx_es^8
+    tx_it^8
+    tx_hu^8
+    tx_ga^8
+    tx_general_lang^8
+    tx_indigenous^8
+  ].freeze
+  ALL_FIELDS_QF = (
+    %w[
+      id
+      title_tsim^3
+      title_addl_tsim^2
+      author_tsim^2
+      subject_tsim^2
+    ] + TEXT_SEARCH_QF_FIELDS
+  ).join(' ').freeze
+  ALL_FIELDS_PF = TEXT_SEARCH_PF_FIELDS.join(' ').freeze
+  TEXT_FIELDS_QF = TEXT_SEARCH_QF_FIELDS.join(' ').freeze
+  TEXT_FIELDS_PF = TEXT_SEARCH_PF_FIELDS.join(' ').freeze
 
   # Blacklight's track action is a redirect used for click tracking and may
   # be invoked without an authenticity token. Skip CSRF verification for it.
@@ -21,6 +84,8 @@ class CatalogController < ApplicationController
   before_action :ensure_default_catalog_query, only: :index
 
   configure_blacklight do |config|
+    config.search_builder_class = SearchBuilder
+
     # Use the standard select handler
     config.solr_path = 'select'
 
@@ -38,7 +103,13 @@ class CatalogController < ApplicationController
     config.add_show_tools_partial(:citation)
 
     # ----- FACETS -----
-
+    config.add_facet_field 'depositor_tsim_str',
+                           label: ->(_c) { I18n.t('blacklight.metadata.depositor.label') },
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_depositor_tsim_str',
+                           ex: 'tag_depositor_tsim_str',
+                           sort: 'count', limit: 8, suggest: true, index_range: true
+                           
     # Publication year (range)
     config.add_facet_field 'pub_date_ssim',
                            label: ->(_c) { I18n.t('blacklight.metadata.date_range.label') },
@@ -52,16 +123,30 @@ class CatalogController < ApplicationController
 
     # Standard facets (using *_str copies for docValues-backed facets)
     config.add_facet_field 'language_ssim_str',
-                           label: ->(_c) { I18n.t('blacklight.metadata.language.label') },
+                           label: ->(_c) { I18n.t('blacklight.metadata.material_language.label') },
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_language_ssim_str',
+                           ex: 'tag_language_ssim_str',
                            sort: 'index', limit: 8, suggest: true, index_range: true
-    config.add_facet_field 'depositor_tsim_str',
-                           label: ->(_c) { I18n.t('blacklight.metadata.depositor.label') },
+
+    config.add_facet_field 'rights_statement_ssim_str',
+                           label: ->(_c) { I18n.t('blacklight.metadata.right_statements.label') },
+                           helper_method: :render_rights_statement_facet_label,
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_rights_statement_ssim_str',
+                           ex: 'tag_rights_statement_ssim_str',
                            sort: 'count', limit: 8, suggest: true, index_range: true
     config.add_facet_field 'subject_ssim_str',
                            label: ->(_c) { I18n.t('blacklight.metadata.subject.label') },
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_subject_ssim_str',
+                           ex: 'tag_subject_ssim_str',
                            sort: 'count', limit: 8, suggest: true, index_range: true
     config.add_facet_field 'author_ssm_str',
                            label: ->(_c) { I18n.t('blacklight.metadata.creator.label') },
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_author_ssm_str',
+                           ex: 'tag_author_ssm_str',
                            sort: 'count', limit: 8, suggest: true, index_range: true
 
     # Materials facet (English values from 999$e)
@@ -73,10 +158,14 @@ class CatalogController < ApplicationController
     config.add_facet_field 'collectionen_path',
       label:  ->(_c) { I18n.t('blacklight.metadata.collection.label') },
       component: Blacklight::Hierarchy::FacetFieldListComponent,
+      tag: 'tag_collectionen_path',
+      ex: 'tag_collectionen_path',
       if: ->(context, _config, _facet = nil) { CatalogController.language_code_for(context) != 'fr' }
     config.add_facet_field 'collectionfr_path',
       label:  ->(_c) { I18n.t('blacklight.metadata.collection.label') },
       component: Blacklight::Hierarchy::FacetFieldListComponent,
+      tag: 'tag_collectionfr_path',
+      ex: 'tag_collectionfr_path',
       if: ->(context, _config, _facet = nil) { CatalogController.language_code_for(context) == 'fr' }
     # Tell blacklight-hierarchy how to parse the field into a tree (use slash delimiter)
     # key is the field name prefix before the last underscore
@@ -86,29 +175,36 @@ class CatalogController < ApplicationController
         'collectionfr' => [['path'], '/']
       }
     }
+    
+    config.add_facet_field 'resource_type_ssim_str',
+                           label: ->(_c) { I18n.t('blacklight.metadata.resource_type.label') },
+                           helper_method: :format_resource_type_label,
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_resource_type_ssim_str',
+                           ex: 'tag_resource_type_ssim_str',
+                           sort: 'count', limit: 8, suggest: true, index_range: true
+                           
     config.add_facet_field 'serial_title_str',
                            label: ->(_c) { I18n.t('blacklight.metadata.serial_title.label') },
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_serial_title_str',
+                           ex: 'tag_serial_title_str',
                            sort: 'count', limit: 8, suggest: true, index_range: true
-    
-    config.add_facet_field 'is_issue_str',
-                           label: ->(_c) { I18n.t('blacklight.metadata.issue_msg.label') },
-                           sort: 'count', limit: 8, suggest: true, index_range: true
-    config.add_facet_field 'is_serial_str',
-                           label: ->(_c) { I18n.t('blacklight.metadata.serial_msg.label') },
-                           sort: 'count', limit: 8, suggest: true, index_range: true
+
 
     # Send facet field list to Solr
     config.add_facet_fields_to_solr_request!
 
     # ----- INDEX (search results) FIELDS -----
     config.add_index_field 'format', label: 'Format', helper_method: :format_icon
-    config.add_index_field 'title_ssm',  label: ->(_f, _c) { I18n.t('blacklight.metadata.title.label') }, helper_method: :format_text
+    #config.add_index_field 'title_ssm',  label: ->(_f, _c) { I18n.t('blacklight.metadata.title.label') }, helper_method: :format_text
     config.add_index_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
     config.add_index_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
-    config.add_index_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
     config.add_index_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
-    config.add_index_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
     config.add_index_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
+    config.add_index_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
+    #config.add_index_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
+    config.add_index_field 'id', label: ->(_f, _c) { I18n.t('blacklight.metadata.id.label') }, helper_method: :format_identifier
     config.add_index_field 'notes_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.notes.label') }, helper_method: :format_text
     config.add_index_field 'original_version_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.original_version_note.label') }, helper_method: :format_text
     config.add_index_field 'access_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.access_note.label') }, helper_method: :format_text
@@ -119,14 +215,18 @@ class CatalogController < ApplicationController
     #config.add_show_field 'title_ssm',  label: ->(_f, _c) { I18n.t('blacklight.metadata.title.label') }, helper_method: :format_text
     #config.add_show_field 'subtitle_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subtitle.label') }, helper_method: :format_text
     #config.add_show_field 'title_addl_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.other_titles.label') }, helper_method: :format_text
-    config.add_show_field 'rights_stat_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.right_statements.label') }, helper_method: :format_text
+    config.add_show_field 'rights_stat_tsim',
+                          label: ->(_f, _c) { I18n.t('blacklight.metadata.right_statements.label') },
+                          helper_method: :format_rights_statement_text,
+                          if: ->(context, field_config, document) { context.helpers.rights_statement_present?(field_config, document) }
     config.add_show_field 'ark', label: ->(_f, _c) { I18n.t('blacklight.metadata.persistent_url.label') }, helper_method: :value_link
-    config.add_show_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
     config.add_show_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
     config.add_show_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
-    config.add_show_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
-    config.add_show_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
     config.add_show_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
+    config.add_show_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
+    config.add_show_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
+    config.add_show_field 'id', label: ->(_f, _c) { I18n.t('blacklight.metadata.id.label') }, helper_method: :format_identifier
+    #config.add_show_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
     config.add_show_field 'notes_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.notes.label') }, helper_method: :format_text
     config.add_show_field 'original_version_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.original_version_note.label') }, helper_method: :format_text
     #config.add_show_field 'access_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.access_note.label') }, helper_method: :format_text
@@ -134,7 +234,10 @@ class CatalogController < ApplicationController
     config.add_show_field 'date_added', label: ->(_f, _c) { I18n.t('blacklight.metadata.date_added.label') }, helper_method: :format_date
 
     # ----- SEARCH FIELDS -----
-    config.add_search_field 'all_fields', label: ->(_c) { I18n.t('blacklight.metadata.all_fields.label') }
+    config.add_search_field('all_fields') do |field|
+      field.solr_parameters = { qf: ALL_FIELDS_QF, pf: ALL_FIELDS_PF }
+      field.label = ->(_c) { I18n.t('blacklight.metadata.all_fields.label') }
+    end
 
     config.add_search_field('full_title_tsim') do |field|
       field.solr_parameters = { qf: 'full_title_tsim', pf: 'full_title_tsim' }
@@ -153,7 +256,7 @@ class CatalogController < ApplicationController
     end
 
     config.add_search_field('tx_gen') do |field|
-      field.solr_parameters = { qf: 'tx_gen', pf: 'tx_gen' }
+      field.solr_parameters = { qf: TEXT_FIELDS_QF, pf: TEXT_FIELDS_PF }
       field.label = ->(_c) { I18n.t('blacklight.metadata.fulltx.label') }
     end
 
@@ -169,8 +272,9 @@ class CatalogController < ApplicationController
     config.autocomplete_enabled = true
     config.autocomplete_path = 'suggest'
 
-    # keep params tidy
+    # keep params tidy and preserve custom parameters across search state
     config.filter_search_state_fields = true
+    config.search_state_fields.concat([:include_issues, :lang]) if config.respond_to?(:search_state_fields) && config.search_state_fields.is_a?(Array)
   end
 
   def tx_gen
@@ -392,6 +496,28 @@ class CatalogController < ApplicationController
     redirect_to search_catalog_path(query_params) if defaults_added
   end
 
+  def facet
+    @facet = blacklight_config.facet_fields[params[:id]]
+    raise ActionController::RoutingError, 'Not Found' unless @facet
+
+    @response = if params[:query_fragment].present?
+                  search_service.facet_suggest_response(@facet.key, params[:query_fragment])
+                else
+                  search_service.facet_field_response(@facet.key)
+                end
+    @display_facet = @response.aggregations[@facet.field]
+
+    @presenter = @facet.presenter.new(@facet, @display_facet, view_context)
+    @pagination = @presenter.paginator
+    respond_to do |format|
+      format.html do
+        return render 'facet_values', layout: false if params[:only_values]
+        return render layout: false if request.xhr?
+      end
+      format.json
+    end
+  end
+
   def self.language_code_for(context)
     lang =
       if context.respond_to?(:content_lang) && context.content_lang.present?
@@ -405,8 +531,6 @@ class CatalogController < ApplicationController
     lang.to_s.downcase
   end
 end
-
-
 
 
 

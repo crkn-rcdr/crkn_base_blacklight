@@ -1,6 +1,12 @@
 <div>
   <% @formats.each do |i18n_key, citation_method| %>
-    <h2><%= t(i18n_key) %></h2>
+    <% format_label = t(i18n_key) %>
+    <% format_version = case format_label.to_s.upcase
+                        when 'MLA' then I18n.locale.to_s.start_with?('fr') ? '9e edition' : '9th edition'
+                        when 'APA' then I18n.locale.to_s.start_with?('fr') ? '7e edition' : '7th edition'
+                        when 'CHICAGO' then I18n.locale.to_s.start_with?('fr') ? '17e edition' : '17th edition'
+                        end %>
+    <h2><%= format_label %><%= " (#{format_version})" if format_version %></h2>
     <%= @document.send(citation_method).html_safe %>
     <% if @document['ark'] %>
         <%= t('blacklight.application_name') %><%= citation_method == :export_as_apa_citation_txt ? '.' : ',' %>

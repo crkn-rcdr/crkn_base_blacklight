@@ -45,7 +45,7 @@ class FeaturedItemsComponent < ViewComponent::Base
   end
 
   def record_link(record)
-    ark_url_for(record) || "/catalog/#{record['id']}?lang=#{I18n.locale}"
+    ark_url_for(record) || "/catalogue/#{record['id']}?lang=#{I18n.locale}"
   end
 
   def viewer_id_for(record)
@@ -137,6 +137,6 @@ class FeaturedItemsComponent < ViewComponent::Base
   end
 
   def solr_connection
-    @solr_connection ||= RSolr.connect url: 'http://public:hdwi389e8d!ds@4.229.225.26/solr/blacklight_marc_demo'
+    @solr_connection ||= RSolr.connect url: ENV.fetch("SOLR_URL")
   end
 end

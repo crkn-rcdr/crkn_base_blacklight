@@ -4,11 +4,11 @@
       <div class="api-hero__grid api-hero__grid--single">
         <div class="api-hero__copy">
           <h1 class="section-title">
-            <span class="api-hero__eyebrow-text">Canadiana Collections And Infrastructure</span>
+            <span class="api-hero__eyebrow-text">Canadiana Collections and Infrastructure</span>
             <span class="api-hero__title-main">API Access</span>
           </h1>
           <p class="api-lede">
-            CRKN provides programmatic access to discovery metadata through Canadiana Collections And Infrastructure APIs.
+            CRKN provides programmatic access to discovery metadata through Canadiana Collections and Infrastructure APIs.
             Combine these endpoints with search parameters, facets, paging, and sorting.
           </p>
         </div>
@@ -48,19 +48,19 @@
               <tbody>
                 <tr>
                   <th scope="row">Search endpoint</th>
-                  <td><code>GET /catalog?search_field=all_fields&amp;q=&amp;format=json</code></td>
+                  <td><code>GET /catalogue?search_field=all_fields&amp;q=&amp;format=json</code></td>
                 </tr>
                 <tr>
                   <th scope="row">Single record endpoint</th>
-                  <td><code>GET /catalog/:id?format=json</code></td>
+                  <td><code>GET /catalogue/:id?format=json</code></td>
                 </tr>
                 <tr>
                   <th scope="row">Facet endpoint</th>
-                  <td><code>GET /catalog/facet/:facet_id?search_field=all_fields&amp;q=&amp;format=json</code></td>
+                  <td><code>GET /catalogue/facet/:facet_id?search_field=all_fields&amp;q=&amp;format=json</code></td>
                 </tr>
                 <tr>
                   <th scope="row">Single record export endpoint</th>
-                  <td><code>GET /catalog/:id?format=marc|marcxml|xml</code></td>
+                  <td><code>GET /catalogue/:id?format=marc|marcxml|xml</code></td>
                 </tr>
               </tbody>
             </table>
@@ -139,7 +139,7 @@
           <h3 id="api-structure">Catalog response structure</h3>
           <p>
             A search request such as
-            <code>/catalog?search_field=all_fields&amp;q=&amp;format=json</code>
+            <code>/catalogue?search_field=all_fields&amp;q=&amp;format=json</code>
             returns:
           </p>
           <div class="api-table-wrap">
@@ -201,7 +201,7 @@
                     "attributes": {"label": "Language", "value": "..."}
                 }
             },
-            "links": {"self": "http://localhost:3000/catalog/oocihm.N_00591?lang=en"}
+            "links": {"self": "http://localhost:3000/catalogue/oocihm.N_00591?lang=en"}
         }
     ],
     "included": [
@@ -228,7 +228,7 @@
 BASE_URL = "http://localhost:3000"
 
 response = requests.get(
-    f"{BASE_URL}/catalog",
+    f"{BASE_URL}/catalogue",
     params={"search_field": "all_fields", "q": "", "format": "json"},
     timeout=30,
 )
@@ -248,7 +248,7 @@ print(catalog["meta"]["pages"]["total_count"])</code></pre>
 BASE_URL = "http://localhost:3000"
 
 response = requests.get(
-    f"{BASE_URL}/catalog",
+    f"{BASE_URL}/catalogue",
     params={
         "q": "maps",
         "search_field": "all_fields",
@@ -274,7 +274,7 @@ maps = response.json()</code></pre>
 BASE_URL = "http://localhost:3000"
 
 english_response = requests.get(
-    f"{BASE_URL}/catalog",
+    f"{BASE_URL}/catalogue",
     params={
         "q": "",
         "search_field": "all_fields",
@@ -287,7 +287,7 @@ english_response.raise_for_status()
 english_only = english_response.json()
 
 newspapers_response = requests.get(
-    f"{BASE_URL}/catalog",
+    f"{BASE_URL}/catalogue",
     params={
         "q": "",
         "search_field": "all_fields",
@@ -311,7 +311,7 @@ newspapers = newspapers_response.json()</code></pre>
 BASE_URL = "http://localhost:3000"
 
 response = requests.get(
-    f"{BASE_URL}/catalog",
+    f"{BASE_URL}/catalogue",
     params={
         "q": "",
         "search_field": "all_fields",
@@ -336,7 +336,7 @@ year_range = response.json()</code></pre>
 BASE_URL = "http://localhost:3000"
 
 json_response = requests.get(
-    f"{BASE_URL}/catalog/oocihm.N_00591",
+    f"{BASE_URL}/catalogue/oocihm.N_00591",
     params={"format": "json"},
     timeout=30,
 )
@@ -344,7 +344,7 @@ json_response.raise_for_status()
 record_json = json_response.json()
 
 marc_response = requests.get(
-    f"{BASE_URL}/catalog/oocihm.N_00591",
+    f"{BASE_URL}/catalogue/oocihm.N_00591",
     params={"format": "marc"},
     timeout=30,
 )
@@ -352,7 +352,7 @@ marc_response.raise_for_status()
 record_marc = marc_response.text
 
 marcxml_response = requests.get(
-    f"{BASE_URL}/catalog/oocihm.N_00591",
+    f"{BASE_URL}/catalogue/oocihm.N_00591",
     params={"format": "marcxml"},
     timeout=30,
 )
@@ -673,7 +673,7 @@ print(len(binary_jpeg))</code></pre>
                 </tr>
                 <tr>
                   <th scope="row">Content Search endpoint (example)</th>
-                  <td><code>GET https://crkn-iiif-content-search.azurewebsites.net/search/69429/m0tt4fn16j1j?q=roi</code></td>
+                  <td><code>GET https://www-iiif-search.canadiana.ca/search/69429/m0tt4fn16j1j?q=roi</code></td>
                 </tr>
               </tbody>
             </table>
@@ -741,7 +741,7 @@ print(len(binary_jpeg))</code></pre>
             </figcaption>
             <pre class="api-code api-code--docmost"><code>{
     "@context": "http://iiif.io/api/search/2/context.json",
-    "id": "https://crkn-iiif-content-search.azurewebsites.net/search/69429/m0tt4fn16j1j",
+    "id": "https://www-iiif-search.canadiana.ca/search/69429/m0tt4fn16j1j",
     "type": "AnnotationPage",
     "items": [
         {
@@ -756,7 +756,7 @@ print(len(binary_jpeg))</code></pre>
             "target": "https://crkn-iiif-api.azurewebsites.net/manifest/69429/m0tt4fn16j1j/canvas/69429/c05t3g16rb0q#xywh=667,253,100,110"
         }
     ],
-    "next": "https://crkn-iiif-content-search.azurewebsites.net/search/69429/m0tt4fn16j1j?start=100&amp;q=roi"
+    "next": "https://www-iiif-search.canadiana.ca/search/69429/m0tt4fn16j1j?start=100&amp;q=roi"
 }</code></pre>
           </figure>
           <h4>Example: ARK to manifest and content search</h4>
@@ -775,7 +775,7 @@ CONTENT_SEARCH_SERVICE = "{content_search_service}"
 
 # 1) Get a catalog record and extract ARK href from HTML value
 record = requests.get(
-    f"{BASE_URL}/catalog/oocihm.N_00591",
+    f"{BASE_URL}/catalogue/oocihm.N_00591",
     params={"format": "json"},
     timeout=30,
 ).json()

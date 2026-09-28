@@ -14,13 +14,14 @@
 }
 .mosaic-window {
     border-radius: 7px !important;
-    border: 3px solid #EEE !important;
+    border: 3px solid #eee !important;
 }
 @media screen and (max-width: 990px) {
     .mosaic-window-body .mosaic-root > div:first-child {
         inset: 0% 0% 0% 0% !important;
     }
-    .mosaic-window-body .mosaic-root > div:nth-child(2), .mosaic-window-body .mosaic-root > div:nth-child(3) {
+    .mosaic-window-body .mosaic-root > div:nth-child(2),
+    .mosaic-window-body .mosaic-root > div:nth-child(3) {
         display: none !important;
     }
 }
@@ -41,8 +42,8 @@
 }
 
 #my-mirador .mirador-canvas-nav {
-    height: 64px !important;
-    min-height: 64px !important;
+    height: 52px !important;
+    min-height: 52px !important;
 }
 
 #my-mirador .mirador-canvas-nav [class*="previous-canvas-button"],

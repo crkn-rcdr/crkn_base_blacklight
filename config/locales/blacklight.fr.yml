@@ -4,14 +4,14 @@ fr:
     range_limit:
       submit_limit: Appliquer
       range_list_heading: Répartition des intervalles
-      range_begin: Début de l’intervalle
-      range_end: Fin de l’intervalle
+      range_begin: Début de l'intervalle
+      range_end: Fin de l'intervalle
       range_begin_short: Début
       range_end_short: Fin
       range_html: " %{begin_value} – %{end_value}"
     members:
       title: Canadiana est rendu possible grâce aux bibliothèques membres du RCDR
-      subtitle: Le RCDR est une communauté canadienne de bibliothèques, d’archives et d’institutions d’un océan à l’autre
+      subtitle: Le RCDR est une communauté canadienne de bibliothèques, d'archives et d'institutions d'un océan à l'autre
       category_aria: Onglets de catégories de membres
       institutional: Établissements membres
       associate: Membres associés
@@ -21,15 +21,15 @@ fr:
       blurb_html: "Les collections et l'infrastructure Canadiana existent grâce à l'engagement commun et au soutien financier des 88 bibliothèques membres du RCDR à travers le pays. Ensemble, elles permettent à chacun d'explorer, de découvrir et de se connecter au patrimoine documentaire du Canada. <a href='https://www.crkn-rcdr.ca/fr/a-propos-du-rcdr' target='blank'>En savoir plus sur le RCDR.</a>"
       visit_site_aria: "Visiter le site de %{name}"
     page_search:
-      matching_pages_for_html: "Pages correspondantes pour <strong>%{term}</strong>"
+      matching_pages_for_html: "Résultats de la recherche en texte intégral pour <strong>%{term}</strong>"
       no_results_html: "Aucun résultat dans cet élément"
       show_more: Afficher plus
       show_less: Afficher moins
       go_to_page_aria: "Aller à la page %{page}"
       prev_hit: Occurrence précédente
       next_hit: Occurrence suivante
-      prev_hit_aria: Aller à l’occurrence précédente
-      next_hit_aria: Aller à l’occurrence suivante
+      prev_hit_aria: Aller à l'occurrence précédente
+      next_hit_aria: Aller à l'occurrence suivante
     tools:
       download_label: Téléchargements
       download_image_aria: Télécharger l'image
@@ -37,22 +37,30 @@ fr:
       download_full_pdf_aria: Télécharger le PDF complet
       download_unavailable: Non disponible pour cette page
       download_checking: Vérification de la disponibilité des téléchargements
+      download_loading: Préparation du téléchargement
+      full_text_available: Texte intégral disponible
+      full_text_unavailable: Texte intégral non disponible
+      full_text_available_tooltip: Le texte intégral lisible par machine (ROC) est disponible pour ce document.
+      full_text_unavailable_tooltip: Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC).
+      pdf_disabled_tooltip: Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC).
+      img_disabled_tooltip: Le téléchargement de l'image n'est pas disponible pour cette page.
       toolbox_title: Boîte à outils
       title: Outils
       subtitle: Exporter, modifier ou partager cet item
-      crop_image: Rogner l’image
-      crop_tooltip: Ouvrir l’outil de rognage dans un nouvel onglet
+      crop_image: Rogner l'image
+      crop_tooltip: Ouvrir l'outil de rognage dans un nouvel onglet
       generate_pdf: Générer un PDF
       pdf_tooltip: Créer un PDF à partir du manifeste IIIF
       edit_manifest_copy:  Modifier une copie du manifeste
-      edit_manifest_tooltip: Ouvrir une copie du manifeste IIIF dans l’éditeur
+      edit_manifest_tooltip: Ouvrir une copie du manifeste IIIF dans l'éditeur
       copy_manifest_link: Copier le lien du manifeste
-      copy_tooltip: Copier l’URL du manifeste IIIF
+      copy_tooltip: Copier l'URL du manifeste IIIF
       copied_js: Copié !
       copy_failed_js: Échec de la copie dans le presse‑papiers.
-      what_is_iiif: Qu’est‑ce que IIIF ?
-      librarian_view: Afficher les métadonnées détaillées
-      cite: Citer
+      what_is_iiif: Qu'est‑ce que IIIF ?
+      librarian_view: Métadonnées de bibliothèque
+      citation_label: Generer une citation
+      cite: "Citer : MLA / APA / Chicago"
       citation: Citer
       clear: Effacer
       email: Envoyer
@@ -135,6 +143,7 @@ fr:
           limit_search: Limiter votre recherche
           search_results: Résultats de recherche
         counter: "%{counter}. "
+        full_text_available: Texte intégral disponible
       entry_pagination_info:
         one: "<b>1 sur 1</b>"
         other: "<b>%{current}</b> sur <b>%{total}</b>"
@@ -142,12 +151,14 @@ fr:
         invalid_solr_id: Vous avez demandé une notice qui n'existe pas.
       facets:
         all: Tout
+        apply: Appliquer
         clear: Effacer
         count: "%{number}"
         group:
           close: Masquer les facettes
           open: Afficher les facettes
         missing: "[manquante]"
+        no_matches: "Aucun élément correspondant trouvé."
         more_html: plus <span class="visually-hidden">%{field_name}</span> »
         pivot:
           hide: Fermer
@@ -273,15 +284,17 @@ fr:
       published:
         label: Adresse bibliographique
       date:
-        label: Date
+        label: Date de numérisation
       id:
         label: Identificateur
       subject:
         label: Sujet
       material:
         label: Matériel
+      material_language:
+        label: Langue du document
       depositor:
-        label: Fournisseur
+        label: Institution source
       notes:
         label: Notes
       original_version_note:
@@ -293,15 +306,15 @@ fr:
       right_statements:
         label: Droits
       persistent_url:
-        label: URL pérenne
+        label: URL stable
       serial_msg:
         label: Est-ce une publication en série
       issue_msg:
         label: Est un numéro d'une publication en série
       date_added:
-        label: Date d'ajout
+        label: Date d'ajout/mise à jour
       language:
-        label: Langue
+        label: Langue du document
       collection:
         label: Collection
       description:
@@ -309,9 +322,19 @@ fr:
       date_range:
         label: Période
       all_fields:
-        label: Tout
+        label: Tous
       serial_title:
-        label: Titre de la série
+        label: Titre du périodique ou journal
+      resource_type:
+        label: Type de ressource
+        values:
+          book: Livre
+          journal: Revue
+          newspaper: Journal
+          musical_score: Partition musicale
+          map: Carte
+      include_issues:
+        label: Inclure les résultats des numéros individuels
     sort:
       relevance:
         label: Pertinence
@@ -363,14 +386,14 @@ fr:
     L_LAC: Bibliothèque et Archives Canada
     L_NEW : Quoi de neuf
     L_READ_MORE: Lire la suite
-    L_RECORD: Détails
-    L_SERIAL_RECORD: Détails
+    L_RECORD: À propos de cet article
+    L_SERIAL_RECORD: À propos de cette série
     L_SEARCH_BREADCRUMB: Recherche dans la collection
     L_ALL_ISSUES: Liste des numéros
     L_VIEW_ISSUE: Voir le numéro
     L_NO_ISSUES_MSG: Aucun problème dans cette série
     L_TERMS: Conditions de service
-    L_MATCHING_PAGES_PRE: Pages correspondantes pour
+    L_MATCHING_PAGES_PRE: Résultats de la recherche en texte intégral pour
     L_MATCHING_PAGES_SUF: dans cet élément
   links:
     URL_ABOUT: "https://www.crkn-rcdr.ca/fr/canadiana"
@@ -379,7 +402,7 @@ fr:
     URL_CARL: "http://www.carl-abrc.ca/fr/"
     URL_CNDHI: "https://www.cndhi-ipnpc.ca/fr"
     URL_CONTACT: "https://www.crkn-rcdr.ca/fr/nous-joindre"
-    URL_NEW: "/catalog?lang=en&q=&search_field=all_fields&sort=date-added-desc"
+    URL_NEW: "/catalogue?lang=fr&q=&search_field=all_fields&sort=date-added-desc"
     URL_CRKN: "https://www.crkn-rcdr.ca/fr"
     URL_GAC: "https://www.international.gc.ca/global-affairs-affaires-mondiales/home-accueil.aspx?lang=fra"
     URL_GAC_LIBRARY: "https://www.international.gc.ca/gac-amc/programs-programmes/jll-bjl/index.aspx?lang=fra"

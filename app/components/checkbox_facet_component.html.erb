@@ -1,0 +1,64 @@
+<%= render(@layout.new(facet_field: @facet_field)) do |component| %>
+  <% component.with_label do %>
+    <%= @facet_field.label %>
+  <% end %>
+
+  <% component.with_body do %>
+    <%= form_tag form_action, method: :get, class: 'checkbox-facet-form' do %>
+      <%= hidden_fields %>
+
+      <% if rows.any? %>
+        <ul class="facet-values list-unstyled checkbox-facet-values">
+          <% rows.each_with_index do |row, index| %>
+            <% id = checkbox_id(index) %>
+            <li>
+              <%= label_tag id, class: 'checkbox-facet-option' do %>
+                <%= check_box_tag "f_inclusive[#{@facet_field.key}][]",
+                                  row.value,
+                                  row.selected,
+                                  id: id,
+                                  class: 'form-check-input checkbox-facet-input' %>
+                <span class="checkbox-facet-label"><%= row.label %></span>
+                <% if row.hits.present? %>
+                  <span class="facet-count"><%= t('blacklight.search.facets.count', number: number_with_delimiter(row.hits)) %></span>
+                <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted py-3 mb-0"><%= t('blacklight.search.facets.no_matches', default: 'No matching items found.') %></p>
+      <% end %>
+
+      <% if more_path.present? %>
+        <div class="more_facets checkbox-facet-more">
+          <%= link_to t("more_#{@facet_field.key}_html",
+                        scope: 'blacklight.search.facets',
+                        default: :more_html,
+                        field_name: @facet_field.label),
+                      more_path,
+                      data: { blacklight_modal: 'trigger', checkbox_facet_more: true, turbo: false } %>
+        </div>
+      <% end %>
+
+      <% if (pagination = modal_pagination).present? %>
+        <div class="facet-pagination checkbox-facet-modal-pagination d-flex flex-wrap w-100 justify-content-between">
+          <%= pagination %>
+        </div>
+      <% end %>
+
+      <div class="checkbox-facet-actions">
+        <%= button_tag t('blacklight.search.facets.apply', default: 'Apply'),
+                       type: 'submit',
+                       name: nil,
+                       class: 'btn btn-primary btn-sm checkbox-facet-apply' %>
+        <% if selected_values.any? %>
+          <%= link_to t('blacklight.search.facets.clear', default: 'Clear'),
+                      clear_path,
+                      class: 'btn btn-outline-secondary btn-sm checkbox-facet-clear',
+                      rel: 'nofollow' %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

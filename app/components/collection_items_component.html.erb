@@ -17,7 +17,7 @@
           <div class="card-body">
             <% if collection_item['subtitle_tsim'] %>
               <h3 class="card-title h5">
-                <a class="" href="/catalog/<%= collection_item['id'] %>">
+                <a class="" href="/catalogue/<%= collection_item['id'] %>">
                   <%= collection_item['subtitle_tsim'][0] %>
                 </a>
               </h3>
@@ -156,7 +156,7 @@ function initializeCollectionItemViewers() {
     const overlay = container.querySelector(".collection-item__activate");
 
     (async function () {
-      const manifestUrl = `https://crkn-iiif-api.azurewebsites.net/manifest/${arkId}`;
+      const manifestUrl = `https://www-iiif-pres.canadiana.ca/manifest/${arkId}`;
       try {
         const response = await fetch(manifestUrl);
         const manifest = await response.json();

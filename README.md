@@ -24,8 +24,6 @@ CRKN Canadiana Blacklight is a Rails 7 + Blacklight 8.8 app for search and disco
 
 The app will be available at `http://localhost:3000`.
 
-Important for production mode: do not run `docker compose ... up` after the `run --rm` command above. The `run` command already starts the app container, and `db:prepare` must run in that same container.
-
 Note: Docker Compose only runs the Rails app. You must provide a Solr core and update `config/blacklight.yml` if needed.
 
 ## Docker Desktop + WSL2 (Windows + Ubuntu)
@@ -77,15 +75,28 @@ Required variables:
 - `RAILS_ENV` - Use `development` for local work.
 - `SECRET_KEY_BASE` - Needed for production-like use. Generate with `bin/rails secret`.
 
-Optional variables for Swift-backed download links:
+Optional variables for download links:
 
-- `CAP_PASS` - HMAC key used to sign Swift URLs.
-- `SWIFT_AUTH_URL`
-- `SWIFT_USERNAME`
-- `SWIFT_PASSWORD`
-- `SWIFT_PREAUTH_URL`
+- `DOWNLOAD_API_ENDPOINT` - Download API endpoint. Defaults to `https://beta-download.canadiana.ca/download`.
+- `DOWNLOAD_TOKEN_SECRET` - HMAC key used to sign Download API URLs.
+- `DOWNLOAD_TOKEN_TTL` - Signed URL lifetime in seconds. Defaults to `1800`.
+- `DOWNLOAD_CACHE_REDIS_URL` - Redis URL for precomputed download metadata. Defaults to `redis://redis:6379/0`.
+- `DOWNLOAD_CACHE_REDIS_POOL_SIZE` - Redis connection pool size for download metadata. Defaults to `5`.
+- `DOWNLOAD_CACHE_REDIS_TIMEOUT` - Redis connection/read/write timeout in seconds. Defaults to `1`.
+- `IIIF_IMAGE_BASE` - IIIF Image API base used to derive full-size JPG download links. Defaults to `https://image-tor.canadiana.ca/iiif/2`.
 
-Do not commit `.env`.
+Seed the local development download cache:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d redis
+docker compose -f docker-compose.dev.yml run --rm --no-deps web ruby script/seed_download_cache.rb --sample
+```
+
+Seed a full portal cache into the dev Redis:
+
+```bash
+docker compose -f docker-compose.dev.yml run --rm --no-deps web ruby script/seed_download_cache.rb --portal canadiana --full
+```
 
 ## Solr
 
@@ -105,8 +116,8 @@ rake solr:marc:index MARC_FILE=marc-file-name-here.mrc
 Clear the Solr index:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" "http://username:password@host/solr/blacklight_marc_demo/update?commit=true" -d '{ "delete": {"query":"*:*"} }'
-curl -X POST -H "Content-Type: application/json" "http://localhost:8983/solr/blacklight_marc_demo/update?commit=true" -d '{ "delete": {"query":"*:*"} }'
+curl -X POST -H "Content-Type: application/json" "http://username:password@host/solr/blacklight_marc/update?commit=true" -d '{ "delete": {"query":"*:*"} }'
+curl -X POST -H "Content-Type: application/json" "http://localhost:8983/solr/blacklight_marc/update?commit=true" -d '{ "delete": {"query":"*:*"} }'
 ```
 
 ### Production Solr Setup (CRKN)
@@ -143,6 +154,8 @@ Run the production container:
 docker compose -f docker-compose.prod.yml up --build --force-recreate
 ```
 
+The default `docker-compose.yml` uses the same production-style startup flow, so `docker compose up --build --force-recreate` also works.
+
 Common in-container commands:
 
 - `bin/rails server` - Start the app.
@@ -166,28 +179,9 @@ Prereqs:
 
 - Docker Desktop installed and running (Linux containers).
 - VPN connected (OpenVPN), if required for registry access.
-- Registry credentials from 1Password (item: `docker.c7a.ca`).
+- Registry credentials from 1Password.
 
-Deploy:
-
-```bash
-./deployImage.sh
-```
-
-Notes:
-
-- The script tags the image with a UTC timestamp and optional branch suffix.
-- The script prints a link to create a Systems-Administration issue. Create it and include the image tag.
-
-### Azure-Compatible Docker Build
-
-For Azure App Service / Azure Web App for Containers, build as Linux `amd64`.
-
-Build and push in one step:
-
-```bash
-docker buildx build --platform linux/amd64 -t brilap/crkn-demo:latest --push .
-```
+Deploy Guide: https://github.com/crkn-rcdr/systems-administration/blob/main/wiki/platform/how-to's/platform_2.0/platform_2.0-deploy_guide.md
 
 ## Docs
 

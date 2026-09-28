@@ -68,4 +68,4 @@ RUN sed -i 's/\r$//' /app/bin/* \
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "bundle exec rails db:prepare"]
+CMD ["./bin/docker-entrypoint"]

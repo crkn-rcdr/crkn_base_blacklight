@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- # Distributed by puppet - no local edit please -->
 <!--
  Licensed to the Apache Software Foundation (ASF) under one or more
  contributor license agreements.  See the NOTICE file distributed with
@@ -35,7 +36,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>9.11</luceneMatchVersion>
+  <luceneMatchVersion>9.10</luceneMatchVersion>
 
   <!-- Data Directory
 
@@ -622,18 +623,58 @@
 
        <str name="qf">
           id
-          title_tsim
-          title_addl_tsim
-          author_tsim
-          subject_tsim
+          title_tsim^3
+          title_addl_tsim^2
+          author_tsim^2
+          subject_tsim^2
           all_text_timv
-          tx_gen             <!-- added -->
-          tx_hant            <!-- added -->
+          tx_gen^2
+          tx_hant
+          tx_cjk
+          tx_ja
+          tx_ko
+          tx_th
+          tx_indic
+          tx_cyrl
+          tx_he
+          tx_el
+          tx_fr
+          tx_de
+          tx_nl
+          tx_da
+          tx_fi
+          tx_sv
+          tx_es
+          tx_it
+          tx_hu
+          tx_ga
+          tx_general_lang
+          tx_indigenous
        </str>
        <str name="pf">
           all_text_timv^10
-          tx_gen^8           <!-- added -->
-          tx_hant^8          <!-- added -->
+          tx_gen^8
+          tx_hant^8
+          tx_cjk^8
+          tx_ja^8
+          tx_ko^8
+          tx_th^8
+          tx_indic^8
+          tx_cyrl^8
+          tx_he^8
+          tx_el^8
+          tx_fr^8
+          tx_de^8
+          tx_nl^8
+          tx_da^8
+          tx_fi^8
+          tx_sv^8
+          tx_es^8
+          tx_it^8
+          tx_hu^8
+          tx_ga^8
+          tx_general_lang^8
+          tx_indigenous^8
        </str>
 
        <str name="author_qf">
@@ -681,18 +722,58 @@
 
        <str name="qf">
           id
-          title_tsim
-          title_addl_tsim
-          author_tsim
-          subject_tsim
+          title_tsim^3
+          title_addl_tsim^2
+          author_tsim^2
+          subject_tsim^2
           all_text_timv
-          tx_gen             <!-- added -->
-          tx_hant            <!-- added -->
+          tx_gen^2
+          tx_hant
+          tx_cjk
+          tx_ja
+          tx_ko
+          tx_th
+          tx_indic
+          tx_cyrl
+          tx_he
+          tx_el
+          tx_fr
+          tx_de
+          tx_nl
+          tx_da
+          tx_fi
+          tx_sv
+          tx_es
+          tx_it
+          tx_hu
+          tx_ga
+          tx_general_lang
+          tx_indigenous
        </str>
        <str name="pf">
           all_text_timv^10
-          tx_gen^8           <!-- added -->
-          tx_hant^8          <!-- added -->
+          tx_gen^8
+          tx_hant^8
+          tx_cjk^8
+          tx_ja^8
+          tx_ko^8
+          tx_th^8
+          tx_indic^8
+          tx_cyrl^8
+          tx_he^8
+          tx_el^8
+          tx_fr^8
+          tx_de^8
+          tx_nl^8
+          tx_da^8
+          tx_fi^8
+          tx_sv^8
+          tx_es^8
+          tx_it^8
+          tx_hu^8
+          tx_ga^8
+          tx_general_lang^8
+          tx_indigenous^8
        </str>
 
        <str name="author_qf">author_tsim</str>
@@ -738,18 +819,58 @@
 
        <str name="qf">
           id
-          title_tsim
-          title_addl_tsim
-          author_tsim
-          subject_tsim
+          title_tsim^3
+          title_addl_tsim^2
+          author_tsim^2
+          subject_tsim^2
           all_text_timv
-          tx_gen             <!-- added -->
-          tx_hant            <!-- added -->
+          tx_gen^2
+          tx_hant
+          tx_cjk
+          tx_ja
+          tx_ko
+          tx_th
+          tx_indic
+          tx_cyrl
+          tx_he
+          tx_el
+          tx_fr
+          tx_de
+          tx_nl
+          tx_da
+          tx_fi
+          tx_sv
+          tx_es
+          tx_it
+          tx_hu
+          tx_ga
+          tx_general_lang
+          tx_indigenous
        </str>
        <str name="pf">
           all_text_timv^10
-          tx_gen^8           <!-- added -->
-          tx_hant^8          <!-- added -->
+          tx_gen^8
+          tx_hant^8
+          tx_cjk^8
+          tx_ja^8
+          tx_ko^8
+          tx_th^8
+          tx_indic^8
+          tx_cyrl^8
+          tx_he^8
+          tx_el^8
+          tx_fr^8
+          tx_de^8
+          tx_nl^8
+          tx_da^8
+          tx_fi^8
+          tx_sv^8
+          tx_es^8
+          tx_it^8
+          tx_hu^8
+          tx_ga^8
+          tx_general_lang^8
+          tx_indigenous^8
        </str>
 
        <str name="author_qf">author_tsim</str>

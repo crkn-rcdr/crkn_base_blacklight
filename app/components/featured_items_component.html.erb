@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const overlay = container.querySelector(".featured-item__activate");
 
     (async function () {
-      const manifestUrl = `https://crkn-iiif-api.azurewebsites.net/manifest/${arkId}`;
+      const manifestUrl = `https://www-iiif-pres.canadiana.ca/manifest/${arkId}`;
       try {
         const response = await fetch(manifestUrl);
         const manifest = await response.json();

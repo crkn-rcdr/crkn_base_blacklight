@@ -1,263 +1,286 @@
-﻿<% content_for :page_title, "À propos de la collection Canadiana - #{application_name}" %>
+<% content_for :page_title, "À propos de la collection Canadiana - #{application_name}" %>
 
-<div class="home-page">
-  <section class="site-section about-intro about-intro--canadiana">
-    <div class="canadiana-shell about-intro-grid about-intro-grid--canadiana">
-      <div class="about-intro-copy about-intro-copy--canadiana">
-        <h1 class="section-title">À propos de la collection Canadiana</h1>
-        <p class="section-lede">
-          Environ 31,5 millions de pages de publications qui montrent comment les connaissances, les recits et
-          l'information ont circule au fil du temps. Cette collection comprend des livres, journaux, magazines,
-          documents gouvernementaux, cartes et bien plus encore, de v. 1500 a aujourd'hui. Le contenu de
-          Canadiana provient en grande partie de la serie de microfiches de l'Institut canadien de microreproductions
-          historiques (ICMH).
+<div class="home-page about-canadiana-page">
+  <section
+    class="site-section home-hero about-canadiana-hero"
+    style="--about-canadiana-hero-image: url('<%= asset_path('backgrounds/canadiana/oocihm.8_04048_394.31.jpg') %>');"
+  >
+    <div class="canadiana-shell">
+      <div class="about-canadiana-hero__layout">
+        <div class="about-canadiana-hero__copy-block">
+          <h1 class="home-hero__title">À propos de la collection Canadiana</h1>
+          <p class="home-hero__copy">
+            La collection Canadiana est une ressource de confiance qui compte environ 31,7 millions de pages de
+            publications historiques, couvrant la période allant de 1500 environ à nos jours. Cette collection comprend
+            des livres, des journaux, des magazines, des documents gouvernementaux, des cartes et bien d'autres types
+            de documents.
+          </p>
+          <div class="home-hero__actions">
+            <a class="home-hero__cta" href="<%= search_catalog_path(lang: I18n.locale) %>">
+              <span>Rechercher dans la collection Canadiana</span>
+              <i class="bi bi-arrow-up-right about-canadiana-hero__cta-arrow" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+        <p class="about-canadiana-hero__credit">
+          <a href="https://www.canadiana.ca/view/oocihm.8_04048_394/31" target="_blank">
+            The Canadian horticulturist : vol. 33, no 10 (oct. 1910)
+            <span aria-hidden="true">↗</span>
+          </a>
         </p>
       </div>
-      <%= render partial: 'shared/canadiana_stack', locals: { count: 12, collection: :canadiana } %>
     </div>
   </section>
-</div>
 
-<section class="site-section about-modern-section about-modern-section--canadiana">
-  <div class="canadiana-shell about-modern-layout">
-    <section class="about-modern-feature-grid" aria-labelledby="canadiana-overview-title-fr">
-      <article class="about-modern-card about-modern-card--copy about-modern-card--canadiana-copy-primary">
-        <h2>31,5 millions de pages dans une seule collection</h2>
-        <p>
-          Parcourez des documents couvrant près de cinq siècles d’édition canadienne, depuis les premiers imprimés
-          jusqu’aux périodiques et documents du XXe siècle.
-        </p>
-      </article>
-      <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-primary">
-        <a href="https://www.canadiana.ca/view/oocihm.8_06349_193304/1" target="_blank" rel="noopener">
-          <img src="<%= asset_path('about/canadiana/oocihm.8_06349_193304.1.jpg') %>" alt="Livres et publications historiques de la collection Canadiana" loading="lazy">
-        </a>
-      </article>
-      <article class="about-modern-card about-modern-card--media about-modern-card--canadiana-image-secondary">
-        <a href="https://www.canadiana.ca/view/oocihm.8_06967_385/1" target="_blank" rel="noopener">
-          <img src="<%= asset_path('about/canadiana/oocihm.8_06967_385.1.jpg') %>" alt="Documents cartographiques historiques de la collection Canadiana" loading="lazy">
-        </a>
-      </article>
-      <article class="about-modern-card about-modern-card--copy about-modern-card--canadiana-copy-secondary">
-        <h2>Une ressource de confiance depuis pres de 50 ans</h2>
-        <p>
-          Les collections et l'infrastructure Canadiana ont evolue aux cotes de generations de chercheurs, en
-          continuant de s'etendre, de se moderniser et de s'adapter a de nouvelles facons de travailler avec le savoir.
-        </p>
-      </article>
-    </section>
-
-    <section class="about-modern-block about-modern-deep-dive" aria-labelledby="canadiana-deep-dive-title-fr">
-      <div class="about-modern-block-head">
-        <h2 id="canadiana-deep-dive-title-fr">Ce que vous pouvez trouver dans la collection Canadiana</h2>
+  <section class="site-section canadiana-story-mosaic">
+    <div class="canadiana-shell">
+      <div class="canadiana-story-mosaic__grid">
+        <article class="canadiana-story-mosaic__card canadiana-story-mosaic__card--copy">
+          <h2>Découvrez les publications numérisées</h2>
+          <p>Parcourez des documents couvrant près de cinq siècles d'écriture et de publication au Canada.</p>
+        </article>
+        <article class="canadiana-story-mosaic__card canadiana-story-mosaic__card--image">
+          <a href="https://n2t.net/ark:/69429/m20250000030284" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/canadiana/oocihm.8_06349_193304.1.jpg') %>"
+              alt="Couverture d'un périodique historique de la collection Canadiana"
+              loading="lazy"
+            >
+          </a>
+        </article>
+        <article class="canadiana-story-mosaic__card canadiana-story-mosaic__card--image">
+          <a href="https://n2t.net/ark:/69429/m0vx05x26w8r" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/canadiana/oocihm.8_06967_385.1.jpg') %>"
+              alt="Couverture d'une publication historique de la collection Canadiana"
+              loading="lazy"
+            >
+          </a>
+        </article>
+        <article class="canadiana-story-mosaic__card canadiana-story-mosaic__card--copy">
+          <h2>Une ressource de confiance depuis près de 50 ans</h2>
+          <p>
+            Les collections et l'infrastructure de Canadiana se sont développées au fil des générations de chercheurs,
+            ne cessant de prendre de l'ampleur, de se moderniser et de s'adapter aux nouvelles façons de travailler avec
+            le savoir. Tous les documents des collections sont conservés sous forme numérique dans le dépôt numérique
+            fiable de Canadiana, ce qui garantit leur sécurité à long terme.
+          </p>
+        </article>
       </div>
-      <div class="about-modern-detail-stack" data-about-detail-stack>
-        <div class="about-modern-detail-stack__pin">
-      <article class="about-modern-card about-modern-card--detail about-modern-card--detail-books" aria-labelledby="canadiana-detail-books-title-fr">
-        <header class="about-modern-detail-header">
-          <h3 id="canadiana-detail-books-title-fr">Livres et publications</h3>
-          <p class="about-modern-detail-intro">
-            Cette collection reunit des livres et brochures qui documentent plus de trois siecles de culture imprimee au Canada.
-            Elle soutient des recherches en histoire, litterature, politique, religion et sciences, tout en restant lisible pour
-            des etudiants et des lecteurs qui commencent a explorer le passe canadien. Les titres ont ete choisis et numerises
-            a partir des fonds de plus de 200 bibliotheques et depots d'archives, et l'on y trouve a la fois des ouvrages bien
-            connus et des imprimes plus rares reperes dans des collections speciales et des ensembles peu ou pas catalogues.
-          </p>
-          <div class="about-modern-detail-metadata" role="list" aria-label="Resume Livres et publications">
-            <p class="about-modern-detail-size" role="listitem">
-              <span class="about-modern-detail-size-label">Taille</span>
-              <span class="about-modern-detail-size-value">98 000 titres</span>
-            </p>
-            <span class="about-modern-detail-chip" role="listitem">Couverture jusqu'en 1920</span>
-            <span class="about-modern-detail-chip" role="listitem">47 langues</span>
-          </div>
-          <p class="about-modern-detail-criteria">
-            <strong>Criteres de selection :</strong> Le noyau de la collection est forme d'imprimes canadiens jusqu'en 1920.
-            Des ouvrages publies a l'etranger, par des auteurs canadiens ou portant directement sur le Canada, ont aussi ete retenus
-            avec l'appui de chercheurs et de specialistes des collections.
-          </p>
-        </header>
-        <div class="about-modern-detail-grid about-modern-detail-grid--single">
-          <section class="about-modern-detail-panel">
-            <h4>Points forts de la collection</h4>
-            <ul class="about-modern-detail-list">
-              <li>Tous les livres et publications microfilmes par l'Institut canadien de microreproductions historiques (ICMH)</li>
-              <li>Tous les livres et publications disponibles dans Early Canadiana Online (ECO)</li>
-              <li>Des livres et publications recemment numerises, jamais publies auparavant par Canadiana</li>
-              <li>Domaines forts : histoire des femmes, histoire autochtone, immigration, litterature, droit, politique et medecine</li>
-              <li>Des titres en 47 langues differentes, dont 14 langues autochtones</li>
-            </ul>
-          </section>
-        </div>
-        <div class="about-modern-detail-footer">
-          <a class="about-modern-detail-link" href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Parcourir Livres et publications</a>
-        </div>
-      </article>
+    </div>
+  </section>
 
-      <article class="about-modern-card about-modern-card--detail about-modern-card--detail-serials" aria-labelledby="canadiana-detail-serials-title-fr">
-        <header class="about-modern-detail-header">
-          <h3 id="canadiana-detail-serials-title-fr">Journaux et magazines</h3>
-          <p class="about-modern-detail-intro">
-            Cette collection conserve des journaux, des magazines et d'autres publications en serie qui montrent comment
-            les Canadiens ont discute l'actualite, bati des communautes et represente la vie quotidienne. Elle est utile
-            pour la recherche savante, mais aussi facile d'approche pour qui s'interesse a l'opinion publique, a la culture
-            populaire ou a l'histoire locale.
-          </p>
-          <div class="about-modern-detail-metadata" role="list" aria-label="Resume Journaux et magazines">
-            <p class="about-modern-detail-size" role="listitem">
-              <span class="about-modern-detail-size-label">Taille</span>
-              <span class="about-modern-detail-size-value">1 700 titres periodiques, plus annuaires et journaux</span>
-            </p>
-            <span class="about-modern-detail-chip" role="listitem">Annuels jusqu'en 1900</span>
-            <span class="about-modern-detail-chip" role="listitem">Periodiques jusqu'en 1920</span>
-            <span class="about-modern-detail-chip" role="listitem">Journaux jusqu'en 1930</span>
-          </div>
-          <p class="about-modern-detail-criteria">
-            <strong>Criteres de selection :</strong> La collection couvre les annuels jusqu'en 1900, les periodiques jusqu'en 1920
-            et les journaux jusqu'en 1930. Le choix des periodiques s'appuie en grande partie sur le projet Early Canadian Periodicals
-            et sur l'avis d'un comite d'experts.
-          </p>
-        </header>
-        <div class="about-modern-detail-grid about-modern-detail-grid--single">
-          <section class="about-modern-detail-panel">
-            <h4>Points forts de la collection</h4>
-            <ul class="about-modern-detail-list">
-              <li>Tous les annuels et periodiques microfilmes par l'Institut canadien de microreproductions historiques (ICMH)</li>
-              <li>Tous les periodiques disponibles dans Early Canadiana Online (ECO)</li>
-              <li>Des journaux et magazines recemment ajoutes qui ne sont pas disponibles dans ECO ni dans la collection de microfiches ICMH</li>
-              <li>Journaux et revues locaux, professionnels, religieux et etudiants</li>
-              <li>Annuaires de villes et rapports annuels d'eglises, d'ecoles, d'entreprises et d'autres organisations</li>
-              <li>Periodiques specialises sur la litterature, la science, l'education, l'agriculture, la politique, la religion, le sport et plus encore</li>
-            </ul>
-          </section>
-        </div>
-        <div class="about-modern-detail-footer">
-          <a class="about-modern-detail-link" href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Parcourir Journaux et magazines</a>
-        </div>
-      </article>
+  <section class="site-section about-canadiana-collections" aria-labelledby="canadiana-collections-title-fr">
+    <div class="canadiana-shell">
+      <header class="about-canadiana-section-head">
+        <h2 id="canadiana-collections-title-fr">Ce que vous trouverez dans la collection Canadiana</h2>
+      </header>
 
-      <article class="about-modern-card about-modern-card--detail about-modern-card--detail-government" aria-labelledby="canadiana-detail-government-title-fr">
-        <header class="about-modern-detail-header">
-          <h3 id="canadiana-detail-government-title-fr">Publications gouvernementales</h3>
-          <p class="about-modern-detail-intro">
-            Cette collection rassemble des publications officielles qui montrent comment les gouvernements au Canada et autour
-            du Canada ont consigne leurs decisions, applique leurs politiques et organise la vie publique avant 1900. Elle donne
-            un acces direct aux sources de l'histoire du droit, de l'administration et de la gouvernance.
-          </p>
-          <div class="about-modern-detail-metadata" role="list" aria-label="Resume Publications gouvernementales">
-            <p class="about-modern-detail-size" role="listitem">
-              <span class="about-modern-detail-size-label">Taille</span>
-              <span class="about-modern-detail-size-value">8 500 livres et publications; 79 titres en serie</span>
+      <div class="about-canadiana-collection-list">
+        <article class="about-canadiana-collection">
+          <div class="about-canadiana-collection__copy">
+            <h3>Livres et publications</h3>
+            <p>
+              Cette collection regroupe des livres et des brochures qui retracent plusieurs siècles de la culture
+              imprimée au Canada et qui constituent une ressource précieuse pour la recherche en histoire, en
+              littérature, en politique, en religion, en sciences et sur la vie quotidienne. Les titres ont été
+              sélectionnés et numérisés à partir de plus de 200 bibliothèques et archives. La collection comprend à la
+              fois des ouvrages connus et des documents plus rares, dénichés grâce à des recherches menées dans des
+              collections spécialisées et des fonds non catalogués.
             </p>
-            <span class="about-modern-detail-chip" role="listitem">Avant 1900</span>
-            <span class="about-modern-detail-chip" role="listitem">Sources coloniales et federales</span>
+            <div class="about-canadiana-collection__facts" role="list" aria-label="Résumé Livres et publications">
+              <span role="listitem">+ de 98 000 titres</span>
+              <span role="listitem">Couvre la période allant jusqu'aux années 1920 env.</span>
+              <span role="listitem">+ de 45 langues</span>
+            </div>
+            <div class="about-canadiana-collection__highlights">
+              <h4>En vedette</h4>
+              <ul>
+                <li>Des ouvrages consacrés à l'histoire et aux langues autochtones, tels que <a href="https://n2t.net/ark:/69429/m03r0pr7pd7h" target="_blank" rel="noopener">New familiar Abenakis and English dialogues</a>, de Joseph Laurent (Sozap Lolô)</li>
+                <li>Des œuvres d'auteurs canadiens du 19e siècle, comme <a href="https://n2t.net/ark:/69429/m03775t3gt6p" target="_blank" rel="noopener">Anne of Green Gables</a>, de Lucy Maud Montgomery</li>
+                <li>Des ouvrages écrits par des visiteurs sur les territoires qu'on appelle aujourd'hui le Canada, comme <a href="https://n2t.net/ark:/69429/m0mw28915m50" target="_blank" rel="noopener">American Notes for General Circulation</a>, de Charles Dickens</li>
+              </ul>
+            </div>
           </div>
-          <p class="about-modern-detail-criteria">
-            <strong>Criteres de selection :</strong> Cette collection est issue du projet Early Official Publications.
-            Elle privilegie les sources coloniales et federales d'avant 1900; les publications municipales et la plupart
-            des publications provinciales posterieures a la Confederation en sont exclues.
-          </p>
-        </header>
-        <div class="about-modern-detail-grid about-modern-detail-grid--single">
-          <section class="about-modern-detail-panel">
-            <h4>Points forts de la collection</h4>
-            <ul class="about-modern-detail-list">
-              <li>Une selection de publications officielles pre-Confederation produites par les legislatures coloniales, comme les lois, debats, journaux legislatifs et documents sessionnels</li>
-              <li>Une selection de documents federaux publies entre 1867 et 1900, comme les lois, debats parlementaires, journaux parlementaires, rapports de commissions royales et documents sessionnels</li>
-              <li>Des publications de la France et de la Grande-Bretagne d'avant 1900 liees a la gouvernance du Canada</li>
-              <li>Listes de la fonction publique, 1885-1900</li>
-              <li>Guides officiels pour les futurs immigrants et discours choisis de grandes figures politiques</li>
-            </ul>
-          </section>
-        </div>
-        <div class="about-modern-detail-footer">
-          <a class="about-modern-detail-link" href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Parcourir Publications gouvernementales</a>
-        </div>
-      </article>
+          <div class="about-canadiana-collection__media">
+            <img
+              src="<%= asset_path('about/canadiana/oocihm.9_92046.1.png') %>"
+              alt="Exemple de livres et publications de la collection Canadiana"
+              loading="lazy"
+            >
+            <a class="about-canadiana-browse" href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
 
-      <article class="about-modern-card about-modern-card--detail about-modern-card--detail-maps" aria-labelledby="canadiana-detail-maps-title-fr">
-        <header class="about-modern-detail-header">
-          <h3 id="canadiana-detail-maps-title-fr">Cartes</h3>
-          <p class="about-modern-detail-intro">
-            La collection Cartes donne acces a pres de 22 000 cartes canadiennes numerisees issues de la serie topographique
-            nationale a l'echelle 1:50 000. Elle soutient la recherche spatiale et environnementale, tout en aidant un public
-            plus large a visualiser l'evolution des lieux, des frontieres et des infrastructures au fil du temps. Les cartes ont
-            ete numerisees par la Bibliotheque de l'Universite McGill et diffusees dans le cadre d'un partenariat avec le RCDR,
-            ce qui en fait la premiere integration a grande echelle de contenu fourni par les membres dans Canadiana.
-          </p>
-          <div class="about-modern-detail-metadata" role="list" aria-label="Resume Cartes">
-            <p class="about-modern-detail-size" role="listitem">
-              <span class="about-modern-detail-size-label">Taille</span>
-              <span class="about-modern-detail-size-value">environ 22 000 cartes</span>
+        <article class="about-canadiana-collection">
+          <div class="about-canadiana-collection__copy">
+            <h3>Journaux et magazines</h3>
+            <p>
+              Cette collection permet de conserver des journaux, des magazines et d'autres publications en série qui
+              témoignent de la manière dont les Canadiens ont bâti leurs communautés, débattu de l'actualité et dépeint
+              la vie quotidienne. Outre son intérêt pour la recherche formelle, elle est également facile à consulter
+              pour les lecteurs qui s'intéressent à l'opinion publique, à la culture populaire et à l'histoire locale.
             </p>
-            <span class="about-modern-detail-chip" role="listitem">1905 a 2012</span>
-            <span class="about-modern-detail-chip" role="listitem">Serie topographique nationale 1:50 000</span>
+            <div class="about-canadiana-collection__facts" role="list" aria-label="Résumé Journaux et magazines">
+              <span role="listitem">+ de 1 700 titres de périodiques</span>
+              <span role="listitem">Couvre la période allant jusqu'au 21e siècle</span>
+            </div>
+            <div class="about-canadiana-collection__highlights">
+              <h4>En vedette</h4>
+              <ul>
+                <li>Des journaux communautaires en différentes langues, comme le <a href="https://n2t.net/ark:/69429/s0j09w08wm1d" target="_blank" rel="noopener">Chinese Times</a></li>
+                <li>Des périodiques spécialisés traitant de littérature, de sciences, de politique, de religion, de sport et bien d'autres sujets, tels que <a href="https://n2t.net/ark:/69429/s02n4zg6g40b" target="_blank" rel="noopener">Science Dimension</a></li>
+                <li>Des annuaires municipaux et des rapports annuels, comme les <a href="https://n2t.net/ark:/69429/s07940r9m675" target="_blank" rel="noopener">procès-verbaux de l'African Baptist Association of Nova Scotia</a></li>
+                <li>Des magazines de consommation populaires, tels que <a href="https://n2t.net/ark:/69429/s0kd1qf8kq1r" target="_blank" rel="noopener">La Revue Populaire</a></li>
+              </ul>
+            </div>
           </div>
-          <p class="about-modern-detail-criteria">
-            <strong>Criteres de selection :</strong> La collection est pour l'instant centree sur la serie topographique nationale
-            a l'echelle 1:50 000. Elle demeure incomplete, et d'autres feuilles ou d'autres series pourront s'y ajouter plus tard.
-          </p>
-        </header>
-        <div class="about-modern-detail-grid about-modern-detail-grid--single">
-          <section class="about-modern-detail-panel">
-            <h4>Points forts de la collection</h4>
-            <ul class="about-modern-detail-list">
-              <li>Environ 22 000 cartes numerisees issues de la serie topographique nationale a l'echelle 1:50 000</li>
-              <li>Couverture des annees 1905 a 2012 pour l'ensemble des provinces et territoires canadiens</li>
-              <li>Utile pour l'histoire spatiale, la recherche environnementale et l'etude des frontieres et infrastructures</li>
-              <li>Des portions de la serie sont aussi offertes dans Scholars GeoPortal et Borealis, ou des versions georeferencees soutiennent la recherche geospatiale ouverte et l'analyse historique</li>
-            </ul>
-          </section>
-        </div>
-        <div class="about-modern-detail-footer">
-          <a class="about-modern-detail-link" href="/catalog?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">Parcourir Cartes</a>
-        </div>
-      </article>
-        </div>
+          <div class="about-canadiana-collection__media">
+            <a href="https://n2t.net/ark:/69429/m0k35m907q57" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/canadiana/oon.00001_196906.1.png')  %>"
+                alt="Exemple de publication gouvernementale de la collection Canadiana"
+                loading="lazy"
+              >
+            </a>
+            <a class="about-canadiana-browse" href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
+
+        <article class="about-canadiana-collection">
+          <div class="about-canadiana-collection__copy">
+            <h3>Publications gouvernementales</h3>
+            <p>
+              Cette collection rassemble des publications officielles qui montrent comment les organismes
+              gouvernementaux consignaient leurs décisions, appliquaient les politiques et façonnaient la vie publique
+              au Canada avant 1900. Elle offre aux chercheurs et aux étudiants un accès direct aux archives documentaires
+              relatives au droit, à la gouvernance et à l'administration.
+            </p>
+            <div class="about-canadiana-collection__facts" role="list" aria-label="Résumé Publications gouvernementales">
+              <span role="listitem">+ de 8 500 livres et publications</span>
+              <span role="listitem">79 titres de séries</span>
+              <span role="listitem">Avant 1900</span>
+            </div>
+            <div class="about-canadiana-collection__highlights">
+              <h4>En vedette</h4>
+              <ul>
+                <li>Des publications parlementaires datant de 1867 à 1900, telles que le <a href="https://n2t.net/ark:/69429/s0r20rr1qp9r" target="_blank" rel="noopener">Compte-rendu officiel des débats de la Chambre des communes du Canada</a></li>
+                <li>Des rapports gouvernementaux sur la science et l'industrie au Canada, comme <a href="https://n2t.net/ark:/69429/m08911n7zd7w" target="_blank" rel="noopener">Protection des forêts au Canada, 1912</a></li>
+                <li>Des publications gouvernementales antérieures à la Confédération, telles que <a href="https://n2t.net/ark:/69429/s0rr1pg1js10" target="_blank" rel="noopener">Les statuts provinciaux du Bas-Canada</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="about-canadiana-collection__media">
+            <a href="https://n2t.net/ark:/69429/m0x05x63bh0f" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/canadiana/oocihm.49511.3.png')  %>"
+                alt="Exemple de journal de la collection Canadiana"
+                loading="lazy"
+              >
+            </a>
+            <a class="about-canadiana-browse" href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
+
+        <article class="about-canadiana-collection">
+          <div class="about-canadiana-collection__copy">
+            <h3>Cartes</h3>
+            <p>
+              La collection de cartes propose près de 22 000 cartes canadiennes numérisées issues de la Série nationale
+              de référence cartographique à l'échelle 1:50 000. Elle facilite la recherche spatiale et environnementale,
+              tout en aidant les non-spécialistes à visualiser l'évolution des lieux, des limites territoriales et des
+              infrastructures au fil du temps. Ces cartes ont été numérisées par la
+              <a href="https://www.mcgill.ca/libraries/" target="_blank" rel="noopener">Bibliothèque de McGill University</a>
+              et mises à disposition dans le cadre d'un partenariat avec le
+              <a href="https://www.crkn-rcdr.ca/fr" target="_blank" rel="noopener">RCDR</a>. Il s'agit du premier ajout
+              majeur de contenu fourni par un membre à la collection de Canadiana.
+            </p>
+            <div class="about-canadiana-collection__facts" role="list" aria-label="Résumé Cartes">
+              <span role="listitem">Environ 22 000 cartes</span>
+              <span role="listitem">De 1905 à 2012</span>
+              <span role="listitem">Série nationale de référence cartographique à l'échelle 1:50 000</span>
+            </div>
+            <div class="about-canadiana-collection__highlights">
+              <h4>En vedette</h4>
+              <ul>
+                <li>Des cartes détaillées des 13 provinces et territoires du Canada</li>
+                <li>Certaines parties de la série sont également disponibles via Scholars GeoPortal et Borealis, où des versions géoréférencées favorisent la recherche géospatiale ouverte et l'analyse historique</li>
+              </ul>
+            </div>
+          </div>
+          <div class="about-canadiana-collection__media">
+            <a href="https://n2t.net/ark:/69429/m0736m04393j" target="_blank" rel="noopener">
+              <img
+                src="<%= asset_path('about/canadiana/qmma.05919.1.png')  %>"
+                alt="Exemple de carte de la collection Canadiana"
+                loading="lazy"
+              >
+            </a>
+            <a class="about-canadiana-browse" href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">
+              <span>Parcourir</span>
+              <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="about-modern-block about-modern-block--use" aria-labelledby="canadiana-use-title-fr">
-      <div class="about-modern-work-grid">
-        <article class="about-modern-card about-modern-card--steps">
-          <h2 id="canadiana-use-title-fr">Comment exploiter la collection</h2>
+  <section class="site-section about-canadiana-work" aria-labelledby="canadiana-work-title-fr">
+    <div class="canadiana-shell">
+      <div class="about-canadiana-work__grid">
+        <article class="about-canadiana-work__copy">
+          <h2 id="canadiana-work-title-fr">Comment utiliser Canadiana</h2>
           <ol>
-            <li><strong>Commencer large :</strong> utilisez la recherche de base pour reperer des notices pertinentes, puis affinez avec les filtres (monographies, periodiques, cartes, publications gouvernementales).</li>
-            <li><strong>Affiner la requete :</strong> appliquez les methodes de <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, y compris les expressions exactes entre guillemets et les operateurs <code>?</code>, <code>*</code>, <code>-</code> et <code>|</code>.</li>
-            <li><strong>Conserver la preuve :</strong> lorsque vous trouvez des notices pertinentes, sauvegardez <code>IMG</code>, <code>PAGE</code> et <code>FULL</code> (si offert), puis copiez l'URL perenne.</li>
-            <li><strong>Citer correctement :</strong> suivez le <a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation</a>, citez Canadiana comme source et incluez l'URL perenne.</li>
+            <li>Commencez par une recherche générale – Utilisez la recherche simple pour trouver des documents prometteurs, puis affiner votre recherche à l'aide de filtres pour les monographies (livres et publications), les publications en série (journaux et magazines), les cartes ou les publications gouvernementales.</li>
+            <li>Affinez les requêtes – Utilisez les méthodes décrites dans la section <a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a>, par exemple en plaçant des expressions exactes entre guillemets et en utilisant des opérateurs comme <code>?</code>, <code>*</code>, <code>-</code> et <code>|</code>.</li>
+            <li>Enregistrez les éléments – Lorsque des documents pertinents s'affichent, téléchargez-les en utilisant les options <code>IMG</code>, <code>PAGE</code> et <code>FULL</code> (si disponibles), puis copiez l'URL pérenne.</li>
+            <li>Citez correctement – Suivez le <a href="<%= citation_guide_path(lang: I18n.locale) %>">guide de citation</a>, indiquez Canadiana comme source et mentionnez l'URL pérenne.</li>
           </ol>
         </article>
-        <article class="about-modern-card about-modern-card--media">
-          <a href="https://www.canadiana.ca/view/oocihm.9_01973_3_1/2" target="_blank" rel="noopener">
-            <img src="<%= asset_path('about/canadiana/oocihm.9_01973_3_1.2.jpg') %>" alt="Flux de recherche pour les documents Canadiana" loading="lazy">
+        <article class="about-canadiana-work__media">
+          <a href="https://n2t.net/ark:/69429/m02z12n50q7h" target="_blank" rel="noopener">
+            <img
+              src="<%= asset_path('about/canadiana/oocihm.9_01973_3_1.2-small.png') %>"
+              alt="Page des débats gouvernementaux illustrant le travail de recherche avec les documents Canadiana"
+              loading="lazy"
+            >
           </a>
         </article>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="about-modern-block about-modern-block--faq" aria-labelledby="canadiana-faq-title-fr">
-      <div class="about-modern-block-head">
-        <h2 id="canadiana-faq-title-fr">FAQ</h2>
-      </div>
-      <div class="about-modern-faq">
+  <section class="site-section about-canadiana-faq" aria-labelledby="canadiana-faq-title-fr">
+    <div class="canadiana-shell">
+      <h2 id="canadiana-faq-title-fr">FAQ</h2>
+      <div class="about-canadiana-faq__list">
         <details open>
-          <summary>Quelle periode couvre la collection Canadiana ?</summary>
-          <p>La collection comprend des documents allant d'environ 1500 a aujourd'hui, avec une couverture particulierement solide des periodes pre-Confederation et de l'histoire de l'edition moderne.</p>
+          <summary>Quelle est la période couverte par la collection Canadiana ?</summary>
+          <p>La collection comprend des documents datant approximativement de 1500 à nos jours, avec une couverture particulièrement complète de l'histoire de la publication avant la Confédération et au début de l'ère moderne.</p>
         </details>
         <details>
-          <summary>Comment les documents ont-ils ete selectionnes pour la numerisation ?</summary>
-          <p>La selection a ete guidee par des specialistes des collections et des chercheurs, avec un accent sur les imprimes canadiens, les sources historiques tres consultees et les corpus utiles a l'etude interdisciplinaire.</p>
+          <summary>Comment les documents ont-ils été choisis en vue de leur numérisation ?</summary>
+          <p>La sélection a été réalisée avec le concours de spécialistes des collections et de chercheurs, l'accent ayant été mis sur les publications canadiennes, les sources historiques les plus consultées et les documents qui favorisent de vastes études interdisciplinaires.</p>
         </details>
         <details>
-          <summary>Puis-je chercher a l'interieur des documents ?</summary>
-          <p>Oui. La recherche en texte integral et par metadonnees est disponible lorsque l'extraction de texte existe, en plus de la recherche par titre, createur et sujet.</p>
+          <summary>Est-il possible d'effectuer des recherches dans les documents ?</summary>
+          <p>Oui. La recherche en texte intégral et par métadonnées est proposée pour les documents avec extraction de texte, en plus de la recherche par titre, auteur et sujet.</p>
         </details>
         <details>
-          <summary>Cette collection convient-elle a l'enseignement comme a la recherche ?</summary>
-          <p>Oui. La diversite des formats et des themes convient a l'enseignement de premier cycle, aux seminaires de cycles superieurs et aux projets de recherche avances.</p>
+          <summary>Cette collection convient-elle aussi bien à l'enseignement qu'à la recherche ?</summary>
+          <p>Oui. La diversité des formats et des thèmes répond aux besoins de l'enseignement de premier cycle, des séminaires d'études supérieures et des projets de recherche avancés. La collection comprend également des ressources qui permettent de faire découvrir des sources primaires aux élèves de niveau secondaire.</p>
         </details>
       </div>
-    </section>
-  </div>
-</section>
+    </div>
+  </section>
+</div>

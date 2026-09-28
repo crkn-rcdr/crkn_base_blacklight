@@ -279,7 +279,7 @@
 #  e.g. から, が, で, と, に, へ, より, を, の, にて
 助詞-格助詞-一般
 #
-#  particle-case-quote: the "to" that appears after nouns, a person’s speech, 
+#  particle-case-quote: the "to" that appears after nouns, a person's speech, 
 #  quotation marks, expressions of decisions from a meeting, reasons, judgements,
 #  conjectures, etc.
 #  e.g. ( だ) と (述べた.), ( である) と (して執行猶予...)
@@ -385,7 +385,7 @@
 記号-括弧開
 #
 #  symbol-close_bracket:
-#  e.g. [)}’”』」】]
+#  e.g. [)}'”』」】]
 記号-括弧閉
 #
 #  symbol-alphabetic:

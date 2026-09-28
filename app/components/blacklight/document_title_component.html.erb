@@ -11,6 +11,19 @@
     <% end %>
   <% end %>
 
+  <% if @link_to_document %>
+    <div class="document-result-chips"
+         data-download-chip
+         data-docid="<%= @document.id %>"
+         data-arkpath="<%= Array(@document['ark']).first.to_s.sub(%r{\Ahttps?://n2t\.net/ark:/?}, '') %>">
+      <% if helpers.rights_statement_present?(nil, @document) %>
+        <%= helpers.result_rights_statement_chips(@document) %>
+      <% end %>
+      <%= helpers.format_result_chips(@document) %>
+      <span class="result-chip result-chip--full-text" data-full-text-chip hidden><%= t('blacklight.search.documents.full_text_available', default: 'Full text available') %></span>
+    </div>
+  <% end %>
+
   <% actions.each do |action| %>
     <%= action %>
   <% end %>

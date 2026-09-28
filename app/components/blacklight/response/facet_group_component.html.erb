@@ -1,0 +1,63 @@
+<% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<% req_params = helpers.respond_to?(:params) ? helpers.params.to_unsafe_h : {} %>
+
+<%= tag.div id: @id, class: 'facets facets-toggleable-md' do %>
+  <div class="facets-header">
+    <h2 class="facets-heading">
+      <%= t('blacklight.search.facets.title', default: (is_fr ? 'Limiter votre recherche' : 'Limit your search')) %>
+    </h2>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#facet-panel-collapse" aria-controls="facet-panel-collapse" aria-expanded="false" aria-label="Toggle facets">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+
+  <div id="facet-panel-collapse" class="facets-collapse collapse">
+    <div class="facet-toggle-all-container d-flex align-items-center justify-content-end mb-2">
+      <button type="button" class="btn btn-link btn-sm p-0 facet-expand-all-btn" id="facet-expand-all-btn" aria-controls="facet-panel-collapse">
+        <%= is_fr ? 'Tout développer' : 'Expand all' %>
+      </button>
+      <span class="facet-toggle-all-divider mx-2" aria-hidden="true">|</span>
+      <button type="button" class="btn btn-link btn-sm p-0 facet-collapse-all-btn" id="facet-collapse-all-btn" aria-controls="facet-panel-collapse">
+        <%= is_fr ? 'Tout réduire' : 'Collapse all' %>
+      </button>
+    </div>
+
+    <%= body %>
+
+    <div class="facet-include-issues-filter mt-3 pt-2">
+      <form action="<%= helpers.search_catalog_path %>" method="get" class="include-issues-toggle-form m-0">
+        <% req_params.except('include_issues', 'page', 'action', 'controller', 'commit', 'utf8').each do |k, v| %>
+          <% if v.is_a?(Hash) %>
+            <% v.each do |sub_k, sub_v| %>
+              <% if sub_v.is_a?(Array) %>
+                <% sub_v.each do |arr_v| %>
+                  <%= hidden_field_tag "#{k}[#{sub_k}][]", arr_v %>
+                <% end %>
+              <% elsif sub_v.is_a?(Hash) %>
+                <% sub_v.each do |deep_k, deep_v| %>
+                  <%= hidden_field_tag "#{k}[#{sub_k}][#{deep_k}]", deep_v %>
+                <% end %>
+              <% else %>
+                <%= hidden_field_tag "#{k}[#{sub_k}]", sub_v %>
+              <% end %>
+            <% end %>
+          <% elsif v.is_a?(Array) %>
+            <% v.each do |arr_v| %>
+              <%= hidden_field_tag "#{k}[]", arr_v %>
+            <% end %>
+          <% else %>
+            <%= hidden_field_tag k, v %>
+          <% end %>
+        <% end %>
+
+        <div class="d-flex align-items-center py-1">
+          <label class="form-check-label d-flex align-items-center gap-2 m-0" style="cursor: pointer; font-size: 0.92rem; font-weight: 500; color: #25303a; user-select: none;">
+            <%= hidden_field_tag :include_issues, '0', id: nil %>
+            <%= check_box_tag :include_issues, '1', req_params['include_issues'] != '0', id: 'sidebar_include_issues_checkbox', class: 'form-check-input mt-0', onchange: 'this.form.submit()' %>
+            <span><%= is_fr ? 'Inclure les résultats des numéros individuels' : 'Include results from individual issues' %></span>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+<% end %>

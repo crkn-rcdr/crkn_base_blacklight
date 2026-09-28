@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'time'
+require_relative '../../lib/rights_statement_labeler'
 $:.unshift './config'
 
 class MarcIndexer < Blacklight::Marc::Indexer
@@ -28,7 +29,7 @@ class MarcIndexer < Blacklight::Marc::Indexer
       accumulator.replace [ (v&.casecmp("Is issue")&.zero?) ? "Yes" : "No" ]
     end
 
-    # --- serial_key: prefer 902$b; fallback to left side of 001 before '_' ---
+    # --- serial_key: 902$b ---
     to_field "serial_key" do |record, acc|
       key = record["902"]&.subfields&.find { |sf| sf.code == 'b' }&.value&.strip
       if key && !key.empty?
@@ -36,15 +37,24 @@ class MarcIndexer < Blacklight::Marc::Indexer
       end
     end
 
-    # --- serial_title: nil-safe split on ':' ---
-    to_field "serial_title", extract_marc('245a'), first_only do |_rec, acc|
-      v = acc.first
-      if v && v.include?(' : ')
-        acc.replace([v.split(' : ', 2).first.strip])
-      elsif v && v.include?(':')
-        acc.replace([v.split(':', 2).first.strip])
+    # --- serial_title: only for series/serials and individual issues ---
+    to_field "serial_title", extract_marc('245a'), first_only do |rec, acc|
+      v901 = rec["901"]&.value&.strip
+      is_ser = v901&.casecmp("Is series")&.zero?
+      is_iss = v901&.casecmp("Is issue")&.zero?
+      has_serial_key = rec["902"]&.subfields&.any? { |sf| sf.code == 'b' && !sf.value.to_s.strip.empty? }
+
+      if is_ser || is_iss || has_serial_key
+        v = acc.first
+        if v && v.include?(' : ')
+          acc.replace([v.split(' : ', 2).first.strip])
+        elsif v && v.include?(':')
+          acc.replace([v.split(':', 2).first.strip])
+        else
+          acc.replace(v ? [v.strip] : [])
+        end
       else
-        acc.replace(v ? [v.strip] : [])
+        acc.clear
       end
     end
 
@@ -54,6 +64,11 @@ class MarcIndexer < Blacklight::Marc::Indexer
       accumulator.replace [ (v&.casecmp("Is series")&.zero?) ? "Yes" : "No" ]
     end
 
+    # --- resource_type_ssim: consolidated content/resource type facet ---
+    to_field "resource_type_ssim" do |record, accumulator|
+      accumulator.replace resource_type_facet_values(record)
+    end
+
     to_field 'marc_ss', get_xml
     to_field "all_text_timv", extract_all_marc_values do |r, acc|
       acc.replace [acc.join(' ')] # turn it into a single string
@@ -61,14 +76,6 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
     to_field "language_ssim", marc_languages("008[35-37]:041a:041d:")
     to_field "format", get_format
-
-    #Look into this
-    #to_field "isbn_tsim", extract_marc('020a', separator: nil) do |rec, acc|
-    #  orig = acc.dup
-    #  acc << orig
-    #  acc.flatten!
-    #  acc.uniq!
-    #end
 
     to_field 'material_type_ssm', extract_marc('300a'), trim_punctuation
 
@@ -153,27 +160,20 @@ class MarcIndexer < Blacklight::Marc::Indexer
     to_field 'published_ssm', extract_marc('260abcefg:264abc', alternate_script: false), trim_punctuation
     to_field 'published_vern_ssm', extract_marc('260abcefg:264abc', alternate_script: :only), trim_punctuation
 
-    # Published Dates
-    to_field 'pub_date_si',   marc_publication_date
-    to_field 'pub_date_ssim', marc_publication_date
+    # Published Dates (prioritizing original publication date over reproduction/digitization date)
+    to_field 'pub_date_si' do |record, accumulator|
+      year = extract_original_publication_year(record)
+      accumulator << year if year
+    end
+
+    to_field 'pub_date_ssim' do |record, accumulator|
+      year = extract_original_publication_year(record)
+      accumulator << year if year
+    end
 
     # ----------------------------
     # CRKN additions
     # ----------------------------
-
-    # Materials facet + collection helpers based on 999 $e (EN) / $f (FR)
-    #to_field 'materials_ssim_en' do |rec, acc|
-    #  acc.replace(materials_by_language(rec)[:en])
-    #end
-    #to_field 'materials_ssm_en' do |rec, acc|
-    #  acc.replace(materials_by_language(rec)[:en])
-    #end
-    #to_field 'materials_ssim_fr' do |rec, acc|
-    #  acc.replace(materials_by_language(rec)[:fr])
-    #end
-    #to_field 'materials_ssm_fr' do |rec, acc|
-    #  acc.replace(materials_by_language(rec)[:fr])
-    #end
 
     # human-readable path for display/debug (language specific)
     to_field 'collectionen_path' do |rec, acc|
@@ -196,6 +196,9 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
     # Rights Statement
     to_field 'rights_stat_tsim', extract_marc('540abcdfgqu')
+    to_field 'rights_statement_ssim' do |record, accumulator|
+      accumulator.replace rights_statement_facet_values(record)
+    end
 
     # Access Note
     to_field 'access_note_tsim', extract_marc('506abcdefgqu')
@@ -298,9 +301,131 @@ class MarcIndexer < Blacklight::Marc::Indexer
   FRENCH_KEYWORDS = %w[serie series carte cartes annuelle annuelles periodique periodiques publication publications journaux].freeze
   ENGLISH_KEYWORDS = %w[serial serials map maps annual annuals periodical periodicals publication publications newspaper newspapers].freeze
 
+  def extract_original_publication_year(record)
+    # 1. Check 264$c with indicator 2 == '1' (Publication statement in RDA)
+    record.fields('264').each do |field|
+      next unless field.indicator2 == '1'
+      field.find_all { |sf| sf.code == 'c' }.each do |sf|
+        year = extract_year_from_string(sf.value)
+        return year if year
+      end
+    end
+
+    # 2. Check 260$c (Publication statement in AACR2)
+    record.fields('260').each do |field|
+      field.find_all { |sf| sf.code == 'c' }.each do |sf|
+        year = extract_year_from_string(sf.value)
+        return year if year
+      end
+    end
+
+    # 3. Check any other 264$c (e.g. manufacture or production)
+    record.fields('264').each do |field|
+      field.find_all { |sf| sf.code == 'c' }.each do |sf|
+        year = extract_year_from_string(sf.value)
+        return year if year
+      end
+    end
+
+    # 4. Check 008 control field (Date 2 for reprint/reproduction 'r')
+    if (cf008 = record['008']&.value) && cf008.length >= 15
+      type_of_date = cf008[6]
+      date1 = cf008[7..10]
+      date2 = cf008[11..14]
+
+      if type_of_date == 'r'
+        year2 = extract_year_from_string(date2)
+        return year2 if year2
+      end
+
+      year1 = extract_year_from_string(date1)
+      return year1 if year1 && type_of_date != 'r'
+    end
+
+    # 5. Check 534$c / 534$p (Original Version Note)
+    record.fields('534').each do |field|
+      field.find_all { |sf| %w[c p].include?(sf.code) }.each do |sf|
+        year = extract_year_from_string(sf.value)
+        return year if year
+      end
+    end
+
+    # 6. Check 500$a general notes
+    record.fields('500').each do |field|
+      field.find_all { |sf| sf.code == 'a' }.each do |sf|
+        year = extract_year_from_string(sf.value)
+        return year if year
+      end
+    end
+
+    # 7. Fallback to 008 Date 1 even if 'r' if no other date was found
+    if (cf008 = record['008']&.value) && cf008.length >= 11
+      year1 = extract_year_from_string(cf008[7..10])
+      return year1 if year1
+    end
+
+    nil
+  end
+
+  def extract_year_from_string(str)
+    return nil if str.blank?
+
+    cleaned = str.to_s.gsub(/[\(\)\[\]\.\,\;\"\'\?]/, ' ')
+
+    # Match exact 4-digit years like 1897 or 1900
+    current_year = Time.now.year + 2
+    if (match = cleaned.match(/\b(1\d{3}|20\d{2})\b/))
+      year = match[1].to_i
+      return year if year >= 1000 && year <= current_year
+    end
+
+    # Handle decade wildcards like 189u, 189-, 189? -> 1890
+    if (match = cleaned.match(/\b(1\d{2}|20\d)[u\-\?]\b/i))
+      return "#{match[1]}0".to_i
+    end
+
+    # Handle century wildcards like 18uu, 18--, 18?? -> 1800
+    if (match = cleaned.match(/\b(1\d|20)[u\-\?]{2}\b/i))
+      return "#{match[1]}00".to_i
+    end
+
+    nil
+  end
+
   def materials_by_language(record)
     collection_paths_by_language(record).transform_values do |paths|
       paths.map(&:first).compact.uniq
+    end
+  end
+
+  def rights_statement_facet_values(record)
+    record.fields('540').flat_map do |field|
+      field.find_all { |subfield| subfield.code == 'u' }
+           .filter_map { |subfield| RightsStatementLabeler.label_for_url(subfield.value) }
+    end.uniq
+  end
+
+  def resource_type_facet_values(record)
+    formats = []
+    get_format.call(record, formats, nil)
+    formats.compact_blank!
+    v901 = record['901']&.value&.strip
+    is_serial_val = v901&.casecmp('Is series')&.zero? || v901&.casecmp('Is serial')&.zero?
+    is_issue_val = v901&.casecmp('Is issue')&.zero? || record['902']&.subfields&.any? { |s| s.code == 'b' }
+    record_id = (record['001']&.value || '').to_s
+
+    is_newspaper = formats.any? { |f| f.to_s =~ /newspaper/i } || (record_id.include?('N') && (is_serial_val || is_issue_val || formats.any? { |f| f.to_s =~ /serial/i }))
+
+    if is_newspaper
+      ['Newspaper']
+    elsif is_serial_val || is_issue_val || formats.any? { |f| f.to_s =~ /serial|journal/i }
+      ['Journal']
+    elsif formats.any? { |f| f.to_s =~ /score|musical/i }
+      ['Musical Score']
+    elsif formats.any? { |f| f.to_s =~ /map/i }
+      ['Map']
+    else
+      ['Book']
     end
   end
 
@@ -375,7 +500,4 @@ class MarcIndexer < Blacklight::Marc::Indexer
     end
   end
 end
-
-
-
 
