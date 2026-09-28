@@ -33,10 +33,9 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'application' %>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js" defer></script>
-    <link rel="stylesheet" href="/assets/mirador.css?v=<%= File.exist?(Rails.root.join('app/assets/javascripts/mirador.css')) ? File.mtime(Rails.root.join('app/assets/javascripts/mirador.css')).to_i : 1 %>" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="/assets/mirador.css?v=<%= File.exist?(Rails.root.join('app/assets/javascripts/mirador.css')) ? File.mtime(Rails.root.join('app/assets/javascripts/mirador.css')).to_i : 1 %>"></noscript>
-    <script src="/assets/mirador.min.js?v=<%= File.exist?(Rails.root.join('app/assets/javascripts/mirador.min.js')) ? File.mtime(Rails.root.join('app/assets/javascripts/mirador.min.js')).to_i : 1 %>" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+    <link rel="stylesheet" href="/assets/mirador.css">
+    <script src="/assets/mirador.min.js"></script>
   </head>
   <body class="<%= render_body_class %>">
     <%= render blacklight_config.skip_link_component.new do %>

@@ -339,8 +339,6 @@ en:
       description:
         label: Description
       date_range:
-        label: Publication Date
-      date_range_heritage:
         label: Date of Creation
       all_fields:
         label: All Fields
