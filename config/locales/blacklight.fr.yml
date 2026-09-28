@@ -323,8 +323,6 @@ fr:
       description:
         label: Description
       date_range:
-        label: Date de publication
-      date_range_heritage:
         label: Date de création
       all_fields:
         label: Tous
