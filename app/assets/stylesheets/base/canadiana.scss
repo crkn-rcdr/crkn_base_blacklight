@@ -4699,12 +4699,6 @@ dialog#blacklight-modal,
   background: var(--collection-search-button-hover);
 }
 
-.home-page .home-heritage-search__submit[disabled] {
-  opacity: 1;
-  box-shadow: none;
-  filter: none;
-}
-
 @media (max-width: 1200px) {
   .home-page .home-canadiana-search__grid,
   .home-page .home-heritage-search__grid {
