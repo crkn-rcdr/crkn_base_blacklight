@@ -15,7 +15,7 @@
             government documents, maps, and more.
           </p>
           <div class="home-hero__actions">
-            <a class="home-hero__cta" href="<%= search_catalog_path(lang: I18n.locale) %>">
+            <a class="home-hero__cta" href="<%= Rails.configuration.x.canadiana_catalogue_url %>?lang=<%= I18n.locale %>">
               <span>Search the Canadiana Collection</span>
               <i class="bi bi-arrow-up-right about-canadiana-hero__cta-arrow" aria-hidden="true"></i>
             </a>
