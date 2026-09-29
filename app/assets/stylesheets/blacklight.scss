@@ -174,7 +174,7 @@ i {
     &:hover,
     &:focus,
     &:focus-visible {
-        background-color: #f6f9fc !important;
+        background-color: #f6fcf8 !important;
         border-color: #a5b2c2 !important;
         color: #25303a !important;
         text-decoration: none !important;
@@ -567,14 +567,14 @@ button i {
 
 #toggle-menu .sidebar-cite-btn:hover,
 #toggle-menu .sidebar-cite-btn:focus {
-    background-color: #f6f9fc !important;
+    background-color: #f6fcf8 !important;
     border-color: #a5b2c2 !important;
     text-decoration: none !important;
 }
 
 #toggle-menu #download-toolbar .sidebar-download-btn:hover,
 #toggle-menu #download-toolbar .sidebar-download-btn:focus {
-    background-color: #f6f9fc !important;
+    background-color: #f6fcf8 !important;
     border-color: #a5b2c2 !important;
     text-decoration: none !important;
 }
@@ -625,7 +625,7 @@ button i {
 
 #toggle-menu #download-toolbar .sidebar-download-btn.disabled,
 #toggle-menu #download-toolbar .sidebar-download-btn[aria-disabled="true"] {
-    background-color: #f4f6f8;
+    background-color: #f4f8f6;
     border-color: #c8d0da !important;
 }
 

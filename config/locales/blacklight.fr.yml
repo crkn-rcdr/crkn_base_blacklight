@@ -68,7 +68,7 @@ fr:
     advanced_search:
       or_html: " OU "
     and: et
-    application_name: Canadiana
+    application_name: Héritage
     back_to_bookmarks: Retour aux favoris
     back_to_search: Retour aux résultats
     bookmarks:
@@ -198,7 +198,7 @@ fr:
       page_title:
         constraint: "%{label}: %{value}"
         many_constraint_values: "%{values} sélectionné"
-        title: "%{constraints} - %{application_name} Résultats de recherche"
+        title: "%{constraints} - %{application_name} - Résultats de recherche"
         joiner: " / "
       pagination:
         title: Navigation dans les résultats

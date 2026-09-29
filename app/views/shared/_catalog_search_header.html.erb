@@ -21,7 +21,7 @@ end %>
   <div class="canadiana-shell">
     <div class="catalog-search-hero__layout">
       <h1 id="catalog-search-hero-title" class="catalog-search-hero__title">
-        <%= is_fr ? 'Recherche dans la collection Canadiana' : 'Canadiana Collection Search' %>
+        <%= is_fr ? 'Recherche dans la collection Héritage' : 'Héritage Collection Search' %>
       </h1>
 
       <div class="catalog-search-hero__search" role="navigation" aria-label="<%= is_fr ? 'Recherche' : 'Search' %>">
@@ -36,7 +36,7 @@ end %>
           <label class="sr-only visually-hidden" for="catalog_search_q"><%= is_fr ? 'rechercher' : 'search for' %></label>
           <input
             value="<%= params[:q].to_s %>"
-            placeholder="<%= is_fr ? 'Effectuer une recherche dans la collection Canadiana...' : 'Search the Canadiana collection...' %>"
+            placeholder="<%= is_fr ? 'Effectuer une recherche dans la collection Héritage...' : 'Search the Heritage collection...' %>"
             class="catalog-search-hero__input"
             aria-label="<%= is_fr ? 'rechercher' : 'search for' %>"
             type="search"
