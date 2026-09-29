@@ -63,7 +63,7 @@
           <p>Millions of pages of publications reflecting the peoples, events, and experiences that shaped the lands now known as Canada</p>
         </div>
 
-        <form class="home-canadiana-search__form" action="/catalogue" method="get">
+        <form class="home-canadiana-search__form" action="<%= Rails.configuration.x.canadiana_catalogue_url %>" method="get">
           <input type="hidden" name="lang" value="<%= I18n.locale %>">
           <label class="visually-hidden" for="canadiana-band-field">Search field</label>
           <select id="canadiana-band-field" class="home-canadiana-search__field" name="search_field" title="Select search field">
@@ -178,7 +178,7 @@
           <p>Five centuries of archival materials, from historic papers and government files to Indigenous affairs and genealogy.</p>
         </div>
 
-        <form class="home-heritage-search__form" action="/catalogue" method="get">
+        <form class="home-heritage-search__form" action="<%= Rails.configuration.x.heritage_catalogue_url %>" method="get">
           <input type="hidden" name="lang" value="<%= I18n.locale %>">
           <label class="visually-hidden" for="heritage-band-field">Search field</label>
           <select id="heritage-band-field" class="home-heritage-search__field" name="search_field" title="Select search field">
@@ -190,14 +190,7 @@
           </select>
           <label class="visually-hidden" for="heritage-band-q">Search the Héritage Collection</label>
           <input id="heritage-band-q" class="home-heritage-search__input js-typed-placeholder" type="search" name="q" placeholder="Parish registers" title="Search the Héritage Collection" aria-label="Search the Héritage Collection" data-typed-placeholder-phrases="Lower Canada Land Grants|War Diaries, 1939-1945|Passenger Lists|Chinese immigration records|Parish registers: New Brunswick">
-          <button
-            type="submit"
-            class="home-heritage-search__submit"
-            disabled
-            aria-disabled="true"
-            title="Coming soon: Héritage search is not available yet.">
-            Search (Coming Soon)
-          </button>
+          <button type="submit" class="home-heritage-search__submit" title="Search the Héritage Collection" aria-label="Search the Héritage Collection">Search</button>
         </form>
       </div>
     </div>

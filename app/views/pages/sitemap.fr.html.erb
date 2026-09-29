@@ -24,7 +24,7 @@
             <li><a href="<%= root_path(lang: I18n.locale) %>">Accueil</a></li>
             <li><a href="<%= about_canadiana_path(lang: I18n.locale) %>">À propos de la collection Canadiana</a></li>
             <li><a href="<%= about_heritage_path(lang: I18n.locale) %>">À propos de la collection Héritage</a></li>
-            <li><a href="<%= search_catalog_path(lang: I18n.locale) %>">Rechercher dans la collection Canadiana</a></li>
+            <li><a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?lang=<%= I18n.locale %>">Rechercher dans la collection Canadiana</a></li>
             <li><a href="<%= compare_collections_path(lang: I18n.locale) %>">Comparer les collections</a></li>
             <li><a href="<%= navigating_collections_path(lang: I18n.locale) %>">Parcourir les collections</a></li>
             <li><a href="<%= api_access_path(lang: I18n.locale) %>">Accès aux API</a></li>

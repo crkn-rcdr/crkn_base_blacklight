@@ -84,6 +84,8 @@ Optional variables for download links:
 - `DOWNLOAD_CACHE_REDIS_POOL_SIZE` - Redis connection pool size for download metadata. Defaults to `5`.
 - `DOWNLOAD_CACHE_REDIS_TIMEOUT` - Redis connection/read/write timeout in seconds. Defaults to `1`.
 - `IIIF_IMAGE_BASE` - IIIF Image API base used to derive full-size JPG download links. Defaults to `https://image-tor.canadiana.ca/iiif/2`.
+- `CANADIANA_CATALOGUE_URL` - Canadiana Collection search endpoint. Defaults to `https://www-beta.canadiana.ca/catalogue`.
+- `HERITAGE_CATALOGUE_URL` - Héritage Collection search endpoint. Defaults to `https://heritage-beta.canadiana.ca/catalogue`.
 
 Seed the local development download cache:
 
