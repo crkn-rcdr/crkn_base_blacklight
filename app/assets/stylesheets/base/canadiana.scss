@@ -4688,7 +4688,7 @@ dialog#blacklight-modal,
   color: var(--collection-search-button-text);
   font-size: clamp(1.05rem, 1.08vw, 1.22rem);
   font-weight: 700;
-  cursor: pointer;//var(--collection-search-button-cursor);
+  cursor: pointer !important; //var(--collection-search-button-cursor);
   transition: background-color 0.18s ease;
 }
 
