@@ -19,5 +19,6 @@ class HomePageTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'form.home-canadiana-search__form[action="https://canadiana.example.test/catalogue"]'
     assert_select 'form.home-heritage-search__form[action="https://heritage.example.test/catalogue"]'
+    assert_select 'button.home-heritage-search__submit:not([disabled])', text: 'Search'
   end
 end
