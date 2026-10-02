@@ -167,8 +167,8 @@ class MarcIndexer < Blacklight::Marc::Indexer
     end
 
     to_field 'pub_date_ssim' do |record, accumulator|
-      year = extract_original_publication_year(record)
-      accumulator << year if year
+      years = extract_publication_years(record)
+      accumulator.concat(years) if years.present?
     end
 
     # ----------------------------
@@ -302,95 +302,216 @@ class MarcIndexer < Blacklight::Marc::Indexer
   ENGLISH_KEYWORDS = %w[serial serials map maps annual annuals periodical periodicals publication publications newspaper newspapers].freeze
 
   def extract_original_publication_year(record)
+    years = extract_publication_years(record)
+    years.first
+  end
+
+  def extract_publication_years(record)
+    # Check 008 multi-date range if present
+    cf008_range = nil
+    if (cf008 = record['008']&.value) && cf008.length >= 15
+      type_of_date = cf008[6]
+      date1 = cf008[7..10]
+      date2 = cf008[11..14]
+
+      if %w[m q d].include?(type_of_date)
+        y1 = extract_year_from_string(date1)
+        y2 = extract_year_from_string(date2)
+        if y1 && y2 && y1 <= y2 && y1 >= 1000 && y2 <= (Time.now.year + 2)
+          cf008_range = (y1..y2).to_a
+        end
+      end
+    end
+
+    # Helper to expand years with 008 range if applicable
+    resolve_years = lambda do |years|
+      if years.any?
+        if years.size == 1 && cf008_range && cf008_range.include?(years.first)
+          return cf008_range
+        end
+        return years
+      end
+      nil
+    end
+
     # 1. Check 264$c with indicator 2 == '1' (Publication statement in RDA)
     record.fields('264').each do |field|
       next unless field.indicator2 == '1'
       field.find_all { |sf| sf.code == 'c' }.each do |sf|
-        year = extract_year_from_string(sf.value)
-        return year if year
+        years = extract_years_from_string(sf.value)
+        res = resolve_years.call(years)
+        return res if res
       end
     end
 
     # 2. Check 260$c (Publication statement in AACR2)
     record.fields('260').each do |field|
       field.find_all { |sf| sf.code == 'c' }.each do |sf|
-        year = extract_year_from_string(sf.value)
-        return year if year
+        years = extract_years_from_string(sf.value)
+        res = resolve_years.call(years)
+        return res if res
       end
     end
 
     # 3. Check any other 264$c (e.g. manufacture or production)
     record.fields('264').each do |field|
       field.find_all { |sf| sf.code == 'c' }.each do |sf|
-        year = extract_year_from_string(sf.value)
-        return year if year
+        years = extract_years_from_string(sf.value)
+        res = resolve_years.call(years)
+        return res if res
       end
     end
 
-    # 4. Check 008 control field (Date 2 for reprint/reproduction 'r')
+    # 4. Check 008 control field (Date 2 for reprint/reproduction 'r', or multi-date 'm', 'q', 'd')
     if (cf008 = record['008']&.value) && cf008.length >= 15
       type_of_date = cf008[6]
       date1 = cf008[7..10]
       date2 = cf008[11..14]
 
       if type_of_date == 'r'
-        year2 = extract_year_from_string(date2)
-        return year2 if year2
+        years2 = extract_years_from_string(date2)
+        return years2 if years2.any?
+      elsif cf008_range
+        return cf008_range
+      else
+        years1 = extract_years_from_string(date1)
+        return years1 if years1.any?
       end
-
-      year1 = extract_year_from_string(date1)
-      return year1 if year1 && type_of_date != 'r'
     end
 
     # 5. Check 534$c / 534$p (Original Version Note)
     record.fields('534').each do |field|
       field.find_all { |sf| %w[c p].include?(sf.code) }.each do |sf|
-        year = extract_year_from_string(sf.value)
-        return year if year
+        years = extract_years_from_string(sf.value)
+        return years if years.any?
       end
     end
 
     # 6. Check 500$a general notes
     record.fields('500').each do |field|
       field.find_all { |sf| sf.code == 'a' }.each do |sf|
-        year = extract_year_from_string(sf.value)
-        return year if year
+        years = extract_years_from_string(sf.value)
+        return years if years.any?
       end
     end
 
-    # 7. Fallback to 008 Date 1 even if 'r' if no other date was found
-    if (cf008 = record['008']&.value) && cf008.length >= 11
-      year1 = extract_year_from_string(cf008[7..10])
-      return year1 if year1
+    # 7. Check 264$a / 260$a (unparsed imprint statement containing date)
+    record.fields('264').each do |field|
+      next unless field.indicator2 == '1'
+      field.find_all { |sf| sf.code == 'a' }.each do |sf|
+        years = extract_years_from_string(sf.value)
+        return years if years.any?
+      end
+    end
+    record.fields('260').each do |field|
+      field.find_all { |sf| sf.code == 'a' }.each do |sf|
+        years = extract_years_from_string(sf.value)
+        return years if years.any?
+      end
     end
 
-    nil
+    # 8. Check 362$a (Dates of publication / sequential designation for serials)
+    record.fields('362').each do |field|
+      field.find_all { |sf| sf.code == 'a' }.each do |sf|
+        years = extract_years_from_string(sf.value)
+        return years if years.any?
+      end
+    end
+
+    # 9. Fallback to 008 Date 1 even if 'r' if no other date was found
+    if (cf008 = record['008']&.value) && cf008.length >= 11
+      years1 = extract_years_from_string(cf008[7..10])
+      return years1 if years1.any?
+    end
+
+    []
   end
 
   def extract_year_from_string(str)
-    return nil if str.blank?
+    years = extract_years_from_string(str)
+    return nil if years.empty?
 
-    cleaned = str.to_s.gsub(/[\(\)\[\]\.\,\;\"\'\?]/, ' ')
-
-    # Match exact 4-digit years like 1897 or 1900
-    current_year = Time.now.year + 2
-    if (match = cleaned.match(/\b(1\d{3}|20\d{2})\b/))
-      year = match[1].to_i
-      return year if year >= 1000 && year <= current_year
-    end
-
-    # Handle decade wildcards like 189u, 189-, 189? -> 1890
-    if (match = cleaned.match(/\b(1\d{2}|20\d)[u\-\?]\b/i))
-      return "#{match[1]}0".to_i
-    end
-
-    # Handle century wildcards like 18uu, 18--, 18?? -> 1800
-    if (match = cleaned.match(/\b(1\d|20)[u\-\?]{2}\b/i))
-      return "#{match[1]}00".to_i
-    end
-
-    nil
+    # If copyright year was present alongside another year (e.g. "1979 printing, c1975"),
+    # extract_years_from_string puts copyright year first
+    years.first
   end
+
+  def extract_years_from_string(str)
+    return [] if str.blank?
+    s = str.to_s.strip
+
+    # Return empty array for known unparseable/unknown dates (e.g. [s.d.], [n.d.], [not identified], ?, ----)
+    lower = s.downcase.gsub(/[\[\]\(\)\.\,\;]/, ' ').strip
+    if lower =~ /\b(s\s*d|n\s*d|sine\s+dato|no\s+date|not\s+identified|unknown|unbekannt|inconnu)\b/ ||
+       s =~ /^[\?\[\]\(\)\s\-u]+$/
+      return [] unless s =~ /\d{2}/
+    end
+
+    current_year = Time.now.year + 2
+
+    # 1. Check for corrected date [i.e. YYYY] or [that is YYYY]
+    if (match = s.match(/\[(?:i\.e\.|that is)\s*(1\d{3}|20\d{2})\]/i))
+      year = match[1].to_i
+      return [year] if year >= 1000 && year <= current_year
+    end
+
+    # 2. Check for 4-digit to 4-digit range (e.g., 1800-1899, c. 1800-1899, [1800-1899], 1889-1912, 1878-[1927?], [between 1800 and 1899])
+    if (match = s.match(/(?<!\d)(1\d{3}|20\d{2})\s*(?:[-–—\/]|to|and|et|ou)\s*(?:c\.?\s*|ca\.?\s*|approx\.?\s*|\[)?\s*(1\d{3}|20\d{2})(?!\d)/i))
+      y1 = match[1].to_i
+      y2 = match[2].to_i
+      if y1 <= y2 && y1 >= 1000 && y2 <= current_year
+        return (y1..y2).to_a
+      end
+    end
+
+    # 3. Check for 4-digit to 2-digit range (e.g., 1880-85 -> 1880..1885, 1904-05 -> 1904..1905, 1899-02 -> 1899..1902)
+    if (match = s.match(/(?<!\d)(1\d{3}|20\d{2})\s*(?:[-–—\/]|to)\s*(\d{2})(?!\d)/i))
+      y1 = match[1].to_i
+      end_two = match[2].to_i
+      century = y1 / 100
+      y2 = century * 100 + end_two
+      y2 += 100 if y2 < y1 && (y2 + 100) <= current_year
+      if y1 <= y2 && y1 >= 1000 && y2 <= current_year
+        return (y1..y2).to_a
+      end
+    end
+
+    # 4. Check for decade wildcards like 189u, 189-, [189-?], 189?, 189-?] -> 1890..1899
+    if (match = s.match(/(?<!\d)(1\d{2}|20\d)[\s]*[-u\?]/i))
+      start_year = "#{match[1]}0".to_i
+      end_year = ["#{match[1]}9".to_i, current_year].min
+      if start_year >= 1000 && start_year <= current_year
+        return (start_year..end_year).to_a
+      end
+    end
+
+    # 5. Check for century wildcards like 18uu, 18--, [18--?], 18??, 18- -?, 18-?] -> 1800..1899
+    if (match = s.match(/(?<!\d)(1\d|20)[\s]*[-u\?][\s]*[-u\?]/i)) ||
+       (match = s.match(/(?<!\d)(1\d|20)[\s]*[-u\?]/i))
+      start_year = "#{match[1]}00".to_i
+      end_year = ["#{match[1]}99".to_i, current_year].min
+      if start_year >= 1000 && start_year <= current_year
+        return (start_year..end_year).to_a
+      end
+    end
+
+    # 6. Check for discrete 4-digit years (e.g., 1897, c1897, [1897?], 1979 printing, c1975)
+    four_digit_years = s.scan(/(?<!\d)(1\d{3}|20\d{2})(?!\d)/).flatten.map(&:to_i).uniq
+    valid_years = four_digit_years.select { |y| y >= 1000 && y <= current_year }
+
+    if valid_years.any?
+      if (c_match = s.match(/[c©\bp]\s*(1\d{3}|20\d{2})/i))
+        c_year = c_match[1].to_i
+        if valid_years.include?(c_year)
+          return [c_year] + (valid_years - [c_year]).sort
+        end
+      end
+      return valid_years.sort
+    end
+
+    []
+  end
+
 
   def materials_by_language(record)
     collection_paths_by_language(record).transform_values do |paths|
