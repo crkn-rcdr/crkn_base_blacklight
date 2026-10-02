@@ -123,7 +123,8 @@ class CatalogController < ApplicationController
                              num_segments: 10,
                              segments: true,
                              maxlength: 4,
-                             assumed_boundaries: [1300, Time.now.year + 2],
+                             assumed_boundaries: [1400, Time.now.year + 2],
+                             min_value: 1400,
                              chart_js: false
                            }
 
