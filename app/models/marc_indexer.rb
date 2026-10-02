@@ -387,15 +387,7 @@ class MarcIndexer < Blacklight::Marc::Indexer
       end
     end
 
-    # 6. Check 500$a general notes
-    record.fields('500').each do |field|
-      field.find_all { |sf| sf.code == 'a' }.each do |sf|
-        years = extract_years_from_string(sf.value)
-        return years if years.any?
-      end
-    end
-
-    # 7. Check 264$a / 260$a (unparsed imprint statement containing date)
+    # 6. Check 264$a / 260$a (unparsed imprint statement containing date)
     record.fields('264').each do |field|
       next unless field.indicator2 == '1'
       field.find_all { |sf| sf.code == 'a' }.each do |sf|
@@ -404,6 +396,14 @@ class MarcIndexer < Blacklight::Marc::Indexer
       end
     end
     record.fields('260').each do |field|
+      field.find_all { |sf| sf.code == 'a' }.each do |sf|
+        years = extract_years_from_string(sf.value)
+        return years if years.any?
+      end
+    end
+
+    # 7. Check 500$a general notes
+    record.fields('500').each do |field|
       field.find_all { |sf| sf.code == 'a' }.each do |sf|
         years = extract_years_from_string(sf.value)
         return years if years.any?
@@ -440,11 +440,17 @@ class MarcIndexer < Blacklight::Marc::Indexer
     return [] if str.blank?
     s = str.to_s.strip
 
+    # Ignore microfilm call numbers
+    return [] if s =~ /\bNJ\.FM\./i
+
+    # Clean microfilm reel / frame references
+    s_cleaned = s.gsub(/\(?Reel\s*\d+\)?/i, ' ')
+
     # Return empty array for known unparseable/unknown dates (e.g. [s.d.], [n.d.], [not identified], ?, ----)
-    lower = s.downcase.gsub(/[\[\]\(\)\.\,\;]/, ' ').strip
+    lower = s_cleaned.downcase.gsub(/[\[\]\(\)\.\,\;]/, ' ').strip
     if lower =~ /\b(s\s*d|n\s*d|sine\s+dato|no\s+date|not\s+identified|unknown|unbekannt|inconnu)\b/ ||
-       s =~ /^[\?\[\]\(\)\s\-u]+$/
-      return [] unless s =~ /\d{2}/
+       s_cleaned =~ /^[\?\[\]\(\)\s\-u]+$/
+      return [] unless s_cleaned =~ /\d{2}/
     end
 
     current_year = Time.now.year + 2
@@ -477,7 +483,7 @@ class MarcIndexer < Blacklight::Marc::Indexer
     end
 
     # 4. Check for decade wildcards like 189u, 189-, [189-?], 189?, 189-?] -> 1890..1899
-    if (match = s.match(/(?<!\d)(1\d{2}|20\d)[\s]*[-u\?]/i))
+    if (match = s_cleaned.match(/(?<!\d)(1\d{2}|20\d)[\s]*[-u\?](?!\d)/i))
       start_year = "#{match[1]}0".to_i
       end_year = ["#{match[1]}9".to_i, current_year].min
       if start_year >= 1000 && start_year <= current_year
@@ -486,8 +492,8 @@ class MarcIndexer < Blacklight::Marc::Indexer
     end
 
     # 5. Check for century wildcards like 18uu, 18--, [18--?], 18??, 18- -?, 18-?] -> 1800..1899
-    if (match = s.match(/(?<!\d)(1\d|20)[\s]*[-u\?][\s]*[-u\?]/i)) ||
-       (match = s.match(/(?<!\d)(1\d|20)[\s]*[-u\?]/i))
+    if (match = s_cleaned.match(/(?<!\d)(1\d|20)[\s]*[-u\?][\s]*[-u\?](?!\d)/i)) ||
+       (match = s_cleaned.match(/(?<!\d)(1\d|20)[\s]*[-u\?](?:\]|\?|\s|$)(?!\d)/i))
       start_year = "#{match[1]}00".to_i
       end_year = ["#{match[1]}99".to_i, current_year].min
       if start_year >= 1000 && start_year <= current_year
