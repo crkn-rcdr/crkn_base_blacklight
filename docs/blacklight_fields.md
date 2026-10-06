@@ -131,7 +131,7 @@ depending on how `902$b` and `245$a` are catalogued.
 | `is_issue` | `901` | Issue facet; issue-only breadcrumb logic; issue filtering in serial lists | Anything other than case-insensitive `Is issue` becomes `No`. If a real issue is mistagged, it will not appear in the serial-parent issue list. |
 | `is_serial` | `901` | Decides whether the show page renders Mirador/downloads or the serial issue list | Only case-insensitive `Is series` becomes `Yes`. If a serial parent is missing this value, the app treats it like a normal item and shows viewer/download tools instead of issue cards. |
 | `serial_key` | `902$b` | Used to find a parent record's issues; used on issue pages for the parent breadcrumb link | If an issue `serial_key` does not equal the parent `001`, the issue will not appear under the parent and the issue breadcrumb link will point to the wrong record or nowhere useful. |
-| `serial_title` | `245$a` | Serial title facet label; issue breadcrumb label | The app keeps only the text before the first colon. If `245$a` on an issue is missing or badly structured, the issue breadcrumb label will be blank or misleading. |
+| `serial_title` | `902$c` (with `245$a` fallback) | Serial title facet label; issue breadcrumb label | Uses determined metadata in `902$c` if present; otherwise keeps the text before the first colon in `245$a`. |
 | `ark` | External ingest, not `MarcIndexer` | Persistent URL display; Mirador; IIIF toolbox; downloads; citations; page-hit chips; text export | If missing, the persistent URL is absent, Mirador does not load, the IIIF toolbox is disabled, downloads do not work, and page-hit navigation does not appear. |
 
 ## Title fields

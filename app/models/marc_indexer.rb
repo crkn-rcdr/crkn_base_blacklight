@@ -44,14 +44,22 @@ class MarcIndexer < Blacklight::Marc::Indexer
       is_iss = v901&.casecmp("Is issue")&.zero?
       has_serial_key = rec["902"]&.subfields&.any? { |sf| sf.code == 'b' && !sf.value.to_s.strip.empty? }
 
-      if is_ser || is_iss || has_serial_key
-        v = acc.first
-        if v && v.include?(' : ')
-          acc.replace([v.split(' : ', 2).first.strip])
-        elsif v && v.include?(':')
-          acc.replace([v.split(':', 2).first.strip])
+      # Determined serial title metadata: 902$c (e.g. =902 $aIs part of$boocihm.N_00123$cChignecto Post)
+      v902c = rec.fields('902').map { |f| f['c'] }.compact.map(&:strip).reject(&:empty?).first
+
+      if is_ser || is_iss || has_serial_key || v902c
+        if v902c
+          acc.replace([v902c])
         else
-          acc.replace(v ? [v.strip] : [])
+          # Fallback to 245$a (stripping text after first colon) if 902$c doesn't exist
+          v = acc.first
+          if v && v.include?(' : ')
+            acc.replace([v.split(' : ', 2).first.strip])
+          elsif v && v.include?(':')
+            acc.replace([v.split(':', 2).first.strip])
+          else
+            acc.replace(v ? [v.strip] : [])
+          end
         end
       else
         acc.clear

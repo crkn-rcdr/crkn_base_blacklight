@@ -21,7 +21,7 @@ It reflects the code currently in the repository, not older comments or prior in
 | `id` | Primary record identifier; drives record URLs and Solr lookups | `001` | `trim` + `first_only`. |
 | `is_issue` | Flags issue records; used by facet config and issue-specific UI logic | `901` | Exact case-insensitive compare to `Is issue`; stores `Yes` or `No`. |
 | `serial_key` | Parent/child serial linkage; used to fetch issue lists and build serial links | `902$b` | Current code only indexes `902$b`. The inline comment mentions a fallback to the left side of `001`, but that fallback is not implemented. |
-| `serial_title` | Canonical serial title; used for serial facet labels and breadcrumb serial label | `245$a` | First value only. Strips everything after the first colon (`:` or ` : `). |
+| `serial_title` | Canonical serial title; used for serial facet labels and breadcrumb serial label | `902$c` (fallback: `245$a`) | Uses `902$c` if present; otherwise first `245$a` value stripping everything after the first colon (`:` or ` : `). |
 | `is_serial` | Flags parent serial records; controls whether show page renders Mirador/downloads or issue list | `901` | Exact case-insensitive compare to `Is series`; stores `Yes` or `No`. Current code does not inspect `999`. |
 | `marc_ss` | Full MARC XML payload; used by `Blacklight::Marc::DocumentExtension` for MARC/librarian-style views | Entire record | Stored via `get_xml`. |
 | `all_text_timv` | Catch-all indexed text for broad search / retrieval support | Entire record | Joins all extracted MARC values into one string. |
