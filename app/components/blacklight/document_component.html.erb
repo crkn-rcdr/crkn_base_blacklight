@@ -72,6 +72,13 @@
               <div class="document-sidebar-header">
                 <h3 id="details-heading" class="h3 mb-0"><%= t(@document._source["is_serial"]&.first == "Yes" ? 'labels.L_SERIAL_RECORD' : 'labels.L_RECORD') %></h3>
               </div>
+              <% if @document._source["is_serial"]&.first == "Yes" %>
+                <% issue_count = helpers.serial_issue_count(@document._source['id'] || params[:id]) %>
+                <div class="serial-available-issues mt-1 mb-3">
+                  <span class="text-secondary"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available issues') %>:</span>
+                  <span class="fw-semibold"><%= number_with_delimiter(issue_count) %></span>
+                </div>
+              <% end %>
               <% if @document._source["is_serial"]&.first != "Yes" %>
                 <% has_ocr = Array(@document['notes_tsim']).any? { |n| n.to_s.match?(/OCR|optical character|ROC|reconnaissance optique/i) } || @document['all_text_timv'].present? %>
                 <div class="sidebar-full-text-status mt-2 mb-2">

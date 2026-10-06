@@ -522,6 +522,33 @@ module ApplicationHelper
 
     value.sub(%r{/\z}, '')
   end
+
+  # Returns the total count of issues for a serial parent document
+  def serial_issue_count(document_id)
+    return 0 if document_id.blank?
+
+    @serial_issue_counts ||= {}
+    @serial_issue_counts[document_id] ||= begin
+      solr_url = ENV.fetch('SOLR_URL', nil)
+      if solr_url.present?
+        rsolr = RSolr.connect(url: solr_url)
+        response = rsolr.get('select', params: {
+          q: '*:*',
+          fq: [
+            %(serial_key:"#{RSolr.solr_escape(document_id)}"),
+            'is_issue:"Yes"'
+          ],
+          rows: 0
+        })
+        response.dig('response', 'numFound').to_i
+      else
+        0
+      end
+    rescue StandardError => e
+      Rails.logger.warn("Failed to fetch serial issue count for #{document_id}: #{e.message}")
+      0
+    end
+  end
 end
 
 
