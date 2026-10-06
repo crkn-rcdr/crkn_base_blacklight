@@ -1,4 +1,5 @@
-<% activate_zoom_label = I18n.locale.to_s.start_with?('fr') ? 'Cliquer pour activer le zoom' : 'Click to activate zoom' %>
+<% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<% activate_zoom_label = t('blacklight.tools.enable_zoom_tooltip', default: (is_fr ? 'Cliquer pour activer le zoom' : 'Click to enable zoom')) %>
 <div class="row align-items-start" id="collection-items-list">
   <% if @collection_items.present? %>
     <% @collection_items.each do |collection_item| %>
@@ -11,7 +12,15 @@
           class="card-img-top collection-item__viewer collection-item__viewer-frame"
           id="<%= viewer_id %>"
           data-ark-id="<%= ark_id %>"
+          title="<%= activate_zoom_label %>"
+          aria-label="<%= activate_zoom_label %>"
+          tabindex="0"
+          role="button"
           >
+          <div class="collection-item__zoom-tooltip" aria-hidden="true">
+            <i class="bi bi-zoom-in me-1"></i>
+            <span><%= activate_zoom_label %></span>
+          </div>
           <button type="button" class="collection-item__activate" aria-pressed="false"><%= activate_zoom_label %></button>
         </div>
           <div class="card-body">
@@ -97,6 +106,7 @@ function initializeCollectionItemViewers() {
   if (list.dataset.collectionItemsInitialized === "1") return;
   list.dataset.collectionItemsInitialized = "1";
 
+  const activateZoomLabel = <%= raw activate_zoom_label.to_json %>;
   let activeViewerState = null;
 
   const manifestCanvases = (manifest) => {
@@ -116,6 +126,8 @@ function initializeCollectionItemViewers() {
     } catch (_error) {}
     container.classList.remove("is-active");
     container.removeAttribute("data-lenis-prevent");
+    container.setAttribute("title", activateZoomLabel);
+    container.setAttribute("aria-label", activateZoomLabel);
     const card = container.closest(".collection-item-card");
     if (card) {
       card.classList.remove("is-active");
@@ -139,6 +151,8 @@ function initializeCollectionItemViewers() {
     } catch (_error) {}
     container.classList.add("is-active");
     container.setAttribute("data-lenis-prevent", "true");
+    container.removeAttribute("title");
+    container.removeAttribute("aria-label");
     const card = container.closest(".collection-item-card");
     if (card) {
       card.classList.add("is-active");
@@ -256,6 +270,14 @@ function initializeCollectionItemViewers() {
           if (container.classList.contains("is-active")) return;
           if (overlay && overlay.contains(event.target)) return;
           activateViewer(viewer, container, overlay);
+        });
+
+        container.addEventListener("keydown", (event) => {
+          if (container.classList.contains("is-active")) return;
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            activateViewer(viewer, container, overlay);
+          }
         });
       } catch (error) {
         console.error("Failed to load manifest or initialize OpenSeadragon for", container.id, error);

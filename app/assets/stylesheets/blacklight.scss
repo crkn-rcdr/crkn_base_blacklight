@@ -217,6 +217,7 @@ i {
 }
 #collection-items-list .collection-item__viewer {
     position: relative;
+    cursor: pointer;
 }
 #collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container,
 #collection-items-list .collection-item__viewer:not(.is-active) .openseadragon-container * {
@@ -225,12 +226,48 @@ i {
 #collection-items-list .collection-item__viewer.is-active {
     overscroll-behavior: contain;
     touch-action: pan-y pinch-zoom;
+    cursor: default;
 }
 #collection-items-list .collection-item__viewer.is-active .openseadragon-container,
 #collection-items-list .collection-item__viewer.is-active .openseadragon-container * {
     pointer-events: auto;
 }
 #collection-items-list .collection-item__activate {
+    display: none !important;
+}
+
+#collection-items-list .collection-item__zoom-tooltip {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: rgba(15, 23, 42, 0.88);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 15;
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#collection-items-list .collection-item__viewer:not(.is-active):hover .collection-item__zoom-tooltip,
+#collection-items-list .collection-item__viewer:not(.is-active):focus-visible .collection-item__zoom-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+#collection-items-list .collection-item__viewer.is-active .collection-item__zoom-tooltip {
     display: none !important;
 }
 

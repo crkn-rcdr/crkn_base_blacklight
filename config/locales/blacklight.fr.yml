@@ -44,6 +44,7 @@ fr:
       full_text_unavailable_tooltip: Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC).
       pdf_disabled_tooltip: Les fichiers PDF interrogeables et la recherche de texte ne sont pas disponibles lorsqu'il n'y a pas de texte lisible par machine (ROC).
       img_disabled_tooltip: Le téléchargement de l'image n'est pas disponible pour cette page.
+      enable_zoom_tooltip: Cliquer pour activer le zoom
       toolbox_title: Boîte à outils
       title: Outils
       subtitle: Exporter, modifier ou partager cet item

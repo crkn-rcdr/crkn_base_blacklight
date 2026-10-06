@@ -44,6 +44,7 @@ en:
       full_text_unavailable_tooltip: Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.
       pdf_disabled_tooltip: Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.
       img_disabled_tooltip: Image download is unavailable for this page.
+      enable_zoom_tooltip: Click to enable zoom
       toolbox_title: Toolbox
       title: Tools
       subtitle: Export, edit, or share this item
