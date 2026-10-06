@@ -60,7 +60,7 @@ en:
       copy_failed_js: Failed to copy to clipboard.
       what_is_iiif: What is IIIF?
       librarian_view: Library Metadata
-      citation_label: Generate citation
+      citation_label: Generate Citation
       cite: "Cite: MLA / APA / Chicago"
       citation: Cite
       clear: Clear
@@ -408,7 +408,7 @@ en:
     L_READ_MORE: Read more
     L_RECORD: About this Item
     L_SERIAL_RECORD: About this Serial
-    L_AVAILABLE_ISSUES: Available issues
+    L_AVAILABLE_ISSUES: Available Issues
     L_SEARCH_BREADCRUMB: Collection search
     L_ALL_ISSUES: List of Issues
     L_VIEW_ISSUE: View Details

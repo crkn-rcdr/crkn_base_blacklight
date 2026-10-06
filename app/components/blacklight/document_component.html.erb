@@ -82,7 +82,7 @@
               <% if @document._source["is_serial"]&.first == "Yes" %>
                 <% issue_count = collection_items_comp&.total_items || helpers.serial_issue_count(@document._source['id'] || params[:id]) %>
                 <div class="serial-available-issues mt-2 mb-3">
-                  <span class="citation-toolbar-title"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available issues') %>:</span>
+                  <span class="citation-toolbar-title"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available Issues') %>:</span>
                   <span class=""><%= number_with_delimiter(issue_count) %></span>
                 </div>
               <% end %>
@@ -102,7 +102,7 @@
               <% end %>
               <div>  
                
-                <p class="download-toolbar-title citation-toolbar-title"><%= t('blacklight.tools.citation_label', default: 'Generate citation') %>:</p>
+                <p class="download-toolbar-title citation-toolbar-title"><%= t('blacklight.tools.citation_label', default: 'Generate Citation') %>:</p>
                 <ul class="list-unstyled mb-0">
                   <li>
                     <a class="btn btn-outline-custom btn-sm sidebar-cite-btn"
