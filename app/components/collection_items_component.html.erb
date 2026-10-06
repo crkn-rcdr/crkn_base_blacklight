@@ -12,7 +12,6 @@
           class="card-img-top collection-item__viewer collection-item__viewer-frame"
           id="<%= viewer_id %>"
           data-ark-id="<%= ark_id %>"
-          title="<%= activate_zoom_label %>"
           aria-label="<%= activate_zoom_label %>"
           tabindex="0"
           role="button"
@@ -126,7 +125,6 @@ function initializeCollectionItemViewers() {
     } catch (_error) {}
     container.classList.remove("is-active");
     container.removeAttribute("data-lenis-prevent");
-    container.setAttribute("title", activateZoomLabel);
     container.setAttribute("aria-label", activateZoomLabel);
     const card = container.closest(".collection-item-card");
     if (card) {

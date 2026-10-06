@@ -1464,7 +1464,7 @@ dialog#blacklight-modal,
     margin-bottom: 0.75rem;
   }
   .blacklight-catalog-index .facets-header .facet-toggle-button {
-    border-radius: 999px;
+    border-radius: var(--site-radius, 3px);
   }
 
   .blacklight-catalog-index #sortAndPerPage {
@@ -11371,6 +11371,31 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   line-height: 1.2;
 }
 
+@media (max-width: 767.98px) {
+  .sidenav {
+    --bl-facets-smallish-border: none !important;
+  }
+
+  .blacklight-catalog-index #sidebar .facets,
+  .blacklight-catalog-index .facets-toggleable-md,
+  .blacklight-catalog-index .facets,
+  .facets.facets-toggleable-md,
+  .facets.sidenav {
+    border: none !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .blacklight-catalog-index .facets-header,
+  .facets-header {
+    border: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
 .blacklight-catalog-index .facets-header {
   display: flex;
   align-items: center;
@@ -11386,29 +11411,47 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   .facet-toggle-button {
     display: inline-flex;
     align-items: center;
-    border-radius: 999px;
+    border-radius: var(--site-radius, 3px) !important;
     font-size: 0.88rem;
     font-weight: 600;
-    padding: 0.32rem 0.9rem;
-    border-color: #1d808b;
-    color: #1d808b;
-    background-color: #ffffff;
+    padding: 0.35rem 0.85rem;
+    background-color: #1d808b !important;
+    border: none !important;
+    color: #ffffff !important;
     transition: all 0.15s ease-in-out;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
+    i, .bi, .bi-funnel, svg {
+      color: #ffffff !important;
+      fill: #ffffff !important;
+      stroke: #ffffff !important;
+    }
+
     &:hover, &:focus, &:active {
-      background-color: #1d808b;
-      border-color: #1d808b;
-      color: #fff;
+      background-color: #16646d !important;
+      border: none !important;
+      color: #ffffff !important;
+
+      i, .bi, .bi-funnel, svg {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+      }
     }
 
     [data-hide-label] { display: none; }
     [data-show-label] { display: inline; }
 
     &[aria-expanded="true"] {
-      background-color: #1d808b;
-      border-color: #1d808b;
-      color: #fff;
+      background-color: #16646d !important;
+      border: none !important;
+      color: #ffffff !important;
+
+      i, .bi, .bi-funnel, svg {
+        color: #ffffff !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+      }
 
       [data-hide-label] { display: inline; }
       [data-show-label] { display: none; }
