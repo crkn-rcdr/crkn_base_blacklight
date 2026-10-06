@@ -1,59 +1,49 @@
 class CollectionItemsComponent < ViewComponent::Base
+  attr_reader :documentId, :page, :per_page, :total_items, :total_pages, :collection_items
+
   def initialize(documentId:, page: 1, per_page: 12)
     @documentId = documentId
-    @page = page.to_i
-    @per_page = per_page.to_i
+    @page = [page.to_i, 1].max
+    @per_page = [per_page.to_i, 1].max
 
-    solr_url = ENV.fetch("SOLR_URL")
+    if @documentId.blank?
+      @collection_items = []
+      @total_items = 0
+      @total_pages = 0
+      return
+    end
+
+    solr_url = ENV.fetch("SOLR_URL", nil)
+    unless solr_url.present?
+      @collection_items = []
+      @total_items = 0
+      @total_pages = 0
+      return
+    end
+
     rsolr = RSolr.connect url: solr_url
+    start = (@page - 1) * @per_page
 
-    # Query all matching issue IDs for this serial parent
-    id_response = rsolr.get 'select', params: {
+    # Native Solr pagination & index-level sort: single query for issues
+    response = rsolr.get 'select', params: {
       q: '*:*',
       fq: [
         %(serial_key:"#{RSolr.solr_escape(@documentId)}"),
         'is_issue:"Yes"'
       ],
-      fl: 'id',
-      rows: 10_000
+      fl: 'id,ark,is_issue,subtitle_tsim,pub_date_si,collection_tsim',
+      sort: 'issue_sort_s asc, pub_date_si asc, id asc',
+      start: start,
+      rows: @per_page
     }
 
-    all_docs = id_response.dig('response', 'docs') || []
-    @total_items = id_response.dig('response', 'numFound') || 0
+    @total_items = response.dig('response', 'numFound') || 0
     @total_pages = (@total_items.to_f / @per_page).ceil
-
-    # Naturally sort IDs (e.g. oocihm.8_05016_1, _2, ..., _10, _100)
-    sorted_ids = all_docs.map { |d| d['id'] }.compact.sort_by { |id| natural_sort_key(id) }
-
-    start = (@page - 1) * @per_page
-    page_ids = sorted_ids.slice(start, @per_page) || []
-
-    if page_ids.empty?
-      @collection_items = []
-    else
-      escaped_ids = page_ids.map { |id| %("#{RSolr.solr_escape(id)}") }.join(' OR ')
-      page_response = rsolr.get 'select', params: {
-        q: '*:*',
-        fq: [
-          "id:(#{escaped_ids})"
-        ],
-        fl: 'id,ark,is_issue,subtitle_tsim,pub_date_si,collection_tsim',
-        rows: @per_page
-      }
-
-      docs_by_id = (page_response.dig('response', 'docs') || []).each_with_object({}) do |doc, map|
-        map[doc['id']] = doc
-      end
-      @collection_items = page_ids.map { |id| docs_by_id[id] }.compact
-    end
-  end
-
-  private
-
-  def natural_sort_key(str)
-    str.to_s.split(/(\d+)/).map do |chunk|
-      next if chunk.empty?
-      chunk =~ /^\d+$/ ? [0, chunk.to_i] : [1, chunk.downcase]
-    end.compact
+    @collection_items = response.dig('response', 'docs') || []
+  rescue StandardError => e
+    Rails.logger.error("CollectionItemsComponent error fetching issues for #{@documentId}: #{e.message}")
+    @collection_items = []
+    @total_items = 0
+    @total_pages = 0
   end
 end

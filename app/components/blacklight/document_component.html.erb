@@ -65,6 +65,13 @@
       <% end %>
 
       <% if @component == :div %>
+        <% if @document._source["is_serial"]&.first == "Yes" %>
+          <% collection_items_comp = CollectionItemsComponent.new(
+               documentId: @document._source['id'] || params[:id],
+               page: params[:page] || 1,
+               per_page: 12
+             ) %>
+        <% end %>
         <div id="document-togglable-content" class="container-fluid">
           <div class="row flex-nowrap">
             <!-- Sidebar -->
@@ -73,7 +80,7 @@
                 <h3 id="details-heading" class="h3 mb-0"><%= t(@document._source["is_serial"]&.first == "Yes" ? 'labels.L_SERIAL_RECORD' : 'labels.L_RECORD') %></h3>
               </div>
               <% if @document._source["is_serial"]&.first == "Yes" %>
-                <% issue_count = helpers.serial_issue_count(@document._source['id'] || params[:id]) %>
+                <% issue_count = collection_items_comp&.total_items || helpers.serial_issue_count(@document._source['id'] || params[:id]) %>
                 <div class="serial-available-issues mt-1 mb-3">
                   <span class="text-secondary"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available issues') %>:</span>
                   <span class="fw-semibold"><%= number_with_delimiter(issue_count) %></span>
@@ -318,11 +325,11 @@
 
                 <%= render(::IiifComponent.new(document: @document, term: params[:q])) %>
               <% else %>
-                <%= render CollectionItemsComponent.new(
-                  documentId: params[:id],
+                <%= render(collection_items_comp || CollectionItemsComponent.new(
+                  documentId: @document._source['id'] || params[:id],
                   page: params[:page] || 1,
                   per_page: 12
-                ) %>
+                )) %>
               <% end %>
             </div>
           </div>
