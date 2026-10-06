@@ -1,13 +1,21 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% req_params = helpers.respond_to?(:params) ? helpers.params.to_unsafe_h : {} %>
 
-<%= tag.div id: @id, class: 'facets facets-toggleable-md' do %>
+<%= tag.div id: @id, class: 'facets sidenav facets-toggleable-md' do %>
   <div class="facets-header">
     <h2 class="facets-heading">
       <%= t('blacklight.search.facets.title', default: (is_fr ? 'Limiter votre recherche' : 'Limit your search')) %>
     </h2>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#facet-panel-collapse" aria-controls="facet-panel-collapse" aria-expanded="false" aria-label="Toggle facets">
-      <span class="navbar-toggler-icon"></span>
+    <button class="btn btn-outline-secondary facet-toggle-button d-md-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#facet-panel-collapse"
+            aria-controls="facet-panel-collapse"
+            aria-expanded="false"
+            aria-label="<%= is_fr ? 'Afficher ou masquer les filtres' : 'Toggle search filters' %>">
+      <i class="bi bi-funnel me-1" aria-hidden="true"></i>
+      <span data-show-label><%= is_fr ? 'Filtres' : 'Filters' %></span>
+      <span data-hide-label><%= is_fr ? 'Masquer' : 'Hide' %></span>
     </button>
   </div>
 

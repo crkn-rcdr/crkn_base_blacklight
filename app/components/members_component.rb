@@ -64,6 +64,7 @@ class MembersComponent < ViewComponent::Base
     'University of Calgary' => 'members/university-of-calgary.png',
     'University of Guelph' => 'members/university-of-guelph.png',
     'University of Lethbridge' => 'members/university-of-lethbridge.png',
+    'Universite de Lethbridge' => 'members/university-of-lethbridge.png',
     'University of Manitoba' => 'members/university-of-manitoba.png',
     'University of New Brunswick' => 'members/university-of-new-brunswick.png',
     'University of Northern British Columbia' => 'members/university-of-northern-british-columbia.png',
@@ -154,6 +155,7 @@ class MembersComponent < ViewComponent::Base
     'University of Calgary' => 'https://www.ucalgary.ca/',
     'University of Guelph' => 'https://www.uoguelph.ca/',
     'University of Lethbridge' => 'https://www.ulethbridge.ca/',
+    'Universite de Lethbridge' => 'https://www.ulethbridge.ca/',
     'University of Manitoba' => 'https://umanitoba.ca/',
     'University of New Brunswick' => 'https://www.unb.ca/',
     'University of Northern British Columbia' => 'https://www.unbc.ca/',
@@ -192,12 +194,35 @@ class MembersComponent < ViewComponent::Base
     'University of Prince Edward Island' => 'University of Prince Edward Island',
     'University of Northern British Columbia' => 'UNBC',
     'University of Lethbridge' => 'University of Lethbridge',
+    'Universite de Lethbridge' => 'University of Lethbridge',
     'University of Guelph' => 'University of Guelph',
     'Nipissing University' => 'Nipissing University',
     'Ontario Tech University' => 'Ontario Tech University',
     'Vancouver Island University' => 'VIU',
     'Ecole Polytechnique de Montreal' => 'Polytechnique Montreal',
     "Bishop's University" => "Bishop's University"
+  }.freeze
+
+  MEMBER_ALIASES = {
+    'University of Lethbridge' => 'universite de lethbridge uleth uofl',
+    'University of Alberta' => 'universite de lalberta ualberta',
+    'University of Calgary' => 'universite de calgary ucalgary',
+    'University of British Columbia' => 'universite de la colombie britannique ubc',
+    'University of Toronto' => 'universite de toronto utoronto uoft',
+    'University of Victoria' => 'universite de victoria uvic',
+    'University of Waterloo' => 'universite de waterloo',
+    'University of Windsor' => 'universite de windsor',
+    'University of Winnipeg' => 'universite de winnipeg',
+    'University of Guelph' => 'universite de guelph',
+    'University of Manitoba' => 'universite du manitoba',
+    'University of New Brunswick' => 'universite du nouveau-brunswick unb',
+    'University of Northern British Columbia' => 'universite du nord de la colombie britannique unbc',
+    'University of Ottawa' => "universite d'ottawa uottawa",
+    'University of Prince Edward Island' => "universite de l'ile-du-prince-edouard upei",
+    'University of Regina' => 'universite de regina',
+    'University of Saskatchewan' => 'universite de la saskatchewan',
+    'University of the Fraser Valley' => 'universite de the fraser valley ufv',
+    'Université du Québec à Trois-Rivières' => 'uqtr university of quebec at trois-rivieres'
   }.freeze
 
   STOP_WORDS = %w[of and the de du des et la le les d l a].freeze
@@ -245,7 +270,9 @@ class MembersComponent < ViewComponent::Base
   end
 
   def search_key(name)
-    normalize_name(name).downcase
+    normalized = normalize_name(name).downcase
+    alias_text = MEMBER_ALIASES[name] || MEMBER_ALIASES[normalized]
+    alias_text ? "#{normalized} #{alias_text}" : normalized
   end
 
   def logo_asset(name)
@@ -262,7 +289,7 @@ class MembersComponent < ViewComponent::Base
   private
 
   def build_rows(items)
-    shuffled = items.shuffle
+    shuffled = items.shuffle(random: Random.new(17))
     rows = Array.new(4) { [] }
     shuffled.each_with_index { |member, idx| rows[idx % 4] << member }
     rows

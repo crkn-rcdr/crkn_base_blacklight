@@ -63,6 +63,13 @@
 html,
 body {
   font-family: "Roboto";
+  max-width: 100vw;
+  overflow-x: clip;
+}
+
+#skip-link {
+  max-width: 100vw;
+  overflow: hidden;
 }
 body {
   font-size: var(--body-copy-size);
@@ -577,14 +584,34 @@ dialog#blacklight-modal,
   width: 100%;
 }
 
+.blacklight-catalog-index #main-container > section[aria-label="Notifications"] {
+  overflow-x: hidden;
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 .blacklight-catalog-index #main-container > .row.base-first-row > section {
   padding-left: 0;
   padding-right: 0;
 }
 
 .blacklight-catalog-index #main-container > .row.base-first-row > #content {
-  padding-left: var(--bs-gutter-x);
   min-width: 0;
+}
+
+@media (min-width: 992px) {
+  .blacklight-catalog-index #main-container > .row.base-first-row > #content {
+    padding-left: var(--bs-gutter-x);
+  }
+}
+
+@media (max-width: 991px) {
+  .blacklight-catalog-index #main-container > .row.base-first-row > #content {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 @media (min-width: 992px) {
@@ -1446,7 +1473,7 @@ dialog#blacklight-modal,
     z-index: 4;
     background: #fff;
     padding: 0.5rem 0.25rem;
-    margin: 0 -0.5rem 1rem;
+    margin: 0 0 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
 
@@ -3967,11 +3994,12 @@ dialog#blacklight-modal,
     padding-block: 0.3rem;
   }
 
-  .topbar-utility-inner {
+  .topbar-utility-inner,
+  .topbar-utility .canadiana-shell {
     min-height: auto;
     justify-content: center;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
   }
 
   .topbar-utility-list {
@@ -11137,6 +11165,8 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   --home-hero-curve-edge: clamp(1rem, 1.7vw, 1.45rem);
   position: relative;
   margin: 0;
+  max-width: 100vw;
+  overflow-x: clip;
   padding: clamp(1.35rem, 2vw, 1.8rem) 0 clamp(3.15rem, 4.5vw, 4.2rem);
   background:
     linear-gradient(180deg, rgba(29, 128, 139, 0.9) 34%, rgba(55, 191, 206, 0.9) 100%),
@@ -11220,14 +11250,16 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
 
 .blacklight-catalog-index .catalog-search-hero__title {
   margin: clamp(1.9rem, 3vw, 2.55rem) auto 0;
-  max-width: none;
+  max-width: 100%;
   color: #ffffff;
   font-size: clamp(2.15rem, 3vw, 3.35rem);
   font-weight: 700;
-  line-height: 0.9;
+  line-height: 1.05;
   letter-spacing: -0.035em;
   text-align: center;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .blacklight-catalog-index .catalog-search-hero__search {
@@ -11339,6 +11371,51 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   line-height: 1.2;
 }
 
+.blacklight-catalog-index .facets-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+
+  .facets-heading {
+    margin-bottom: 0;
+  }
+
+  .facet-toggle-button {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.32rem 0.9rem;
+    border-color: #1d808b;
+    color: #1d808b;
+    background-color: #ffffff;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    &:hover, &:focus, &:active {
+      background-color: #1d808b;
+      border-color: #1d808b;
+      color: #fff;
+    }
+
+    [data-hide-label] { display: none; }
+    [data-show-label] { display: inline; }
+
+    &[aria-expanded="true"] {
+      background-color: #1d808b;
+      border-color: #1d808b;
+      color: #fff;
+
+      [data-hide-label] { display: inline; }
+      [data-show-label] { display: none; }
+    }
+  }
+}
+
 .blacklight-catalog-index .documents-list,
 .blacklight-catalog-index .documents-list article.document,
 .blacklight-catalog-index .documents-list .documentHeader,
@@ -11422,7 +11499,10 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   }
 
   .blacklight-catalog-index .catalog-search-hero__title {
-    font-size: clamp(1.72rem, 9vw, 2.3rem);
+    font-size: clamp(1.5rem, 7vw, 2.05rem);
+    line-height: 1.15;
+    white-space: normal;
+    padding-inline: 0.5rem;
   }
 
   .blacklight-catalog-index .catalog-search-hero__search {
