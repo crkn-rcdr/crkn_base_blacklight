@@ -81,9 +81,9 @@
               </div>
               <% if @document._source["is_serial"]&.first == "Yes" %>
                 <% issue_count = collection_items_comp&.total_items || helpers.serial_issue_count(@document._source['id'] || params[:id]) %>
-                <div class="serial-available-issues mt-1 mb-3">
-                  <span class="text-secondary"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available issues') %>:</span>
-                  <span class="fw-semibold"><%= number_with_delimiter(issue_count) %></span>
+                <div class="serial-available-issues mt-2 mb-3">
+                  <span class="citation-toolbar-title"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available issues') %>:</span>
+                  <span class=""><%= number_with_delimiter(issue_count) %></span>
                 </div>
               <% end %>
               <% if @document._source["is_serial"]&.first != "Yes" %>
