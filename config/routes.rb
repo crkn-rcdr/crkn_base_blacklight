@@ -52,6 +52,19 @@ Rails.application.routes.draw do
   get '/catalog/facet_suggest/:id(/:query_fragment)', to: 'catalog#facet', defaults: { only_values: true }, constraints: { id: /[^\/]+/ }
   get '/catalogue/facet_suggest/:id(/:query_fragment)', to: 'catalog#facet', defaults: { only_values: true }, constraints: { id: /[^\/]+/ }
 
+  # Legacy/redirect routes for /view/:id(/:pageNum) -> /catalogue/:id(?pageNum=:pageNum)
+  get '/view/:id/:pageNum', to: redirect(->(params, req) {
+    query_params = Rack::Utils.parse_nested_query(req.query_string)
+    query_params['pageNum'] = params[:pageNum]
+    "/catalogue/#{params[:id]}?#{query_params.to_query}"
+  }), constraints: { id: /[^\/]+/, pageNum: /[^\/]+/ }
+  get '/view/:id', to: redirect(->(params, req) {
+    req.query_string.present? ? "/catalogue/#{params[:id]}?#{req.query_string}" : "/catalogue/#{params[:id]}"
+  }), constraints: { id: /[^\/]+/ }
+  get '/view', to: redirect(->(_params, req) {
+    req.query_string.present? ? "/catalogue?#{req.query_string}" : "/catalogue"
+  })
+
   resources :bookmarks, only: [:index, :update, :create, :destroy] do
     concerns :exportable
 
