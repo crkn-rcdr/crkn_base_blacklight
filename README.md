@@ -123,13 +123,79 @@ curl -X POST -H "Content-Type: application/json" "http://localhost:8983/solr/bla
 ```
 
 ### Production Solr Setup (CRKN)
-For CRKN production, Solr runs in a docker container. The data dir needs to be a volume.
-High-level steps:
-1. SSH to the Solr container.
-2. Create the `blacklight_marc` core and `conf` directory.
-3. Copy the default configset.
-4. Replace `solrconfig.xml` and `managed-schema.xml` with the versions from this repo.
-5. Restart Solr.
+
+In production, Solr runs in Docker containers (Solr 9+). The core data directory must be persisted via a Docker volume or host bind-mount to `/var/solr/data`.
+
+> **Important:** The schema requires ICU token filters. Ensure each Solr container is launched with the `analysis-extras` module enabled:
+> `SOLR_MODULES=analysis-extras`
+
+#### Core Naming (Canadiana vs. Heritage)
+
+CRKN maintains two Solr setups (one for Canadiana, one for Heritage). Heritage cores append `_heritage` to the core name:
+- **Canadiana:** `blacklight_marc`
+- **Heritage:** `blacklight_marc_heritage`
+
+*(Note: The other microservice cores follow the exact same convention: `ark_map` / `ark_map_heritage`, `ark_counter` / `ark_counter_heritage`, and `content_search` / `content_search_heritage`.)*
+
+#### 1. Setting Up Canadiana (`blacklight_marc`)
+
+1. **Create the core from the default configset:**
+   Exec into the Solr container as the `solr` user to create the core (this seeds the baseline `_default` configset including language stopwords):
+   ```bash
+   docker exec -it -u solr <solr-canadiana-container> solr create_core -c blacklight_marc
+   ```
+
+2. **Deploy custom schema and config from this repository:**
+   Copy `solrconfig.xml` and `managed-schema.xml` from `data/data/blacklight_marc/conf/` into the core's `conf` directory:
+   ```bash
+   docker cp data/data/blacklight_marc/conf/solrconfig.xml <solr-canadiana-container>:/var/solr/data/blacklight_marc/conf/
+   docker cp data/data/blacklight_marc/conf/managed-schema.xml <solr-canadiana-container>:/var/solr/data/blacklight_marc/conf/
+   ```
+
+   *(Optional if mounting directly on host)*: If managing files on a host bind-mount directly, copy the files into `<mount_path>/blacklight_marc/conf/` and ensure file ownership matches the Solr process (`chown -R 8983:8983 <mount_path>/blacklight_marc`).
+
+3. **Reload the core or restart Solr:**
+   ```bash
+   curl "http://localhost:8983/solr/admin/cores?action=RELOAD&core=blacklight_marc"
+   # or: docker restart <solr-canadiana-container>
+   ```
+
+4. **Verify core status:**
+   ```bash
+   curl -s "http://localhost:8983/solr/blacklight_marc/admin/ping"
+   ```
+
+#### 2. Setting Up Heritage (`blacklight_marc_heritage`)
+
+If Canadiana is already configured, you can save time by copying the configs directly from the existing Canadiana core:
+
+1. **Create the Heritage core:**
+   ```bash
+   docker exec -it -u solr <solr-heritage-container> solr create_core -c blacklight_marc_heritage
+   ```
+
+2. **Copy configs from existing Canadiana:**
+   Copy the `conf/` directory contents from `blacklight_marc` into `blacklight_marc_heritage`:
+   ```bash
+   # If cores share the same host filesystem / volume:
+   cp -r /var/solr/data/blacklight_marc/conf/* /var/solr/data/blacklight_marc_heritage/conf/
+   chown -R 8983:8983 /var/solr/data/blacklight_marc_heritage
+   ```
+   > **Note for other microservice cores:** You can use the exact same shortcut for `ark_map`, `ark_counter`, and `content_search` — create the core with `_heritage` appended and copy over the configuration files from the corresponding Canadiana core:
+   > - `ark_map` $\rightarrow$ `ark_map_heritage`
+   > - `ark_counter` $\rightarrow$ `ark_counter_heritage`
+   > - `content_search` $\rightarrow$ `content_search_heritage`
+
+3. **Reload the core or restart Solr:**
+   ```bash
+   curl "http://localhost:8983/solr/admin/cores?action=RELOAD&core=blacklight_marc_heritage"
+   # or: docker restart <solr-heritage-container>
+   ```
+
+4. **Verify core status:**
+   ```bash
+   curl -s "http://localhost:8983/solr/blacklight_marc_heritage/admin/ping"
+   ```
 
 ## Project Map
 
