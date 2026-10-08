@@ -156,13 +156,13 @@ CRKN maintains two Solr setups (one for Canadiana, one for Heritage). Heritage c
 
 3. **Reload the core or restart Solr:**
    ```bash
-   curl "http://localhost:8983/solr/admin/cores?action=RELOAD&core=blacklight_marc"
+   docker exec <solr-canadiana-container> curl -s "http://localhost:8983/solr/admin/cores?action=RELOAD&core=blacklight_marc"
    # or: docker restart <solr-canadiana-container>
    ```
 
 4. **Verify core status:**
    ```bash
-   curl -s "http://localhost:8983/solr/blacklight_marc/admin/ping"
+   docker exec <solr-canadiana-container> curl -s "http://localhost:8983/solr/blacklight_marc/admin/ping"
    ```
 
 #### 2. Setting Up Heritage (`blacklight_marc_heritage`)
@@ -179,7 +179,6 @@ If Canadiana is already configured, you can save time by copying the configs dir
    ```bash
    # If cores share the same host filesystem / volume:
    cp -r /var/solr/data/blacklight_marc/conf/* /var/solr/data/blacklight_marc_heritage/conf/
-   chown -R 8983:8983 /var/solr/data/blacklight_marc_heritage
    ```
    > **Note for other microservice cores:** You can use the exact same shortcut for `ark_map`, `ark_counter`, and `content_search` — create the core with `_heritage` appended and copy over the configuration files from the corresponding Canadiana core:
    > - `ark_map` $\rightarrow$ `ark_map_heritage`
@@ -188,13 +187,13 @@ If Canadiana is already configured, you can save time by copying the configs dir
 
 3. **Reload the core or restart Solr:**
    ```bash
-   curl "http://localhost:8983/solr/admin/cores?action=RELOAD&core=blacklight_marc_heritage"
+   docker exec <solr-heritage-container> curl -s "http://localhost:8983/solr/admin/cores?action=RELOAD&core=blacklight_marc_heritage"
    # or: docker restart <solr-heritage-container>
    ```
 
 4. **Verify core status:**
    ```bash
-   curl -s "http://localhost:8983/solr/blacklight_marc_heritage/admin/ping"
+   docker exec <solr-heritage-container> curl -s "http://localhost:8983/solr/blacklight_marc_heritage/admin/ping"
    ```
 
 ## Project Map
