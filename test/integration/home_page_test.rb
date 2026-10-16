@@ -21,4 +21,11 @@ class HomePageTest < ActionDispatch::IntegrationTest
     assert_select 'form.home-heritage-search__form[action="https://heritage.example.test/catalogue"]'
     assert_select 'button.home-heritage-search__submit:not([disabled])', text: 'Search'
   end
+
+  test 'renders new heritage collection content link with date-added-desc sort' do
+    get root_path
+
+    assert_response :success
+    assert_select 'a.dropdown-item--heritage[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&sort=date-added-desc"]', text: 'New Héritage Collection Content'
+  end
 end
