@@ -98,7 +98,7 @@
                   <p class="home-split-card__text">Recherchez des œuvres originales couvrant des centaines d'années d'histoire canadienne, notamment des livres, des rapports, des brochures et bien plus encore.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les livres et publications" aria-label="Parcourir les livres et publications">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les livres et publications" aria-label="Parcourir les livres et publications">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -113,7 +113,7 @@
                   <p class="home-split-card__text">Découvrez la vie quotidienne, les histoires locales et les actualités communautaires des villes et villages du Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les journaux et magazines" aria-label="Parcourir les journaux et magazines">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les journaux et magazines" aria-label="Parcourir les journaux et magazines">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -128,7 +128,7 @@
                   <p class="home-split-card__text">Découvrez comment le Canada a été gouverné et façonné à travers les lois, les débats, les rapports et les traités élaborés par les administrations coloniales, provinciales et fédérales.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les publications gouvernementales" aria-label="Parcourir les publications gouvernementales">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les publications gouvernementales" aria-label="Parcourir les publications gouvernementales">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -143,7 +143,7 @@
                   <p class="home-split-card__text">Consultez des cartes détaillées de chaque province et territoire, créées entre 1905 et 2012. Observez comment les lieux et les frontières du Canada ont évolué au fil du temps.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les cartes" aria-label="Parcourir les cartes">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les cartes" aria-label="Parcourir les cartes">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -213,7 +213,7 @@
                   <p class="home-split-card__text">Des dossiers d'immigration, des registres paroissiaux, des registres fonciers, des histoires et documents familiaux, ainsi que des listes électorales.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Bientôt disponible : Parcourir les documents généalogiques" aria-label="Bientôt disponible : Parcourir les documents généalogiques">Parcourir</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=genealogie+immigration+etablissements&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les documents généalogiques" aria-label="Parcourir les documents généalogiques">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -228,7 +228,7 @@
                   <p class="home-split-card__text">Une vaste documentation sur les communautés des Premières Nations, des Métis et des Inuits au Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Bientôt disponible : Parcourir les documents sur les peuples autochtones" aria-label="Bientôt disponible : Parcourir les documents sur les peuples autochtones">Parcourir</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=histoire+autochtone+terres+education&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les documents sur les peuples autochtones" aria-label="Parcourir les documents sur les peuples autochtones">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -243,7 +243,7 @@
                   <p class="home-split-card__text">Des documents anciens provenant des Affaires indiennes, de l'Immigration, de la Santé, de l'Agriculture, des Chemins de fer et Canaux, des Pêches et des Ressources naturelles.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Bientôt disponible : Parcourir les services gouvernementaux" aria-label="Bientôt disponible : Parcourir les services gouvernementaux">Parcourir</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Parcourir les services gouvernementaux" aria-label="Parcourir les services gouvernementaux">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -258,7 +258,7 @@
                   <p class="home-split-card__text">Des documents consacrés à la Guerre de 1812, à la Première Guerre mondiale, à la Seconde Guerre mondiale et à l'administration militaire en temps de paix.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Bientôt disponible : Parcourir l'histoire militaire" aria-label="Bientôt disponible : Parcourir l'histoire militaire">Parcourir</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=histoire+militaire&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir l'histoire militaire" aria-label="Parcourir l'histoire militaire">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -273,7 +273,7 @@
                   <p class="home-split-card__text">Des documents provenant de premiers ministres, de gouverneurs généraux, de premiers ministres provinciaux, de ministres, d'explorateurs, de scientifiques, d'écrivains et d'artistes.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Bientôt disponible : Parcourir les personnalités canadiennes" aria-label="Bientôt disponible : Parcourir les personnalités canadiennes">Parcourir</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=documents+personnels&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les personnalités canadiennes" aria-label="Parcourir les personnalités canadiennes">Parcourir</a>
                 </div>
               </div>
               <div class="home-split-card__media">

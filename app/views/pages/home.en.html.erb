@@ -97,7 +97,7 @@
                   <p class="home-split-card__text">Search original works from hundreds of years of Canadian history, including books, reports, pamphlets, and more.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse books and publications" aria-label="Browse books and publications">Browse</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse books and publications" aria-label="Browse books and publications">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -112,7 +112,7 @@
                   <p class="home-split-card__text">Discover everyday life, local stories, and community news from towns and cities across Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse newspapers and magazines" aria-label="Browse newspapers and magazines">Browse</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse newspapers and magazines" aria-label="Browse newspapers and magazines">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -127,7 +127,7 @@
                   <p class="home-split-card__text">See how Canada was governed and shaped through acts, debates, reports, and treaties created by colonial, provincial, and federal offices before 1900.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse government publications" aria-label="Browse government publications">Browse</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse government publications" aria-label="Browse government publications">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -142,7 +142,7 @@
                   <p class="home-split-card__text">View detailed maps of every province and territory, created between 1905 and 2012. Watch how Canada's places and boundaries have shifted over time.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse maps" aria-label="Browse maps">Browse</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse maps" aria-label="Browse maps">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -212,7 +212,7 @@
                   <p class="home-split-card__text">Immigration records, church records, land records, family histories and papers, and voters' lists.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Coming soon: Browse genealogy materials" aria-label="Coming soon: Browse genealogy materials">Browse</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=genealogy+immigration+settlements&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Browse genealogy materials" aria-label="Browse genealogy materials">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -227,7 +227,7 @@
                   <p class="home-split-card__text">Extensive documents relating to First Nations, Métis, and Inuit communities in Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Coming soon: Browse Indigenous Peoples records" aria-label="Coming soon: Browse Indigenous Peoples records">Browse</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=indigenous+history+land+education&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Browse Indigenous Peoples records" aria-label="Browse Indigenous Peoples records">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -242,7 +242,7 @@
                   <p class="home-split-card__text">Early records from Indian Affairs, Immigration, Health, Agriculture, Railways and Canals, Fisheries, and Natural Resources.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Coming soon: Browse government records" aria-label="Coming soon: Browse government records">Browse</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=<%= I18n.locale %>" class="btn btn-sm home-split-card__cta" title="Browse government records" aria-label="Browse government records">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -257,7 +257,7 @@
                   <p class="home-split-card__text">Materials covering the War of 1812, First World War, Second World War, and military administration in peacetime.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Coming soon: Browse military history records" aria-label="Coming soon: Browse military history records">Browse</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=military+history&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Browse military history records" aria-label="Browse military history records">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -272,7 +272,7 @@
                   <p class="home-split-card__text">Papers from prime ministers, governors general, premiers, cabinet ministers, explorers, scientists, writers, and artists.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <span class="btn btn-sm home-split-card__cta" role="button"  title="Coming soon: Browse people and organizations records" aria-label="Coming soon: Browse people and organizations records">Browse</span>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&q=personal+papers&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Browse people and organizations records" aria-label="Browse people and organizations records">Browse</a>
                 </div>
               </div>
               <div class="home-split-card__media">

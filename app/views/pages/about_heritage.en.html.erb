@@ -14,10 +14,10 @@
             c. 1500 to 1985, digitized from Library and Archives Canada's microfilm holdings.
           </p>
           <div class="about-heritage-hero__actions">
-            <button class="about-heritage-hero__cta about-heritage-hero__cta--disabled" type="button" disabled>
+            <a class="about-heritage-hero__cta" href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>">
               <span>Search the Héritage Collection</span>
               <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -117,10 +117,10 @@
           <div class="about-heritage-topic__copy">
             <h3>Genealogy Materials</h3>
             <p>Immigration records, church records, land records, family histories and papers, and voters' lists.</p>
-            <button class="about-heritage-browse" type="button" disabled>
+            <a class="about-heritage-browse" href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&amp;q=genealogy+immigration+settlements&amp;search_field=all_fields">
               <span>Browse</span>
               <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </article>
 
@@ -137,10 +137,10 @@
           <div class="about-heritage-topic__copy">
             <h3>Indigenous Peoples</h3>
             <p>Extensive documents relating to First Nations, Métis, and Inuit communities in Canada.</p>
-            <button class="about-heritage-browse" type="button" disabled>
+            <a class="about-heritage-browse" href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&amp;q=indigenous+history+land+education&amp;search_field=all_fields">
               <span>Browse</span>
               <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </article>
 
@@ -157,10 +157,10 @@
           <div class="about-heritage-topic__copy">
             <h3>Government Departments</h3>
             <p>Early records from Indian Affairs, Immigration, Health, Agriculture, Railways and Canals, Fisheries, and Natural Resources.</p>
-            <button class="about-heritage-browse" type="button" disabled>
+            <a class="about-heritage-browse" href="<%= Rails.configuration.x.heritage_catalogue_url %>?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&amp;q=&amp;search_field=all_fields&amp;lang=<%= I18n.locale %>">
               <span>Browse</span>
               <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </article>
 
@@ -177,10 +177,10 @@
           <div class="about-heritage-topic__copy">
             <h3>Military History</h3>
             <p>Materials covering the War of 1812, First World War, Second World War, and military administration in peacetime.</p>
-            <button class="about-heritage-browse" type="button" disabled>
+            <a class="about-heritage-browse" href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&amp;q=military+history&amp;search_field=all_fields">
               <span>Browse</span>
               <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </article>
 
@@ -197,10 +197,10 @@
           <div class="about-heritage-topic__copy">
             <h3>Prominent Canadians</h3>
             <p>Papers from prime ministers, governors general, premiers, cabinet ministers, explorers, scientists, writers, and artists.</p>
-            <button class="about-heritage-browse" type="button" disabled>
+            <a class="about-heritage-browse" href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=<%= I18n.locale %>&amp;q=personal+papers&amp;search_field=all_fields">
               <span>Browse</span>
               <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-            </button>
+            </a>
           </div>
         </article>
       </div>
