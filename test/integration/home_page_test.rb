@@ -32,20 +32,20 @@ class HomePageTest < ActionDispatch::IntegrationTest
   test 'renders enabled heritage browse buttons on home page in english and french' do
     get root_path
     assert_response :success
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=genealogy+immigration+settlements&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=indigenous+history+land+education&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=en"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=military+history&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=personal+papers&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Genealogy+Materials&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Indigenous+Peoples&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Government+Records&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Military+History&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=People+and+Organizations&lang=en&q=&search_field=all_fields"]', text: 'Browse'
     assert_select '.home-explore-heritage span.home-split-card__cta', count: 0
 
     get root_path(lang: :fr)
     assert_response :success
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=genealogie+immigration+etablissements&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=histoire+autochtone+terres+education&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=fr"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=histoire+militaire&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=documents+personnels&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Documents+g%C3%A9n%C3%A9alogiques&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Peuples+autochtones&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Services+gouvernementaux&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Histoire+militaire&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Personnalit%C3%A9s+canadiennes&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
     assert_select '.home-explore-heritage span.home-split-card__cta', count: 0
   end
 
@@ -74,17 +74,17 @@ class HomePageTest < ActionDispatch::IntegrationTest
   test 'renders enabled canadiana browse buttons on home page in english and french' do
     get root_path
     assert_response :success
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=en"]', text: 'Browse'
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=en"]', text: 'Browse'
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=en"]', text: 'Browse'
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=en"]', text: 'Browse'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Monographs&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Serials&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Government+Publications&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Maps&lang=en&q=&search_field=all_fields"]', text: 'Browse'
 
     get root_path(lang: :fr)
     assert_response :success
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Monographs+%7C+Monographies&q=&search_field=all_fields&lang=fr"]', text: 'Parcourir'
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Serials+%7C+Publications+en+se%CC%81rie&q=&search_field=all_fields&lang=fr"]', text: 'Parcourir'
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Government+Publications+%7C+Publications+gouvernementales&q=&search_field=all_fields&lang=fr"]', text: 'Parcourir'
-    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollection_tsim_str%5D%5B%5D=Maps+%7C+Cartes&q=&search_field=all_fields&lang=fr"]', text: 'Parcourir'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Monographies&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Publications+en+se%CC%81rie&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Publications+gouvernementales&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-canadiana a.home-split-card__cta[href="https://canadiana.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Cartes&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
   end
 
   test 'renders enabled canadiana browse and search buttons on about canadiana page in english and french' do
