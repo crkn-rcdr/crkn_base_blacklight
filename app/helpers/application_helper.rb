@@ -88,7 +88,8 @@ module ApplicationHelper
   end
 
   def render_icon(var)
-    "<span title='#{var.parameterize}' class='icon icon-#{var.parameterize}' aria-hidden='true'></span>"
+    extra_class = var.to_s.downcase == 'collection' ? ' icon-archive' : ''
+    "<span title='#{var.parameterize}' class='icon icon-#{var.parameterize}#{extra_class}' aria-hidden='true'></span>"
   end
   def format_render(var)
     "<span class='format-text'>#{var.parameterize}</span>"
@@ -101,7 +102,7 @@ module ApplicationHelper
       else
         format_str = 'journal-issue'
       end
-    elsif format_str.downcase.include?('collection')
+    elsif format_str.downcase.include?('collection') || format_str.downcase.include?('archive')
       format_str = 'collection'
     elsif format_str.downcase.include?('sub-unit') || format_str.downcase.include?('subunit')
       format_str = 'sub-unit'

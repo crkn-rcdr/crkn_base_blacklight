@@ -62,8 +62,9 @@
     .blacklight-format li .icon-electronic {
         background-image: url(/assets/icon-electronic.svg);
     }
-    .blacklight-format li .icon-collection {
-        background-image: url(/assets/icon-manuscript.svg);
+    .blacklight-format li .icon-collection,
+    .blacklight-format li .icon-archive {
+        background-image: url(/assets/icon-archive.svg);
     }
     .blacklight-format li .icon-sub-unit,
     .blacklight-format li .icon-subunit {

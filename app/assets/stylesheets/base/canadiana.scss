@@ -2112,9 +2112,10 @@ dialog#blacklight-modal,
   -webkit-mask-image: url(/assets/icon-electronic.svg);
 }
 
-.result-chip__icon.icon-collection {
-  mask-image: url(/assets/icon-manuscript.svg);
-  -webkit-mask-image: url(/assets/icon-manuscript.svg);
+.result-chip__icon.icon-collection,
+.result-chip__icon.icon-archive {
+  mask-image: url(/assets/icon-archive.svg);
+  -webkit-mask-image: url(/assets/icon-archive.svg);
 }
 
 .result-chip__icon.icon-sub-unit,
