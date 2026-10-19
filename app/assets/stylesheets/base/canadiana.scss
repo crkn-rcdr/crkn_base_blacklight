@@ -2122,9 +2122,10 @@ dialog#blacklight-modal,
 .result-chip__icon.icon-reel,
 .result-chip__icon.icon-sub-unit,
 .result-chip__icon.icon-subunit,
-.result-chip__icon.icon-microfilm {
-  mask-image: url(/assets/icon-microfilm.svg);
-  -webkit-mask-image: url(/assets/icon-microfilm.svg);
+.result-chip__icon.icon-microfilm,
+.result-chip__icon.icon-film {
+  mask-image: url(/assets/icon-film.svg);
+  -webkit-mask-image: url(/assets/icon-film.svg);
 }
 
 .result-chip--full-text {

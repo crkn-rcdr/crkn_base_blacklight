@@ -92,7 +92,7 @@ module ApplicationHelper
     extra_class = if v == 'collection' || v == 'mikan'
                     ' icon-archive'
                   elsif v == 'sub-unit' || v == 'subunit' || v == 'reel'
-                    ' icon-microfilm'
+                    ' icon-film'
                   else
                     ''
                   end
