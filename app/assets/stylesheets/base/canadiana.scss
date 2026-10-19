@@ -11695,3 +11695,76 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
 .blacklight-pages-compare_collections .compare-token {
   border-radius: 3px !important;
 }
+
+/* Sticky Feedback Banner at Bottom of Viewport */
+.feedback-sticky-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1040;
+  background-color: #1a2732;
+  color: #ffffff;
+  border-top: 3px solid var(--theme-primary, #1d808b);
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.28);
+  padding: 0.65rem 1.25rem;
+  font-size: 0.93rem;
+  line-height: 1.5;
+
+  &__inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  &__text {
+    flex: 1 1 auto;
+    color: #f8fafc;
+    margin: 0;
+  }
+
+  &__link {
+    color: #38bdf8 !important;
+    text-decoration: underline !important;
+    font-weight: 600;
+    transition: color 0.15s ease-in-out;
+
+    &:hover,
+    &:focus {
+      color: #ffffff !important;
+      text-decoration: underline !important;
+    }
+  }
+
+  &__close {
+    flex-shrink: 0;
+    opacity: 0.85;
+    transition: opacity 0.15s ease-in-out;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+}
+
+body.has-feedback-banner {
+  padding-bottom: 3.5rem;
+}
+
+@media (max-width: 576px) {
+  body.has-feedback-banner {
+    padding-bottom: 5.25rem;
+  }
+}
+
