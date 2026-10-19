@@ -170,5 +170,93 @@ class MarcIndexerDateTest < ActiveSupport::TestCase
     assert_equal (1880..1885).to_a, @indexer.send(:extract_publication_years, record)
     assert_equal 1880, @indexer.send(:extract_original_publication_year, record)
   end
+
+  # =========================================================================
+  # Heritage archival records tests (046, LDR pos 7, 024, 520, 555, 246)
+  # =========================================================================
+  test "extracts archival date range from 046 field" do
+    record = MARC::Record.new
+    record.append(MARC::DataField.new('046', ' ', ' ',
+      MARC::Subfield.new('a', '1893'),
+      MARC::Subfield.new('b', '1915')
+    ))
+
+    d046 = @indexer.send(:extract_046_dates, record)
+    assert_not_nil d046
+    assert_equal 1893, d046[:start_year]
+    assert_equal 1915, d046[:end_year]
+    assert_equal (1893..1915).to_a, d046[:range]
+    assert_equal "1893-1915", d046[:display]
+
+    assert_equal (1893..1915).to_a, @indexer.send(:extract_publication_years, record)
+    assert_equal 1893, @indexer.send(:extract_original_publication_year, record)
+  end
+
+  test "extracts single archival date from 046 field" do
+    record = MARC::Record.new
+    record.append(MARC::DataField.new('046', ' ', ' ',
+      MARC::Subfield.new('a', '1902')
+    ))
+
+    d046 = @indexer.send(:extract_046_dates, record)
+    assert_not_nil d046
+    assert_equal 1902, d046[:start_year]
+    assert_equal 1902, d046[:end_year]
+    assert_equal [1902], d046[:range]
+    assert_equal "1902", d046[:display]
+  end
+
+  test "indexes full Heritage collection record with LDR pos 7 'c' and archival fields" do
+    record = MARC::Record.new
+    record.leader = '00000nac a2200000 i 4500'
+    record.append(MARC::ControlField.new('001', 'oocihm.lac_mikan_117878'))
+    record.append(MARC::DataField.new('024', '8', ' ', MARC::Subfield.new('a', 'Archival Reference: MG 29 A 60')))
+    record.append(MARC::DataField.new('046', ' ', ' ', MARC::Subfield.new('a', '1893'), MARC::Subfield.new('b', '1915')))
+    record.append(MARC::DataField.new('245', '0', '0', MARC::Subfield.new('a', 'Sir William Van Horne')))
+    record.append(MARC::DataField.new('246', '0', ' ', MARC::Subfield.new('a', 'Sir William Van Horne: Registres')))
+    record.append(MARC::DataField.new('520', ' ', ' ', MARC::Subfield.new('a', 'Sir William Cornelius Van Horne scope note')))
+    record.append(MARC::DataField.new('555', '0', ' ', MARC::Subfield.new('a', 'Finding aid: http://example.com/fa.pdf')))
+
+    doc = @indexer.map_record(record)
+    assert_equal ['Collection'], doc['format']
+    assert_equal ['Collection'], doc['resource_type_ssim']
+    assert_equal ['1893-1915'], doc['published_ssm']
+    assert_equal ['1893-1915'], doc['date_created_ssm']
+    assert_equal [1893], doc['pub_date_si']
+    assert_equal (1893..1915).to_a, doc['pub_date_ssim']
+    assert_equal ['Archival Reference: MG 29 A 60'], doc['archival_ref_ssm']
+    assert_equal ['Sir William Cornelius Van Horne scope note'], doc['summary_tsim']
+    assert_equal ['Finding aid: http://example.com/fa.pdf'], doc['finding_aid_ssm']
+    assert_equal ['Sir William Van Horne: Registres'], doc['title_addl_tsim']
+  end
+
+  test "indexes Heritage sub-unit record with LDR pos 7 'd'" do
+    record = MARC::Record.new
+    record.leader = '00000nad a2200000 i 4500'
+    record.append(MARC::ControlField.new('001', 'oocihm.lac_mikan_999999'))
+
+    doc = @indexer.map_record(record)
+    assert_equal ['Sub-unit'], doc['format']
+    assert_equal ['Sub-unit'], doc['resource_type_ssim']
+  end
+
+  test "preserves standard Canadiana monograph behavior" do
+    record = MARC::Record.new
+    record.leader = '00000nam a2200000 a 4500'
+    record.append(MARC::ControlField.new('001', 'oocihm.12345'))
+    record.append(MARC::DataField.new('260', ' ', ' ',
+      MARC::Subfield.new('a', 'Toronto :'),
+      MARC::Subfield.new('b', 'Briggs,'),
+      MARC::Subfield.new('c', '1905.')
+    ))
+
+    doc = @indexer.map_record(record)
+    assert_equal ['Book'], doc['format']
+    assert_equal ['Book'], doc['resource_type_ssim']
+    assert_equal ['Toronto : Briggs, 1905'], doc['published_ssm']
+    assert_equal [1905], doc['pub_date_ssim']
+    assert_nil doc['archival_ref_ssm']
+    assert_nil doc['summary_tsim']
+  end
 end
 

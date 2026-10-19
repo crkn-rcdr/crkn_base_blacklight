@@ -108,8 +108,16 @@ class MarcIndexer < Blacklight::Marc::Indexer
       acc.replace [acc.join(' ')] # turn it into a single string
     end
 
-    to_field "language_ssim", marc_languages("008[35-37]:041a:041d:")
-    to_field "format", get_format
+    to_field "format" do |record, accumulator|
+      ldr_pos7 = (record.leader[7] || '').downcase rescue ''
+      if ldr_pos7 == 'c'
+        accumulator.replace ['Collection']
+      elsif ldr_pos7 == 'd'
+        accumulator.replace ['Sub-unit']
+      else
+        get_format.call(record, accumulator, nil)
+      end
+    end
 
     to_field 'material_type_ssm', extract_marc('300a'), trim_punctuation
 
@@ -190,9 +198,24 @@ class MarcIndexer < Blacklight::Marc::Indexer
       688#{ATOZ}
     ).join(':')), trim_punctuation
 
-    # Published statement
-    to_field 'published_ssm', extract_marc('260abcefg:264abc', alternate_script: false), trim_punctuation
+    # Published statement (with fallback to 046 archival dates of creation when 260/264 is absent)
+    to_field 'published_ssm' do |record, accumulator, context|
+      extract_marc('260abcefg:264abc', alternate_script: false).call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      if accumulator.compact_blank.empty?
+        if (d046 = extract_046_dates(record))
+          accumulator.replace([d046[:display]])
+        end
+      end
+    end
     to_field 'published_vern_ssm', extract_marc('260abcefg:264abc', alternate_script: :only), trim_punctuation
+
+    # Archival date of creation (046)
+    to_field 'date_created_ssm' do |record, accumulator|
+      if (d046 = extract_046_dates(record))
+        accumulator.replace([d046[:display]])
+      end
+    end
 
     # Published Dates (prioritizing original publication date over reproduction/digitization date)
     to_field 'pub_date_si' do |record, accumulator|
@@ -249,6 +272,17 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
     # Source of Description
     to_field 'source_of_description_tsim', extract_marc(%W(588#{ATOZ}))
+
+    # Summary / Scope and Content Note (520)
+    to_field 'summary_tsim', extract_marc(%W(520#{ATOZ}))
+    to_field 'summary_ssm', extract_marc(%W(520#{ATOZ}))
+
+    # Finding Aid Note and Link (555)
+    to_field 'finding_aid_ssm', extract_marc(%W(555#{ATOZ}))
+    to_field 'finding_aid_tsim', extract_marc(%W(555#{ATOZ}))
+
+    # Archival Reference / Other Standard Identifier (024)
+    to_field 'archival_ref_ssm', extract_marc('024a'), trim_punctuation
 
     # Series
     to_field 'title_series_tsim', extract_marc("440anpv:490av")
@@ -385,6 +419,11 @@ class MarcIndexer < Blacklight::Marc::Indexer
         res = resolve_years.call(years)
         return res if res
       end
+    end
+
+    # 2b. Check 046 archival dates of creation (e.g. Heritage archival records)
+    if (d046 = extract_046_dates(record))
+      return d046[:range]
     end
 
     # 3. Check any other 264$c (e.g. manufacture or production)
@@ -553,6 +592,40 @@ class MarcIndexer < Blacklight::Marc::Indexer
   end
 
 
+  def extract_046_dates(record)
+    record.fields('046').each do |field|
+      # Subfield pairs for start and end dates in 046:
+      # $a and $b (inclusive dates), $k and $l (creation date range), or $c and $d
+      start_raw = field['a'] || field['k'] || field['c']
+      end_raw = field['b'] || field['l'] || field['d']
+
+      y1 = extract_year_from_046_subfield(start_raw)
+      y2 = extract_year_from_046_subfield(end_raw)
+
+      if y1 && y2
+        start_y, end_y = [y1, y2].min, [y1, y2].max
+        return { start_year: start_y, end_year: end_y, range: (start_y..end_y).to_a, display: start_y == end_y ? start_y.to_s : "#{start_y}-#{end_y}" }
+      elsif y1
+        return { start_year: y1, end_year: y1, range: [y1], display: y1.to_s }
+      elsif y2
+        return { start_year: y2, end_year: y2, range: [y2], display: y2.to_s }
+      end
+    end
+    nil
+  end
+
+  def extract_year_from_046_subfield(val)
+    return nil if val.blank?
+    s = val.to_s.strip
+    if (m = s.match(/\b(1\d{3}|20\d{2})\b/))
+      m[1].to_i
+    elsif (m = s.match(/\A\s*(1\d{3}|20\d{2})/))
+      m[1].to_i
+    else
+      extract_years_from_string(s).first
+    end
+  end
+
   def materials_by_language(record)
     collection_paths_by_language(record).transform_values do |paths|
       paths.map(&:first).compact.uniq
@@ -573,6 +646,10 @@ class MarcIndexer < Blacklight::Marc::Indexer
   end
 
   def resource_type_facet_values(record)
+    ldr_pos7 = (record.leader[7] || '').downcase rescue ''
+    return ['Collection'] if ldr_pos7 == 'c'
+    return ['Sub-unit'] if ldr_pos7 == 'd'
+
     formats = []
     get_format.call(record, formats, nil)
     formats.compact_blank!

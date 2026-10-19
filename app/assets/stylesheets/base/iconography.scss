@@ -62,6 +62,13 @@
     .blacklight-format li .icon-electronic {
         background-image: url(/assets/icon-electronic.svg);
     }
+    .blacklight-format li .icon-collection {
+        background-image: url(/assets/icon-manuscript.svg);
+    }
+    .blacklight-format li .icon-sub-unit,
+    .blacklight-format li .icon-subunit {
+        background-image: url(/assets/file-ruled.svg);
+    }
 }
 .not-found-icon {
     width: 25vw;

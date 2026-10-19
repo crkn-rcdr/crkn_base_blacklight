@@ -101,6 +101,10 @@ module ApplicationHelper
       else
         format_str = 'journal-issue'
       end
+    elsif format_str.downcase.include?('collection')
+      format_str = 'collection'
+    elsif format_str.downcase.include?('sub-unit') || format_str.downcase.include?('subunit')
+      format_str = 'sub-unit'
     end
     icon = render_icon(format_str)
     formats = format_render(format_str)
@@ -155,7 +159,8 @@ module ApplicationHelper
         'ebook' => 'book',
         'software' => 'book',
         'newspaper-issue' => 'newspaper',
-        'journal-issue' => 'journal'
+        'journal-issue' => 'journal',
+        'sub-unit' => 'subunit'
       }.fetch(format_key, format_key)
 
       format_label = I18n.t("blacklight.metadata.resource_type.values.#{normalized_key.underscore}", default: normalized_key.tr('-', ' ').titleize)
@@ -184,14 +189,15 @@ module ApplicationHelper
   end
 
   def format_text(args)
-    args[:document][args[:field]].map! do |item|
-      item.gsub(/https?:\/\/\S+/) do |url|
-        "<a href=\"#{url}\" target=\"_blank\">#{url}</a>"
+    values = Array(args[:document][args[:field]]).map do |item|
+      ERB::Util.html_escape(item.to_s).gsub(%r{https?://\S+}) do |url|
+        clean_url = url.sub(/[.,;)]\z/, '')
+        punct = url[clean_url.length..-1] || ''
+        "<a href=\"#{clean_url}\" target=\"_blank\" rel=\"noopener\">#{clean_url}</a>#{punct}"
       end
     end
-    value_str = Array(args[:document][args[:field]]).join('<br/>')
-    value_str.sub!(/<br\/>$/, '')
-    content_tag :p, "#{value_str}".html_safe, dir: 'ltr'
+    value_str = values.join('<br/>')
+    content_tag :p, value_str.html_safe, dir: 'ltr'
   end
 
   def format_facet(args)
@@ -216,6 +222,8 @@ module ApplicationHelper
           when /Newspaper/i then 'newspaper'
           when /Musical|Score/i then 'musical_score'
           when /Map/i then 'map'
+          when /Collection/i then 'collection'
+          when /Sub-unit|Subunit/i then 'subunit'
           else value.to_s.parameterize.underscore
           end
     I18n.t("blacklight.metadata.resource_type.values.#{key}", default: value.to_s.titleize)

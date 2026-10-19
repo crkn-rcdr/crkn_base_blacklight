@@ -329,6 +329,12 @@ fr:
         label: Tous
       serial_title:
         label: Titre du périodique ou journal
+      archival_ref:
+        label: Référence archivistique
+      summary:
+        label: Portée et contenu
+      finding_aid:
+        label: Instrument de recherche
       resource_type:
         label: Type de ressource
         values:
@@ -337,6 +343,8 @@ fr:
           newspaper: Journal
           musical_score: Partition musicale
           map: Carte
+          collection: Collection
+          subunit: Sous-unité
       include_issues:
         label: Inclure les résultats des numéros individuels
     sort:

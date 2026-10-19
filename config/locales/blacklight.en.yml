@@ -345,6 +345,12 @@ en:
         label: All Fields
       serial_title:
         label: Periodical / Newspaper Title
+      archival_ref:
+        label: Archival Reference
+      summary:
+        label: Scope and Content
+      finding_aid:
+        label: Finding Aid
       resource_type:
         label: Resource Type
         values:
@@ -353,6 +359,8 @@ en:
           newspaper: Newspaper
           musical_score: Musical Score
           map: Map
+          collection: Collection
+          subunit: Sub-unit
       include_issues:
         label: Include results from individual issues
     sort:

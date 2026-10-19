@@ -2112,6 +2112,17 @@ dialog#blacklight-modal,
   -webkit-mask-image: url(/assets/icon-electronic.svg);
 }
 
+.result-chip__icon.icon-collection {
+  mask-image: url(/assets/icon-manuscript.svg);
+  -webkit-mask-image: url(/assets/icon-manuscript.svg);
+}
+
+.result-chip__icon.icon-sub-unit,
+.result-chip__icon.icon-subunit {
+  mask-image: url(/assets/file-ruled.svg);
+  -webkit-mask-image: url(/assets/file-ruled.svg);
+}
+
 .result-chip--full-text {
   background: #eef8e8;
   color: #2e6800;
