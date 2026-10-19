@@ -62,13 +62,16 @@
     .blacklight-format li .icon-electronic {
         background-image: url(/assets/icon-electronic.svg);
     }
+    .blacklight-format li .icon-mikan,
     .blacklight-format li .icon-collection,
     .blacklight-format li .icon-archive {
         background-image: url(/assets/icon-archive.svg);
     }
+    .blacklight-format li .icon-reel,
     .blacklight-format li .icon-sub-unit,
-    .blacklight-format li .icon-subunit {
-        background-image: url(/assets/file-ruled.svg);
+    .blacklight-format li .icon-subunit,
+    .blacklight-format li .icon-microfilm {
+        background-image: url(/assets/icon-microfilm.svg);
     }
 }
 .not-found-icon {

@@ -343,8 +343,11 @@ fr:
           newspaper: Journal
           musical_score: Partition musicale
           map: Carte
-          collection: Collection
-          subunit: Sous-unité
+          collection: Mikan
+          mikan: Mikan
+          subunit: Bobine
+          sub_unit: Bobine
+          reel: Bobine
       include_issues:
         label: Inclure les résultats des numéros individuels
     sort:

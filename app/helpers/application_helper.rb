@@ -88,7 +88,14 @@ module ApplicationHelper
   end
 
   def render_icon(var)
-    extra_class = var.to_s.downcase == 'collection' ? ' icon-archive' : ''
+    v = var.to_s.downcase
+    extra_class = if v == 'collection' || v == 'mikan'
+                    ' icon-archive'
+                  elsif v == 'sub-unit' || v == 'subunit' || v == 'reel'
+                    ' icon-microfilm'
+                  else
+                    ''
+                  end
     "<span title='#{var.parameterize}' class='icon icon-#{var.parameterize}#{extra_class}' aria-hidden='true'></span>"
   end
   def format_render(var)
@@ -102,10 +109,10 @@ module ApplicationHelper
       else
         format_str = 'journal-issue'
       end
-    elsif format_str.downcase.include?('collection') || format_str.downcase.include?('archive')
-      format_str = 'collection'
-    elsif format_str.downcase.include?('sub-unit') || format_str.downcase.include?('subunit')
-      format_str = 'sub-unit'
+    elsif format_str.downcase.include?('mikan') || format_str.downcase.include?('collection') || format_str.downcase.include?('archive')
+      format_str = 'mikan'
+    elsif format_str.downcase.include?('reel') || format_str.downcase.include?('sub-unit') || format_str.downcase.include?('subunit')
+      format_str = 'reel'
     end
     icon = render_icon(format_str)
     formats = format_render(format_str)
@@ -161,7 +168,9 @@ module ApplicationHelper
         'software' => 'book',
         'newspaper-issue' => 'newspaper',
         'journal-issue' => 'journal',
-        'sub-unit' => 'subunit'
+        'collection' => 'mikan',
+        'sub-unit' => 'reel',
+        'subunit' => 'reel'
       }.fetch(format_key, format_key)
 
       format_label = I18n.t("blacklight.metadata.resource_type.values.#{normalized_key.underscore}", default: normalized_key.tr('-', ' ').titleize)
@@ -223,8 +232,8 @@ module ApplicationHelper
           when /Newspaper/i then 'newspaper'
           when /Musical|Score/i then 'musical_score'
           when /Map/i then 'map'
-          when /Collection/i then 'collection'
-          when /Sub-unit|Subunit/i then 'subunit'
+          when /Mikan|Collection/i then 'mikan'
+          when /Reel|Sub-unit|Subunit/i then 'reel'
           else value.to_s.parameterize.underscore
           end
     I18n.t("blacklight.metadata.resource_type.values.#{key}", default: value.to_s.titleize)

@@ -58,11 +58,18 @@
           <% end %>
         <% end %>
 
+<%
+  default_issues_label = if CatalogController.heritage?(self)
+                           is_fr ? 'Inclure les résultats des bobines individuelles' : 'Include results from individual reels'
+                         else
+                           is_fr ? 'Inclure les résultats des numéros individuels' : 'Include results from individual issues'
+                         end
+%>
         <div class="d-flex align-items-center py-1">
           <label class="form-check-label d-flex align-items-center gap-2 m-0" style="cursor: pointer; font-size: 0.92rem; font-weight: 500; color: #25303a; user-select: none;">
             <%= hidden_field_tag :include_issues, '0', id: nil %>
             <%= check_box_tag :include_issues, '1', req_params['include_issues'] != '0', id: 'sidebar_include_issues_checkbox', class: 'form-check-input mt-0', onchange: 'this.form.submit()' %>
-            <span><%= is_fr ? 'Inclure les résultats des numéros individuels' : 'Include results from individual issues' %></span>
+            <span><%= t('blacklight.metadata.include_issues.label', default: default_issues_label) %></span>
           </label>
         </div>
       </form>

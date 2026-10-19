@@ -359,8 +359,11 @@ en:
           newspaper: Newspaper
           musical_score: Musical Score
           map: Map
-          collection: Collection
-          subunit: Sub-unit
+          collection: Mikan
+          mikan: Mikan
+          subunit: Reel
+          sub_unit: Reel
+          reel: Reel
       include_issues:
         label: Include results from individual issues
     sort:

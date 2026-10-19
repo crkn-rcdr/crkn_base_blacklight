@@ -218,8 +218,8 @@ class MarcIndexerDateTest < ActiveSupport::TestCase
     record.append(MARC::DataField.new('555', '0', ' ', MARC::Subfield.new('a', 'Finding aid: http://example.com/fa.pdf')))
 
     doc = @indexer.map_record(record)
-    assert_equal ['Collection'], doc['format']
-    assert_equal ['Collection'], doc['resource_type_ssim']
+    assert_equal ['Mikan'], doc['format']
+    assert_equal ['Mikan'], doc['resource_type_ssim']
     assert_equal ['1893-1915'], doc['published_ssm']
     assert_equal ['1893-1915'], doc['date_created_ssm']
     assert_equal [1893], doc['pub_date_si']
@@ -236,8 +236,8 @@ class MarcIndexerDateTest < ActiveSupport::TestCase
     record.append(MARC::ControlField.new('001', 'oocihm.lac_mikan_999999'))
 
     doc = @indexer.map_record(record)
-    assert_equal ['Sub-unit'], doc['format']
-    assert_equal ['Sub-unit'], doc['resource_type_ssim']
+    assert_equal ['Reel'], doc['format']
+    assert_equal ['Reel'], doc['resource_type_ssim']
   end
 
   test "preserves standard Canadiana monograph behavior" do

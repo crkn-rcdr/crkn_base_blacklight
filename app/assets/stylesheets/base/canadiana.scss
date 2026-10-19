@@ -2112,16 +2112,19 @@ dialog#blacklight-modal,
   -webkit-mask-image: url(/assets/icon-electronic.svg);
 }
 
+.result-chip__icon.icon-mikan,
 .result-chip__icon.icon-collection,
 .result-chip__icon.icon-archive {
   mask-image: url(/assets/icon-archive.svg);
   -webkit-mask-image: url(/assets/icon-archive.svg);
 }
 
+.result-chip__icon.icon-reel,
 .result-chip__icon.icon-sub-unit,
-.result-chip__icon.icon-subunit {
-  mask-image: url(/assets/file-ruled.svg);
-  -webkit-mask-image: url(/assets/file-ruled.svg);
+.result-chip__icon.icon-subunit,
+.result-chip__icon.icon-microfilm {
+  mask-image: url(/assets/icon-microfilm.svg);
+  -webkit-mask-image: url(/assets/icon-microfilm.svg);
 }
 
 .result-chip--full-text {

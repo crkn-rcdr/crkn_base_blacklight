@@ -111,9 +111,9 @@ class MarcIndexer < Blacklight::Marc::Indexer
     to_field "format" do |record, accumulator|
       ldr_pos7 = (record.leader[7] || '').downcase rescue ''
       if ldr_pos7 == 'c'
-        accumulator.replace ['Collection']
+        accumulator.replace ['Mikan']
       elsif ldr_pos7 == 'd'
-        accumulator.replace ['Sub-unit']
+        accumulator.replace ['Reel']
       else
         get_format.call(record, accumulator, nil)
       end
@@ -647,8 +647,8 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
   def resource_type_facet_values(record)
     ldr_pos7 = (record.leader[7] || '').downcase rescue ''
-    return ['Collection'] if ldr_pos7 == 'c'
-    return ['Sub-unit'] if ldr_pos7 == 'd'
+    return ['Mikan'] if ldr_pos7 == 'c'
+    return ['Reel'] if ldr_pos7 == 'd'
 
     formats = []
     get_format.call(record, formats, nil)
