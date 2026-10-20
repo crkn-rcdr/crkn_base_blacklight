@@ -32,20 +32,20 @@ class HomePageTest < ActionDispatch::IntegrationTest
   test 'renders enabled heritage browse buttons on home page in english and french' do
     get root_path
     assert_response :success
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Genealogy+Materials&lang=en&q=&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Indigenous+Peoples&lang=en&q=&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Government+Records&lang=en&q=&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Military+History&lang=en&q=&search_field=all_fields"]', text: 'Browse'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=People+and+Organizations&lang=en&q=&search_field=all_fields"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Genealogy"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Indigenous+peoples"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Government+records"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Military+history"]', text: 'Browse'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=People+and+Organizations"]', text: 'Browse'
     assert_select '.home-explore-heritage span.home-split-card__cta', count: 0
 
     get root_path(lang: :fr)
     assert_response :success
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Documents+g%C3%A9n%C3%A9alogiques&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Peuples+autochtones&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Services+gouvernementaux&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Histoire+militaire&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
-    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Personnalit%C3%A9s+canadiennes&lang=fr&q=&search_field=all_fields"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Genealogy"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Indigenous+peoples"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Government+records"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Military+history"]', text: 'Parcourir'
+    assert_select '.home-explore-heritage a.home-split-card__cta[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=People+and+Organizations"]', text: 'Parcourir'
     assert_select '.home-explore-heritage span.home-split-card__cta', count: 0
   end
 
@@ -53,21 +53,21 @@ class HomePageTest < ActionDispatch::IntegrationTest
     get about_heritage_path
     assert_response :success
     assert_select 'a.about-heritage-hero__cta[href="https://heritage.example.test/catalogue?lang=en"]', text: /Search the Héritage Collection/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Genealogy+Materials&lang=en&q=&search_field=all_fields"]', text: /Browse/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Indigenous+Peoples&lang=en&q=&search_field=all_fields"]', text: /Browse/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Government+Records&lang=en&q=&search_field=all_fields"]', text: /Browse/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=Military+History&lang=en&q=&search_field=all_fields"]', text: /Browse/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionen_path%5D%5B%5D=People+and+Organizations&lang=en&q=&search_field=all_fields"]', text: /Browse/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Genealogy"]', text: /Browse/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Indigenous+peoples"]', text: /Browse/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Government+records"]', text: /Browse/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Military+history"]', text: /Browse/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=en&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=People+and+Organizations"]', text: /Browse/
     assert_select 'button.about-heritage-browse', count: 0
 
     get about_heritage_path(lang: :fr)
     assert_response :success
     assert_select 'a.about-heritage-hero__cta[href="https://heritage.example.test/catalogue?lang=fr"]', text: /Rechercher dans la collection Héritage/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Documents+g%C3%A9n%C3%A9alogiques&lang=fr&q=&search_field=all_fields"]', text: /Parcourir/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Peuples+autochtones&lang=fr&q=&search_field=all_fields"]', text: /Parcourir/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Services+gouvernementaux&lang=fr&q=&search_field=all_fields"]', text: /Parcourir/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Histoire+militaire&lang=fr&q=&search_field=all_fields"]', text: /Parcourir/
-    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?f%5Bcollectionfr_path%5D%5B%5D=Personnalit%C3%A9s+canadiennes&lang=fr&q=&search_field=all_fields"]', text: /Parcourir/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Genealogy"]', text: /Parcourir/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Indigenous+peoples"]', text: /Parcourir/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Government+records"]', text: /Parcourir/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Military+history"]', text: /Parcourir/
+    assert_select 'a.about-heritage-browse[href="https://heritage.example.test/catalogue?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=People+and+Organizations"]', text: /Parcourir/
     assert_select 'button.about-heritage-browse', count: 0
   end
 
