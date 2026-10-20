@@ -257,6 +257,21 @@ class MarcIndexerDateTest < ActiveSupport::TestCase
     assert_equal [1905], doc['pub_date_ssim']
     assert_nil doc['archival_ref_ssm']
     assert_nil doc['summary_tsim']
+    assert_nil doc['dates_or_sequential_tsim']
+    assert_nil doc['dates_or_sequential_ssm']
+  end
+
+  test "indexes MARC 362 dates of publication or sequential designation" do
+    record = MARC::Record.new
+    record.leader = '00000nas a2200000 a 4500'
+    record.append(MARC::ControlField.new('001', 'oocihm.8_06637'))
+    record.append(MARC::DataField.new('362', '0', ' ',
+      MARC::Subfield.new('a', 'Volumes: 9193 to vol. 9197')
+    ))
+
+    doc = @indexer.map_record(record)
+    assert_equal ['Volumes: 9193 to vol. 9197'], doc['dates_or_sequential_tsim']
+    assert_equal ['Volumes: 9193 to vol. 9197'], doc['dates_or_sequential_ssm']
   end
 end
 

@@ -492,6 +492,8 @@
   <field name="date_added" type="pdates" multiValued="false"/>
   <field name="date_added_str" type="text_general"/>
   <field name="date_edited" type="pdates"/>
+  <field name="dates_or_sequential_ssm" type="text_general"/>
+  <field name="dates_or_sequential_tsim" type="text_general"/>
   <field name="depositor_tsim" type="text_general"/>
   <field name="doc_source_tsim" type="text_general"/>
   <field name="format" type="text_general"/>
@@ -659,6 +661,7 @@
   <copyField source="rights_statement_ssim" dest="rights_statement_ssim_str" maxChars="256"/>
   <copyField source="url_suppl_ssm" dest="url_suppl_ssm_str" maxChars="256"/>
   <copyField source="source_of_description_tsim" dest="source_of_description_tsim_str" maxChars="256"/>
+  <copyField source="dates_or_sequential_tsim" dest="dates_or_sequential_tsim_str" maxChars="256"/>
   <copyField source="full_title_ssm" dest="full_title_ssm_str" maxChars="256"/>
   <copyField source="full_title_tsim" dest="full_title_tsim_str" maxChars="256"/>
 

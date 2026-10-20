@@ -303,6 +303,8 @@ en:
         label: Creator
       published:
         label: Published
+      dates_or_sequential:
+        label: Dates of Publication and/or Sequential Designation
       date:
         label: Digitization Date
       id:

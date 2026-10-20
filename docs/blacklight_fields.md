@@ -80,7 +80,7 @@ These are created by Solr `copyField` rules in `managed-schema.xml`. Cataloguers
 The search results page uses these main fields:
 
 - result title: `full_title_tsim`
-- result metadata: `format`, `title_ssm`, `author_ssm`, `published_ssm`, `pub_date_ssim`, `subject_ssim`, `depositor_tsim`, `language_ssim`, `notes_tsim`, `original_version_note_tsim`, `access_note_tsim`, `ark`, `date_added`
+- result metadata: `format`, `title_ssm`, `author_ssm`, `published_ssm`, `dates_or_sequential_tsim`, `pub_date_ssim`, `subject_ssim`, `depositor_tsim`, `language_ssim`, `notes_tsim`, `original_version_note_tsim`, `access_note_tsim`, `ark`, `date_added`
 
 ## Show page for a normal item
 
@@ -168,6 +168,7 @@ depending on how `902$b` and `245$a` are catalogued.
 | Solr field | MARC source | Where used | If missing or wrong |
 | --- | --- | --- | --- |
 | `published_ssm` | `260abcefg`, `264abc` roman only | Search-result metadata; show-page metadata | If missing, the publication statement line disappears. |
+| `dates_or_sequential_tsim` | `362#{ATOZ}` | Search-result metadata; show-page metadata | If missing, serial dates of publication or sequential designations (e.g. volume numbers) are absent. |
 | `published_vern_ssm` | `260abcefg`, `264abc` alternate script only | Stored only | No current visible effect. |
 | `pub_date_si` | Derived by `extract_original_publication_year` | Sort helper | If parsing fails, date sorting is unreliable or empty. Prioritizes original publication year over digitization date. |
 | `pub_date_ssim` | Derived by `extract_original_publication_year` | Search-result metadata; show-page metadata; date range facet; year sorts | If parsing fails, the year may vanish from display and the record will not behave properly in year facets/sorts. Prioritizes original publication year over digitization date. |

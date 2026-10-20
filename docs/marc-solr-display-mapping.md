@@ -48,6 +48,7 @@ It reflects the code currently in the repository, not older comments or prior in
 | `subject_tsim` | Searchable subject field; exposed as search-field option | `600-658`, `662`, `688` across all subfields (`#{ATOZ}`) | Broad subject search field. |
 | `subject_ssim` | Subject display/facet source | `600-658`, `662`, `688` across all subfields (`#{ATOZ}`) | Punctuation trimmed. Used in index/show metadata and facet copy field source. |
 | `published_ssm` | Publication statement display (roman); index/show metadata | `260abcefg`, `264abc` | Roman script only; punctuation trimmed. |
+| `dates_or_sequential_tsim` | Dates of publication and/or sequential designation | `362#{ATOZ}` | Used in both index and show metadata. |
 | `published_vern_ssm` | Publication statement display (vernacular) | `260abcefg`, `264abc` | Vernacular only; punctuation trimmed. |
 | `pub_date_si` | Sortable publication date key | Derived | Uses custom `extract_original_publication_year` (prioritizes original publication year from 264$c, 260$c, 008 Date 2, 534$c, 500$a over digitization/reproduction dates). |
 | `pub_date_ssim` | Publication year facet/display/sort source | Derived | Uses custom `extract_original_publication_year` (prioritizes original publication year from 264$c, 260$c, 008 Date 2, 534$c, 500$a over digitization/reproduction dates). Used in index/show metadata, year range facet, and year sorts. |

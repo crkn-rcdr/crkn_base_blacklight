@@ -287,6 +287,8 @@ fr:
         label: Créateur
       published:
         label: Publication
+      dates_or_sequential:
+        label: Dates de publication et/ou désignation séquentielle
       date:
         label: Date de numérisation
       id:

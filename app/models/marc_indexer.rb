@@ -273,6 +273,10 @@ class MarcIndexer < Blacklight::Marc::Indexer
     # Source of Description
     to_field 'source_of_description_tsim', extract_marc(%W(588#{ATOZ}))
 
+    # Dates of Publication and/or Sequential Designation (362)
+    to_field 'dates_or_sequential_tsim', extract_marc(%W(362#{ATOZ}))
+    to_field 'dates_or_sequential_ssm', extract_marc(%W(362#{ATOZ}))
+
     # Summary / Scope and Content Note (520)
     to_field 'summary_tsim', extract_marc(%W(520#{ATOZ}))
     to_field 'summary_ssm', extract_marc(%W(520#{ATOZ}))
