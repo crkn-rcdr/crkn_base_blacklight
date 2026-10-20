@@ -173,6 +173,7 @@ depending on how `902$b` and `245$a` are catalogued.
 | `pub_date_si` | Derived by `extract_original_publication_year` | Sort helper | If parsing fails, date sorting is unreliable or empty. Prioritizes original publication year over digitization date. |
 | `pub_date_ssim` | Derived by `extract_original_publication_year` | Search-result metadata; show-page metadata; date range facet; year sorts | If parsing fails, the year may vanish from display and the record will not behave properly in year facets/sorts. Prioritizes original publication year over digitization date. |
 | `material_type_ssm` | `300$a` | Indexed/stored only; not wired into current index/show metadata config | No current visible effect. |
+| `language_ssim` | `008[35-37]`, `041a`, `041b` (multi-language), `041d` | Search-result metadata; show-page metadata; language facet source (`language_ssim_str`) | If missing, language disappears from results, show pages, and language facets. |
 
 ## Collection and local metadata fields
 

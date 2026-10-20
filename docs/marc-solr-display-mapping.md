@@ -27,7 +27,7 @@ It reflects the code currently in the repository, not older comments or prior in
 | `is_serial` | Flags parent serial records; controls whether show page renders Mirador/downloads or issue list | `901` | Exact case-insensitive compare to `Is series`; stores `Yes` or `No`. Current code does not inspect `999`. |
 | `marc_ss` | Full MARC XML payload; used by `Blacklight::Marc::DocumentExtension` for MARC/librarian-style views | Entire record | Stored via `get_xml`. |
 | `all_text_timv` | Catch-all indexed text for broad search / retrieval support | Entire record | Joins all extracted MARC values into one string. |
-| `language_ssim` | Language display + facet source + semantic field | `008[35-37]`, `041$a`, `041$d` | Uses Traject `marc_languages(...)` normalization. |
+| `language_ssim` | Language display + facet source + semantic field | `008[35-37]`, `041$a`, `041$b`, `041$d` | Extracted from 008 and 041 ($a, extra $b multi-language subfields, $d) and translated via MARC language map; suppresses generic 'Multiple languages' when specific languages exist. |
 | `format` | Format icon / semantic format field | Derived by `Blacklight::Marc::Indexer::Formats#get_format` | Not mapped from explicit tags in this file; delegated to Blacklight MARC format logic. |
 | `material_type_ssm` | Stored physical/material statement | `300$a` | Punctuation trimmed. Not currently wired into index/show field config. |
 | `full_title_tsim` | Main title search field and configured Blacklight result title field | `245$a$b` | Used by `config.index.title_field` and search field `full_title_tsim`. |

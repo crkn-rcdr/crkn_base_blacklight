@@ -119,6 +119,11 @@ class MarcIndexer < Blacklight::Marc::Indexer
       end
     end
 
+    # Language: 008[35-37], 041$a, 041$b (multi-language subfields), 041$d
+    to_field 'language_ssim' do |record, accumulator|
+      accumulator.replace extract_languages(record)
+    end
+
     to_field 'material_type_ssm', extract_marc('300a'), trim_punctuation
 
     # Title fields
@@ -634,6 +639,46 @@ class MarcIndexer < Blacklight::Marc::Indexer
     collection_paths_by_language(record).transform_values do |paths|
       paths.map(&:first).compact.uniq
     end
+  end
+
+  def extract_languages(record)
+    @marc_languages_map ||= Traject::TranslationMap.new('marc_languages')
+    codes = []
+
+    # 008 positions 35-37
+    if (f008 = record['008']&.value)
+      l008 = f008[35..37].to_s.strip.downcase
+      codes << l008 unless l008.empty? || l008 == 'und' || l008 == 'zxx' || l008.include?('|')
+    end
+
+    # 041 subfields $a, $b (multi-language subfields), $d
+    record.fields('041').each do |field|
+      field.subfields.each do |sf|
+        next unless %w[a b d].include?(sf.code)
+        val = sf.value.to_s.strip.downcase
+        next if val.empty? || val == 'und' || val == 'zxx' || val.include?('|')
+        if val.length > 3 && (val.length % 3).zero?
+          codes.concat(val.chars.each_slice(3).map(&:join))
+        else
+          codes << val
+        end
+      end
+    end
+
+    codes.uniq!
+
+    languages = codes.map { |c| @marc_languages_map[c] || (c.length > 3 ? c.capitalize : nil) }
+                     .compact
+                     .map(&:strip)
+                     .reject(&:empty?)
+                     .uniq
+
+    # If specific languages are present, drop generic "Multiple languages" (from 008 mul)
+    if languages.size > 1 && languages.include?('Multiple languages')
+      languages.delete('Multiple languages')
+    end
+
+    languages
   end
 
   def rights_statement_facet_values(record)
