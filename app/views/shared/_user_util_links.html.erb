@@ -1,4 +1,5 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<% feedback_survey_url = 'https://form.simplesurvey.com/f/r/laFfRoM4' %>
 <% canadiana_catalogue_url = Rails.configuration.x.canadiana_catalogue_url %>
 <% heritage_catalogue_url = Rails.configuration.x.heritage_catalogue_url %>
 <% new_canadiana_url = "#{canadiana_catalogue_url}?lang=#{I18n.locale}&q=&search_field=all_fields&sort=date-added-desc" %>
@@ -7,6 +8,15 @@
 <% search_heritage_url = "#{heritage_catalogue_url}?lang=#{I18n.locale}" %>
 <% news_url = is_fr ? 'https://www.crkn-rcdr.ca/fr/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' : 'https://www.crkn-rcdr.ca/en/news?field_keywords_target_id=1627&field_type_target_id=All&field_date_value=&field_date_value_submit=' %>
 <ul class="nav-list nav-list-main" aria-label="<%= is_fr ? 'Navigation principale' : 'Primary navigation' %>">
+  <li class="nav-item-feedback">
+    <a class="nav-btn-feedback"
+       href="<%= feedback_survey_url %>"
+       target="_blank"
+       rel="noopener"
+       aria-label="<%= is_fr ? 'Partager vos commentaires (ouvre un nouvel onglet)' : 'Share Feedback (opens in a new tab)' %>">
+      <%= is_fr ? 'Partager vos commentaires' : 'Share Feedback' %>
+    </a>
+  </li>
   <li class="nav-item-dropdown dropdown">
     <button class="btn nav-dropdown-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       <%= is_fr ? 'À propos' : 'About' %>

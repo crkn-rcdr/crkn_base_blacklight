@@ -1301,7 +1301,7 @@ dialog#blacklight-modal,
   align-items: center;
   justify-content: center;
   min-width: 176px;
-  border-radius: 6px;
+  border-radius: var(--bs-btn-border-radius, var(--site-radius, 2px)) !important;
   padding: 0.5rem 0.9rem;
   background: #d80f3a;
   color: #fff !important;
@@ -3642,6 +3642,44 @@ dialog#blacklight-modal,
   align-items: center;
 }
 
+.nav-list.nav-list-main .nav-item-feedback {
+  display: flex !important;
+  align-items: center;
+}
+
+.nav-list.nav-list-main a.nav-btn-feedback,
+.nav-list.nav-list-main .nav-btn-feedback {
+  background-color: #02542d !important;
+  color: #ffffff !important;
+  border: 1px solid #02542d !important;
+  border-radius: var(--bs-btn-border-radius, var(--site-radius, 2px)) !important;
+  padding: 0.42rem 0.95rem !important;
+  font-size: clamp(0.85rem, 0.9vw, 0.96rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:hover,
+  &:focus {
+    background-color: #013e21 !important;
+    border-color: #013e21 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #005fcc !important;
+    outline-offset: 2px;
+  }
+}
+
 .nav-list.nav-list-main a {
   color: #222930 !important;
   text-decoration: none !important;
@@ -3870,6 +3908,12 @@ dialog#blacklight-modal,
   .nav-list.nav-list-main .nav-dropdown-toggle {
     font-size: var(--topbar-nav-font-size);
   }
+
+  .nav-list.nav-list-main a.nav-btn-feedback,
+  .nav-list.nav-list-main .nav-btn-feedback {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.85rem !important;
+  }
 }
 
 @media (max-width: 991px) {
@@ -3939,6 +3983,22 @@ dialog#blacklight-modal,
   .nav-list.nav-list-main > li {
     display: block !important;
     width: 100%;
+  }
+
+  .nav-list.nav-list-main .nav-item-feedback {
+    display: block !important;
+    width: 100%;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .nav-list.nav-list-main a.nav-btn-feedback,
+  .nav-list.nav-list-main .nav-btn-feedback {
+    display: flex !important;
+    width: 100%;
+    min-height: 48px;
+    padding: 0.65rem 1rem !important;
+    font-size: 1rem !important;
+    justify-content: center;
   }
 
   .nav-list.nav-list-main a {
