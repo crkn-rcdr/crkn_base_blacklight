@@ -153,6 +153,10 @@ fr:
       errors:
         invalid_solr_id: Vous avez demandé une notice qui n'existe pas.
       facets:
+        has_full_text:
+          label: Recherche en texte intégral
+          available: disponible
+          not_available: non disponible
         all: Tout
         apply: Appliquer
         clear: Effacer
@@ -275,6 +279,8 @@ fr:
         container_label: Navigation principale
     welcome: Welcome!
     metadata:
+      has_full_text:
+        label: Recherche en texte intégral
       title:
         label: Titre
       fulltx:

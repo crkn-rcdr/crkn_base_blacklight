@@ -170,6 +170,10 @@ en:
       errors:
         invalid_solr_id: Sorry, you have requested a record that doesn't exist.
       facets:
+        has_full_text:
+          label: Full Text Search
+          available: available
+          not_available: not available
         all: All
         apply: Apply
         clear: Clear Filter
@@ -291,6 +295,8 @@ en:
         container_label: Main navigation
     welcome: Welcome!
     metadata:
+      has_full_text:
+        label: Full Text Search
       title:
         label: Title
       fulltx:

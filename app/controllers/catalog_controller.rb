@@ -200,6 +200,24 @@ class CatalogController < ApplicationController
                            sort: 'count', limit: 8, suggest: true, index_range: true
 
 
+    config.add_facet_field 'has_full_text',
+                           label: ->(_c) { I18n.t('blacklight.metadata.has_full_text.label', default: 'Full Text Search') },
+                           component: CheckboxFacetComponent,
+                           helper_method: :render_full_text_facet_label,
+                           tag: 'tag_has_full_text',
+                           ex: 'tag_has_full_text',
+                           if: ->(context, _config, _facet = nil) { CatalogController.heritage?(context) },
+                           query: {
+                             available: {
+                               label: 'available',
+                               fq: 'tx_gen:[* TO *]'
+                             },
+                             not_available: {
+                               label: 'not_available',
+                               fq: '(*:* -tx_gen:[* TO *])'
+                             }
+                           }
+
     # Send facet field list to Solr
     config.add_facet_fields_to_solr_request!
 

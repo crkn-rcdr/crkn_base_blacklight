@@ -192,6 +192,18 @@ module ApplicationHelper
     RightsStatementLabeler.localized_label_for(value)
   end
 
+  def render_full_text_facet_label(value)
+    case value.to_s
+    when 'available', 'tx_gen:[* TO *]'
+      I18n.t('blacklight.search.facets.has_full_text.available', default: 'available')
+    when 'not_available', '-tx_gen:[* TO *]'
+      I18n.t('blacklight.search.facets.has_full_text.not_available', default: 'not available')
+    else
+      value.to_s
+    end
+  end
+
+
   def rights_statement_present?(_field_config, document)
     document['rights_statement_ssim_str'].present? ||
       rights_statement_labels(document, 'rights_stat_tsim').present? ||

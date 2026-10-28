@@ -25,6 +25,8 @@ class SearchBuilder < Blacklight::SearchBuilder
       next if clean_values.empty?
 
       config = facet_configs[field_key] || facet_configs[field_key.to_s] || facet_configs[field_key.to_sym]
+      next if config&.query
+
       solr_field = (config&.field || field_key).to_s
       tag = "tag_#{field_key.to_s.parameterize.underscore}"
 
@@ -68,6 +70,11 @@ class SearchBuilder < Blacklight::SearchBuilder
       tag = "tag_#{key.to_s.parameterize.underscore}"
       tag_map[key.to_s] = tag
       tag_map[solr_field] = tag
+      if config&.query.is_a?(Hash)
+        config.query.each do |_qkey, qconf|
+          tag_map[qconf[:fq]] = tag if qconf[:fq]
+        end
+      end
     end
 
     # 1. Normalize and Tag all filter queries in :fq (remove string 'fq' to prevent duplicate params)
@@ -79,7 +86,7 @@ class SearchBuilder < Blacklight::SearchBuilder
         # Match which facet field this filter belongs to
         matched_tag = nil
         tag_map.each do |field_name, tag|
-          if fq_entry =~ /(?:f=#{Regexp.escape(field_name)}\b|\b#{Regexp.escape(field_name)}\s*:)/
+          if fq_entry == field_name || fq_entry =~ /(?:f=#{Regexp.escape(field_name)}\b|\b#{Regexp.escape(field_name)}\s*:)/
             matched_tag = tag
             break
           end
@@ -117,7 +124,29 @@ class SearchBuilder < Blacklight::SearchBuilder
         end
       end.uniq
     end
+
+    # 3. Normalize and Exclude corresponding tags in :'facet.query'
+    raw_facet_queries = Array(solr_parameters.delete('facet.query')) +
+                        Array(solr_parameters.delete(:facet_query)) +
+                        Array(solr_parameters.delete('facet_query')) +
+                        Array(solr_parameters[:'facet.query'])
+
+    if raw_facet_queries.present?
+      solr_parameters[:'facet.query'] = raw_facet_queries.map do |query_entry|
+        next query_entry unless query_entry.is_a?(String)
+
+        # Ensure local params have key='...' matching query for proper Blacklight facet parsing
+        if query_entry =~ /\A\{!ex=([^}]+)\}(.+)\z/
+          tag_name = $1
+          orig_query = $2
+          "{!ex=#{tag_name} key='#{orig_query}'}#{orig_query}"
+        else
+          query_entry
+        end
+      end.uniq
+    end
   end
+
   def boost_and_expand_id_queries(solr_parameters)
     return unless solr_parameters
 
