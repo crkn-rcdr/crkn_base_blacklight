@@ -83,6 +83,6 @@ gem 'bootstrap', '~> 5.2.0'
 gem "sassc-rails"
 gem 'blacklight', '~> 8.8'
 gem 'blacklight-marc', '~>8.1'
-gem 'blacklight_range_limit', '~> 9.0.0'
+gem 'blacklight_range_limit', '~> 9.3'
 gem 'rsolr'
 gem 'blacklight-hierarchy'

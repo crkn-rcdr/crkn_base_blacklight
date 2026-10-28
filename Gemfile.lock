@@ -102,9 +102,9 @@ GEM
       marc-fastxmlwriter
       rails
       traject (~> 3.0)
-    blacklight_range_limit (9.0.0)
-      blacklight (>= 7.25.2, < 9)
-      view_component (>= 2.54, < 4)
+    blacklight_range_limit (9.3.0)
+      blacklight (>= 7.25.2, < 10)
+      view_component (>= 2.54, < 5)
     bootsnap (1.26.1)
       msgpack (~> 1.5)
     bootstrap (5.2.3)
@@ -215,7 +215,6 @@ GEM
       marc (~> 1.0)
     marcel (1.2.1)
     matrix (0.4.3)
-    method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.27.0)
@@ -368,10 +367,10 @@ GEM
       concurrent-ruby (~> 1.0)
     uri (1.1.2)
     useragent (0.16.11)
-    view_component (3.27.0)
-      activesupport (>= 5.2.0, < 8.2)
-      concurrent-ruby (~> 1)
-      method_source (~> 1.0)
+    view_component (4.20.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
+      prism (>= 1.0)
     vite_rails (3.11.1)
       railties (>= 5.1, < 9)
       vite_ruby (~> 3.0, >= 3.2.2)
@@ -406,7 +405,7 @@ DEPENDENCIES
   blacklight (~> 8.8)
   blacklight-hierarchy
   blacklight-marc (~> 8.1)
-  blacklight_range_limit (~> 9.0.0)
+  blacklight_range_limit (~> 9.3)
   bootsnap
   bootstrap (~> 5.2.0)
   capybara
