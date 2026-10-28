@@ -22,22 +22,40 @@
         <% breadcrumb_paths = helpers.collection_breadcrumb_paths(@document) %>
         <% root_breadcrumb_label = I18n.locale.to_s.start_with?('fr') ? 'Collection Canadiana - Résultats de recherche' : 'Canadiana Collection - Search Results' %>
         <% root_breadcrumb_url = helpers.back_to_search_url %>
+        <%
+          has_serial = @document._source['is_issue']&.first == "Yes" && @document._source['serial_title']&.first.present?
+          serial_title = @document._source['serial_title']&.first.to_s.strip
+          serial_key = @document._source['serial_key']&.first
+          lang_param = params[:lang].presence || (I18n.locale.to_s.start_with?('fr') ? 'fr' : 'en')
+          parent_url = serial_key.present? ? "/catalogue/#{ERB::Util.url_encode(serial_key)}?lang=#{ERB::Util.url_encode(lang_param)}" : nil
+        %>
         <nav class="collection-breadcrumbs mb-3" aria-label="<%= t('breadcrumbs.collections', default: 'Collections') %>">
           <% if breadcrumb_paths.present? %>
             <% breadcrumb_paths.each do |path| %>
+              <%
+                last_segment_label = path.last&.dig(:label).to_s.strip
+                is_duplicate = has_serial && (
+                  last_segment_label.casecmp?(serial_title) ||
+                  last_segment_label.downcase.gsub(/[^a-z0-9]/, '') == serial_title.downcase.gsub(/[^a-z0-9]/, '')
+                )
+              %>
               <ol class="breadcrumb mb-1">
                 <li class="breadcrumb-item collection-breadcrumbs__root"><%= link_to root_breadcrumb_label, root_breadcrumb_url %></li>
                 <% path.each_with_index do |segment, idx| %>
-                  <% active = (idx == path.length - 1) %>
+                  <%
+                    is_last_segment = (idx == path.length - 1)
+                    active = is_last_segment && (!has_serial || is_duplicate)
+                    target_url = (is_last_segment && is_duplicate && parent_url.present?) ? parent_url : helpers.collection_breadcrumb_url(segment[:value], segment[:field])
+                  %>
                   <li class="breadcrumb-item <%= 'active' if active %>">
                     <%= link_to segment[:label],
-                                helpers.collection_breadcrumb_url(segment[:value], segment[:field]),
+                                target_url,
                                 aria: (active ? { current: 'page' } : {}) %>
                   </li>
                 <% end %>
-                <% if @document._source['is_issue']&.first == "Yes" && @document._source['serial_title'] %>
-                  <li class="breadcrumb-item">
-                    <a href="/catalogue/<%= @document._source['serial_key'][0] %>"><%= @document._source['serial_title'][0] %></a>
+                <% if has_serial && !is_duplicate && parent_url.present? %>
+                  <li class="breadcrumb-item active">
+                    <%= link_to serial_title, parent_url, aria: { current: 'page' } %>
                   </li> 
                 <% end %>
               </ol>
@@ -45,6 +63,11 @@
           <% else %>
             <ol class="breadcrumb mb-1">
               <li class="breadcrumb-item collection-breadcrumbs__root"><%= link_to root_breadcrumb_label, root_breadcrumb_url %></li>
+              <% if has_serial && parent_url.present? %>
+                <li class="breadcrumb-item active">
+                  <%= link_to serial_title, parent_url, aria: { current: 'page' } %>
+                </li>
+              <% end %>
             </ol>
           <% end %>
         </nav>
