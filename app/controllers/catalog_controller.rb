@@ -197,6 +197,7 @@ class CatalogController < ApplicationController
                            component: CheckboxFacetComponent,
                            tag: 'tag_serial_title_str',
                            ex: 'tag_serial_title_str',
+                           if: ->(context, _config, _facet = nil) { !CatalogController.heritage?(context) },
                            sort: 'count', limit: 8, suggest: true, index_range: true
 
 
@@ -209,11 +210,11 @@ class CatalogController < ApplicationController
                            if: ->(context, _config, _facet = nil) { CatalogController.heritage?(context) },
                            query: {
                              available: {
-                               label: 'available',
+                               label: 'Available',
                                fq: 'tx_gen:[* TO *]'
                              },
                              not_available: {
-                               label: 'not_available',
+                               label: 'Not Available',
                                fq: '(*:* -tx_gen:[* TO *])'
                              }
                            }

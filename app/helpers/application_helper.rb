@@ -194,10 +194,10 @@ module ApplicationHelper
 
   def render_full_text_facet_label(value)
     case value.to_s
-    when 'available', 'tx_gen:[* TO *]'
-      I18n.t('blacklight.search.facets.has_full_text.available', default: 'available')
-    when 'not_available', '-tx_gen:[* TO *]'
-      I18n.t('blacklight.search.facets.has_full_text.not_available', default: 'not available')
+    when 'available', 'Available', 'tx_gen:[* TO *]'
+      I18n.t('blacklight.search.facets.has_full_text.available', default: 'Available')
+    when 'not_available', 'Not Available', '-tx_gen:[* TO *]'
+      I18n.t('blacklight.search.facets.has_full_text.not_available', default: 'Not Available')
     else
       value.to_s
     end

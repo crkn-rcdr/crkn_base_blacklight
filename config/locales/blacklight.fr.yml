@@ -155,8 +155,8 @@ fr:
       facets:
         has_full_text:
           label: Recherche en texte intégral
-          available: disponible
-          not_available: non disponible
+          available: Disponible
+          not_available: Non disponible
         all: Tout
         apply: Appliquer
         clear: Effacer

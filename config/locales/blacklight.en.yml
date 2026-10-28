@@ -172,8 +172,8 @@ en:
       facets:
         has_full_text:
           label: Full Text Search
-          available: available
-          not_available: not available
+          available: Available
+          not_available: Not Available
         all: All
         apply: Apply
         clear: Clear Filter
