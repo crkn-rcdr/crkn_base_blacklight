@@ -7,7 +7,8 @@ class SearchBuilder < Blacklight::SearchBuilder
   self.default_processor_chain += [
     :add_inclusive_facet_fq_to_solr,
     :tag_and_exclude_facets,
-    :filter_individual_issues
+    :filter_individual_issues,
+    :boost_and_expand_id_queries
   ]
 
   def add_inclusive_facet_fq_to_solr(solr_parameters)
@@ -116,5 +117,89 @@ class SearchBuilder < Blacklight::SearchBuilder
         end
       end.uniq
     end
+  end
+  def boost_and_expand_id_queries(solr_parameters)
+    return unless solr_parameters
+
+    search_field = (blacklight_params[:search_field] || blacklight_params['search_field'])&.to_s
+    return if search_field.present? && search_field != 'all_fields'
+
+    raw_q = (blacklight_params[:q] || blacklight_params['q'])&.to_s&.strip
+    return if raw_q.blank?
+
+    solr_parameters[:bq] ||= []
+    solr_parameters[:bq] = Array(solr_parameters[:bq])
+
+    # Single-token query without special Solr query syntax
+    if raw_q =~ /\A[a-zA-Z0-9_\-\.]+\z/
+      candidates = generate_id_candidates(raw_q)
+      candidates.each do |cid|
+        escaped_id = cid.gsub('"', '\\"')
+        clause = "id:\"#{escaped_id}\"^50000"
+        solr_parameters[:bq] << clause unless solr_parameters[:bq].include?(clause)
+      end
+
+      # Unless the user already prefixed with oocihm., expand solr_parameters[:q] so
+      # bare identifiers (e.g. N_00005, 72118, 117878, h2971) match the record's ID
+      unless raw_q.downcase.start_with?('oocihm.')
+        id_clauses = candidates.map { |cid| "id:\"#{cid.gsub('"', '\\"')}\"" }.uniq
+        solr_parameters[:q] = "(#{raw_q}) OR #{id_clauses.join(' OR ')}"
+        solr_parameters[:mm] = 1
+      end
+    else
+      # Multi-word query (e.g. "MIKAN 117878", "reel H2971", "CIHM 72118")
+      tokens = raw_q.scan(/[a-zA-Z0-9_\-\.]+/)
+      tokens.each do |tok|
+        next if tok.length < 3 || tok.length > 50
+        next if tok =~ /\A(?:the|and|for|from|with|dans|avec|pour)\z/i
+
+        candidates = generate_id_candidates(tok)
+        candidates.each do |cid|
+          escaped_id = cid.gsub('"', '\\"')
+          clause = "id:\"#{escaped_id}\"^50000"
+          solr_parameters[:bq] << clause unless solr_parameters[:bq].include?(clause)
+        end
+      end
+    end
+  end
+
+  def generate_id_candidates(term)
+    candidates = [
+      term,
+      term.downcase,
+      term.upcase
+    ]
+
+    if term.downcase.start_with?('oocihm.')
+      base = term.sub(/\Aoocihm\./i, '')
+      candidates << base
+      candidates << base.downcase
+      candidates << base.upcase
+      if base =~ /\Alac_mikan_(.+)\z/i
+        candidates << $1
+      elsif base =~ /\Alac_reel_(.+)\z/i
+        candidates << $1
+        candidates << $1.downcase
+      end
+    else
+      candidates << "oocihm.#{term}"
+      candidates << "oocihm.#{term.downcase}"
+      candidates << "oocihm.#{term.upcase}"
+      candidates << "oocihm.lac_mikan_#{term}"
+      candidates << "oocihm.lac_reel_#{term}"
+      candidates << "oocihm.lac_reel_#{term.downcase}"
+      candidates << "oocihm.lac_reel_#{term.upcase}"
+
+      if term =~ /\A(?:lac_)?reel_(.+)\z/i
+        reel_num = $1
+        candidates << "oocihm.lac_reel_#{reel_num}"
+        candidates << "oocihm.lac_reel_#{reel_num.downcase}"
+      elsif term =~ /\A(?:lac_)?mikan_(.+)\z/i
+        mikan_num = $1
+        candidates << "oocihm.lac_mikan_#{mikan_num}"
+      end
+    end
+
+    candidates.uniq
   end
 end

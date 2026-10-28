@@ -1,5 +1,5 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
-<% feedback_survey_url = 'https://form.simplesurvey.com/f/r/laFfRoM4' %>
+<% feedback_survey_url = is_fr ? 'https://form.simplesurvey.com/f/r/laFfRoM4?lang=FR' : 'https://form.simplesurvey.com/f/r/laFfRoM4' %>
 <% canadiana_catalogue_url = Rails.configuration.x.canadiana_catalogue_url %>
 <% heritage_catalogue_url = Rails.configuration.x.heritage_catalogue_url %>
 <% new_canadiana_url = "#{canadiana_catalogue_url}?lang=#{I18n.locale}&q=&search_field=all_fields&sort=date-added-desc" %>

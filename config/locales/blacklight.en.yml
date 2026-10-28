@@ -333,6 +333,8 @@ en:
         label: Is a Serial Publication
       issue_msg:
         label: Is an Issue of a Serial Publication
+      varying_title:
+        label: Varying Form of Title
       date_added:
         label: Date Added/Updated
       language:

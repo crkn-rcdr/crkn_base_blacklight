@@ -67,7 +67,8 @@ class CatalogController < ApplicationController
   ].freeze
   ALL_FIELDS_QF = (
     %w[
-      id
+      id^5000
+      id_t^2500
       title_tsim^3
       title_addl_tsim^2
       author_tsim^2
@@ -230,6 +231,7 @@ class CatalogController < ApplicationController
     config.add_show_field 'ark', label: ->(_f, _c) { I18n.t('blacklight.metadata.persistent_url.label') }, helper_method: :value_link
     config.add_show_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
     config.add_show_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
+    config.add_show_field 'varying_title_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.varying_title.label', default: 'Varying Form of Title') }, helper_method: :format_text
     config.add_show_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
     config.add_show_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
     config.add_show_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }

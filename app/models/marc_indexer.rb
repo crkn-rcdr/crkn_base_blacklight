@@ -23,6 +23,22 @@ class MarcIndexer < Blacklight::Marc::Indexer
     # https://github.com/traject/traject/blob/5d720e2ba0a277cf7af455763f520cd6a2d956c7/README.md?plain=1#L279
     to_field "id", extract_marc("001"), trim, first_only
 
+    # ID text field for search and partial matching (e.g. N_00005, h2971, 117878)
+    to_field "id_t" do |record, accumulator|
+      rec_id = record["001"]&.value&.strip
+      if rec_id && !rec_id.empty?
+        acc = [rec_id]
+        if rec_id =~ /\Aoocihm\.(.+)\z/i
+          bare = $1
+          acc << bare
+          if bare =~ /\Alac_(?:reel|mikan)_(.+)\z/i
+            acc << $1
+          end
+        end
+        accumulator.replace acc.uniq
+      end
+    end
+
     # 901 = "Is issue"  => Yes; otherwise (missing/different) => No
     to_field "is_issue" do |record, accumulator|
       v = record["901"]&.value&.strip
@@ -75,16 +91,16 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
       if is_ser || is_iss || has_serial_key || v902c
         if v902c
-          acc.replace([v902c])
+          acc.replace([v902c.sub(/\.\z/, '').strip])
         else
           # Fallback to 245$a (stripping text after first colon) if 902$c doesn't exist
           v = acc.first
           if v && v.include?(' : ')
-            acc.replace([v.split(' : ', 2).first.strip])
+            acc.replace([v.split(' : ', 2).first.sub(/\.\z/, '').strip])
           elsif v && v.include?(':')
-            acc.replace([v.split(':', 2).first.strip])
+            acc.replace([v.split(':', 2).first.sub(/\.\z/, '').strip])
           else
-            acc.replace(v ? [v.strip] : [])
+            acc.replace(v ? [v.sub(/\.\z/, '').strip] : [])
           end
         end
       else
@@ -157,51 +173,120 @@ class MarcIndexer < Blacklight::Marc::Indexer
     to_field 'title_si', marc_sortable_title
 
     # Author fields
-    to_field 'author_tsim', extract_marc("100abcegqu:110abcdegnu:111acdegjnqu:130#{ATOZ}:700abcegqu:710abcdegnu:711acdegjnqu:720#{ATOZ}")
-    to_field 'author_ssm', extract_marc("100abcdq:110#{ATOZ}:111#{ATOZ}:130#{ATOZ}:700abcegqu:710abcdegnu:711acdegjnqu:720#{ATOZ}", alternate_script: false)
-    to_field 'author_vern_ssm', extract_marc("100abcdq:110#{ATOZ}:111#{ATOZ}:130#{ATOZ}:700abcegqu:710abcdegnu:711acdegjnqu:720#{ATOZ}", alternate_script: :only)
+    to_field 'author_tsim', extract_marc("100abcegqu:110abcdegnu:111acdegjnqu:130#{ATOZ}:700#{ATOZ}:710#{ATOZ}:711#{ATOZ}:720#{ATOZ}")
+    to_field 'author_ssm' do |record, accumulator, context|
+      extract_marc("100abcdq:110#{ATOZ}:111#{ATOZ}:130#{ATOZ}:700abcdq:710#{ATOZ}:711#{ATOZ}:720#{ATOZ}", alternate_script: false).call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
+    to_field 'author_vern_ssm' do |record, accumulator, context|
+      extract_marc("100abcdq:110#{ATOZ}:111#{ATOZ}:130#{ATOZ}:700abcdq:710#{ATOZ}:711#{ATOZ}:720#{ATOZ}", alternate_script: :only).call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
 
     # JSTOR isn't an author. Try to not use it as one
     to_field 'author_si', marc_sortable_author
 
     # Subject fields
-    to_field 'subject_tsim', extract_marc(%W(
-      600#{ATOZ}
-      610#{ATOZ}
-      611#{ATOZ}
-      630#{ATOZ}
-      647#{ATOZ}
-      648#{ATOZ}
-      650#{ATOZ}
-      651#{ATOZ}
-      653#{ATOZ}
-      654#{ATOZ}
-      655#{ATOZ}
-      656#{ATOZ}
-      657#{ATOZ}
-      658#{ATOZ}
-      662#{ATOZ}
-      688#{ATOZ}
-    ).join(':'))
+    to_field 'subject_tsim' do |record, accumulator, context|
+      specs = %W(
+        600#{ATOZ}
+        610#{ATOZ}
+        611#{ATOZ}
+        630#{ATOZ}
+        647#{ATOZ}
+        648#{ATOZ}
+        650#{ATOZ}
+        651#{ATOZ}
+        654#{ATOZ}
+        655#{ATOZ}
+        656#{ATOZ}
+        657#{ATOZ}
+        658#{ATOZ}
+        662#{ATOZ}
+        688#{ATOZ}
+      )
+      specs << "653#{ATOZ}" unless heritage_portal?
+      extract_marc(specs.join(':')).call(record, accumulator, context)
+    end
 
-    to_field 'subject_ssim', extract_marc(%W(
-      600#{ATOZ}
-      610#{ATOZ}
-      611#{ATOZ}
-      630#{ATOZ}
-      647#{ATOZ}
-      648#{ATOZ}
-      650#{ATOZ}
-      651#{ATOZ}
-      653#{ATOZ}
-      654#{ATOZ}
-      655#{ATOZ}
-      656#{ATOZ}
-      657#{ATOZ}
-      658#{ATOZ}
-      662#{ATOZ}
-      688#{ATOZ}
-    ).join(':')), trim_punctuation
+    to_field 'subject_ssim' do |record, accumulator, context|
+      specs = %W(
+        600#{ATOZ}
+        610#{ATOZ}
+        611#{ATOZ}
+        630#{ATOZ}
+        647#{ATOZ}
+        648#{ATOZ}
+        650#{ATOZ}
+        651#{ATOZ}
+        654#{ATOZ}
+        655#{ATOZ}
+        656#{ATOZ}
+        657#{ATOZ}
+        658#{ATOZ}
+        662#{ATOZ}
+        688#{ATOZ}
+      )
+      specs << "653#{ATOZ}" unless heritage_portal?
+      extract_marc(specs.join(':')).call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
+
+    # MARC 653 - Themes (Heritage facet)
+    to_field 'theme_ssim' do |record, accumulator, context|
+      extract_marc("653#{ATOZ}").call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
+    to_field 'theme_tsim', extract_marc("653#{ATOZ}")
+
+    # MARC 246 - Varying Form of Title
+    to_field 'varying_title_tsim' do |record, accumulator, context|
+      extract_marc("246#{ATOZ}").call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
+
+    # MARC 580 - Complex Linking Entry Note
+    to_field 'complex_linking_note_tsim' do |record, accumulator, context|
+      extract_marc("580#{ATOZ}").call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
+
+    # MARC 730, 740 - Added Entry Titles
+    to_field 'title_added_entry_tsim' do |record, accumulator, context|
+      extract_marc("730#{ATOZ}:740#{ATOZ}").call(record, accumulator, context)
+      trim_punctuation.call(record, accumulator)
+      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    end
+
+    # MARC 751, 752 - Added Entry Geographic / Hierarchical Place Names
+    to_field 'place_added_entry_tsim' do |record, accumulator|
+      record.fields('752').each do |field|
+        parts = field.subfields.select { |s| %w[a b c d f g].include?(s.code) }.map { |s| s.value.to_s.strip.sub(/\.\z/, '') }.reject(&:empty?)
+        accumulator << parts.join(' -- ') unless parts.empty?
+      end
+      record.fields('751').each do |field|
+        parts = field.subfields.map { |s| s.value.to_s.strip.sub(/\.\z/, '') }.reject(&:empty?)
+        accumulator << parts.join(' -- ') unless parts.empty?
+      end
+      accumulator.uniq!
+    end
+
+    # MARC 760..787 - Linking Entries
+    to_field 'related_items_tsim' do |record, accumulator|
+      %w[760 762 765 767 770 772 773 774 775 776 777 780 785 786 787].each do |tag|
+        record.fields(tag).each do |field|
+          parts = field.subfields.reject { |s| %w[w 4 6 7 8].include?(s.code) }.map(&:value).map { |v| v.to_s.strip.sub(/\.\z/, '') }.reject(&:empty?)
+          accumulator << parts.join(' ') unless parts.empty?
+        end
+      end
+      accumulator.uniq!
+    end
 
     # Published statement (with fallback to 046 archival dates of creation when 260/264 is absent)
     to_field 'published_ssm' do |record, accumulator, context|
@@ -791,6 +876,14 @@ class MarcIndexer < Blacklight::Marc::Indexer
     else
       ActiveSupport::Inflector.transliterate(str)
     end
+  end
+  def heritage_portal?
+    portal = ENV['PORTAL'].to_s.strip.downcase
+    return true if portal == 'heritage'
+    return false if portal == 'canadiana'
+
+    ENV['SOLR_URL'].to_s.downcase.include?('heritage') ||
+      Dir.pwd.downcase.include?('heritage')
   end
 end
 

@@ -216,8 +216,9 @@ module ApplicationHelper
 
     values = Array(args[:document][args[:field]])
     linked_values = values.map do |value|
-      escaped_value = CGI.escape(value.to_s)
-      "<a href=\"/catalogue?f%5B#{facet_param}%5D%5B%5D=#{escaped_value}&q=&search_field=all_fields\">#{value}</a>"
+      clean_val = value.to_s.strip.sub(/\.\z/, '')
+      escaped_value = CGI.escape(clean_val)
+      "<a href=\"/catalogue?f%5B#{facet_param}%5D%5B%5D=#{escaped_value}&q=&search_field=all_fields\">#{clean_val}</a>"
     end
 
     value_str = linked_values.join('<br/>')

@@ -77,8 +77,9 @@
 }
 .not-found-icon {
     width: 25vw;
-    height: 25vw;
-    filter: grayscale(1);
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
 }
 
 /* Mobile: prevent big format icon from overlapping content */

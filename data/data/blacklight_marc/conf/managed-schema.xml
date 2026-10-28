@@ -509,6 +509,7 @@
   <field name="full_title_ssm" type="text_general" />
   <field name="full_title_tsim" type="text_general" />
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true" />
+  <field name="id_t" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
   <field name="is_issue" type="text_general" />
   <field name="is_serial" type="text_general" />
   <field name="isbn_tsim" type="plongs" />
@@ -532,6 +533,12 @@
   <field name="subject_addl_tsim" type="text_general" />
   <field name="subject_era_ssim" type="text_general" />
   <field name="subject_geo_ssim" type="text_general" />
+  <field name="theme_ssim" type="text_general" />
+  <field name="theme_tsim" type="text_general" />
+  <field name="complex_linking_note_tsim" type="text_general" />
+  <field name="varying_title_tsim" type="text_general" />
+  <field name="place_added_entry_tsim" type="text_general" />
+  <field name="related_items_tsim" type="text_general" />
   <field name="subject_ssim" type="text_general" />
   <field name="subject_tsim" type="text_general" />
   <field name="subtitle_ssm" type="text_general" />
@@ -638,6 +645,7 @@
   <dynamicField name="*_t" type="text_general" multiValued="false" indexed="true" stored="true" />
   <dynamicField name="*_p" type="location" indexed="true" stored="true" />
   <dynamicField name="*_ssim" type="text_general" indexed="true" stored="true" multiValued="true" />
+  <copyField source="id" dest="id_t" />
   <copyField source="is_serial" dest="is_serial_str" maxChars="256" />
   <copyField source="is_issue" dest="is_issue_str" maxChars="256" />
   <copyField source="title_tsim" dest="title_tsim_str" maxChars="256" />
@@ -660,6 +668,11 @@
   <copyField source="subtitle_ssm" dest="subtitle_ssm_str" maxChars="256" />
   <copyField source="subtitle_tsim" dest="subtitle_tsim_str" maxChars="256" />
   <copyField source="subject_tsim" dest="subject_tsim_str" maxChars="256" />
+  <copyField source="theme_ssim" dest="theme_ssim_str" maxChars="256" />
+  <copyField source="varying_title_tsim" dest="varying_title_tsim_str" maxChars="256" />
+  <copyField source="complex_linking_note_tsim" dest="complex_linking_note_tsim_str" maxChars="256" />
+  <copyField source="place_added_entry_tsim" dest="place_added_entry_tsim_str" maxChars="256" />
+  <copyField source="related_items_tsim" dest="related_items_tsim_str" maxChars="256" />
   <copyField source="subject_ssim" dest="subject_ssim_str" maxChars="256" />
   <copyField source="lc_1letter_ssim" dest="lc_1letter_ssim_str" maxChars="256" />
   <copyField source="lc_alpha_ssim" dest="lc_alpha_ssim_str" maxChars="256" />

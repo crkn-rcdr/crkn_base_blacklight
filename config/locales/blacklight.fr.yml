@@ -317,6 +317,8 @@ fr:
         label: Est-ce une publication en série
       issue_msg:
         label: Est un numéro d'une publication en série
+      varying_title:
+        label: Variante du titre
       date_added:
         label: Date d'ajout/mise à jour
       language:
