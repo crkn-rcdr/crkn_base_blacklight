@@ -1407,14 +1407,136 @@ function handleCheckboxFacetChange(event) {
 
   if (target.closest('.modal')) {
     syncSingleCheckboxToSidebar(target);
+    syncOffpageSelectionsInModalForm(target.closest('form.checkbox-facet-form'));
   } else {
     syncSingleCheckboxToModal(target);
+    const modalForm = document.querySelector('.modal form.checkbox-facet-form');
+    if (modalForm) syncOffpageSelectionsInModalForm(modalForm);
   }
+}
+
+function getFacetKeyFromForm(form) {
+  if (!form) return null;
+  if (form.dataset && form.dataset.facetKey) return form.dataset.facetKey;
+  const cb = form.querySelector('input[type="checkbox"][name^="f_inclusive["]');
+  if (cb) {
+    const m = cb.name.match(/^f_inclusive\[([^\]]+)\]\[\]$/);
+    if (m && m[1]) return m[1];
+  }
+  const suggest = form.closest('.modal')?.querySelector('.facet-suggest[data-facet-field]');
+  if (suggest && suggest.dataset.facetField) return suggest.dataset.facetField;
+  return null;
+}
+
+function findSidebarFormForFacet(facetKey) {
+  if (!facetKey) return null;
+  const sidebarForms = Array.from(document.querySelectorAll('form.checkbox-facet-form')).filter((f) => !f.closest('.modal'));
+  return sidebarForms.find((f) =>
+    f.dataset?.facetKey === facetKey ||
+    f.querySelector(`input[name="f_inclusive[${CSS.escape(facetKey)}][]"]`)
+  ) || null;
+}
+
+function syncOffpageSelectionsInModalForm(modalForm) {
+  if (!modalForm || !modalForm.closest('.modal')) return;
+  const facetKey = getFacetKeyFromForm(modalForm);
+  if (!facetKey) return;
+
+  // Strip modal-only pagination/sort/selection params so they never pollute /catalogue URLs
+  modalForm.querySelectorAll('input[type="hidden"]').forEach((inp) => {
+    if (
+      inp.name === 'facet.page' ||
+      inp.name === 'facet.sort' ||
+      inp.name === 'facet.prefix' ||
+      inp.name.startsWith('checkbox_facet_selections[')
+    ) {
+      inp.remove();
+    }
+  });
+
+  const sidebarForm = findSidebarFormForFacet(facetKey);
+  if (!sidebarForm) return;
+
+  const sidebarCheckedValues = Array.from(
+    sidebarForm.querySelectorAll(`input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`)
+  )
+    .filter((cb) => cb.checked && !cb.disabled)
+    .map((cb) => cb.value);
+
+  const modalCheckboxes = Array.from(
+    modalForm.querySelectorAll(`input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`)
+  );
+  const modalRenderedValues = new Set(modalCheckboxes.map((cb) => cb.value));
+
+  let offpageContainer = modalForm.querySelector('.js-modal-offpage-selections');
+  if (!offpageContainer) {
+    offpageContainer = document.createElement('div');
+    offpageContainer.className = 'js-modal-offpage-selections';
+    offpageContainer.hidden = true;
+    modalForm.insertBefore(offpageContainer, modalForm.firstChild);
+  }
+  offpageContainer.innerHTML = '';
+
+  sidebarCheckedValues.forEach((val) => {
+    if (!modalRenderedValues.has(val)) {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.type = 'hidden';
+      hiddenInput.className = 'js-modal-offpage-selection';
+      hiddenInput.name = `f_inclusive[${facetKey}][]`;
+      hiddenInput.value = val;
+      offpageContainer.appendChild(hiddenInput);
+    }
+  });
+}
+
+function syncModalPaginationLink(link) {
+  if (!link) return;
+  const modal = link.closest('.modal');
+  if (!modal) return;
+  const modalForm = modal.querySelector('form.checkbox-facet-form');
+  const facetKey = getFacetKeyFromForm(modalForm);
+  if (!facetKey) return;
+
+  const sidebarForm = findSidebarFormForFacet(facetKey);
+  if (!sidebarForm) return;
+
+  const url = new URL(link.getAttribute('href'), window.location.href);
+  url.searchParams.delete(`f[${facetKey}][]`);
+  url.searchParams.delete(`f_inclusive[${facetKey}][]`);
+  url.searchParams.delete(`checkbox_facet_selections[${facetKey}][]`);
+
+  const checkedSidebarBoxes = Array.from(
+    sidebarForm.querySelectorAll(`input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`)
+  ).filter((cb) => cb.checked && !cb.disabled);
+
+  checkedSidebarBoxes.forEach((cb) => {
+    url.searchParams.append(`checkbox_facet_selections[${facetKey}][]`, cb.value);
+  });
+
+  link.setAttribute('href', `${url.pathname}${url.search}${url.hash}`);
 }
 
 function syncAllSidebarToCheckboxesInModal(modalContainer) {
   const container = modalContainer || document.querySelector('.modal');
   if (!container) return;
+
+  const modalForm = container.querySelector('form.checkbox-facet-form');
+  const facetKey = getFacetKeyFromForm(modalForm);
+  const sidebarForm = facetKey ? findSidebarFormForFacet(facetKey) : null;
+
+  if (sidebarForm && modalForm) {
+    const checkedInSidebar = new Set(
+      Array.from(sidebarForm.querySelectorAll(`input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`))
+        .filter((cb) => cb.checked && !cb.disabled)
+        .map((cb) => cb.value)
+    );
+    const modalCheckboxes = Array.from(modalForm.querySelectorAll(`input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`));
+    modalCheckboxes.forEach((mCb) => {
+      mCb.checked = checkedInSidebar.has(mCb.value);
+    });
+    syncOffpageSelectionsInModalForm(modalForm);
+    return;
+  }
 
   const sidebarCheckboxes = Array.from(document.querySelectorAll('form.checkbox-facet-form:not(.modal form) input[type="checkbox"][name^="f_inclusive["]'));
   const modalCheckboxes = Array.from(container.querySelectorAll('form.checkbox-facet-form input[type="checkbox"][name^="f_inclusive["]'));
@@ -1435,17 +1557,51 @@ function syncAllModalToCheckboxesInSidebar(modalContainer) {
   modalCheckboxes.forEach((modalCb) => {
     syncSingleCheckboxToSidebar(modalCb);
   });
+
+  const modalForm = container.querySelector('form.checkbox-facet-form');
+  if (modalForm) {
+    syncOffpageSelectionsInModalForm(modalForm);
+  }
 }
 
 function handleCheckboxFacetMoreActivation(event) {
   if (!(event.target instanceof Element)) return;
 
-  const link = event.target.closest('a[data-checkbox-facet-more]');
-  if (!link) return;
+  const moreLink = event.target.closest('a[data-checkbox-facet-more]');
+  if (moreLink) {
+    if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
+    syncCheckboxFacetMoreLink(moreLink);
+    return;
+  }
 
-  if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
+  const modalNavLink = event.target.closest('.modal .facet-pagination a, .modal .prev_next_links a, .modal .sort-options a');
+  if (modalNavLink) {
+    if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
+    syncModalPaginationLink(modalNavLink);
+  }
+}
 
-  syncCheckboxFacetMoreLink(link);
+function handleCheckboxFacetFormSubmit(event) {
+  const form = event.target;
+  if (!(form instanceof HTMLFormElement) || !form.matches('form.checkbox-facet-form')) return;
+
+  // Strip modal-only pagination/sort/selection params from any checkbox facet form
+  form.querySelectorAll('input[type="hidden"]').forEach((inp) => {
+    if (
+      inp.name === 'facet.page' ||
+      inp.name === 'facet.sort' ||
+      inp.name === 'facet.prefix' ||
+      inp.name.startsWith('checkbox_facet_selections[')
+    ) {
+      inp.remove();
+    }
+  });
+
+  const modal = form.closest('.modal');
+  if (modal) {
+    syncAllModalToCheckboxesInSidebar(modal);
+    syncOffpageSelectionsInModalForm(form);
+  }
 }
 
 function observeModalDomChanges() {
@@ -1684,6 +1840,7 @@ function initFacetSuggestHandler() {
 }
 
 document.addEventListener('change', handleCheckboxFacetChange, true);
+document.addEventListener('submit', handleCheckboxFacetFormSubmit, true);
 initFacetSuggestHandler();
 document.addEventListener('shown.bs.modal', (e) => syncAllSidebarToCheckboxesInModal(e.target));
 document.addEventListener('loaded.blacklight.blacklight-modal', (e) => syncAllSidebarToCheckboxesInModal(e.target));

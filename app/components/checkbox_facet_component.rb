@@ -90,6 +90,13 @@ class CheckboxFacetComponent < Blacklight::Component
     end
   end
 
+  def offpage_selected_values
+    return [] unless @facet_field.in_modal?
+
+    rendered_values = rows.map { |row| row.value.to_s }
+    selected_values.reject { |value| rendered_values.include?(value) }
+  end
+
   private
 
   def facet_items
@@ -144,7 +151,11 @@ class CheckboxFacetComponent < Blacklight::Component
   def preserved_params
     @preserved_params ||= begin
       params = helpers.params.to_unsafe_h.deep_dup
-      params.except!('action', 'authenticity_token', 'button', 'commit', 'controller', 'id', 'only_values', 'page', 'utf8')
+      params.except!(
+        'action', 'authenticity_token', 'button', 'commit', 'controller',
+        'id', 'only_values', 'page', 'utf8',
+        'facet.page', 'facet.sort', 'facet.prefix'
+      )
       params
     end
   end
@@ -155,6 +166,7 @@ class CheckboxFacetComponent < Blacklight::Component
       params[filter_param]&.delete(facet_key)
       params.delete(filter_param) if params[filter_param].blank?
     end
+    params.delete('checkbox_facet_selections')
     params
   end
 

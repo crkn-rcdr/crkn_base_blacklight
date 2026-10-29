@@ -4,8 +4,15 @@
   <% end %>
 
   <% component.with_body do %>
-    <%= form_tag form_action, method: :get, class: 'checkbox-facet-form' do %>
+    <%= form_tag form_action, method: :get, class: 'checkbox-facet-form', data: { facet_key: @facet_field.key } do %>
       <%= hidden_fields %>
+      <% if @facet_field.in_modal? %>
+        <div class="js-modal-offpage-selections" hidden>
+          <% offpage_selected_values.each do |val| %>
+            <%= hidden_field_tag "f_inclusive[#{@facet_field.key}][]", val, class: 'js-modal-offpage-selection', id: nil %>
+          <% end %>
+        </div>
+      <% end %>
 
       <% if rows.any? %>
         <ul class="facet-values list-unstyled checkbox-facet-values">
@@ -60,5 +67,173 @@
         <% end %>
       </div>
     <% end %>
+    <script>
+      (function() {
+        function getFacetKey(form) {
+          if (!form) return null;
+          if (form.dataset && form.dataset.facetKey) return form.dataset.facetKey;
+          const cb = form.querySelector('input[type="checkbox"][name^="f_inclusive["]');
+          if (cb) {
+            const m = cb.name.match(/^f_inclusive\[([^\]]+)\]\[\]$/);
+            if (m && m[1]) return m[1];
+          }
+          return null;
+        }
+
+        function findSidebarForm(facetKey) {
+          if (!facetKey) return null;
+          const forms = Array.from(document.querySelectorAll('form.checkbox-facet-form')).filter(function(f) { return !f.closest('.modal'); });
+          return forms.find(function(f) {
+            return (f.dataset && f.dataset.facetKey === facetKey) ||
+              f.querySelector('input[name="f_inclusive[' + CSS.escape(facetKey) + '][]"]');
+          }) || null;
+        }
+
+        function syncOffpageSelections(modalForm) {
+          if (!modalForm || !modalForm.closest('.modal')) return;
+          const facetKey = getFacetKey(modalForm);
+          if (!facetKey) return;
+
+          modalForm.querySelectorAll('input[type="hidden"]').forEach(function(inp) {
+            if (inp.name === 'facet.page' || inp.name === 'facet.sort' || inp.name === 'facet.prefix' || inp.name.indexOf('checkbox_facet_selections[') === 0) {
+              inp.remove();
+            }
+          });
+
+          const sidebarForm = findSidebarForm(facetKey);
+          if (!sidebarForm) return;
+
+          const sidebarChecked = Array.from(
+            sidebarForm.querySelectorAll('input[type="checkbox"][name="f_inclusive[' + CSS.escape(facetKey) + '][]"]')
+          ).filter(function(cb) { return cb.checked && !cb.disabled; }).map(function(cb) { return cb.value; });
+
+          const modalRendered = new Set(
+            Array.from(
+              modalForm.querySelectorAll('input[type="checkbox"][name="f_inclusive[' + CSS.escape(facetKey) + '][]"]')
+            ).map(function(cb) { return cb.value; })
+          );
+
+          let box = modalForm.querySelector('.js-modal-offpage-selections');
+          if (!box) {
+            box = document.createElement('div');
+            box.className = 'js-modal-offpage-selections';
+            box.hidden = true;
+            modalForm.insertBefore(box, modalForm.firstChild);
+          }
+          box.innerHTML = '';
+
+          sidebarChecked.forEach(function(val) {
+            if (!modalRendered.has(val)) {
+              const hidden = document.createElement('input');
+              hidden.type = 'hidden';
+              hidden.className = 'js-modal-offpage-selection';
+              hidden.name = 'f_inclusive[' + facetKey + '][]';
+              hidden.value = val;
+              box.appendChild(hidden);
+            }
+          });
+        }
+
+        function syncModalFromSidebar() {
+          const modalForm = document.querySelector('.modal form.checkbox-facet-form');
+          if (!modalForm) return;
+          const facetKey = getFacetKey(modalForm);
+          if (!facetKey) return;
+          const sidebarForm = findSidebarForm(facetKey);
+          if (!sidebarForm) return;
+
+          const checkedInSidebar = new Set(
+            Array.from(sidebarForm.querySelectorAll('input[type="checkbox"][name="f_inclusive[' + CSS.escape(facetKey) + '][]"]'))
+              .filter(function(cb) { return cb.checked && !cb.disabled; })
+              .map(function(cb) { return cb.value; })
+          );
+
+          Array.from(modalForm.querySelectorAll('input[type="checkbox"][name="f_inclusive[' + CSS.escape(facetKey) + '][]"]')).forEach(function(mCb) {
+            mCb.checked = checkedInSidebar.has(mCb.value);
+          });
+
+          syncOffpageSelections(modalForm);
+        }
+
+        window.__crknSyncActiveFacetModal = syncModalFromSidebar;
+
+        if (!window.__crknCheckboxModalSyncV2) {
+          window.__crknCheckboxModalSyncV2 = true;
+
+          function syncModalNavLink(link) {
+            const modal = link && link.closest('.modal');
+            if (!modal) return;
+            const modalForm = modal.querySelector('form.checkbox-facet-form');
+            const facetKey = getFacetKey(modalForm);
+            if (!facetKey) return;
+            const sidebarForm = findSidebarForm(facetKey);
+            if (!sidebarForm) return;
+
+            const url = new URL(link.getAttribute('href'), window.location.href);
+            url.searchParams.delete('f[' + facetKey + '][]');
+            url.searchParams.delete('f_inclusive[' + facetKey + '][]');
+            url.searchParams.delete('checkbox_facet_selections[' + facetKey + '][]');
+
+            Array.from(
+              sidebarForm.querySelectorAll('input[type="checkbox"][name="f_inclusive[' + CSS.escape(facetKey) + '][]"]')
+            ).filter(function(cb) { return cb.checked && !cb.disabled; }).forEach(function(cb) {
+              url.searchParams.append('checkbox_facet_selections[' + facetKey + '][]', cb.value);
+            });
+
+            link.setAttribute('href', url.pathname + url.search + url.hash);
+          }
+
+          ['pointerdown', 'mousedown', 'click', 'keydown'].forEach(function(evtName) {
+            document.addEventListener(evtName, function(e) {
+              if (!(e.target instanceof Element)) return;
+              const navLink = e.target.closest('.modal .facet-pagination a, .modal .prev_next_links a, .modal .sort-options a');
+              if (!navLink) return;
+              if (evtName === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+              syncModalNavLink(navLink);
+            }, true);
+          });
+
+          document.addEventListener('change', function(e) {
+            const t = e.target;
+            if (!t || t.type !== 'checkbox' || !t.name || t.name.indexOf('f_inclusive[') !== 0) return;
+            const modalForm = document.querySelector('.modal form.checkbox-facet-form');
+            if (modalForm) {
+              setTimeout(function() { syncOffpageSelections(modalForm); }, 0);
+            }
+          }, true);
+
+          document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (!form || !form.matches || !form.matches('form.checkbox-facet-form')) return;
+            form.querySelectorAll('input[type="hidden"]').forEach(function(inp) {
+              if (inp.name === 'facet.page' || inp.name === 'facet.sort' || inp.name === 'facet.prefix' || inp.name.indexOf('checkbox_facet_selections[') === 0) {
+                inp.remove();
+              }
+            });
+            if (form.closest('.modal')) {
+              syncOffpageSelections(form);
+            }
+          }, true);
+
+          document.addEventListener('shown.bs.modal', syncModalFromSidebar);
+          document.addEventListener('loaded.blacklight.blacklight-modal', syncModalFromSidebar);
+
+          const attachModalObserver = function() {
+            const modal = document.querySelector('#blacklight-modal, .modal');
+            if (!modal || modal.dataset.crknSyncObserved === '1') return;
+            modal.dataset.crknSyncObserved = '1';
+            const obs = new MutationObserver(function() {
+              syncModalFromSidebar();
+            });
+            obs.observe(modal, { childList: true, subtree: true });
+          };
+          document.addEventListener('DOMContentLoaded', attachModalObserver);
+          document.addEventListener('turbo:load', attachModalObserver);
+          attachModalObserver();
+        }
+
+        syncModalFromSidebar();
+      })();
+    </script>
   <% end %>
 <% end %>
