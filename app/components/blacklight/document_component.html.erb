@@ -87,7 +87,7 @@
       <% is_item_unavailable = (@component == :div) && (@document._source["is_serial"]&.first != "Yes") && @document._source["ark"].blank? %>
 
       <% if is_item_unavailable %>
-        <div class="item-unavailable-404-container text-center py-5 px-3">
+        <div class="item-unavailable-404-container text-center pt-0 pb-5 px-3" style="padding-top: 0 !important;">
           <div class="d-flex justify-content-center mb-4">
             <a href="<%= root_breadcrumb_url %>" class="btn btn-primary px-4 py-2" style="border-radius: 3px !important;">
               <i class="bi bi-arrow-left me-1"></i>
