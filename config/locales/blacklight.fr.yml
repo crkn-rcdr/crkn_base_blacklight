@@ -160,6 +160,7 @@ fr:
           label: Recherche en texte intégral
           available: Disponible
           not_available: Non disponible
+        theme: Thèmes
         all: Tout
         apply: Appliquer
         clear: Effacer
@@ -328,6 +329,16 @@ fr:
         label: Est un numéro d'une publication en série
       varying_title:
         label: Variante du titre
+      theme:
+        label: Thèmes
+      complex_linking_note:
+        label: Note sur les documents connexes
+      title_added_entry:
+        label: Titre additionnel
+      place_added_entry:
+        label: Lieu associé
+      related_items:
+        label: Documents connexes
       date_added:
         label: Date d'ajout/mise à jour
       language:

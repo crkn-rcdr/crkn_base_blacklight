@@ -177,6 +177,7 @@ en:
           label: Full Text Search
           available: Available
           not_available: Not Available
+        theme: Themes
         all: All
         apply: Apply
         clear: Clear Filter
@@ -344,6 +345,16 @@ en:
         label: Is an Issue of a Serial Publication
       varying_title:
         label: Varying Form of Title
+      theme:
+        label: Themes
+      complex_linking_note:
+        label: Complex Linking Entry Note
+      title_added_entry:
+        label: Added Title
+      place_added_entry:
+        label: Associated Place
+      related_items:
+        label: Related Items
       date_added:
         label: Date Added/Updated
       language:
