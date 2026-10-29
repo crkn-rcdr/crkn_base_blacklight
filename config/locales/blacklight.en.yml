@@ -87,6 +87,8 @@ en:
     application_name: Canadiana
     back_to_bookmarks: Back to Bookmarks
     back_to_search: Back to Search
+    breadcrumbs:
+      root_collection: "Canadiana Collection - Search Results"
     bookmarks:
       add:
         button: Bookmark
