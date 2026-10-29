@@ -425,8 +425,78 @@
                    aria-label="<%= resize_record_label %>"></div>
               <script>
                 (function() {
+                  const WIDTH_STORAGE_KEY = 'crkn_metadata_sidebar_width';
+                  const FULLSCREEN_STORAGE_KEY = 'crkn_metadata_fullscreen';
+
+                  function applySidebarWidthPx(sidebar, wrapper, widthPx) {
+                    if (!sidebar || !wrapper) return null;
+                    if (window.innerWidth < 992) {
+                      sidebar.style.width = '';
+                      sidebar.style.maxWidth = '';
+                      sidebar.style.minWidth = '';
+                      return null;
+                    }
+                    const wrapperW = wrapper.getBoundingClientRect().width || window.innerWidth;
+                    const maxW = Math.max(340, Math.min(760, Math.floor(wrapperW * 0.65)));
+                    const clamped = Math.round(Math.max(240, Math.min(maxW, widthPx)));
+                    sidebar.style.width = clamped + 'px';
+                    sidebar.style.maxWidth = clamped + 'px';
+                    sidebar.style.minWidth = clamped + 'px';
+                    return clamped;
+                  }
+
+                  function setFullscreenState(nextExpanded, persist) {
+                    const wrapper = document.getElementById('document-togglable-content');
+                    const fullscreenBtn = document.getElementById('metadata-fullscreen-toggle');
+                    if (!wrapper || !fullscreenBtn) return;
+
+                    wrapper.classList.toggle('metadata-fullscreen-active', nextExpanded);
+                    fullscreenBtn.setAttribute('aria-expanded', String(nextExpanded));
+
+                    const nextLabel = nextExpanded
+                      ? (fullscreenBtn.getAttribute('data-collapse-label') || 'Exit full screen metadata')
+                      : (fullscreenBtn.getAttribute('data-expand-label') || 'Expand metadata record');
+                    fullscreenBtn.setAttribute('title', nextLabel);
+                    fullscreenBtn.setAttribute('aria-label', nextLabel);
+
+                    const icon = fullscreenBtn.querySelector('i.bi');
+                    if (icon) {
+                      icon.className = nextExpanded ? 'bi bi-fullscreen-exit' : 'bi bi-arrows-fullscreen';
+                    }
+
+                    if (persist) {
+                      try {
+                        localStorage.setItem(FULLSCREEN_STORAGE_KEY, nextExpanded ? '1' : '0');
+                      } catch (_e) {}
+                    }
+                  }
+
+                  function restorePersistedMetadataSize() {
+                    const sidebar = document.getElementById('toggle-menu');
+                    const wrapper = document.getElementById('document-togglable-content');
+                    if (!sidebar || !wrapper) return;
+
+                    try {
+                      const savedW = parseInt(localStorage.getItem(WIDTH_STORAGE_KEY) || '', 10);
+                      if (Number.isFinite(savedW) && savedW >= 240) {
+                        applySidebarWidthPx(sidebar, wrapper, savedW);
+                      }
+                      const savedFullscreen = localStorage.getItem(FULLSCREEN_STORAGE_KEY) === '1';
+                      if (savedFullscreen) {
+                        setFullscreenState(true, false);
+                      }
+                    } catch (_e) {}
+                  }
+
+                  // Apply immediately as #toggle-menu renders to avoid layout shift
+                  restorePersistedMetadataSize();
+
                   if (window.__crknMetadataControlsBound) return;
                   window.__crknMetadataControlsBound = true;
+
+                  document.addEventListener('DOMContentLoaded', restorePersistedMetadataSize);
+                  document.addEventListener('turbo:load', restorePersistedMetadataSize);
+                  window.addEventListener('resize', restorePersistedMetadataSize);
 
                   document.addEventListener('click', function(e) {
                     const toggleBtn = e.target.closest('.metadata-collapsible__toggle');
@@ -459,34 +529,16 @@
                     const fullscreenBtn = e.target.closest('#metadata-fullscreen-toggle');
                     if (fullscreenBtn) {
                       e.preventDefault();
-                      const wrapper = document.getElementById('document-togglable-content');
-                      const sidebar = document.getElementById('toggle-menu');
-                      if (!wrapper || !sidebar) return;
-
                       const isExpanded = fullscreenBtn.getAttribute('aria-expanded') === 'true';
-                      const nextExpanded = !isExpanded;
-                      wrapper.classList.toggle('metadata-fullscreen-active', nextExpanded);
-                      fullscreenBtn.setAttribute('aria-expanded', String(nextExpanded));
-
-                      const nextLabel = nextExpanded
-                        ? (fullscreenBtn.getAttribute('data-collapse-label') || 'Exit full screen metadata')
-                        : (fullscreenBtn.getAttribute('data-expand-label') || 'Expand metadata record');
-                      fullscreenBtn.setAttribute('title', nextLabel);
-                      fullscreenBtn.setAttribute('aria-label', nextLabel);
-
-                      const icon = fullscreenBtn.querySelector('i.bi');
-                      if (icon) {
-                        icon.className = nextExpanded ? 'bi bi-fullscreen-exit' : 'bi bi-arrows-fullscreen';
-                      }
+                      setFullscreenState(!isExpanded, true);
                     }
                   });
 
                   document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape') {
                       const wrapper = document.getElementById('document-togglable-content');
-                      const fullscreenBtn = document.getElementById('metadata-fullscreen-toggle');
-                      if (wrapper && wrapper.classList.contains('metadata-fullscreen-active') && fullscreenBtn) {
-                        fullscreenBtn.click();
+                      if (wrapper && wrapper.classList.contains('metadata-fullscreen-active')) {
+                        setFullscreenState(false, true);
                       }
                     }
 
@@ -497,12 +549,13 @@
                       const wrapper = document.getElementById('document-togglable-content');
                       if (!sidebar || !wrapper) return;
                       const currentW = sidebar.getBoundingClientRect().width;
-                      const maxW = Math.min(760, Math.floor(wrapper.getBoundingClientRect().width * 0.65));
                       const delta = e.key === 'ArrowRight' ? 24 : -24;
-                      const nextW = Math.max(240, Math.min(maxW, currentW + delta));
-                      sidebar.style.width = nextW + 'px';
-                      sidebar.style.maxWidth = nextW + 'px';
-                      sidebar.style.minWidth = nextW + 'px';
+                      const applied = applySidebarWidthPx(sidebar, wrapper, currentW + delta);
+                      if (applied) {
+                        try {
+                          localStorage.setItem(WIDTH_STORAGE_KEY, String(applied));
+                        } catch (_e) {}
+                      }
                     }
                   });
 
@@ -522,11 +575,12 @@
                     const wrapper = document.getElementById('document-togglable-content');
                     if (!sidebar || !wrapper) return;
                     const rect = sidebar.getBoundingClientRect();
-                    const maxW = Math.min(760, Math.floor(wrapper.getBoundingClientRect().width * 0.65));
-                    const nextW = Math.max(240, Math.min(maxW, e.clientX - rect.left));
-                    sidebar.style.width = nextW + 'px';
-                    sidebar.style.maxWidth = nextW + 'px';
-                    sidebar.style.minWidth = nextW + 'px';
+                    const applied = applySidebarWidthPx(sidebar, wrapper, e.clientX - rect.left);
+                    if (applied) {
+                      try {
+                        localStorage.setItem(WIDTH_STORAGE_KEY, String(applied));
+                      } catch (_e) {}
+                    }
                   });
 
                   document.addEventListener('mouseup', function() {
@@ -546,6 +600,9 @@
                     sidebar.style.width = '';
                     sidebar.style.maxWidth = '';
                     sidebar.style.minWidth = '';
+                    try {
+                      localStorage.removeItem(WIDTH_STORAGE_KEY);
+                    } catch (_e) {}
                   });
                 })();
               </script>
