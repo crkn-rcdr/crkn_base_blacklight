@@ -51,6 +51,39 @@
 #my-mirador .mirador-canvas-nav {
     height: 52px !important;
     min-height: 52px !important;
+
+    /* Remove blue outline when clicking index number or dropdown arrow */
+    input,
+    input:focus,
+    input:focus-visible,
+    .MuiInputBase-input,
+    .MuiInputBase-input:focus,
+    .MuiInputBase-input:focus-visible,
+    .MuiOutlinedInput-input,
+    .MuiOutlinedInput-input:focus,
+    .MuiOutlinedInput-input:focus-visible,
+    .MuiInputBase-root,
+    .MuiInputBase-root:focus,
+    .MuiInputBase-root:focus-visible,
+    .MuiInputBase-root.Mui-focused,
+    .MuiOutlinedInput-root,
+    .MuiOutlinedInput-root:focus,
+    .MuiOutlinedInput-root:focus-visible,
+    .MuiOutlinedInput-root.Mui-focused,
+    .MuiAutocomplete-root,
+    .MuiAutocomplete-root:focus,
+    .MuiAutocomplete-root:focus-visible,
+    .MuiAutocomplete-root.Mui-focused,
+    .MuiAutocomplete-inputRoot,
+    .MuiAutocomplete-inputRoot:focus,
+    .MuiAutocomplete-inputRoot:focus-visible,
+    .MuiAutocomplete-inputRoot.Mui-focused,
+    button,
+    button:focus,
+    button:focus-visible {
+        outline: none !important;
+        box-shadow: none !important;
+    }
 }
 
 #my-mirador .mirador-canvas-nav [class*="previous-canvas-button"],
