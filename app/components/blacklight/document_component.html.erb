@@ -111,10 +111,10 @@
           <div class="item-unavailable-404-image-wrapper my-4">
             <img src="/assets/404.webp"
                  class="img-fluid rounded border shadow-sm not-found-icon"
-                 alt="<%= is_fr ? "Erreur 404 - Cet élément n'est pas disponible | oocihm.8_06911_57.1" : "404 Error - This item is unavailable | oocihm.8_06911_57.1" %>"
+                 alt="<%= is_fr ? "Erreur 404 - Cette page est morte | oocihm.8_06911_57.1" : "404 Error - This page is dead | oocihm.8_06911_57.1" %>"
                  style="max-width: 480px; width: 100%; height: auto;" />
             <div class="mt-2 text-muted fst-italic small">
-              oocihm.8_06911_57.1 — « This page is dead »
+              oocihm.8_06911_57.1 — <%= is_fr ? '« Cette page est morte »' : '« This page is dead »' %>
             </div>
           </div>
 
@@ -411,7 +411,7 @@
                   <div id="my-mirador" data-lenis-prevent data-docid="<%= @document._source['ark'] %>"></div>
                   
                 <% else %>
-                  <img src="/assets/404.webp" class="not-found-icon" alt="This page is dead | oocihm.8_06911_57.1" />
+                  <img src="/assets/404.webp" class="not-found-icon" alt="<%= is_fr ? "Cette page est morte | oocihm.8_06911_57.1" : "This page is dead | oocihm.8_06911_57.1" %>" />
                   <p>Sorry, there was a problem loading the images for this item.</p>
                 <% end %>
 
