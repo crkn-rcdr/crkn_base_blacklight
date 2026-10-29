@@ -375,6 +375,11 @@ en:
         label: Scope and Content
       finding_aid:
         label: Finding Aid
+      show_more: Show more
+      show_less: Show less
+      expand_record: Expand metadata record
+      collapse_record: Exit full screen metadata
+      resize_record: Drag to resize metadata column (double-click to reset)
       resource_type:
         label: Resource Type
         values:

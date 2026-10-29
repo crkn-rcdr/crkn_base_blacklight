@@ -1272,3 +1272,142 @@ button i {
     outline: none !important;
     box-shadow: none !important;
 }
+
+/* Issue #87: Human-readable long metadata descriptions (collapsible fields, resize handle, and full-screen record view) */
+#toggle-menu {
+    position: relative;
+    padding-right: 0.85rem;
+}
+
+#toggle-menu .metadata-paragraph {
+    display: block;
+    margin-bottom: 0.55rem;
+}
+
+#toggle-menu .metadata-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.metadata-collapsible__preview,
+.metadata-collapsible__full {
+    margin-bottom: 0.25rem !important;
+}
+
+.metadata-collapsible__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.15rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--bl-link-color, #1d808b);
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid #cbd3dc;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.metadata-collapsible__toggle i.bi {
+    font-size: 0.78rem !important;
+    color: inherit !important;
+}
+
+.metadata-collapsible__toggle:hover,
+.metadata-collapsible__toggle:focus-visible {
+    background-color: rgba(0, 0, 0, 0.07);
+    border-color: var(--bl-link-color, #1d808b);
+    text-decoration: none;
+}
+
+.document-sidebar-header .metadata-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    min-height: 2rem !important;
+    padding: 0 !important;
+    border-radius: 3px !important;
+    color: #495057;
+    flex-shrink: 0;
+}
+
+.document-sidebar-header .metadata-expand-btn i.bi {
+    font-size: 0.95rem !important;
+    color: currentColor !important;
+}
+
+.document-sidebar-header .metadata-expand-btn:hover,
+.document-sidebar-header .metadata-expand-btn:focus-visible {
+    color: #111;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.metadata-resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 6px;
+    cursor: col-resize;
+    background: transparent;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    z-index: 10;
+}
+
+.metadata-resize-handle:hover,
+.metadata-resize-handle:focus-visible,
+.metadata-resize-handle.is-dragging {
+    background-color: rgba(29, 128, 139, 0.18);
+    border-right: 2px solid var(--bl-link-color, #1d808b);
+    outline: none;
+}
+
+body.metadata-resizing {
+    cursor: col-resize !important;
+    user-select: none !important;
+}
+
+@media (max-width: 991.98px) {
+    .metadata-resize-handle {
+        display: none;
+    }
+}
+
+#document-togglable-content.metadata-fullscreen-active > .row {
+    flex-wrap: wrap !important;
+}
+
+#document-togglable-content.metadata-fullscreen-active #toggle-menu {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    flex: 0 0 100% !important;
+    padding-right: 1.25rem !important;
+    padding-bottom: 1.5rem !important;
+}
+
+#document-togglable-content.metadata-fullscreen-active #doc-main {
+    display: none !important;
+}
+
+#document-togglable-content.metadata-fullscreen-active .metadata-resize-handle {
+    display: none !important;
+}
+
+#document-togglable-content.metadata-fullscreen-active #toggle-menu .document-metadata {
+    max-width: 960px;
+}
+
+#document-togglable-content.metadata-fullscreen-active .metadata-collapsible__preview,
+#document-togglable-content.metadata-fullscreen-active .metadata-collapsible__toggle {
+    display: none !important;
+}
+
+#document-togglable-content.metadata-fullscreen-active .metadata-collapsible__full {
+    display: block !important;
+}

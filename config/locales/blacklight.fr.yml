@@ -359,6 +359,11 @@ fr:
         label: Portée et contenu
       finding_aid:
         label: Instrument de recherche
+      show_more: Afficher plus
+      show_less: Afficher moins
+      expand_record: Agrandir la notice de métadonnées
+      collapse_record: Quitter le plein écran des métadonnées
+      resize_record: Faire glisser pour redimensionner la colonne des métadonnées (double-cliquer pour réinitialiser)
       resource_type:
         label: Type de ressource
         values:

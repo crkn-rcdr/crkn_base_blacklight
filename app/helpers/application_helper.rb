@@ -210,16 +210,66 @@ module ApplicationHelper
       rights_statement_labels(document, 'rights_statement_ssim').present?
   end
 
-  def format_text(args)
-    values = Array(args[:document][args[:field]]).map do |item|
-      ERB::Util.html_escape(item.to_s).gsub(%r{https?://\S+}) do |url|
-        clean_url = url.sub(/[.,;)]\z/, '')
-        punct = url[clean_url.length..-1] || ''
-        "<a href=\"#{clean_url}\" target=\"_blank\" rel=\"noopener\">#{clean_url}</a>#{punct}"
-      end
+  METADATA_TRUNCATE_CHARS = 260
+  METADATA_FACET_COLLAPSE_LIMIT = 6
+
+  def auto_link_metadata_text(text)
+    ERB::Util.html_escape(text.to_s).gsub(%r{https?://\S+}) do |url|
+      clean_url = url.sub(/[.,;)]\z/, '')
+      punct = url[clean_url.length..-1] || ''
+      "<a href=\"#{clean_url}\" target=\"_blank\" rel=\"noopener\">#{clean_url}</a>#{punct}"
     end
-    value_str = values.join('<br/>')
-    content_tag :p, value_str.html_safe, dir: 'ltr'
+  end
+
+  def catalog_show_view?
+    respond_to?(:controller_name) && controller_name == 'catalog' && action_name == 'show'
+  end
+
+  def format_text(args)
+    raw_paragraphs = Array(args[:document][args[:field]])
+                     .flat_map { |item| item.to_s.split(/\s*\|\|\s*/) }
+                     .map(&:strip)
+                     .reject(&:blank?)
+    return ''.html_safe if raw_paragraphs.empty?
+
+    formatted_paragraphs = raw_paragraphs.map do |para|
+      "<span class=\"metadata-paragraph\">#{auto_link_metadata_text(para)}</span>"
+    end
+    full_html = formatted_paragraphs.join
+
+    combined_plain = raw_paragraphs.join(' ')
+    should_truncate = catalog_show_view? && (
+      combined_plain.length > METADATA_TRUNCATE_CHARS ||
+      (raw_paragraphs.length > 3 && combined_plain.length > 180)
+    )
+
+    return content_tag(:p, full_html.html_safe, dir: 'ltr') unless should_truncate
+
+    preview_plain = truncate(combined_plain, length: METADATA_TRUNCATE_CHARS, separator: ' ', omission: '…')
+    preview_html = auto_link_metadata_text(preview_plain)
+
+    is_fr = I18n.locale.to_s.start_with?('fr')
+    show_more_label = I18n.t('blacklight.metadata.show_more', default: is_fr ? 'Afficher plus' : 'Show more')
+    show_less_label = I18n.t('blacklight.metadata.show_less', default: is_fr ? 'Afficher moins' : 'Show less')
+
+    content_tag(:div, class: 'metadata-collapsible', data: { metadata_collapsible: true }) do
+      safe_join([
+        content_tag(:p, preview_html.html_safe, class: 'metadata-collapsible__preview mb-1', dir: 'ltr'),
+        content_tag(:p, full_html.html_safe, class: 'metadata-collapsible__full mb-1', dir: 'ltr', hidden: true),
+        content_tag(
+          :button,
+          type: 'button',
+          class: 'metadata-collapsible__toggle',
+          aria: { expanded: 'false' },
+          data: { show_more_text: show_more_label, show_less_text: show_less_label }
+        ) do
+          safe_join([
+            content_tag(:span, show_more_label, class: 'metadata-collapsible__toggle-label'),
+            content_tag(:i, '', class: 'bi bi-chevron-down', aria: { hidden: 'true' })
+          ])
+        end
+      ])
+    end
   end
 
   def format_facet(args)
@@ -230,7 +280,36 @@ module ApplicationHelper
     linked_values = values.map do |value|
       clean_val = value.to_s.strip.sub(/\.\z/, '')
       escaped_value = CGI.escape(clean_val)
-      "<a href=\"/catalogue?f%5B#{facet_param}%5D%5B%5D=#{escaped_value}&q=&search_field=all_fields\">#{clean_val}</a>"
+      "<a href=\"/catalogue?f%5B#{facet_param}%5D%5B%5D=#{escaped_value}&q=&search_field=all_fields\">#{ERB::Util.html_escape(clean_val)}</a>"
+    end
+
+    if catalog_show_view? && linked_values.length > METADATA_FACET_COLLAPSE_LIMIT
+      preview_html = linked_values.first(METADATA_FACET_COLLAPSE_LIMIT).join('<br/>')
+      full_html = linked_values.join('<br/>')
+      remaining = linked_values.length - METADATA_FACET_COLLAPSE_LIMIT
+      is_fr = I18n.locale.to_s.start_with?('fr')
+      base_more = I18n.t('blacklight.metadata.show_more', default: is_fr ? 'Afficher plus' : 'Show more')
+      show_more_label = "#{base_more} (+#{remaining})"
+      show_less_label = I18n.t('blacklight.metadata.show_less', default: is_fr ? 'Afficher moins' : 'Show less')
+
+      return content_tag(:div, class: 'metadata-collapsible', data: { metadata_collapsible: true }) do
+        safe_join([
+          content_tag(:p, preview_html.html_safe, class: 'metadata-collapsible__preview mb-1', dir: 'ltr'),
+          content_tag(:p, full_html.html_safe, class: 'metadata-collapsible__full mb-1', dir: 'ltr', hidden: true),
+          content_tag(
+            :button,
+            type: 'button',
+            class: 'metadata-collapsible__toggle',
+            aria: { expanded: 'false' },
+            data: { show_more_text: show_more_label, show_less_text: show_less_label }
+          ) do
+            safe_join([
+              content_tag(:span, show_more_label, class: 'metadata-collapsible__toggle-label'),
+              content_tag(:i, '', class: 'bi bi-chevron-down', aria: { hidden: 'true' })
+            ])
+          end
+        ])
+      end
     end
 
     value_str = linked_values.join('<br/>')
