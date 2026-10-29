@@ -1302,23 +1302,29 @@ button i {
     font-size: 0.85rem;
     font-weight: 600;
     line-height: 1.3;
-    color: var(--bl-link-color, #1d808b);
+    color: #000000 !important;
     background-color: rgba(0, 0, 0, 0.03);
     border: 1px solid #cbd3dc;
-    border-radius: 3px;
+    border-radius: 3px !important;
     cursor: pointer;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
+.metadata-collapsible__toggle span,
+.metadata-collapsible__toggle i.bi {
+    color: #000000 !important;
+}
+
 .metadata-collapsible__toggle i.bi {
     font-size: 0.78rem !important;
-    color: inherit !important;
 }
 
 .metadata-collapsible__toggle:hover,
 .metadata-collapsible__toggle:focus-visible {
+    color: #000000 !important;
     background-color: rgba(0, 0, 0, 0.07);
-    border-color: var(--bl-link-color, #1d808b);
+    border-color: #9aa5b4;
+    border-radius: 3px !important;
     text-decoration: none;
 }
 
