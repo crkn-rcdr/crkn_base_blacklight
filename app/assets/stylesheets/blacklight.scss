@@ -205,23 +205,58 @@ i {
     line-height: 1.2;
 }
 .serial-issues-toolbar {
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    margin-bottom: 1.25rem;
+    padding: 0;
+    background: transparent;
+    border: none !important;
+    box-shadow: none;
+
+    .badge-date-filter {
+        background-color: var(--theme-primary, #1d808b) !important;
+        color: #ffffff !important;
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.35em 0.65em;
+        border-radius: var(--site-radius, 2px) !important;
+    }
 
     .form-control, .form-select {
         border-color: #cbd5e1;
         &:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+            border-color: var(--theme-primary, #1d808b);
+            box-shadow: 0 0 0 0.2rem rgba(29, 128, 139, 0.15);
         }
     }
 
-    .input-group-text {
-        border-color: #cbd5e1;
-        color: #475569;
-        font-size: 0.825rem;
-        font-weight: 500;
+    .input-group {
+        width: auto;
+
+        .input-group-text {
+            background-color: #fff;
+            border-color: #cbd5e1;
+            color: #475569;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        .form-control {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+        }
+    }
+}
+
+/* Ensure all input-groups have 0 border radius where children connect */
+.input-group {
+    > :not(:last-child):not(.dropdown-menu) {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+    > :not(:first-child):not(.dropdown-menu) {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
     }
 }
 

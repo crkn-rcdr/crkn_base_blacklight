@@ -1,14 +1,13 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% activate_zoom_label = t('blacklight.tools.enable_zoom_tooltip', default: (is_fr ? 'Cliquer pour activer le zoom' : 'Click to enable zoom')) %>
 
-<div class="serial-issues-toolbar mb-4 p-3 bg-light rounded border">
-  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+<div class="serial-issues-toolbar mb-4">
+  <div class="d-flex flex-wrap align-items-center justify-content-end gap-3">
     <!-- Left: Title & Active Filter Summary -->
     <div class="d-flex align-items-center gap-2">
-      <i class="bi bi-calendar-event text-primary fs-5" aria-hidden="true"></i>
       <span class="fw-semibold text-dark"><%= t('labels.L_FILTER_BY_DATE', default: 'Filter by Date') %></span>
       <% if filtered? %>
-        <span class="badge bg-primary text-white ms-1">
+        <span class="badge badge-date-filter ms-1">
           <% if @date_from.present? && @date_to.present? && @date_from == @date_to %>
             <%= @date_from %>
           <% elsif @date_from.present? && @date_to.present? %>
@@ -46,7 +45,7 @@
                   id="serial-jump-year"
                   aria-label="<%= t('labels.L_JUMP_TO_YEAR', default: 'Jump to year') %>"
                   onchange="if(this.value){ document.getElementById('serial-date-from').value = this.value; document.getElementById('serial-date-to').value = this.value; this.form.submit(); }">
-            <option value=""><%= t('labels.L_JUMP_TO_YEAR', default: 'Jump to year...') %></option>
+            <option value=""><%= t('labels.L_JUMP_TO_YEAR', default: 'Jump to year') %></option>
             <% @available_years.each do |yr, cnt| %>
               <option value="<%= yr %>" <%= 'selected' if @date_from == yr && @date_to == yr %>>
                 <%= yr %> (<%= number_with_delimiter(cnt) %>)
@@ -68,7 +67,7 @@
                min="1000"
                max="9999"
                style="width: 80px;"
-               aria-label="<%= t('labels.L_DATE_FROM', default: 'From Year') %>">
+               aria-label="<%= t('labels.L_DATE_FROM', default: 'From') %>">
       </div>
 
       <div class="input-group input-group-sm" style="width: auto;">
@@ -82,20 +81,18 @@
                min="1000"
                max="9999"
                style="width: 80px;"
-               aria-label="<%= t('labels.L_DATE_TO', default: 'To Year') %>">
+               aria-label="<%= t('labels.L_DATE_TO', default: 'To') %>">
       </div>
 
       <button type="submit" class="btn btn-primary btn-sm px-3" id="serial-date-filter-btn">
-        <i class="bi bi-funnel me-1" aria-hidden="true"></i>
         <%= t('labels.L_FILTER_ACTION', default: 'Filter') %>
       </button>
 
       <% if filtered? %>
         <a href="<%= url_for(params.to_unsafe_h.except(:date_from, :date_to, :page)) %>"
-           class="btn btn-outline-secondary btn-sm px-2"
+           class="btn btn-outline-secondary btn-sm px-3"
            id="serial-date-clear-btn"
            title="<%= t('labels.L_CLEAR_FILTER', default: 'Clear date filter') %>">
-          <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
           <%= t('labels.L_CLEAR', default: 'Clear') %>
         </a>
       <% end %>
