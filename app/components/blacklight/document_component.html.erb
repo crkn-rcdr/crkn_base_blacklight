@@ -84,21 +84,81 @@
         </nav>
       <% end %>
 
-      <% if @component == :div %>
-        <section class="document-overview" role="region" aria-label="<%= t('blacklight.main.aria.record_overview', default: 'Record overview') %>">
-          <%= title %>
-          <%= embed %>
-          <%= content %>
-        </section>
-      <% else %>
-        <div class="document-overview">
-          <%= title %>
-          <%= embed %>
-          <%= content %>
-        </div>
-      <% end %>
+      <% is_item_unavailable = (@component == :div) && (@document._source["is_serial"]&.first != "Yes") && @document._source["ark"].blank? %>
 
-      <% if @component == :div %>
+      <% if is_item_unavailable %>
+        <div class="item-unavailable-404-container text-center py-5 px-3">
+          <div class="mb-3">
+            <span class="badge bg-danger text-uppercase px-3 py-2 fs-6">
+              404
+            </span>
+          </div>
+
+          <h1 class="display-6 fw-bold mb-3 text-dark">
+            <%= is_fr ? "404 - Cet élément n'est pas disponible" : "404 - This item is unavailable" %>
+          </h1>
+
+          <p class="lead text-muted mx-auto mb-4" style="max-width: 680px;">
+            <% doc_title = @document._source['title_tsim']&.first || @document._source['id'] || params[:id] %>
+            <% if is_fr %>
+              Les images numérisées pour « <strong><%= doc_title %></strong> » ne sont pas disponibles actuellement ou n'ont pas encore été numérisées.
+            <% else %>
+              The digitized images for “<strong><%= doc_title %></strong>” are currently unavailable or have not yet been digitized.
+            <% end %>
+          </p>
+
+          <div class="item-unavailable-404-image-wrapper my-4">
+            <img src="/assets/404.webp"
+                 class="img-fluid rounded border shadow-sm not-found-icon"
+                 alt="<%= is_fr ? "Erreur 404 - Cet élément n'est pas disponible | oocihm.8_06911_57.1" : "404 Error - This item is unavailable | oocihm.8_06911_57.1" %>"
+                 style="max-width: 480px; width: 100%; height: auto;" />
+            <div class="mt-2 text-muted fst-italic small">
+              oocihm.8_06911_57.1 — « This page is dead »
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+            <a href="<%= root_breadcrumb_url %>" class="btn btn-primary px-4 py-2">
+              <i class="bi bi-arrow-left me-1"></i>
+              <%= is_fr ? 'Retour aux résultats de recherche' : 'Back to Search Results' %>
+            </a>
+            <a href="<%= search_catalog_path(lang: I18n.locale) %>" class="btn btn-outline-secondary px-4 py-2">
+              <i class="bi bi-search me-1"></i>
+              <%= is_fr ? 'Rechercher dans la collection' : 'Search the Collection' %>
+            </a>
+          </div>
+
+          <div class="mt-5 pt-4 border-top mx-auto" style="max-width: 800px;">
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#unavailable-item-metadata" aria-expanded="false" aria-controls="unavailable-item-metadata">
+              <i class="bi bi-card-text me-1"></i>
+              <%= is_fr ? 'Afficher les métadonnées de la notice' : 'View Record Metadata' %>
+            </button>
+            <div class="collapse mt-3 text-start" id="unavailable-item-metadata">
+              <div class="card card-body bg-light border">
+                <h4 class="h5 mb-3 text-dark border-bottom pb-2">
+                  <%= is_fr ? 'Informations bibliographiques' : 'Bibliographic Information' %>
+                </h4>
+                <%= metadata %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <% if @component == :div %>
+          <section class="document-overview" role="region" aria-label="<%= t('blacklight.main.aria.record_overview', default: 'Record overview') %>">
+            <%= title %>
+            <%= embed %>
+            <%= content %>
+          </section>
+        <% else %>
+          <div class="document-overview">
+            <%= title %>
+            <%= embed %>
+            <%= content %>
+          </div>
+        <% end %>
+
+        <% if @component == :div %>
         <% if @document._source["is_serial"]&.first == "Yes" %>
           <% collection_items_comp = CollectionItemsComponent.new(
                documentId: @document._source['id'] || params[:id],
@@ -388,6 +448,7 @@
         <% end %>
         <%= thumbnail %>
         <%= render(::PageSearchComponent.new(docId: @document._source["id"] , arkUrl: @document._source["ark"], term: params[:q])) %>
+      <% end %>
       <% end %>
 
       <br/>
