@@ -493,6 +493,9 @@
   <field name="_version_" type="plong" indexed="false" stored="false" />
   <field name="access_note_tsim" type="text_general" />
   <field name="all_text_timv" type="text_general" />
+  <field name="archival_ref_ssm" type="text_general" />
+  <field name="finding_aid_ssm" type="text_general" />
+  <field name="finding_aid_tsim" type="text_general" />
   <field name="ark" type="string" multiValued="false" indexed="true" stored="true" />
   <field name="author_addl_tsim" type="text_general" />
   <field name="author_si" type="text_general" />
@@ -694,4 +697,7 @@
   <copyField source="full_title_ssm" dest="full_title_ssm_str" maxChars="256" />
   <copyField source="full_title_tsim" dest="full_title_tsim_str" maxChars="256" />
   <copyField source="resource_type_ssim" dest="resource_type_ssim_str" maxChars="256" />
+  <copyField source="archival_ref_ssm" dest="archival_ref_ssm_str" maxChars="256" />
+  <copyField source="finding_aid_ssm" dest="finding_aid_ssm_str" maxChars="256" />
+  <copyField source="finding_aid_tsim" dest="finding_aid_tsim_str" maxChars="256" />
 </schema>

@@ -8,8 +8,27 @@ class SearchBuilder < Blacklight::SearchBuilder
     :add_inclusive_facet_fq_to_solr,
     :tag_and_exclude_facets,
     :filter_individual_issues,
+    :normalize_boolean_query_operators,
     :boost_and_expand_id_queries
   ]
+
+  def normalize_boolean_query_operators(solr_parameters)
+    return unless solr_parameters
+
+    q = (solr_parameters[:q] || blacklight_params[:q] || blacklight_params['q'])&.to_s
+    return if q.blank?
+
+    # If the user used the documented '|' alternate term operator, replace with ' OR '
+    if q.include?('|')
+      q = q.gsub(/\s*\|\s*/, ' OR ')
+      solr_parameters[:q] = q
+    end
+
+    # If query contains explicit boolean OR, relax minimum match so Solr doesn't require 100% of terms
+    if q =~ /\bOR\b/
+      solr_parameters[:mm] = 1
+    end
+  end
 
   def add_inclusive_facet_fq_to_solr(solr_parameters)
     return unless solr_parameters
