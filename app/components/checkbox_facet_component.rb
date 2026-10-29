@@ -61,8 +61,15 @@ class CheckboxFacetComponent < Blacklight::Component
     helpers.render(Blacklight::FacetFieldPaginationComponent.new(facet_field: @facet_field))
   end
 
-  def checkbox_id(index)
-    "facet-checkbox-#{facet_key.parameterize}-#{index}"
+  def checkbox_id(index, value = nil)
+    scope = if @facet_field.in_modal?
+              page = helpers.respond_to?(:params) ? (helpers.params['facet.page'] || 1) : 1
+              "modal-p#{page}"
+            else
+              'sidebar'
+            end
+    val_slug = value.present? ? "-#{value.to_s.parameterize.presence || index}" : ''
+    "facet-checkbox-#{scope}-#{facet_key.parameterize}#{val_slug}-#{index}"
   end
 
   def selected_values

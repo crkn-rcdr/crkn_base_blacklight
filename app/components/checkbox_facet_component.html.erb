@@ -17,7 +17,7 @@
       <% if rows.any? %>
         <ul class="facet-values list-unstyled checkbox-facet-values">
           <% rows.each_with_index do |row, index| %>
-            <% id = checkbox_id(index) %>
+            <% id = checkbox_id(index, row.value) %>
             <li>
               <%= label_tag id, class: 'checkbox-facet-option' do %>
                 <%= check_box_tag "f_inclusive[#{@facet_field.key}][]",
@@ -191,7 +191,7 @@
           ['pointerdown', 'mousedown', 'click', 'keydown'].forEach(function(evtName) {
             document.addEventListener(evtName, function(e) {
               if (!(e.target instanceof Element)) return;
-              const navLink = e.target.closest('.modal .facet-pagination a, .modal .prev_next_links a, .modal .sort-options a');
+              const navLink = e.target.closest('.modal .facet-pagination a, .modal .prev_next_links a, .modal .sort-options a, .modal .facet-filters a, .modal .facet-index-navigation a');
               if (!navLink) return;
               if (evtName === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
               syncModalNavLink(navLink);

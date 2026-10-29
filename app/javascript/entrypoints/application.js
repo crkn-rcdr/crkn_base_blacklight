@@ -1580,7 +1580,7 @@ function handleCheckboxFacetMoreActivation(event) {
     return;
   }
 
-  const modalNavLink = event.target.closest('.modal .facet-pagination a, .modal .prev_next_links a, .modal .sort-options a');
+  const modalNavLink = event.target.closest('.modal .facet-pagination a, .modal .prev_next_links a, .modal .sort-options a, .modal .facet-filters a, .modal .facet-index-navigation a');
   if (modalNavLink) {
     if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
     syncModalPaginationLink(modalNavLink);
