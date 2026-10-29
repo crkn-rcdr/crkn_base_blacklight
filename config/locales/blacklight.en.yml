@@ -2,8 +2,8 @@
 en:
   blacklight:
     range_limit:
-      submit_limit: Submit Limit
-      range_list_heading: Range List Heading
+      submit_limit: Apply
+      range_list_heading: Date Range Listing
       range_begin: Range Start
       range_end: Range End
       range_begin_short: Start
