@@ -1468,6 +1468,8 @@ function syncOffpageSelectionsInModalForm(modalForm) {
   );
   const modalRenderedValues = new Set(modalCheckboxes.map((cb) => cb.value));
 
+  const desiredOffpage = sidebarCheckedValues.filter((val) => !modalRenderedValues.has(val));
+
   let offpageContainer = modalForm.querySelector('.js-modal-offpage-selections');
   if (!offpageContainer) {
     offpageContainer = document.createElement('div');
@@ -1475,17 +1477,21 @@ function syncOffpageSelectionsInModalForm(modalForm) {
     offpageContainer.hidden = true;
     modalForm.insertBefore(offpageContainer, modalForm.firstChild);
   }
+
+  const currentOffpage = Array.from(offpageContainer.querySelectorAll('input.js-modal-offpage-selection')).map((inp) => inp.value);
+  if (currentOffpage.length === desiredOffpage.length && currentOffpage.every((v, idx) => v === desiredOffpage[idx])) {
+    return;
+  }
+
   offpageContainer.innerHTML = '';
 
-  sidebarCheckedValues.forEach((val) => {
-    if (!modalRenderedValues.has(val)) {
-      const hiddenInput = document.createElement('input');
-      hiddenInput.type = 'hidden';
-      hiddenInput.className = 'js-modal-offpage-selection';
-      hiddenInput.name = `f_inclusive[${facetKey}][]`;
-      hiddenInput.value = val;
-      offpageContainer.appendChild(hiddenInput);
-    }
+  desiredOffpage.forEach((val) => {
+    const hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.className = 'js-modal-offpage-selection';
+    hiddenInput.name = `f_inclusive[${facetKey}][]`;
+    hiddenInput.value = val;
+    offpageContainer.appendChild(hiddenInput);
   });
 }
 
@@ -1611,7 +1617,11 @@ function observeModalDomChanges() {
   const observer = new MutationObserver((mutations) => {
     let hasAddedNodes = false;
     for (const mutation of mutations) {
-      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+      if (
+        mutation.type === 'childList' &&
+        mutation.addedNodes.length > 0 &&
+        !(mutation.target instanceof Element && mutation.target.closest('.js-modal-offpage-selections'))
+      ) {
         hasAddedNodes = true;
         break;
       }

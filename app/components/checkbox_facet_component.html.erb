@@ -113,6 +113,8 @@
             ).map(function(cb) { return cb.value; })
           );
 
+          const desiredOffpage = sidebarChecked.filter(function(val) { return !modalRendered.has(val); });
+
           let box = modalForm.querySelector('.js-modal-offpage-selections');
           if (!box) {
             box = document.createElement('div');
@@ -120,17 +122,20 @@
             box.hidden = true;
             modalForm.insertBefore(box, modalForm.firstChild);
           }
-          box.innerHTML = '';
 
-          sidebarChecked.forEach(function(val) {
-            if (!modalRendered.has(val)) {
-              const hidden = document.createElement('input');
-              hidden.type = 'hidden';
-              hidden.className = 'js-modal-offpage-selection';
-              hidden.name = 'f_inclusive[' + facetKey + '][]';
-              hidden.value = val;
-              box.appendChild(hidden);
-            }
+          const currentOffpage = Array.from(box.querySelectorAll('input.js-modal-offpage-selection')).map(function(inp) { return inp.value; });
+          if (currentOffpage.length === desiredOffpage.length && currentOffpage.every(function(v, idx) { return v === desiredOffpage[idx]; })) {
+            return;
+          }
+
+          box.innerHTML = '';
+          desiredOffpage.forEach(function(val) {
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.className = 'js-modal-offpage-selection';
+            hidden.name = 'f_inclusive[' + facetKey + '][]';
+            hidden.value = val;
+            box.appendChild(hidden);
           });
         }
 
@@ -222,8 +227,15 @@
             const modal = document.querySelector('#blacklight-modal, .modal');
             if (!modal || modal.dataset.crknSyncObserved === '1') return;
             modal.dataset.crknSyncObserved = '1';
-            const obs = new MutationObserver(function() {
-              syncModalFromSidebar();
+            const obs = new MutationObserver(function(mutations) {
+              const hasRelevantAddition = mutations.some(function(m) {
+                if (m.type !== 'childList' || m.addedNodes.length === 0) return false;
+                if (m.target && m.target.closest && m.target.closest('.js-modal-offpage-selections')) return false;
+                return true;
+              });
+              if (hasRelevantAddition) {
+                syncModalFromSidebar();
+              }
             });
             obs.observe(modal, { childList: true, subtree: true });
           };
