@@ -8,9 +8,11 @@ This document details how search queries are processed, scored, and sorted acros
 
 Both Canadiana and Héritage use **Apache Solr (v9.x)** as the underlying search engine, communicating via the **Ruby on Rails Blacklight (v8.x)** front-end application.
 
-- **Solr Core**: `blacklight_marc`
+- **Solr Cores**: 
+  - `blacklight_marc`: Catalog metadata, facet fields, and document identifiers.
+  - `content_search`: Canvas-level OCR text (`ocrtext`, `ocrtext_*`) and word coordinates (`ocrbbox`).
 - **Query Handler**: `/select`
-- **Query Parser**: `edismax` (Extended DisMax)
+- **Query Parsers**: `edismax` (Extended DisMax) for metadata searches; cross-core Solr join (`{!join}`) for full-text searches and availability faceting.
 - **Request Pipeline**: Built dynamically through Blacklight's `SearchBuilder` (`app/models/search_builder.rb`) and `CatalogController` (`app/controllers/catalog_controller.rb`).
 
 ---
@@ -116,9 +118,27 @@ The following syntax features are supported in both portals, as outlined in the 
 | **Field Dropdown: Title** | Select *Title* | Targets `full_title_tsim`. |
 | **Field Dropdown: Creator** | Select *Author/Creator* | Targets `author_tsim`. |
 | **Field Dropdown: Subject** | Select *Subject* | Targets `subject_tsim`. |
-| **Field Dropdown: Full Text** | Select *Full Text* | Targets `tx_gen` and multilingual text fields. |
+| **Field Dropdown: Full Text** | Select *Full Text* | Queries OCR canvas transcripts in `content_search` dynamically via cross-core join (`{!join from=manifestid to=manifestid_s fromIndex=content_search}`). |
 | **Date Range Limiting** | From `YYYY` To `YYYY` | Filters results via `pub_date_ssim:[FROM TO TO]`. |
-| **Has Full Text Filter** | Check *Full text available* | Filters results via `tx_gen:[* TO *]`. |
+| **Has Full Text Filter** | Check *Full text available* | Filters results via dynamic cross-core join (`{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*`). |
+
+---
+
+
+### 5.1 Full-Text Search via Cross-Core Solr Join (`content_search`)
+
+Full-text search queries execute against the dedicated `content_search` Solr core, which indexes OCR text and word bounding boxes at the individual canvas level. 
+
+Instead of duplicating full-text inside `blacklight_marc`, Blacklight links the catalog record to its OCR transcripts using Solr's native cross-core join parser:
+
+- **Linking Key**: `manifestid_s` in `blacklight_marc` (derived from the record's ARK) joins to `manifestid` in `content_search`.
+- **Fielded Full-Text Search**: When a user selects **Full Text** from the search dropdown (`search_field=tx_gen`), `SearchBuilder#apply_fulltext_join` constructs a cross-core join query:
+  ```solr
+  q={!join from=manifestid to=manifestid_s fromIndex=content_search v='{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'}
+  ```
+- **Full-Text Availability Faceting**: In the facet sidebar, the **Full Text Search** facet dynamically counts records matching:
+  - *Available*: `{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*`
+  - *Not Available*: `(*:* -{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*)`
 
 ---
 
@@ -132,3 +152,4 @@ Search behavior is regression-tested using Playwright automated test suites in `
 - `testNegation`: Confirms `-` exclusion logic.
 - `testAlternateTerms`: Confirms `|` / `OR` boolean logic.
 - `testSortOptions`: Confirms relevance, date ascending, and date descending sorts.
+- `testFullTextJoin`: Confirms full-text searches and availability facet queries match records with OCR in `content_search`.
