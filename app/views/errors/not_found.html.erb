@@ -1,0 +1,37 @@
+<% current_lang = I18n.locale.to_s.start_with?('fr') ? 'fr' : 'en' %>
+<% is_fr = current_lang == 'fr' %>
+<% is_heritage = CatalogController.heritage?(self) %>
+<% portal_name = is_heritage ? 'Héritage' : 'Canadiana' %>
+<% search_path = search_catalog_path(lang: current_lang) %>
+<% @page_title = is_fr ? "404 - #{portal_name} | Page introuvable" : "404 - #{portal_name} | Page Not Found" %>
+
+<div class="col-12 d-flex justify-content-center py-4">
+  <div class="card error-card text-center p-4 p-md-5 shadow-sm" style="max-width: 640px; width: 100%; border-radius: 12px; border: 1px solid #dee2e6; background: #ffffff; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);">
+    <div class="mb-3">
+      <span class="badge bg-danger text-uppercase px-3 py-2 fs-6">
+        <%= is_fr ? "Erreur 404" : "404 Error" %>
+      </span>
+    </div>
+
+    <h1 class="h3 fw-bold text-dark mb-2">
+      <%= is_fr ? "La page que vous recherchez n'existe pas" : "The page you were looking for doesn't exist" %>
+    </h1>
+
+    <p class="text-secondary small mb-3">
+      <%= is_fr ? "Vous avez peut-être mal saisi l'adresse ou la page a été déplacée." : "You may have mistyped the address or the page may have moved." %>
+    </p>
+
+    <div class="my-3">
+      <img src="/404.webp" onerror="this.src='/assets/404.webp'" alt="<%= is_fr ? "Erreur 404 - Cette page est morte | oocihm.8_06911_57.1" : "404 Error - This page is dead | oocihm.8_06911_57.1" %>" class="img-fluid rounded border shadow-sm" style="max-width: 400px; width: 100%; height: auto;">
+      <div class="text-muted small fst-italic mt-2">
+        <%= is_fr ? "oocihm.8_06911_57.1 — « Cette page est morte »" : "oocihm.8_06911_57.1 — « This page is dead »" %>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      <a href="<%= search_path %>" class="btn btn-crkn-primary px-4 py-2" style="border-radius: 3px !important; <%= is_heritage ? 'background-color: #338500 !important; border-color: #338500 !important;' : 'background-color: #1d808b !important; border-color: #1d808b !important;' %> color: #ffffff !important; font-weight: 500;">
+        <%= is_fr ? (is_heritage ? "Rechercher dans Héritage" : "Rechercher dans Canadiana") : (is_heritage ? "Search Héritage" : "Search Canadiana") %>
+      </a>
+    </div>
+  </div>
+</div>

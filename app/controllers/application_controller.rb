@@ -6,6 +6,15 @@ class ApplicationController < ActionController::Base
   before_action :set_locale
   after_action :set_content_language
 
+  rescue_from Blacklight::Exceptions::RecordNotFound, with: :render_not_found
+
+  def render_not_found
+    respond_to do |format|
+      format.html { render 'errors/not_found', status: :not_found, layout: 'blacklight' }
+      format.all  { head :not_found }
+    end
+  end
+
   private
 
   def set_locale

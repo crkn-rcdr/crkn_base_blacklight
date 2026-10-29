@@ -23,5 +23,6 @@ module CrknCanadianaBlacklight
     I18n.available_locales = [:en, :fr]
     I18n.default_locale = :en
 
+    config.exceptions_app = self.routes
   end
 end
