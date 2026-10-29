@@ -1,4 +1,12 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
+<%
+  is_heritage = (defined?(helpers.portal_heritage?) && helpers.portal_heritage?) ||
+                (defined?(CatalogController) && CatalogController.heritage?(self)) ||
+                (respond_to?(:request) && request&.host.to_s.include?('heritage')) ||
+                ENV['SOLR_URL'].to_s.include?('heritage') ||
+                ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage') ||
+                ENV['BLACKLIGHT_HOST_ADDR'].to_s.include?('heritage')
+%>
 <% search_field_options = if is_fr
   [
     ['Tous', 'all_fields'],
@@ -21,7 +29,11 @@ end %>
   <div class="canadiana-shell">
     <div class="catalog-search-hero__layout">
       <h1 id="catalog-search-hero-title" class="catalog-search-hero__title">
-        <%= is_fr ? 'Recherche dans la collection Canadiana' : 'Canadiana Collection Search' %>
+        <% if is_heritage %>
+          <%= is_fr ? 'Recherche dans la collection Héritage' : 'Héritage Collection Search' %>
+        <% else %>
+          <%= is_fr ? 'Recherche dans la collection Canadiana' : 'Canadiana Collection Search' %>
+        <% end %>
       </h1>
 
       <div class="catalog-search-hero__search" role="navigation" aria-label="<%= is_fr ? 'Recherche' : 'Search' %>">
@@ -34,10 +46,6 @@ end %>
                 class: 'catalog-search-hero__field' %>
 
           <%
-            is_heritage = (defined?(helpers.portal_heritage?) && helpers.portal_heritage?) ||
-                          ENV['SOLR_URL'].to_s.include?('heritage') ||
-                          ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage') ||
-                          ENV['BLACKLIGHT_HOST_ADDR'].to_s.include?('heritage')
             default_placeholder = if is_heritage
               is_fr ? 'Effectuer une recherche dans la collection Héritage...' : 'Search the Héritage collection...'
             else
