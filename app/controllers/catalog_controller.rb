@@ -73,6 +73,9 @@ class CatalogController < ApplicationController
       title_addl_tsim^2
       author_tsim^2
       subject_tsim^2
+      archival_ref_ssm^2
+      summary_tsim
+      finding_aid_ssm
     ] + TEXT_SEARCH_QF_FIELDS
   ).join(' ').freeze
   ALL_FIELDS_PF = TEXT_SEARCH_PF_FIELDS.join(' ').freeze
@@ -143,6 +146,13 @@ class CatalogController < ApplicationController
                            component: CheckboxFacetComponent,
                            tag: 'tag_rights_statement_ssim_str',
                            ex: 'tag_rights_statement_ssim_str',
+                           sort: 'count', limit: 8, suggest: true, index_range: true
+    config.add_facet_field 'theme_ssim_str',
+                           label: ->(_c) { I18n.t('blacklight.metadata.theme.label', default: 'Themes') },
+                           component: CheckboxFacetComponent,
+                           tag: 'tag_theme_ssim_str',
+                           ex: 'tag_theme_ssim_str',
+                           if: ->(context, _config, _facet = nil) { CatalogController.heritage?(context) },
                            sort: 'count', limit: 8, suggest: true, index_range: true
     config.add_facet_field 'subject_ssim_str',
                            label: ->(_c) { I18n.t('blacklight.metadata.subject.label') },
@@ -228,6 +238,7 @@ class CatalogController < ApplicationController
     config.add_index_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
     config.add_index_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
     config.add_index_field 'dates_or_sequential_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.dates_or_sequential.label') }, helper_method: :format_text
+    config.add_index_field 'theme_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.theme.label', default: 'Themes') }, helper_method: :format_facet
     config.add_index_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
     config.add_index_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
     config.add_index_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
@@ -250,7 +261,15 @@ class CatalogController < ApplicationController
     config.add_show_field 'ark', label: ->(_f, _c) { I18n.t('blacklight.metadata.persistent_url.label') }, helper_method: :value_link
     config.add_show_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
     config.add_show_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
+    config.add_show_field 'archival_ref_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.archival_ref.label', default: 'Archival Reference') }, helper_method: :format_text
+    config.add_show_field 'theme_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.theme.label', default: 'Themes') }, helper_method: :format_facet
     config.add_show_field 'varying_title_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.varying_title.label', default: 'Varying Form of Title') }, helper_method: :format_text
+    config.add_show_field 'title_added_entry_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.title_added_entry.label', default: 'Added Title') }, helper_method: :format_text
+    config.add_show_field 'place_added_entry_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.place_added_entry.label', default: 'Associated Place') }, helper_method: :format_text
+    config.add_show_field 'related_items_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.related_items.label', default: 'Related Items') }, helper_method: :format_text
+    config.add_show_field 'complex_linking_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.complex_linking_note.label', default: 'Complex Linking Entry Note') }, helper_method: :format_text
+    config.add_show_field 'summary_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.summary.label', default: 'Summary') }, helper_method: :format_text
+    config.add_show_field 'finding_aid_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.finding_aid.label', default: 'Finding Aid') }, helper_method: :format_text
     config.add_show_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
     config.add_show_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
     config.add_show_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }

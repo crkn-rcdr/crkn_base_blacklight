@@ -88,7 +88,8 @@ en:
     back_to_bookmarks: Back to Bookmarks
     back_to_search: Back to Search
     breadcrumbs:
-      root_collection: "Canadiana Collection - Search Results"
+      canadiana: "Canadiana Collection - Search Results"
+      heritage: "Héritage Collection - Search Results"
     bookmarks:
       add:
         button: Bookmark

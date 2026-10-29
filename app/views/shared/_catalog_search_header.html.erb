@@ -33,10 +33,21 @@ end %>
                 title: (is_fr ? 'Options de recherche ciblees' : 'Targeted search options'),
                 class: 'catalog-search-hero__field' %>
 
+          <%
+            is_heritage = (defined?(helpers.portal_heritage?) && helpers.portal_heritage?) ||
+                          ENV['SOLR_URL'].to_s.include?('heritage') ||
+                          ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage') ||
+                          ENV['BLACKLIGHT_HOST_ADDR'].to_s.include?('heritage')
+            default_placeholder = if is_heritage
+              is_fr ? 'Effectuer une recherche dans la collection Héritage...' : 'Search the Héritage collection...'
+            else
+              is_fr ? 'Effectuer une recherche dans la collection Canadiana...' : 'Search the Canadiana collection...'
+            end
+          %>
           <label class="sr-only visually-hidden" for="catalog_search_q"><%= is_fr ? 'rechercher' : 'search for' %></label>
           <input
             value="<%= params[:q].to_s %>"
-            placeholder="<%= is_fr ? 'Effectuer une recherche dans la collection Canadiana...' : 'Search the Canadiana collection...' %>"
+            placeholder="<%= default_placeholder %>"
             class="catalog-search-hero__input"
             aria-label="<%= is_fr ? 'rechercher' : 'search for' %>"
             type="search"

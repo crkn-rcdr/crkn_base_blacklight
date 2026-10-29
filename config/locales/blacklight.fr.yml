@@ -73,7 +73,8 @@ fr:
     back_to_bookmarks: Retour aux favoris
     back_to_search: Retour aux résultats
     breadcrumbs:
-      root_collection: "Collection Canadiana - Résultats de recherche"
+      canadiana: "Collection Canadiana - Résultats de recherche"
+      heritage: "Collection Héritage - Résultats de recherche"
     bookmarks:
       add:
         button: Panier

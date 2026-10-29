@@ -24,13 +24,13 @@
           is_fr = I18n.locale.to_s.start_with?('fr')
           is_heritage = (defined?(helpers.portal_heritage?) && helpers.portal_heritage?) ||
                         ENV['SOLR_URL'].to_s.include?('heritage') ||
-                        ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage')
-          default_root_label = if is_heritage
-            is_fr ? 'Collection Héritage - Résultats de recherche' : 'Héritage Collection - Search Results'
+                        ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage') ||
+                        ENV['BLACKLIGHT_HOST_ADDR'].to_s.include?('heritage')
+          root_breadcrumb_label = if is_heritage
+            t('blacklight.breadcrumbs.heritage', default: (is_fr ? 'Collection Héritage - Résultats de recherche' : 'Héritage Collection - Search Results'))
           else
-            is_fr ? 'Collection Canadiana - Résultats de recherche' : 'Canadiana Collection - Search Results'
+            t('blacklight.breadcrumbs.canadiana', default: (is_fr ? 'Collection Canadiana - Résultats de recherche' : 'Canadiana Collection - Search Results'))
           end
-          root_breadcrumb_label = t('blacklight.breadcrumbs.root_collection', default: default_root_label)
         %>
         <% root_breadcrumb_url = helpers.back_to_search_url %>
         <%
