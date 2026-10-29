@@ -217,7 +217,6 @@ class CatalogController < ApplicationController
                            helper_method: :render_full_text_facet_label,
                            tag: 'tag_has_full_text',
                            ex: 'tag_has_full_text',
-                           if: ->(context, _config, _facet = nil) { CatalogController.heritage?(context) },
                            query: {
                              available: {
                                label: 'Available',
