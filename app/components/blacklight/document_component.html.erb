@@ -117,14 +117,10 @@
             </div>
           </div>
 
-          <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+          <div class="d-flex justify-content-center mt-4">
             <a href="<%= root_breadcrumb_url %>" class="btn btn-primary px-4 py-2">
               <i class="bi bi-arrow-left me-1"></i>
-              <%= is_fr ? 'Retour aux résultats de recherche' : 'Back to Search Results' %>
-            </a>
-            <a href="<%= search_catalog_path(lang: I18n.locale) %>" class="btn btn-outline-secondary px-4 py-2">
-              <i class="bi bi-search me-1"></i>
-              <%= is_fr ? 'Rechercher dans la collection' : 'Search the Collection' %>
+              <%= is_fr ? 'Retour à la recherche' : 'Back to Search' %>
             </a>
           </div>
 
