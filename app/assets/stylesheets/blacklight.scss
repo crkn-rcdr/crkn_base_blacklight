@@ -1333,7 +1333,7 @@ button i {
 }
 
 .document-sidebar-header .metadata-expand-btn {
-    display: inline-flex;
+    display: none !important; /* Change to inline-flex to show the full-screen metadata button */
     align-items: center;
     justify-content: center;
     width: 2rem;

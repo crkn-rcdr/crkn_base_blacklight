@@ -481,7 +481,9 @@
                       if (Number.isFinite(savedW) && savedW >= 240) {
                         applySidebarWidthPx(sidebar, wrapper, savedW);
                       }
-                      const savedFullscreen = localStorage.getItem(FULLSCREEN_STORAGE_KEY) === '1';
+                      const fullscreenBtn = document.getElementById('metadata-fullscreen-toggle');
+                      const isFullscreenBtnVisible = fullscreenBtn && window.getComputedStyle(fullscreenBtn).display !== 'none';
+                      const savedFullscreen = isFullscreenBtnVisible && localStorage.getItem(FULLSCREEN_STORAGE_KEY) === '1';
                       if (savedFullscreen) {
                         setFullscreenState(true, false);
                       }
