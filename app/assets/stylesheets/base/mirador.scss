@@ -82,16 +82,17 @@
         min-width: 0 !important;
 
         .MuiAutocomplete-root {
-            flex: 0 1 85px !important;
-            min-width: 55px !important;
-            max-width: 90px !important;
-            margin-right: 0.5rem !important;
+            flex: 0 0 140px !important;
+            width: 140px !important;
+            min-width: 140px !important;
+            max-width: 140px !important;
+            margin-right: 0.75rem !important;
         }
 
         .MuiInputBase-input {
-            padding-left: 6px !important;
-            padding-right: 22px !important;
-            font-size: 0.85rem !important;
+            padding-left: 12px !important;
+            padding-right: 30px !important;
+            font-size: 0.95rem !important;
         }
 
         .MuiIconButton-root {
