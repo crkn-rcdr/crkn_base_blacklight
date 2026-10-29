@@ -1851,8 +1851,24 @@ dialog#blacklight-modal,
 .facet-limit .collapse-toggle:focus-visible {
   box-shadow: 0 0 0 3px rgba(29, 128, 139, 0.18);
 }
-.facet-limit-active .card-header .btn {
-  color: #1d808b;
+.facet-limit-active {
+  border-color: var(--theme-primary, #1d808b) !important;
+}
+.facet-limit-active .card-header .btn,
+.facet-limit-active .collapse-toggle,
+.facet-limit-active .facet-field-heading button {
+  color: var(--theme-primary, #1d808b) !important;
+}
+
+.form-check-input:checked {
+  background-color: var(--theme-primary, #1d808b) !important;
+  border-color: var(--theme-primary, #1d808b) !important;
+}
+
+.facet-limit .selected,
+.facet-values .selected,
+.facet-label .selected {
+  color: var(--theme-primary, #1d808b) !important;
 }
 .facet-limit .facet-content {
   border-top: 1px solid rgba(0, 0, 0, 0.06);

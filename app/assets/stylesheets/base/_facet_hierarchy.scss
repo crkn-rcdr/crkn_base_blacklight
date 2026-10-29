@@ -33,18 +33,18 @@
     font-weight: 600;
 
     .facet-label {
-      color: #12575f;
+      color: var(--theme-primary, #12575f);
       font-weight: 600;
 
       .selected {
-        color: #12575f !important;
+        color: var(--theme-primary, #12575f) !important;
         font-weight: 600;
       }
     }
 
     .facet-count {
       background-color: #d7eef1;
-      color: #12575f;
+      color: var(--theme-primary, #12575f);
       font-weight: 700;
       border-radius: var(--site-radius, 2px);
     }
@@ -61,7 +61,7 @@
   }
 
   .facet-label .selected {
-    color: #12575f !important;
+    color: var(--theme-primary, #12575f) !important;
     font-weight: 600;
   }
 
