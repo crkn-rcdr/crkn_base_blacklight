@@ -430,6 +430,17 @@ en:
     L_RECORD: About this Item
     L_SERIAL_RECORD: About this Serial
     L_AVAILABLE_ISSUES: Available Issues
+    L_FILTER_BY_DATE: Filter by Date
+    L_DATE_FROM: From
+    L_DATE_TO: To
+    L_FILTER_ACTION: Filter
+    L_CLEAR: Clear
+    L_CLEAR_FILTER: Clear date filter
+    L_JUMP_TO_YEAR: Jump to year
+    L_FILTERED: Filtered
+    L_FILTERED_FROM_TOTAL: "(filtered from %{total} total)"
+    L_NO_ISSUES_FOR_DATE_MSG: No issues found matching the selected date range.
+    L_VIEW_ALL_ISSUES: View all issues
     L_SEARCH_BREADCRUMB: Collection search
     L_ALL_ISSUES: List of Issues
     L_VIEW_ISSUE: View Details

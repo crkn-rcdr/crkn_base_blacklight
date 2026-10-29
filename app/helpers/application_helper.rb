@@ -580,6 +580,7 @@ module ApplicationHelper
       0
     end
   end
+  public :serial_issue_count
 end
 
 

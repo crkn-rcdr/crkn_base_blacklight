@@ -1,5 +1,108 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% activate_zoom_label = t('blacklight.tools.enable_zoom_tooltip', default: (is_fr ? 'Cliquer pour activer le zoom' : 'Click to enable zoom')) %>
+
+<div class="serial-issues-toolbar mb-4 p-3 bg-light rounded border">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <!-- Left: Title & Active Filter Summary -->
+    <div class="d-flex align-items-center gap-2">
+      <i class="bi bi-calendar-event text-primary fs-5" aria-hidden="true"></i>
+      <span class="fw-semibold text-dark"><%= t('labels.L_FILTER_BY_DATE', default: 'Filter by Date') %></span>
+      <% if filtered? %>
+        <span class="badge bg-primary text-white ms-1">
+          <% if @date_from.present? && @date_to.present? && @date_from == @date_to %>
+            <%= @date_from %>
+          <% elsif @date_from.present? && @date_to.present? %>
+            <%= "#{@date_from} – #{@date_to}" %>
+          <% elsif @date_from.present? %>
+            <%= "≥ #{@date_from}" %>
+          <% elsif @date_to.present? %>
+            <%= "≤ #{@date_to}" %>
+          <% end %>
+        </span>
+      <% end %>
+    </div>
+
+    <!-- Right: Filter Controls -->
+    <form method="get" action="" class="d-flex flex-wrap align-items-center gap-2 m-0" role="search" aria-label="<%= t('labels.L_FILTER_BY_DATE', default: 'Filter by Date') %>">
+      <%# Preserve query parameters %>
+      <% params.to_unsafe_h.except(:date_from, :date_to, :page, :action, :controller, :id).each do |k, v| %>
+        <% if v.is_a?(Array) %>
+          <% v.each do |val| %>
+            <input type="hidden" name="<%= k %>[]" value="<%= val %>">
+          <% end %>
+        <% elsif v.is_a?(Hash) %>
+          <% v.each do |sub_k, val| %>
+            <input type="hidden" name="<%= k %>[<%= sub_k %>]" value="<%= val %>">
+          <% end %>
+        <% elsif v.present? %>
+          <input type="hidden" name="<%= k %>" value="<%= v %>">
+        <% end %>
+      <% end %>
+
+      <% if @available_years.present? && @available_years.size > 1 %>
+        <!-- Quick Jump to Year Select -->
+        <div class="d-inline-block">
+          <select class="form-select form-select-sm"
+                  id="serial-jump-year"
+                  aria-label="<%= t('labels.L_JUMP_TO_YEAR', default: 'Jump to year') %>"
+                  onchange="if(this.value){ document.getElementById('serial-date-from').value = this.value; document.getElementById('serial-date-to').value = this.value; this.form.submit(); }">
+            <option value=""><%= t('labels.L_JUMP_TO_YEAR', default: 'Jump to year...') %></option>
+            <% @available_years.each do |yr, cnt| %>
+              <option value="<%= yr %>" <%= 'selected' if @date_from == yr && @date_to == yr %>>
+                <%= yr %> (<%= number_with_delimiter(cnt) %>)
+              </option>
+            <% end %>
+          </select>
+        </div>
+      <% end %>
+
+      <!-- Date Range Inputs: From & To -->
+      <div class="input-group input-group-sm" style="width: auto;">
+        <span class="input-group-text bg-white"><%= t('labels.L_DATE_FROM', default: 'From') %></span>
+        <input type="number"
+               class="form-control form-control-sm"
+               name="date_from"
+               id="serial-date-from"
+               value="<%= @date_from %>"
+               placeholder="<%= @min_year || 'YYYY' %>"
+               min="1000"
+               max="9999"
+               style="width: 80px;"
+               aria-label="<%= t('labels.L_DATE_FROM', default: 'From Year') %>">
+      </div>
+
+      <div class="input-group input-group-sm" style="width: auto;">
+        <span class="input-group-text bg-white"><%= t('labels.L_DATE_TO', default: 'To') %></span>
+        <input type="number"
+               class="form-control form-control-sm"
+               name="date_to"
+               id="serial-date-to"
+               value="<%= @date_to %>"
+               placeholder="<%= @max_year || 'YYYY' %>"
+               min="1000"
+               max="9999"
+               style="width: 80px;"
+               aria-label="<%= t('labels.L_DATE_TO', default: 'To Year') %>">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-sm px-3" id="serial-date-filter-btn">
+        <i class="bi bi-funnel me-1" aria-hidden="true"></i>
+        <%= t('labels.L_FILTER_ACTION', default: 'Filter') %>
+      </button>
+
+      <% if filtered? %>
+        <a href="<%= url_for(params.to_unsafe_h.except(:date_from, :date_to, :page)) %>"
+           class="btn btn-outline-secondary btn-sm px-2"
+           id="serial-date-clear-btn"
+           title="<%= t('labels.L_CLEAR_FILTER', default: 'Clear date filter') %>">
+          <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
+          <%= t('labels.L_CLEAR', default: 'Clear') %>
+        </a>
+      <% end %>
+    </form>
+  </div>
+</div>
+
 <div class="row align-items-start" id="collection-items-list">
   <% if @collection_items.present? %>
     <% @collection_items.each do |collection_item| %>
@@ -42,58 +145,76 @@
       <% end %>
     <% end %>
   <% else %>
-    <p><%= t('labels.L_NO_ISSUES_MSG') %></p>
+    <div class="col-12" style="grid-column: 1 / -1;">
+      <div class="alert alert-info d-flex align-items-center justify-content-between p-3 mt-2" role="alert">
+        <div>
+          <i class="bi bi-info-circle-fill me-2 fs-5" aria-hidden="true"></i>
+          <% if filtered? %>
+            <%= t('labels.L_NO_ISSUES_FOR_DATE_MSG', default: 'No issues found matching the selected date range.') %>
+          <% else %>
+            <%= t('labels.L_NO_ISSUES_MSG') %>
+          <% end %>
+        </div>
+        <% if filtered? %>
+          <a href="<%= url_for(params.to_unsafe_h.except(:date_from, :date_to, :page)) %>" class="btn btn-sm btn-outline-primary ms-3">
+            <%= t('labels.L_VIEW_ALL_ISSUES', default: 'View all issues') %>
+          </a>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>
 
-<% max_visible = 12 %>
-<% start_page = [@page - 2, 1].max %>
-<% end_page = [start_page + max_visible - 1, @total_pages].min %>
-<% start_page = [end_page - max_visible + 1, 1].max %>
+<% if @total_pages > 1 %>
+  <% max_visible = 12 %>
+  <% start_page = [@page - 2, 1].max %>
+  <% end_page = [start_page + max_visible - 1, @total_pages].min %>
+  <% start_page = [end_page - max_visible + 1, 1].max %>
 
-<div class="row align-items-start">
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      <% if @page > 1 %>
-        <li class="page-item">
-          <%= link_to 'First', url_for(params.to_unsafe_h.merge(page: 1)), class: 'page-link' %>
-        </li>
-        <li class="page-item">
-          <%= link_to 'Previous', url_for(params.to_unsafe_h.merge(page: @page - 1)), class: 'page-link' %>
-        </li>
-      <% else %>
-        <li class="page-item disabled"><span class="page-link">First</span></li>
-        <li class="page-item disabled"><span class="page-link">Previous</span></li>
-      <% end %>
+  <div class="row align-items-start mt-4">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <% if @page > 1 %>
+          <li class="page-item">
+            <%= link_to 'First', url_for(params.to_unsafe_h.merge(page: 1)), class: 'page-link' %>
+          </li>
+          <li class="page-item">
+            <%= link_to 'Previous', url_for(params.to_unsafe_h.merge(page: @page - 1)), class: 'page-link' %>
+          </li>
+        <% else %>
+          <li class="page-item disabled"><span class="page-link">First</span></li>
+          <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        <% end %>
 
-      <% if start_page > 1 %>
-        <li class="page-item disabled"><span class="page-link">…</span></li>
-      <% end %>
+        <% if start_page > 1 %>
+          <li class="page-item disabled"><span class="page-link">…</span></li>
+        <% end %>
 
-      <% (start_page..end_page).each do |p| %>
-        <li class="page-item <%= 'active' if p == @page %>">
-          <%= link_to p, url_for(params.to_unsafe_h.merge(page: p)), class: 'page-link' %>
-        </li>
-      <% end %>
+        <% (start_page..end_page).each do |p| %>
+          <li class="page-item <%= 'active' if p == @page %>">
+            <%= link_to p, url_for(params.to_unsafe_h.merge(page: p)), class: 'page-link' %>
+          </li>
+        <% end %>
 
-      <% if end_page < @total_pages %>
-        <li class="page-item disabled"><span class="page-link">…</span></li>
-      <% end %>
+        <% if end_page < @total_pages %>
+          <li class="page-item disabled"><span class="page-link">…</span></li>
+        <% end %>
 
-      <% if @page < @total_pages %>
-        <li class="page-item">
-          <%= link_to 'Next', url_for(params.to_unsafe_h.merge(page: @page + 1)), class: 'page-link' %>
-        </li>
-        <li class="page-item">
-          <%= link_to 'Last', url_for(params.to_unsafe_h.merge(page: @total_pages)), class: 'page-link' %>
-        </li>
-      <% else %>
-        <li class="page-item disabled"><span class="page-link">Next</span></li>
-        <li class="page-item disabled"><span class="page-link">Last</span></li>
-      <% end %>
-    </ul>
-  </nav>
-</div>
+        <% if @page < @total_pages %>
+          <li class="page-item">
+            <%= link_to 'Next', url_for(params.to_unsafe_h.merge(page: @page + 1)), class: 'page-link' %>
+          </li>
+          <li class="page-item">
+            <%= link_to 'Last', url_for(params.to_unsafe_h.merge(page: @total_pages)), class: 'page-link' %>
+          </li>
+        <% else %>
+          <li class="page-item disabled"><span class="page-link">Next</span></li>
+          <li class="page-item disabled"><span class="page-link">Last</span></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+<% end %>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
 
@@ -119,45 +240,22 @@ function initializeCollectionItemViewers() {
     const { viewer, container, overlay } = state;
     try {
       viewer.setMouseNavEnabled(false);
-      if (viewer.gestureSettingsMouse) {
-        viewer.gestureSettingsMouse.scrollToZoom = false;
+      container.classList.remove("is-active");
+      container.removeAttribute("data-lenis-prevent");
+      if (overlay) {
+        overlay.setAttribute("aria-pressed", "false");
       }
-    } catch (_error) {}
-    container.classList.remove("is-active");
-    container.removeAttribute("data-lenis-prevent");
-    container.setAttribute("aria-label", activateZoomLabel);
-    const card = container.closest(".collection-item-card");
-    if (card) {
-      card.classList.remove("is-active");
-      card.removeAttribute("data-lenis-prevent");
-    }
-    if (overlay) {
-      overlay.hidden = false;
-      overlay.setAttribute("aria-pressed", "false");
-    }
+    } catch (_err) {}
   };
 
   const activateViewer = (viewer, container, overlay) => {
-    if (activeViewerState && activeViewerState.viewer !== viewer) {
+    if (activeViewerState && activeViewerState.container !== container) {
       deactivateViewer(activeViewerState);
     }
-    try {
-      viewer.setMouseNavEnabled(true);
-      if (viewer.gestureSettingsMouse) {
-        viewer.gestureSettingsMouse.scrollToZoom = true;
-      }
-    } catch (_error) {}
+    viewer.setMouseNavEnabled(true);
     container.classList.add("is-active");
-    container.setAttribute("data-lenis-prevent", "true");
-    container.removeAttribute("title");
-    container.removeAttribute("aria-label");
-    const card = container.closest(".collection-item-card");
-    if (card) {
-      card.classList.add("is-active");
-      card.setAttribute("data-lenis-prevent", "true");
-    }
+    container.setAttribute("data-lenis-prevent", "");
     if (overlay) {
-      overlay.hidden = true;
       overlay.setAttribute("aria-pressed", "true");
     }
     activeViewerState = { viewer, container, overlay };

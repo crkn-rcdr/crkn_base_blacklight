@@ -414,6 +414,17 @@ fr:
     L_RECORD: À propos de cet article
     L_SERIAL_RECORD: À propos de cette série
     L_AVAILABLE_ISSUES: Numéros disponibles
+    L_FILTER_BY_DATE: Filtrer par date
+    L_DATE_FROM: De
+    L_DATE_TO: À
+    L_FILTER_ACTION: Filtrer
+    L_CLEAR: Effacer
+    L_CLEAR_FILTER: Effacer le filtre de date
+    L_JUMP_TO_YEAR: Aller à l'année
+    L_FILTERED: Filtré
+    L_FILTERED_FROM_TOTAL: "(filtré sur un total de %{total})"
+    L_NO_ISSUES_FOR_DATE_MSG: Aucun numéro trouvé pour la période sélectionnée.
+    L_VIEW_ALL_ISSUES: Voir tous les numéros
     L_SEARCH_BREADCRUMB: Recherche dans la collection
     L_ALL_ISSUES: Liste des numéros
     L_VIEW_ISSUE: Voir le numéro

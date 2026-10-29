@@ -92,7 +92,9 @@
           <% collection_items_comp = CollectionItemsComponent.new(
                documentId: @document._source['id'] || params[:id],
                page: params[:page] || 1,
-               per_page: 12
+               per_page: 12,
+               date_from: params[:date_from],
+               date_to: params[:date_to]
              ) %>
         <% end %>
         <div id="document-togglable-content" class="container-fluid">
@@ -103,10 +105,16 @@
                 <h3 id="details-heading" class="h3 mb-0"><%= t(@document._source["is_serial"]&.first == "Yes" ? 'labels.L_SERIAL_RECORD' : 'labels.L_RECORD') %></h3>
               </div>
               <% if @document._source["is_serial"]&.first == "Yes" %>
-                <% issue_count = collection_items_comp&.total_items || helpers.serial_issue_count(@document._source['id'] || params[:id]) %>
+                <% issue_count = collection_items_comp&.total_items || collection_items_comp&.total_all_items || 0 %>
                 <div class="serial-available-issues mt-2 mb-3">
                   <span class="citation-toolbar-title"><%= t('labels.L_AVAILABLE_ISSUES', default: 'Available Issues') %>:</span>
                   <span class=""><%= number_with_delimiter(issue_count) %></span>
+                  <% if params[:date_from].present? || params[:date_to].present? %>
+                    <% total_all = collection_items_comp&.total_all_items || issue_count %>
+                    <small class="text-muted d-block mt-1">
+                      <%= t('labels.L_FILTERED_FROM_TOTAL', default: '(filtered from %{total} total)', total: number_with_delimiter(total_all)) %>
+                    </small>
+                  <% end %>
                 </div>
               <% end %>
               <% if @document._source["is_serial"]&.first != "Yes" %>
@@ -351,7 +359,9 @@
                 <%= render(collection_items_comp || CollectionItemsComponent.new(
                   documentId: @document._source['id'] || params[:id],
                   page: params[:page] || 1,
-                  per_page: 12
+                  per_page: 12,
+                  date_from: params[:date_from],
+                  date_to: params[:date_to]
                 )) %>
               <% end %>
             </div>
