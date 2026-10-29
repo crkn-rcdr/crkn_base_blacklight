@@ -15,6 +15,13 @@ class ApplicationController < ActionController::Base
                   I18n.default_locale
 
     session[:locale] = I18n.locale
+    cookies[:locale] = {
+      value: I18n.locale.to_s,
+      expires: 1.year.from_now,
+      path: '/',
+      same_site: :lax,
+      httponly: false
+    }
   end
 
   def extract_locale_from_header

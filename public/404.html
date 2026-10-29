@@ -7,11 +7,43 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <script>
     (function() {
+      // 1. Detect Collection
       var host = window.location.hostname || '';
       var port = window.location.port || '';
       var isHeritage = host.indexOf('heritage') !== -1 || port === '3010';
       if (isHeritage) {
         document.documentElement.classList.add('theme-heritage');
+      }
+
+      // 2. Detect Language
+      function getCookie(name) {
+        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+        return match ? decodeURIComponent(match[3]) : null;
+      }
+
+      var langParam = new URLSearchParams(window.location.search).get('lang');
+      var langCookie = getCookie('locale');
+      var refMatch = document.referrer ? document.referrer.match(/[?&]lang=([a-z]{2})/i) : null;
+      var langRef = refMatch ? refMatch[1] : null;
+      var browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+
+      var isFr = false;
+      if (langParam) {
+        isFr = langParam.toLowerCase().startsWith('fr');
+      } else if (langCookie) {
+        isFr = langCookie.toLowerCase().startsWith('fr');
+      } else if (langRef) {
+        isFr = langRef.toLowerCase().startsWith('fr');
+      } else if (browserLang) {
+        isFr = browserLang.startsWith('fr');
+      }
+
+      if (isFr) {
+        document.documentElement.classList.add('lang-fr');
+        document.documentElement.setAttribute('lang', 'fr');
+      } else {
+        document.documentElement.classList.add('lang-en');
+        document.documentElement.setAttribute('lang', 'en');
       }
     })();
   </script>
@@ -24,16 +56,29 @@
       --theme-primary: #338500;
       --theme-primary-hover: #286b00;
     }
-    .heritage-label {
+
+    /* Language-specific visibility */
+    .view-en, .view-fr {
       display: none;
     }
-    .canadiana-label {
+    html.lang-en .view-en {
+      display: block;
+    }
+    html.lang-fr .view-fr {
+      display: block;
+    }
+
+    /* Collection-specific button text */
+    .label-heritage {
+      display: none;
+    }
+    .label-canadiana {
       display: inline;
     }
-    .theme-heritage .heritage-label {
+    .theme-heritage .label-heritage {
       display: inline;
     }
-    .theme-heritage .canadiana-label {
+    .theme-heritage .label-canadiana {
       display: none;
     }
 
@@ -58,6 +103,19 @@
       width: 100%;
       padding: 2.5rem 2rem;
       text-align: center;
+      position: relative;
+    }
+    .lang-toggle-link {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      font-size: 0.85rem;
+      color: #6c757d;
+      text-decoration: none;
+    }
+    .lang-toggle-link:hover {
+      color: var(--theme-primary);
+      text-decoration: underline;
     }
     .error-img {
       max-width: 400px;
@@ -72,7 +130,6 @@
     /* Site-wide 3px button radius */
     .btn,
     .btn-crkn-primary,
-    .btn-outline-secondary,
     a.btn,
     button.btn {
       border-radius: 3px !important;
@@ -91,51 +148,82 @@
       border-color: var(--theme-primary-hover) !important;
       color: #ffffff !important;
     }
-
-    .theme-heritage .btn-outline-secondary:hover,
-    .theme-heritage .btn-outline-secondary:focus {
-      border-color: var(--theme-primary) !important;
-      color: var(--theme-primary) !important;
-    }
   </style>
 </head>
 <body>
   <main class="error-card">
-    <div class="mb-3">
-      <span class="badge bg-danger text-uppercase px-3 py-2 fs-6">404 Error / Erreur 404</span>
+    <!-- Language Toggle Switcher -->
+    <a href="?lang=fr" class="lang-toggle-link view-en" id="toggle-to-fr" onclick="switchLanguage('fr', event)">Français</a>
+    <a href="?lang=en" class="lang-toggle-link view-fr" id="toggle-to-en" onclick="switchLanguage('en', event)">English</a>
+
+    <!-- English View -->
+    <div class="view-en">
+      <div class="mb-3">
+        <span class="badge bg-danger text-uppercase px-3 py-2 fs-6">404 Error</span>
+      </div>
+
+      <h1 class="h3 fw-bold text-dark mb-2">The page you were looking for doesn't exist</h1>
+
+      <p class="text-secondary small mb-3">
+        You may have mistyped the address or the page may have moved.
+      </p>
+
+      <div class="my-3">
+        <img src="/404.webp" onerror="this.src='/assets/404.webp'" alt="404 - This page is dead | oocihm.8_06911_57.1" class="error-img">
+        <div class="text-muted small fst-italic">oocihm.8_06911_57.1 — « This page is dead »</div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <a href="/catalogue?lang=en" class="btn btn-crkn-primary px-4 py-2" id="btn-404-search-en">
+          <span class="label-canadiana">Search Canadiana</span>
+          <span class="label-heritage">Search Héritage</span>
+        </a>
+      </div>
     </div>
 
-    <h1 class="h3 fw-bold text-dark mb-1">The page you were looking for doesn't exist</h1>
-    <p class="h6 text-muted fw-normal mb-3">La page que vous recherchez n'existe pas</p>
+    <!-- French View -->
+    <div class="view-fr">
+      <div class="mb-3">
+        <span class="badge bg-danger text-uppercase px-3 py-2 fs-6">Erreur 404</span>
+      </div>
 
-    <p class="text-secondary small mb-3">
-      You may have mistyped the address or the page may have moved.<br>
-      <em>Vous avez peut-être mal saisi l'adresse ou la page a été déplacée.</em>
-    </p>
+      <h1 class="h3 fw-bold text-dark mb-2">La page que vous recherchez n'existe pas</h1>
 
-    <div class="my-3">
-      <img src="/404.webp" onerror="this.src='/assets/404.webp'" alt="404 - This page is dead | oocihm.8_06911_57.1" class="error-img">
-      <div class="text-muted small fst-italic">oocihm.8_06911_57.1 — « This page is dead »</div>
-    </div>
+      <p class="text-secondary small mb-3">
+        Vous avez peut-être mal saisi l'adresse ou la page a été déplacée.
+      </p>
 
-    <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
-      <a href="/catalogue?lang=en" class="btn btn-crkn-primary px-4 py-2" id="btn-404-search-en">
-        <span class="canadiana-label">Search Canadiana (EN)</span>
-        <span class="heritage-label">Search Héritage (EN)</span>
-      </a>
-      <a href="/catalogue?lang=fr" class="btn btn-outline-secondary px-4 py-2" id="btn-404-search-fr">
-        <span class="canadiana-label">Rechercher dans Canadiana (FR)</span>
-        <span class="heritage-label">Rechercher dans Héritage (FR)</span>
-      </a>
+      <div class="my-3">
+        <img src="/404.webp" onerror="this.src='/assets/404.webp'" alt="Erreur 404 - Cette page n'existe pas | oocihm.8_06911_57.1" class="error-img">
+        <div class="text-muted small fst-italic">oocihm.8_06911_57.1 — « Cette page n'existe pas »</div>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <a href="/catalogue?lang=fr" class="btn btn-crkn-primary px-4 py-2" id="btn-404-search-fr">
+          <span class="label-canadiana">Rechercher dans Canadiana</span>
+          <span class="label-heritage">Rechercher dans Héritage</span>
+        </a>
+      </div>
     </div>
   </main>
+
   <script>
-    (function() {
-      var host = window.location.hostname || '';
-      var port = window.location.port || '';
-      var isHeritage = host.indexOf('heritage') !== -1 || port === '3010';
-      if (isHeritage) {
-        document.title = '404 - Héritage | Page Not Found / Page introuvable';
+    function switchLanguage(lang, event) {
+      if (event) event.preventDefault();
+      document.cookie = 'locale=' + lang + '; path=/; max-age=31536000; SameSite=Lax';
+      var url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      window.location.href = url.toString();
+    }
+
+    (function updateTitle() {
+      var isHeritage = document.documentElement.classList.contains('theme-heritage');
+      var isFr = document.documentElement.classList.contains('lang-fr');
+      var collection = isHeritage ? 'Héritage' : 'Canadiana';
+      if (isFr) {
+        document.title = '404 - ' + collection + ' | Page introuvable';
+      } else {
+        document.title = '404 - ' + collection + ' | Page Not Found';
       }
     })();
   </script>
