@@ -46,6 +46,11 @@
     div[role="button"][class*="GalleryView-thumbnail"] {
         height: fit-content !important;
     }
+    div[class*="GalleryView-root"] div[style*="overflow: auto"],
+    div[class*="GalleryView-root"] div[style*="overflow-x: auto"] {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+    }
 }
 
 #my-mirador .mirador-primary-window,
