@@ -48,9 +48,57 @@
     }
 }
 
+#my-mirador .mirador-primary-window,
+#my-mirador .mosaic-root > .mosaic-tile:first-child {
+    z-index: 2 !important;
+}
+
+#my-mirador .mosaic-root > .mosaic-tile:not(:first-child) {
+    z-index: 1 !important;
+}
+
 #my-mirador .mirador-canvas-nav {
     height: 52px !important;
     min-height: 52px !important;
+    max-width: calc(100% - 16px) !important;
+    right: 8px !important;
+    left: auto !important;
+    box-sizing: border-box !important;
+    z-index: 100000005 !important;
+
+    > div {
+        max-width: 100% !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .mirador-osd-navigation {
+        max-width: 100% !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
+
+        .MuiAutocomplete-root {
+            flex: 0 1 85px !important;
+            min-width: 55px !important;
+            max-width: 90px !important;
+            margin-right: 0.5rem !important;
+        }
+
+        .MuiInputBase-input {
+            padding-left: 6px !important;
+            padding-right: 22px !important;
+            font-size: 0.85rem !important;
+        }
+
+        .MuiIconButton-root {
+            flex-shrink: 0 !important;
+        }
+    }
+
+    .mirador-osd-info {
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        font-size: 0.85rem !important;
+    }
 
     /* Remove blue outline when clicking index number or dropdown arrow */
     input,
