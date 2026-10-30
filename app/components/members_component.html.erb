@@ -1,4 +1,4 @@
-<section id="members-section" class="members-section" aria-labelledby="members-title">
+<section id="members-section" class="members-section" aria-labelledby="members-title" data-controller="members-filter">
   <div class="canadiana-shell">
     <header class="members-header">
       <h2 id="members-title" class="section-title"><%= t('blacklight.members.title') %></h2>
@@ -10,16 +10,16 @@
 
     <div class="members-controls">
       <div class="members-tabs members-segmented btn-group" role="tablist" aria-label="<%= t('blacklight.members.category_aria') %>">
-        <button type="button" id="members-tab-institutional" class="btn btn-outline-secondary btn-sm active" data-members-tab="institutional" role="tab" aria-selected="true" aria-controls="members-panel-institutional" title="<%= t('blacklight.members.institutional') %>"><%= t('blacklight.members.institutional') %></button>
-        <button type="button" id="members-tab-associate" class="btn btn-outline-secondary btn-sm" data-members-tab="associate" role="tab" aria-selected="false" aria-controls="members-panel-associate" title="<%= t('blacklight.members.associate') %>"><%= t('blacklight.members.associate') %></button>
+        <button type="button" id="members-tab-institutional" class="btn btn-outline-secondary btn-sm active" data-members-tab="institutional" data-members-filter-target="tab" data-action="click->members-filter#activateTab keydown->members-filter#navigateTabs" role="tab" aria-selected="true" aria-controls="members-panel-institutional" title="<%= t('blacklight.members.institutional') %>"><%= t('blacklight.members.institutional') %></button>
+        <button type="button" id="members-tab-associate" class="btn btn-outline-secondary btn-sm" data-members-tab="associate" data-members-filter-target="tab" data-action="click->members-filter#activateTab keydown->members-filter#navigateTabs" role="tab" aria-selected="false" aria-controls="members-panel-associate" title="<%= t('blacklight.members.associate') %>"><%= t('blacklight.members.associate') %></button>
       </div>
 
       <div class="members-search">
         <div class="input-group input-group-sm">
           <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
           <label for="members-filter-input" class="visually-hidden"><%= t('blacklight.members.search_label') %></label>
-          <input id="members-filter-input" class="form-control" type="search" placeholder="<%= t('blacklight.members.search_placeholder') %>" title="<%= t('blacklight.members.search_placeholder') %>">
-          <button type="button" class="btn btn-outline-secondary btn-clear-search btn-clear-members" hidden aria-label="<%= t('blacklight.members.clear_search', default: 'Clear search') %>" title="<%= t('blacklight.members.clear_search', default: 'Clear search') %>">
+          <input id="members-filter-input" class="form-control" type="search" placeholder="<%= t('blacklight.members.search_placeholder') %>" title="<%= t('blacklight.members.search_placeholder') %>" data-members-filter-target="input" data-action="input->members-filter#onInput">
+          <button type="button" class="btn btn-outline-secondary btn-clear-search btn-clear-members" hidden aria-label="<%= t('blacklight.members.clear_search', default: 'Clear search') %>" title="<%= t('blacklight.members.clear_search', default: 'Clear search') %>" data-members-filter-target="clearBtn" data-action="click->members-filter#clearSearch">
             <i class="bi bi-x-lg" aria-hidden="true"></i>
             <span class="visually-hidden"><%= t('blacklight.members.clear', default: 'Clear') %></span>
           </button>
@@ -28,12 +28,12 @@
     </div>
 
     <div class="members-filters d-flex flex-wrap align-items-center gap-2 mb-3" role="group" aria-label="<%= t('blacklight.members.province_filter_aria', default: 'Filter members by province') %>">
-      <button type="button" class="chip chip-filter active" data-province="all" aria-pressed="true" title="<%= t('blacklight.members.all') %>">
+      <button type="button" class="chip chip-filter active" data-province="all" data-members-filter-target="chip" data-action="click->members-filter#activateProvince" aria-pressed="true" title="<%= t('blacklight.members.all') %>">
         <i class="bi bi-mortarboard" aria-hidden="true"></i>
         <span><%= t('blacklight.members.all') %></span>
       </button>
       <% @provinces.each do |prov| %>
-        <button type="button" class="chip chip-filter" data-province="<%= prov %>" aria-pressed="false" title="<%= prov %>"><%= prov %></button>
+        <button type="button" class="chip chip-filter" data-province="<%= prov %>" data-members-filter-target="chip" data-action="click->members-filter#activateProvince" aria-pressed="false" title="<%= prov %>"><%= prov %></button>
       <% end %>
     </div>
 
@@ -41,7 +41,7 @@
       <% panel_id = "members-panel-#{group_name}" %>
       <% tab_id = "members-tab-#{group_name}" %>
       <% hidden_panel = group_name != :institutional %>
-      <div class="members-marquee-wrap <%= 'd-none' if hidden_panel %>" data-members-group="<%= group_name %>" id="<%= panel_id %>" role="tabpanel" aria-labelledby="<%= tab_id %>" aria-hidden="<%= hidden_panel %>">
+      <div class="members-marquee-wrap <%= 'd-none' if hidden_panel %>" data-members-group="<%= group_name %>" data-members-filter-target="group" id="<%= panel_id %>" role="tabpanel" aria-labelledby="<%= tab_id %>" aria-hidden="<%= hidden_panel %>">
         <% rows.each_with_index do |row, row_idx| %>
           <% next if row.blank? %>
           <div class="members-marquee-row <%= 'is-reverse' if row_reverse?(row_idx) %>">
@@ -90,7 +90,7 @@
       </div>
     <% end %>
 
-    <div class="members-empty-state d-none" data-members-empty>
+    <div class="members-empty-state d-none" data-members-empty data-members-filter-target="emptyState">
       <p class="mb-0 text-muted"><%= t('blacklight.search.pagination_info.no_items_found', entry_name: t('blacklight.entry_name.default.other')) %></p>
     </div>
   </div>
