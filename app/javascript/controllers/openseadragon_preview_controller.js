@@ -103,8 +103,9 @@ export default class extends Controller {
   }
 
   initViewers() {
-    const hasOpenSeadragon = typeof OpenSeadragon !== "undefined";
-    const viewerContainers = this.element.querySelectorAll(".featured-item__viewer[data-ark-id], .collection-item__viewer[data-ark-id]");
+    const viewerContainers = this.element.matches?.(".featured-item__viewer[data-ark-id], .collection-item__viewer[data-ark-id]")
+      ? [this.element]
+      : Array.from(this.element.querySelectorAll(".featured-item__viewer[data-ark-id], .collection-item__viewer[data-ark-id]"));
 
     viewerContainers.forEach((container) => {
       const arkId = (container.dataset.arkId || "").trim();
@@ -133,7 +134,7 @@ export default class extends Controller {
           const boundedCanvasIndex = Math.min(startPageIndex, Math.max(canvases.length - 1, 0));
           const ratioCanvas = canvases[boundedCanvasIndex] || canvases[0];
           const size = this.canvasSize(ratioCanvas);
-          if (size) {
+          if (size && container.classList.contains("featured-item__viewer")) {
             const ratio = size.width / size.height;
             container.dataset.ratio = String(ratio);
             container.style.aspectRatio = `${size.width} / ${size.height}`;
@@ -141,11 +142,11 @@ export default class extends Controller {
 
           const tileSources = canvases
             .map((canvas) => {
-              const serviceId =
-                canvas?.items?.[0]?.items?.[0]?.body?.service?.[0]?.["@id"] ||
-                canvas?.items?.[0]?.items?.[0]?.body?.service?.[0]?.id ||
-                canvas?.images?.[0]?.resource?.service?.["@id"] ||
-                canvas?.images?.[0]?.resource?.service?.id;
+              const service =
+                canvas?.items?.[0]?.items?.[0]?.body?.service ||
+                canvas?.images?.[0]?.resource?.service;
+              const serviceItem = Array.isArray(service) ? service[0] : service;
+              const serviceId = serviceItem?.["@id"] || serviceItem?.id;
               if (serviceId) {
                 return `${serviceId.replace(/\/+$/, "")}/info.json`;
               }
@@ -158,12 +159,21 @@ export default class extends Controller {
 
           const boundedStartPage = Math.min(startPageIndex, Math.max(tileSources.length - 1, 0));
 
-          if (!tileSources.length || !hasOpenSeadragon) {
+          let osd = typeof OpenSeadragon !== "undefined" ? OpenSeadragon : window.OpenSeadragon;
+          if (!osd) {
+            for (let i = 0; i < 30; i++) {
+              await new Promise((r) => setTimeout(r, 100));
+              osd = typeof OpenSeadragon !== "undefined" ? OpenSeadragon : window.OpenSeadragon;
+              if (osd) break;
+            }
+          }
+
+          if (!tileSources.length || !osd) {
             if (overlay) overlay.hidden = true;
             return;
           }
 
-          const viewer = OpenSeadragon({
+          const viewer = osd({
             element: container,
             prefixUrl: "/assets/",
             sequenceMode: true,
@@ -227,6 +237,14 @@ export default class extends Controller {
             if (container.classList.contains("is-active")) return;
             if (overlay && overlay.contains(event.target)) return;
             this.activateViewer(viewer, container, overlay);
+          });
+
+          container.addEventListener("keydown", (event) => {
+            if (container.classList.contains("is-active")) return;
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              this.activateViewer(viewer, container, overlay);
+            }
           });
         } catch (error) {
           console.error("Failed to load manifest or initialize OpenSeadragon for", container.id, error);

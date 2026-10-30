@@ -100,7 +100,7 @@
   </div>
 </div>
 
-<div class="row align-items-start" id="collection-items-list">
+<div class="row align-items-start" id="collection-items-list" data-controller="openseadragon-preview">
   <% if @collection_items.present? %>
     <% @collection_items.each do |collection_item| %>
       <% if collection_item['is_issue']&.first == "Yes" %>
