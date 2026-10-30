@@ -755,33 +755,7 @@ function initPageSearch() {
 
 document.addEventListener('DOMContentLoaded', initPageSearch);
 
-async function hydrateDownloadChip(container) {
-  const docid = container.dataset.docid;
-  const arkpath = container.dataset.arkpath;
-  const chip = container.querySelector('[data-full-text-chip]');
-  if (!docid || !arkpath || !chip) return;
-
-  const encodedArkPath = arkpath.split('/').map(encodeURIComponent).join('/');
-  const url = `/dl/${encodeURIComponent(docid)}/${encodedArkPath}?pageNum=1`;
-
-  try {
-    const response = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
-    if (!response.ok) return;
-    const data = await response.json();
-    if (data?.docPdfUri) chip.hidden = false;
-  } catch (_error) {}
-}
-
-function initDownloadChips() {
-  document.querySelectorAll('[data-download-chip]').forEach((container) => {
-    if (container.dataset.downloadChipHydrated === '1') return;
-    container.dataset.downloadChipHydrated = '1';
-    hydrateDownloadChip(container);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', initDownloadChips);
-document.addEventListener('turbo:load', initDownloadChips);
+// Full text chip is rendered server-side based on Solr content_search has_ocr query
 
 // Page search chips: toggle show more/less
 document.addEventListener('click', (e) => {
