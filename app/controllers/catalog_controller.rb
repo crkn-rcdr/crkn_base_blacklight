@@ -456,8 +456,7 @@ class CatalogController < ApplicationController
     end
 
     # Final fallback: flatten MARCXML tags while preserving line breaks.
-    marcxml.gsub(/>\s*</, ">\n<")
-           .delete('<>')
+    ActionController::Base.helpers.strip_tags(marcxml.gsub(/>\s*</, ">\n<"))
            .split("\n")
            .map(&:strip)
            .reject(&:blank?)
