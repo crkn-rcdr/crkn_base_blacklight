@@ -11,7 +11,6 @@
 
     <%= button_tag type: 'button',
                    class: ["btn", "btn-outline-custom", "btn-sm", "d-inline-flex", "align-items-center", "gap-2", "fs-6", "copy-link-btn", (has_manifest ? nil : "disabled")].compact.join(' '),
-                   onclick: 'copyManifestUrl(this)',
                    title: t('blacklight.tools.copy_tooltip'),
                    disabled: (has_manifest ? nil : true),
                    aria: (has_manifest ? {} : { disabled: true }) do %>
@@ -86,58 +85,3 @@
   <span id="iiif-copy-feedback" class="visually-hidden" aria-live="polite"></span>
 </div>
 
-<script>
-  function copyManifestUrl(button) {
-    const text = document.getElementById("iiif-manifest-url").textContent.trim();
-    const label = button.querySelector("span");
-    const live = document.getElementById("iiif-copy-feedback");
-
-    if (!label) return;
-
-    const originalText = label.textContent;
-    const copiedText = <%= raw t('blacklight.tools.copied_js').to_json %>;
-    const copyFailedText = <%= raw t('blacklight.tools.copy_failed_js').to_json %>;
-
-    function setCopiedFeedback() {
-      label.textContent = copiedText;
-      if (live) live.textContent = copiedText;
-      setTimeout(() => {
-        label.textContent = originalText;
-        if (live) live.textContent = "";
-      }, 2000);
-    }
-
-    function setFailedFeedback() {
-      if (live) live.textContent = copyFailedText;
-      alert(copyFailedText);
-    }
-
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text)
-        .then(setCopiedFeedback)
-        .catch(err => {
-          console.error("Copy failed", err);
-          setFailedFeedback();
-        });
-    } else {
-      const tempInput = document.createElement("textarea");
-      tempInput.value = text;
-      tempInput.style.position = "absolute";
-      tempInput.style.left = "-9999px";
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      try {
-        const success = document.execCommand("copy");
-        if (success) {
-          setCopiedFeedback();
-        } else {
-          setFailedFeedback();
-        }
-      } catch (err) {
-        console.error("Fallback copy failed", err);
-        setFailedFeedback();
-      }
-      document.body.removeChild(tempInput);
-    }
-  }
-</script>
