@@ -1,0 +1,65 @@
+<div class="mt-1 sidebar-downloads" id="download-toolbar" role="region" aria-label="<%= t('blacklight.tools.download_label', default: 'Downloads') %>"
+     data-controller="download-status"
+     data-docid="<%= doc_id %>"
+     data-arkpath="<%= ark_path %>">
+  <p class="download-toolbar-title"><%= t('blacklight.tools.download_label', default: 'Downloads') %>:</p>
+  <div class="download-actions">
+    <% if page_img_uri.present? %>
+      <a id="btn-download-img" class="btn btn-outline-custom btn-sm sidebar-download-btn" href="<%= page_img_uri %>" download title="<%= t('blacklight.tools.download_image_aria') %>">
+        <span class="download-icon-group" aria-hidden="true">
+          <i class="bi bi-download fs-5" aria-hidden="true"></i>
+          <span class="download-kind">IMG</span>
+        </span>
+        <span class="download-label"><%= t('blacklight.tools.download_image_aria') %></span>
+      </a>
+    <% else %>
+      <a id="btn-download-img" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.img_disabled_tooltip') %>">
+        <span class="download-icon-group" aria-hidden="true">
+          <i class="bi bi-download fs-5" aria-hidden="true"></i>
+          <span class="download-kind">IMG</span>
+        </span>
+        <span class="download-label"><%= t('blacklight.tools.download_image_aria') %></span>
+      </a>
+    <% end %>
+
+    <% if page_pdf_uri.present? %>
+      <a id="btn-download-page" class="btn btn-outline-custom btn-sm sidebar-download-btn" href="<%= page_pdf_uri %>" download title="<%= t('blacklight.tools.download_page_pdf_aria') %>">
+        <span class="download-icon-group" aria-hidden="true">
+          <i class="bi bi-download fs-5" aria-hidden="true"></i>
+          <span class="download-kind">PAGE</span>
+        </span>
+        <span class="download-label"><%= t('blacklight.tools.download_page_pdf_aria') %></span>
+      </a>
+    <% else %>
+      <a id="btn-download-page" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.pdf_disabled_tooltip') %>">
+        <span class="download-icon-group" aria-hidden="true">
+          <i class="bi bi-download fs-5" aria-hidden="true"></i>
+          <span class="download-kind">PAGE</span>
+        </span>
+        <span class="download-label"><%= t('blacklight.tools.download_page_pdf_aria') %></span>
+      </a>
+    <% end %>
+
+    <% if doc_pdf_uri.present? %>
+      <a id="btn-download-full" class="btn btn-outline-custom btn-sm sidebar-download-btn" href="<%= doc_pdf_uri %>" download title="<%= t('blacklight.tools.download_full_pdf_aria') %>">
+        <span class="download-icon-group" aria-hidden="true">
+          <i class="bi bi-download fs-5" aria-hidden="true"></i>
+          <span class="download-kind">FULL</span>
+        </span>
+        <span class="download-label"><%= t('blacklight.tools.download_full_pdf_aria') %></span>
+      </a>
+    <% else %>
+      <a id="btn-download-full" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.pdf_disabled_tooltip') %>">
+        <span class="download-icon-group" aria-hidden="true">
+          <i class="bi bi-download fs-5" aria-hidden="true"></i>
+          <span class="download-kind">FULL</span>
+        </span>
+        <span class="download-label"><%= t('blacklight.tools.download_full_pdf_aria') %></span>
+      </a>
+    <% end %>
+  </div>
+  <span id="download-status" class="text-muted small d-inline-flex align-items-center gap-1" aria-live="polite" aria-atomic="true">
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" <%= 'hidden' if any_available? %>></span>
+    <span class="download-status-text"><%= any_available? ? '' : t('blacklight.tools.download_checking') %></span>
+  </span>
+</div>

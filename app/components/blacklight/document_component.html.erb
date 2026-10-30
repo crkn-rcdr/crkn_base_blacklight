@@ -82,6 +82,13 @@
             </ol>
           <% end %>
         </nav>
+        <div class="catalog-show-breadcrumb-row">
+          <% if has_serial && parent_url.present? %>
+            <%= link_to (is_fr ? "Voir tous les num?ros de #{serial_title}" : "View all issues from #{serial_title}"),
+                        parent_url,
+                        class: 'btn btn-outline-secondary btn-sm view-all-issues-link' %>
+          <% end %>
+        </div>
       <% end %>
 
       <% is_item_unavailable = (@component == :div) && (@document._source["is_serial"]&.first != "Yes") && @document._source["ark"].blank? %>
@@ -158,7 +165,7 @@
                date_to: params[:date_to]
              ) %>
         <% end %>
-        <div id="document-togglable-content" class="container-fluid">
+        <div id="document-togglable-content" class="container-fluid" data-controller="resizable-sidebar">
           <div class="row flex-nowrap">
             <!-- Sidebar -->
             <aside id="toggle-menu" class="col" aria-labelledby="details-heading">
@@ -223,39 +230,7 @@
 
                 <% if @document._source["is_serial"]&.first == "No" %>
                   <div>
-                    <div class="mt-1 sidebar-downloads" id="download-toolbar" role="region" aria-label="<%= t('blacklight.tools.download_label', default: 'Downloads') %>"
-                         data-controller="download-status"
-                         data-docid="<%= @document._source['id'] %>"
-                         data-arkpath="<%= @document._source['ark'].to_s.gsub('https://n2t.net/ark:/','') %>">
-                      <p class="download-toolbar-title"><%= t('blacklight.tools.download_label', default: 'Downloads') %>:</p>
-                      <div class="download-actions">
-                        <a id="btn-download-img" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.img_disabled_tooltip') %>">
-                          <span class="download-icon-group" aria-hidden="true">
-                            <i class="bi bi-download fs-5" aria-hidden="true"></i>
-                            <span class="download-kind">IMG</span>
-                          </span>
-                          <span class="download-label"><%= t('blacklight.tools.download_image_aria') %></span>
-                        </a>
-                        <a id="btn-download-page" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.pdf_disabled_tooltip') %>">
-                          <span class="download-icon-group" aria-hidden="true">
-                            <i class="bi bi-download fs-5" aria-hidden="true"></i>
-                            <span class="download-kind">PAGE</span>
-                          </span>
-                          <span class="download-label"><%= t('blacklight.tools.download_page_pdf_aria') %></span>
-                        </a>
-                        <a id="btn-download-full" class="btn btn-outline-custom btn-sm sidebar-download-btn disabled" aria-disabled="true" title="<%= t('blacklight.tools.pdf_disabled_tooltip') %>">
-                          <span class="download-icon-group" aria-hidden="true">
-                            <i class="bi bi-download fs-5" aria-hidden="true"></i>
-                            <span class="download-kind">FULL</span>
-                          </span>
-                          <span class="download-label"><%= t('blacklight.tools.download_full_pdf_aria') %></span>
-                        </a>
-                      </div>
-                      <span id="download-status" class="text-muted small d-inline-flex align-items-center gap-1" aria-live="polite" aria-atomic="true">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <span class="download-status-text"><%= t('blacklight.tools.download_checking') %></span>
-                      </span>
-                    </div>
+                    <%= render DownloadToolbarComponent.new(document: @document, page_num: params[:pageNum] || 1) %>
                   </div>
                 <% end %>
                  
@@ -281,191 +256,6 @@
                    tabindex="0"
                    title="<%= resize_record_label %>"
                    aria-label="<%= resize_record_label %>"></div>
-              <script>
-                (function() {
-                  const WIDTH_STORAGE_KEY = 'crkn_metadata_sidebar_width';
-                  const FULLSCREEN_STORAGE_KEY = 'crkn_metadata_fullscreen';
-
-                  function applySidebarWidthPx(sidebar, wrapper, widthPx) {
-                    if (!sidebar || !wrapper) return null;
-                    if (window.innerWidth < 992) {
-                      sidebar.style.width = '';
-                      sidebar.style.maxWidth = '';
-                      sidebar.style.minWidth = '';
-                      return null;
-                    }
-                    const wrapperW = wrapper.getBoundingClientRect().width || window.innerWidth;
-                    const maxW = Math.max(340, Math.min(760, Math.floor(wrapperW * 0.65)));
-                    const clamped = Math.round(Math.max(240, Math.min(maxW, widthPx)));
-                    sidebar.style.width = clamped + 'px';
-                    sidebar.style.maxWidth = clamped + 'px';
-                    sidebar.style.minWidth = clamped + 'px';
-                    return clamped;
-                  }
-
-                  function setFullscreenState(nextExpanded, persist) {
-                    const wrapper = document.getElementById('document-togglable-content');
-                    const fullscreenBtn = document.getElementById('metadata-fullscreen-toggle');
-                    if (!wrapper || !fullscreenBtn) return;
-
-                    wrapper.classList.toggle('metadata-fullscreen-active', nextExpanded);
-                    fullscreenBtn.setAttribute('aria-expanded', String(nextExpanded));
-
-                    const nextLabel = nextExpanded
-                      ? (fullscreenBtn.getAttribute('data-collapse-label') || 'Exit full screen metadata')
-                      : (fullscreenBtn.getAttribute('data-expand-label') || 'Expand metadata record');
-                    fullscreenBtn.setAttribute('title', nextLabel);
-                    fullscreenBtn.setAttribute('aria-label', nextLabel);
-
-                    const icon = fullscreenBtn.querySelector('i.bi');
-                    if (icon) {
-                      icon.className = nextExpanded ? 'bi bi-fullscreen-exit' : 'bi bi-arrows-fullscreen';
-                    }
-
-                    if (persist) {
-                      try {
-                        localStorage.setItem(FULLSCREEN_STORAGE_KEY, nextExpanded ? '1' : '0');
-                      } catch (_e) {}
-                    }
-                  }
-
-                  function restorePersistedMetadataSize() {
-                    const sidebar = document.getElementById('toggle-menu');
-                    const wrapper = document.getElementById('document-togglable-content');
-                    if (!sidebar || !wrapper) return;
-
-                    try {
-                      const savedW = parseInt(localStorage.getItem(WIDTH_STORAGE_KEY) || '', 10);
-                      if (Number.isFinite(savedW) && savedW >= 240) {
-                        applySidebarWidthPx(sidebar, wrapper, savedW);
-                      }
-                      const fullscreenBtn = document.getElementById('metadata-fullscreen-toggle');
-                      const isFullscreenBtnVisible = fullscreenBtn && window.getComputedStyle(fullscreenBtn).display !== 'none';
-                      const savedFullscreen = isFullscreenBtnVisible && localStorage.getItem(FULLSCREEN_STORAGE_KEY) === '1';
-                      if (savedFullscreen) {
-                        setFullscreenState(true, false);
-                      }
-                    } catch (_e) {}
-                  }
-
-                  // Apply immediately as #toggle-menu renders to avoid layout shift
-                  restorePersistedMetadataSize();
-
-                  if (window.__crknMetadataControlsBound) return;
-                  window.__crknMetadataControlsBound = true;
-
-                  document.addEventListener('DOMContentLoaded', restorePersistedMetadataSize);
-                  document.addEventListener('turbo:load', restorePersistedMetadataSize);
-                  window.addEventListener('resize', restorePersistedMetadataSize);
-
-                  document.addEventListener('click', function(e) {
-                    const toggleBtn = e.target.closest('.metadata-collapsible__toggle');
-                    if (toggleBtn) {
-                      e.preventDefault();
-                      const container = toggleBtn.closest('.metadata-collapsible');
-                      if (!container) return;
-                      const preview = container.querySelector('.metadata-collapsible__preview');
-                      const full = container.querySelector('.metadata-collapsible__full');
-                      const label = toggleBtn.querySelector('.metadata-collapsible__toggle-label');
-                      const icon = toggleBtn.querySelector('i.bi');
-                      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-                      const nextExpanded = !isExpanded;
-
-                      toggleBtn.setAttribute('aria-expanded', String(nextExpanded));
-                      container.classList.toggle('is-expanded', nextExpanded);
-                      if (preview) preview.hidden = nextExpanded;
-                      if (full) full.hidden = !nextExpanded;
-                      if (label) {
-                        label.textContent = nextExpanded
-                          ? (toggleBtn.getAttribute('data-show-less-text') || 'Show less')
-                          : (toggleBtn.getAttribute('data-show-more-text') || 'Show more');
-                      }
-                      if (icon) {
-                        icon.className = nextExpanded ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
-                      }
-                      return;
-                    }
-
-                    const fullscreenBtn = e.target.closest('#metadata-fullscreen-toggle');
-                    if (fullscreenBtn) {
-                      e.preventDefault();
-                      const isExpanded = fullscreenBtn.getAttribute('aria-expanded') === 'true';
-                      setFullscreenState(!isExpanded, true);
-                    }
-                  });
-
-                  document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                      const wrapper = document.getElementById('document-togglable-content');
-                      if (wrapper && wrapper.classList.contains('metadata-fullscreen-active')) {
-                        setFullscreenState(false, true);
-                      }
-                    }
-
-                    const handle = e.target.closest && e.target.closest('.metadata-resize-handle');
-                    if (handle && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
-                      e.preventDefault();
-                      const sidebar = document.getElementById('toggle-menu');
-                      const wrapper = document.getElementById('document-togglable-content');
-                      if (!sidebar || !wrapper) return;
-                      const currentW = sidebar.getBoundingClientRect().width;
-                      const delta = e.key === 'ArrowRight' ? 24 : -24;
-                      const applied = applySidebarWidthPx(sidebar, wrapper, currentW + delta);
-                      if (applied) {
-                        try {
-                          localStorage.setItem(WIDTH_STORAGE_KEY, String(applied));
-                        } catch (_e) {}
-                      }
-                    }
-                  });
-
-                  let isResizing = false;
-                  document.addEventListener('mousedown', function(e) {
-                    const handle = e.target.closest('.metadata-resize-handle');
-                    if (!handle) return;
-                    e.preventDefault();
-                    isResizing = true;
-                    handle.classList.add('is-dragging');
-                    document.body.classList.add('metadata-resizing');
-                  });
-
-                  document.addEventListener('mousemove', function(e) {
-                    if (!isResizing) return;
-                    const sidebar = document.getElementById('toggle-menu');
-                    const wrapper = document.getElementById('document-togglable-content');
-                    if (!sidebar || !wrapper) return;
-                    const rect = sidebar.getBoundingClientRect();
-                    const applied = applySidebarWidthPx(sidebar, wrapper, e.clientX - rect.left);
-                    if (applied) {
-                      try {
-                        localStorage.setItem(WIDTH_STORAGE_KEY, String(applied));
-                      } catch (_e) {}
-                    }
-                  });
-
-                  document.addEventListener('mouseup', function() {
-                    if (!isResizing) return;
-                    isResizing = false;
-                    document.body.classList.remove('metadata-resizing');
-                    document.querySelectorAll('.metadata-resize-handle.is-dragging').forEach(function(el) {
-                      el.classList.remove('is-dragging');
-                    });
-                  });
-
-                  document.addEventListener('dblclick', function(e) {
-                    const handle = e.target.closest('.metadata-resize-handle');
-                    if (!handle) return;
-                    const sidebar = document.getElementById('toggle-menu');
-                    if (!sidebar) return;
-                    sidebar.style.width = '';
-                    sidebar.style.maxWidth = '';
-                    sidebar.style.minWidth = '';
-                    try {
-                      localStorage.removeItem(WIDTH_STORAGE_KEY);
-                    } catch (_e) {}
-                  });
-                })();
-              </script>
             </aside>
             <!-- Main Content -->
             <div id="doc-main" class="col">

@@ -5,6 +5,35 @@ require 'redis'
 require 'uri'
 
 class DownloadsController < ApplicationController
+  def self.download_data_for(slug, raw_ark, page_num = 1)
+    controller = new
+    manifest_id = controller.send(:normalize_ark, raw_ark)
+    record = controller.send(:download_cache_record, manifest_id)
+    canvas_noids = Array(record['canvas_noids']).filter_map { |value| controller.send(:normalize_noid, value) }
+    p_num = page_num.to_i.positive? ? page_num.to_i : 1
+    canvas_noid = canvas_noids[p_num - 1]
+
+    full_pdf_uri = if controller.send(:truthy?, record['full_pdf_available'])
+                     controller.send(:full_pdf_uri_for, record, slug, manifest_id)
+                   else
+                     ''
+                   end
+    page_pdf_uri = canvas_noid.present? ? controller.send(:page_pdf_uri_for, record, canvas_noid, slug, p_num) : ''
+    page_img_uri = canvas_noid.present? ? controller.send(:image_download_uri, canvas_noid, slug, p_num) : ''
+
+    {
+      "docPdfUri" => full_pdf_uri,
+      "pagePdfUri" => page_pdf_uri,
+      "pageImgUri" => page_img_uri,
+      "pageNum" => p_num,
+      "pageCount" => canvas_noids.length,
+      "cacheHit" => record.present?
+    }
+  rescue => e
+    Rails.logger.warn("DownloadsController.download_data_for error: #{e.message}") if defined?(Rails)
+    {}
+  end
+
   MAX_TOKEN_TTL = 30 * 60
 
   class << self

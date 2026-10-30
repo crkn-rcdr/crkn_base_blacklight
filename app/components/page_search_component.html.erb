@@ -1,27 +1,43 @@
-<div class="page-search-res-wrap"
-     data-page-search="true"
-     data-doc-id="<%= @document_id %>"
-     data-ark-url="<%= @ark_url %>"
-     data-term="<%= @term %>"
-     data-go-to-page-aria-template="<%= go_to_page_aria_template %>"
-     data-prev-hit-label="<%= t('blacklight.page_search.prev_hit') %>"
-     data-prev-hit-aria="<%= t('blacklight.page_search.prev_hit_aria') %>"
-     data-next-hit-label="<%= t('blacklight.page_search.next_hit') %>"
-     data-next-hit-aria="<%= t('blacklight.page_search.next_hit_aria') %>"
-     data-show-more-label="<%= t('blacklight.page_search.show_more') %>"
-     data-show-less-label="<%= t('blacklight.page_search.show_less', default: '') %>"
-     data-no-results-html="<%= j t('blacklight.page_search.no_results_html', term: @term) %>"
-     data-matching-html="<%= j t('blacklight.page_search.matching_pages_for_html', term: @term) %>"
-     data-ark-path="<%= ark_path %>">
-  <div class="page-search-header d-flex align-items-center gap-2 mb-1">
-    <span class="matching-image-label" term="<%= @term %>">
-      <%= t('blacklight.page_search.matching_pages_for_html', term: @term) %>
-    </span>
-  </div>
+<% if render? %>
+  <div class="page-search-res-wrap">
+    <div class="page-search-header d-flex align-items-center gap-2 mb-1">
+      <span class="matching-image-label">
+        <%= t('blacklight.page_search.matching_pages_for_html', term: @term) %>
+      </span>
+    </div>
 
-  <div class="page-search-body" data-page-search-body>
-    <div class="text-muted small">
-      <%= t('blacklight.page_search.loading', default: 'Loading page hits...') %>
+    <div class="page-search-body">
+      <div class="page-chip-list" role="list">
+        <% matching_pages.first(24).each do |page_num| %>
+          <%= link_to page_num,
+                      "/catalogue/#{ERB::Util.url_encode(@document_id)}?pageNum=#{page_num}&q=#{ERB::Util.url_encode(@term)}",
+                      class: "chip page-chip",
+                      role: "listitem",
+                      aria: { label: t('blacklight.page_search.go_to_page_aria', page: page_num) } %>
+        <% end %>
+        <% if matching_pages.length > 24 %>
+          <span class="page-search-more" hidden>
+            <% matching_pages.drop(24).each do |page_num| %>
+              <%= link_to page_num,
+                          "/catalogue/#{ERB::Util.url_encode(@document_id)}?pageNum=#{page_num}&q=#{ERB::Util.url_encode(@term)}",
+                          class: "chip page-chip",
+                          role: "listitem",
+                          aria: { label: t('blacklight.page_search.go_to_page_aria', page: page_num) } %>
+            <% end %>
+          </span>
+        <% end %>
+      </div>
+      <% if matching_pages.length > 24 %>
+        <div class="page-search-togglebar mt-2">
+          <button type="button"
+                  class="btn btn-link btn-sm page-search-toggle p-0"
+                  data-label-more="<%= t('blacklight.page_search.show_more') %>"
+                  data-label-less="<%= t('blacklight.page_search.show_less', default: 'Show less') %>">
+            <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            <span><%= t('blacklight.page_search.show_more') %></span>
+          </button>
+        </div>
+      <% end %>
     </div>
   </div>
-</div>
+<% end %>
