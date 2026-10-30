@@ -18,8 +18,8 @@ Rails.application.routes.draw do
   get '/terms-of-service', to: 'pages#terms_of_service', as: :terms_of_service
   # Allow slashes inside :ark (e.g., ark:/69429/m0k35m90313z)
   # Download status endpoint for Phase 2 Stimulus polling
-  get '/dl(/:id)(/*ark)/status', to: 'downloads#status', constraints: { id: /[0-z.]+/ }, defaults: { format: :json }
-  get '/dl/:id/*ark', to: 'downloads#index', constraints: { id: /[0-z\.]+/ }, format: false
+  get '/dl(/:id)(/*ark)/status', to: 'downloads#status', constraints: { id: /[0-9A-Za-z.]+/ }, defaults: { format: :json }
+  get '/dl/:id/*ark', to: 'downloads#index', constraints: { id: /[0-9A-Za-z.]+/ }, format: false
   #root to: "catalog#index"
   concern :marc_viewable, Blacklight::Marc::Routes::MarcViewable.new
   concern :searchable, Blacklight::Routes::Searchable.new
