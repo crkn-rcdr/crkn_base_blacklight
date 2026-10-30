@@ -196,7 +196,7 @@ class SearchBuilder < Blacklight::SearchBuilder
     if raw_q =~ /\A[a-zA-Z0-9_\-\.]+\z/
       candidates = generate_id_candidates(raw_q)
       candidates.each do |cid|
-        escaped_id = cid.gsub('"', '\\"')
+        escaped_id = cid.gsub('\\', '\\\\\\').gsub('"', '\\"')
         clause = "id:\"#{escaped_id}\"^50000"
         solr_parameters[:bq] << clause unless solr_parameters[:bq].include?(clause)
       end
@@ -204,7 +204,7 @@ class SearchBuilder < Blacklight::SearchBuilder
       # Unless the user already prefixed with oocihm., expand solr_parameters[:q] so
       # bare identifiers (e.g. N_00005, 72118, 117878, h2971) match the record's ID
       unless raw_q.downcase.start_with?('oocihm.')
-        id_clauses = candidates.map { |cid| "id:\"#{cid.gsub('"', '\\"')}\"" }.uniq
+        id_clauses = candidates.map { |cid| "id:\"#{cid.gsub('\\', '\\\\\\').gsub('"', '\\"')}\"" }.uniq
         solr_parameters[:q] = "(#{raw_q}) OR #{id_clauses.join(' OR ')}"
         solr_parameters[:mm] = 1
       end
@@ -217,7 +217,7 @@ class SearchBuilder < Blacklight::SearchBuilder
 
         candidates = generate_id_candidates(tok)
         candidates.each do |cid|
-          escaped_id = cid.gsub('"', '\\"')
+          escaped_id = cid.gsub('\\', '\\\\\\').gsub('"', '\\"')
           clause = "id:\"#{escaped_id}\"^50000"
           solr_parameters[:bq] << clause unless solr_parameters[:bq].include?(clause)
         end
