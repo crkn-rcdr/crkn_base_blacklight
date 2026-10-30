@@ -5,6 +5,8 @@ import CheckboxFacetController from "./checkbox_facet_controller";
 import CopyLinkController from "./copy_link_controller";
 import DownloadStatusController from "./download_status_controller";
 import ResizableSidebarController from "./resizable_sidebar_controller";
+import OpenseadragonPreviewController from "./openseadragon_preview_controller";
+import FeedbackBannerController from "./feedback_banner_controller";
 
 // Create Stimulus application
 const application = Application.start();
@@ -14,5 +16,7 @@ application.register("checkbox-facet", CheckboxFacetController);
 application.register("copy-link", CopyLinkController);
 application.register("download-status", DownloadStatusController);
 application.register("resizable-sidebar", ResizableSidebarController);
+application.register("openseadragon-preview", OpenseadragonPreviewController);
+application.register("feedback-banner", FeedbackBannerController);
 
 export { application };

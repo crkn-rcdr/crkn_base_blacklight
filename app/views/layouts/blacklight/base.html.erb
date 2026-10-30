@@ -52,10 +52,17 @@
       aria: { label: t('blacklight.main.aria.main_container') }
     } %>
     <%= content_tag main_tag, **main_container_opts do %>
-      <%= content_for(:container_header) %>
-
       <% if controller_name == 'catalog' && action_name == 'index' %>
         <%= render 'shared/catalog_search_header' %>
+        <div class="catalog-search-hero__applied-shell">
+          <div class="canadiana-shell">
+            <div class="catalog-search-hero__applied">
+              <%= content_for(:container_header) %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <%= content_for(:container_header) %>
       <% end %>
 
       <section role="region" aria-label="<%= t('blacklight.main.aria.flash_messages', default: 'Notifications') %>">

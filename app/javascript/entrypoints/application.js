@@ -1010,8 +1010,6 @@ function handleFacetExpandCollapseClick(event) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', observeModalDomChanges);
-document.addEventListener('turbo:load', observeModalDomChanges);
 document.addEventListener('DOMContentLoaded', restoreFacetAccordionState);
 document.addEventListener('turbo:load', restoreFacetAccordionState);
 document.addEventListener('click', handleFacetExpandCollapseClick);
@@ -1026,10 +1024,6 @@ document.addEventListener('shown.bs.collapse', (e) => {
 document.addEventListener('hidden.bs.collapse', (e) => {
   if (e.target.closest('.facet-limit')) saveFacetAccordionState();
 });
-document.addEventListener('pointerdown', handleCheckboxFacetMoreActivation, true);
-document.addEventListener('mousedown', handleCheckboxFacetMoreActivation, true);
-document.addEventListener('click', handleCheckboxFacetMoreActivation, true);
-document.addEventListener('keydown', handleCheckboxFacetMoreActivation, true);
 function initFacetSuggestHandler() {
   let debounceTimeout = null;
   let activeAbortController = null;
@@ -1095,11 +1089,5 @@ function initFacetSuggestHandler() {
   }, true);
 }
 
-document.addEventListener('change', handleCheckboxFacetChange, true);
-document.addEventListener('submit', handleCheckboxFacetFormSubmit, true);
 initFacetSuggestHandler();
-document.addEventListener('shown.bs.modal', (e) => syncAllSidebarToCheckboxesInModal(e.target));
-document.addEventListener('loaded.blacklight.blacklight-modal', (e) => syncAllSidebarToCheckboxesInModal(e.target));
-document.addEventListener('hidden.bs.modal', (e) => syncAllModalToCheckboxesInSidebar(e.target));
-document.addEventListener('hide.bs.modal', (e) => syncAllModalToCheckboxesInSidebar(e.target));
 

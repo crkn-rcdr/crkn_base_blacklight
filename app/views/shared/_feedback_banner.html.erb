@@ -1,9 +1,9 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
-<aside class="feedback-sticky-banner" role="complementary" aria-label="<%= is_fr ? 'Sondage de rétroaction Canadiana 2.0' : 'Canadiana 2.0 feedback survey' %>">
+<aside class="feedback-sticky-banner" role="complementary" aria-label="<%= is_fr ? 'Sondage de r?troaction Canadiana 2.0' : 'Canadiana 2.0 feedback survey' %>" data-controller="feedback-banner">
   <div class="feedback-sticky-banner__inner">
     <div class="feedback-sticky-banner__text">
       <% if is_fr %>
-        Merci d'avoir visité la plateforme Canadiana en version bêta! Nous serions ravis de connaître votre avis. Veuillez nous <a href="https://form.simplesurvey.com/f/r/laFfRoM4?lang=FR" target="_blank" rel="noopener" class="feedback-sticky-banner__link">faire part de vos commentaires</a> sur la nouvelle interface. <a href="https://bit.ly/4yTyl8g" target="_blank" rel="noopener" class="feedback-sticky-banner__link">En savoir plus</a> sur ces changements.
+        Merci d'avoir visit? la plateforme Canadiana en version b?ta! Nous serions ravis de conna?tre votre avis. Veuillez nous <a href="https://form.simplesurvey.com/f/r/laFfRoM4?lang=FR" target="_blank" rel="noopener" class="feedback-sticky-banner__link">faire part de vos commentaires</a> sur la nouvelle interface. <a href="https://bit.ly/4yTyl8g" target="_blank" rel="noopener" class="feedback-sticky-banner__link">En savoir plus</a> sur ces changements.
       <% else %>
         Thank you for visiting the Canadiana beta platform! We would love to know what you think. Please <a href="https://form.simplesurvey.com/f/r/laFfRoM4" target="_blank" rel="noopener" class="feedback-sticky-banner__link">share your feedback</a> on the new interface and <a href="https://bit.ly/3WbBdPb" target="_blank" rel="noopener" class="feedback-sticky-banner__link">learn more about these changes</a>.
       <% end %>
@@ -11,19 +11,7 @@
     <button type="button"
             class="feedback-sticky-banner__close btn-close btn-close-white"
             aria-label="<%= is_fr ? 'Fermer le bandeau' : 'Close banner' %>"
-            onclick="const b = this.closest('.feedback-sticky-banner'); if (b) { b.remove(); document.body.classList.remove('has-feedback-banner'); try { sessionStorage.setItem('feedback_banner_closed', '1'); } catch(e){} }">
+            data-action="feedback-banner#close">
     </button>
   </div>
-  <script>
-    (function() {
-      try {
-        if (sessionStorage.getItem('feedback_banner_closed') === '1') {
-          var el = document.currentScript && document.currentScript.closest('.feedback-sticky-banner');
-          if (el) { el.remove(); }
-        } else {
-          document.body.classList.add('has-feedback-banner');
-        }
-      } catch(e) {}
-    })();
-  </script>
 </aside>

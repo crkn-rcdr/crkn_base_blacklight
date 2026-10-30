@@ -1,12 +1,12 @@
 <% is_fr = I18n.locale.to_s.start_with?('fr') %>
 <% req_params = helpers.respond_to?(:params) ? helpers.params.to_unsafe_h : {} %>
 
-<%= tag.div id: @id, class: 'facets sidenav facets-toggleable-md' do %>
+<%= tag.div id: @id, class: 'facets sidenav facets-toggleable-lg' do %>
   <div class="facets-header">
     <h2 class="facets-heading">
       <%= t('blacklight.search.facets.title', default: (is_fr ? 'Limiter votre recherche' : 'Limit your search')) %>
     </h2>
-    <button class="btn facet-toggle-button d-md-none"
+    <button class="btn facet-toggle-button d-lg-none"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#facet-panel-collapse"

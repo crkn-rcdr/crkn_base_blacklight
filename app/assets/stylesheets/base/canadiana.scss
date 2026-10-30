@@ -11466,15 +11466,17 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   line-height: 1.2;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
   .sidenav {
     --bl-facets-smallish-border: none !important;
   }
 
   .blacklight-catalog-index #sidebar .facets,
   .blacklight-catalog-index .facets-toggleable-md,
+  .blacklight-catalog-index .facets-toggleable-lg,
   .blacklight-catalog-index .facets,
   .facets.facets-toggleable-md,
+  .facets.facets-toggleable-lg,
   .facets.sidenav {
     border: none !important;
     box-shadow: none !important;
