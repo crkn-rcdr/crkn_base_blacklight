@@ -1,5 +1,5 @@
 import Lenis from 'lenis'
-import { application } from './controllers/index.js'
+import { application } from '../controllers/index.js'
 
 // If using a TypeScript entrypoint file:
 //     <%= vite_typescript_tag 'application' %>
