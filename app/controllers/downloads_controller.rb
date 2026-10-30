@@ -155,16 +155,28 @@ class DownloadsController < ApplicationController
     value = value.split('/canvas/', 2).last if value.include?('/canvas/')
     value = value.split('ark:/', 2).last if value.include?('ark:/')
 
-    value.sub(%r{\A/+}, '').sub(%r{/+\z}, '')
+    value = value.sub(/\A\/*/, '')
+    value = value.chomp('/') while value.end_with?('/')
+    value
   end
 
   def normalize_noid(raw_noid)
     value = raw_noid.to_s.strip
     return nil if value.blank?
 
-    URI.decode_www_form_component(value).sub(%r{\A/+}, '').sub(%r{/+\z}, '')
+    decoded = begin
+      URI.decode_www_form_component(value)
+    rescue ArgumentError
+      value
+    end
+
+    decoded = decoded.sub(/\A\/*/, '')
+    decoded = decoded.chomp('/') while decoded.end_with?('/')
+    decoded
   rescue ArgumentError
-    value.sub(%r{\A/+}, '').sub(%r{/+\z}, '')
+    value = value.sub(/\A\/*/, '')
+    value = value.chomp('/') while value.end_with?('/')
+    value
   end
 
   def current_page_num
@@ -310,7 +322,7 @@ class DownloadsController < ApplicationController
     endpoint = Rails.configuration.x.download_api_endpoint
     endpoint = ENV.fetch('DOWNLOAD_API_ENDPOINT', 'https://beta-download.canadiana.ca/download') unless endpoint.is_a?(String)
     endpoint = 'https://beta-download.canadiana.ca/download' if endpoint.blank?
-    endpoint = endpoint.sub(%r{/\z}, '')
+    endpoint = endpoint.chomp('/') while endpoint.end_with?('/')
     endpoint.end_with?('/download') ? endpoint : "#{endpoint}/download"
   end
 
@@ -319,13 +331,14 @@ class DownloadsController < ApplicationController
   end
 
   def image_download_uri(canvas_noid, slug, page_num)
-    base = Rails.configuration.x.iiif_image_base.to_s.sub(%r{/+\z}, '')
+    base = Rails.configuration.x.iiif_image_base.to_s
+    base = base.chomp('/') while base.end_with?('/')
     return '' if base.blank?
 
     image_uri = "#{base}/#{escape_iiif_identifier(canvas_noid)}/full/max/0/default.jpg"
     disposition = %(attachment; filename="#{safe_filename("#{slug}.#{page_num}.jpg")}")
 
-    "#{image_uri}?#{URI.encode_www_form('response-content-disposition' => disposition)}"
+     "#{image_uri}?#{URI.encode_www_form('response-content-disposition' => disposition)}"
   end
 
   def escape_iiif_identifier(identifier)
@@ -335,7 +348,6 @@ class DownloadsController < ApplicationController
   def safe_filename(filename)
     filename.to_s.gsub(%r{[\\/:*?"<>|]+}, '_')
   end
-
 
   private
 
