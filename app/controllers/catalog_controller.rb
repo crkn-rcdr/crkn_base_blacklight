@@ -457,7 +457,7 @@ class CatalogController < ApplicationController
 
     # Final fallback: flatten MARCXML tags while preserving line breaks.
     marcxml.gsub(/>\s*</, ">\n<")
-           .gsub(/<[^>]+>/, '')
+           .delete('<>')
            .split("\n")
            .map(&:strip)
            .reject(&:blank?)
