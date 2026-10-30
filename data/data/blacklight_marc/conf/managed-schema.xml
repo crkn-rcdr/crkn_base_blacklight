@@ -531,6 +531,7 @@
   <field name="rights_statement_ssim" type="text_general" />
   <field name="resource_type_ssim" type="text_general" />
   <field name="serial_key" type="text_general" />
+  <field name="serial_key_s" type="string" indexed="true" stored="true" multiValued="true" />
   <field name="serial_title" type="text_general" />
   <field name="source_of_description_tsim" type="text_general" />
   <field name="subject_addl_tsim" type="text_general" />

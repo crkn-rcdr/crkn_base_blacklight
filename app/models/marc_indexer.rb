@@ -53,6 +53,13 @@ class MarcIndexer < Blacklight::Marc::Indexer
       end
     end
 
+    to_field "serial_key_s" do |record, acc|
+      key = record["902"]&.subfields&.find { |sf| sf.code == 'b' }&.value&.strip
+      if key && !key.empty?
+        acc.replace [key]
+      end
+    end
+
     # --- issue_sort_s: zero-padded ID sort key for natural sorting in Solr ---
     to_field "issue_sort_s" do |record, acc|
       v901 = record["901"]&.value&.strip

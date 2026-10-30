@@ -44,10 +44,22 @@ class SearchBuilder < Blacklight::SearchBuilder
       next if clean_values.empty?
 
       config = facet_configs[field_key] || facet_configs[field_key.to_s] || facet_configs[field_key.to_sym]
-      next if config&.query
+      tag = "tag_#{field_key.to_s.parameterize.underscore}"
+
+      if config&.query.is_a?(Hash)
+        clauses = clean_values.map do |val|
+          q_conf = config.query[val] || config.query[val.to_s] || config.query[val.to_sym]
+          q_conf ? "(#{q_conf[:fq]})" : nil
+        end.compact
+        if clauses.present?
+          fq_str = "{!tag=#{tag}}(#{clauses.join(' OR ')})"
+          solr_parameters[:fq] ||= []
+          solr_parameters[:fq] << fq_str unless solr_parameters[:fq].include?(fq_str)
+        end
+        next
+      end
 
       solr_field = (config&.field || field_key).to_s
-      tag = "tag_#{field_key.to_s.parameterize.underscore}"
 
       # Build OR filter query for multiple values of the same facet
       clause = clean_values.map do |val|
