@@ -137,9 +137,9 @@ Instead of duplicating full-text inside `blacklight_marc`, Blacklight links the 
   q={!join from=manifestid to=manifestid_s fromIndex=content_search v='{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'}
   ```
 - **Full-Text Availability Faceting**: In the facet sidebar, the **Full Text Search** facet dynamically counts records matching:
-  - *Available*: `tx_gen:[* TO *] OR _query_:"{!join from=serial_key_s to=id}tx_gen:[* TO *]"`
-  - *Not Available*: `(*:* -(tx_gen:[* TO *] OR _query_:"{!join from=serial_key_s to=id}tx_gen:[* TO *]"))`
-  - *Parent-Child Resolution*: The intra-core join from `serial_key_s` (exact string parent identifier on child issues/reels) to `id` ensures that parent records (journal series, newspaper titles, archival collections, and MIKANs) are classified as **Available** whenever *any* of their child issues or reels contains full-text search.
+  - *Available*: `_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*'}"`
+  - *Not Available*: `(*:* -(_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*'}"))`
+  - *Decoupled Architecture*: Eliminates any dependency on `tx_gen` in `blacklight_marc`. Full-text availability is resolved purely via cross-core join against `content_search`, with nested intra-core join on `serial_key_s` -> `id` ensuring parent series, newspapers, and collections are marked Available whenever any child issue contains full text.
 
 ---
 
