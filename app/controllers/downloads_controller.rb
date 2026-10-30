@@ -272,4 +272,75 @@ class DownloadsController < ApplicationController
   def safe_filename(filename)
     filename.to_s.gsub(%r{[\\/:*?"<>|]+}, '_')
   end
+  # ========================================================================
+  # Phase 3: Download Status Endpoint
+  # ========================================================================
+  # JSON endpoint for download-status-controller polling
+  # Returns file availability status every 500ms
+  
+  def status
+    docid = params[:id].to_s
+    ark_path = params[:ark].to_s
+    
+    if docid.blank?
+      return render json: { ready: false, message: "Missing docid" }, status: 400
+    end
+    
+    if ark_path.blank?
+      return render json: { ready: false, message: "Missing ark path" }, status: 400
+    end
+    
+    file_ready = file_ready_for_download?(docid, ark_path)
+    status_msg = file_ready ? "File ready for download" : "File is preparing..."
+    
+    response_data = {
+      ready: file_ready,
+      message: status_msg
+    }
+    
+    response_data[:url] = download_url_for(docid, ark_path) if file_ready
+    
+    render json: response_data, status: 200
+  rescue => e
+    Rails.logger.error("Error checking download status for #{docid}/#{ark_path}: #{e.message}")
+    render json: { ready: false, message: "Error: #{e.message}" }, status: 500
+  end
+
+  private
+
+  def file_ready_for_download?(docid, ark_path)
+    cached = check_redis_cache(docid, ark_path)
+    return cached unless cached.nil?
+    
+    check_file_availability(docid, ark_path)
+  rescue => e
+    Rails.logger.error("Error checking file availability: #{e.message}")
+    false
+  end
+
+  def check_redis_cache(docid, ark_path)
+    return nil unless self.class.download_cache_pool.present?
+    
+    cache_key = "download:#{docid}:#{ark_path}"
+    self.class.download_cache_pool.with do |redis|
+      value = redis.get(cache_key)
+      return value == "ready" if value.present?
+    end
+    
+    nil
+  rescue => e
+    Rails.logger.warn("Redis cache check failed: #{e.message}")
+    nil
+  end
+
+  def check_file_availability(docid, ark_path)
+    # TODO: Implement actual file availability checking
+    # Check: File exists, is accessible, meets size requirements
+    # For now: return false to indicate file is being prepared
+    false
+  end
+
+  def download_url_for(docid, ark_path)
+    download_url(id: docid, ark: ark_path)
+  end
 end
