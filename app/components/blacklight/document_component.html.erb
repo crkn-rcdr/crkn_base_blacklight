@@ -224,6 +224,7 @@
                 <% if @document._source["is_serial"]&.first == "No" %>
                   <div>
                     <div class="mt-1 sidebar-downloads" id="download-toolbar" role="region" aria-label="<%= t('blacklight.tools.download_label', default: 'Downloads') %>"
+                         data-controller="download-status"
                          data-docid="<%= @document._source['id'] %>"
                          data-arkpath="<%= @document._source['ark'].to_s.gsub('https://n2t.net/ark:/','') %>">
                       <p class="download-toolbar-title"><%= t('blacklight.tools.download_label', default: 'Downloads') %>:</p>

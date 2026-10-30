@@ -4,7 +4,8 @@
   <% end %>
 
   <% component.with_body do %>
-    <%= form_tag form_action, method: :get, class: 'checkbox-facet-form', data: { facet_key: @facet_field.key } do %>
+    <div data-controller="checkbox-facet">
+      <%= form_tag form_action, method: :get, class: 'checkbox-facet-form', data: { facet_key: @facet_field.key } do %>
       <%= hidden_fields %>
       <% if @facet_field.in_modal? %>
         <div class="js-modal-offpage-selections" hidden>
@@ -67,5 +68,6 @@
         <% end %>
       </div>
     <% end %>
+    </div>
   <% end %>
 <% end %>
