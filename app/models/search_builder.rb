@@ -65,7 +65,7 @@ class SearchBuilder < Blacklight::SearchBuilder
 
       # Build OR filter query for multiple values of the same facet
       clause = clean_values.map do |val|
-        escaped_val = val.to_s.gsub('"', '\\"')
+        escaped_val = val.to_s.gsub('\\', '\\\\').gsub('"', '\\"')
         "#{solr_field}:\"#{escaped_val}\""
       end.join(' OR ')
 
