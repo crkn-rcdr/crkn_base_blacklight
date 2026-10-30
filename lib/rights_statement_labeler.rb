@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'uri'
+
 module RightsStatementLabeler
   URI_PATTERN = %r{https?://rightsstatements\.org/(?:vocab|page)/([^/?#]+)/1\.0(?:[/?#]|$)}i.freeze
 
@@ -254,7 +256,14 @@ module RightsStatementLabeler
     is_fr = locale.to_s.start_with?('fr')
     uri_code = statement[:uri_code]
 
-    if statement[:canonical_url]&.include?('rightsstatements.org')
+    canonical = statement[:canonical_url].to_s
+    host = begin
+      URI.parse(canonical).host&.downcase
+    rescue URI::InvalidURIError
+      nil
+    end
+
+    if host == 'rightsstatements.org'
       lang_param = is_fr ? 'fr' : 'en'
       "https://rightsstatements.org/page/#{uri_code}/1.0/?language=#{lang_param}"
     elsif uri_code == 'OGL-Canada'
