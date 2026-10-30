@@ -3,197 +3,183 @@ import { Controller } from "@hotwired/stimulus";
 /**
  * Download Status Controller
  * 
- * Polls the download API endpoint to check if files are ready for download
- * and updates the UI with the current status.
- * 
- * Replaces inline script functions:
- *   - updateForCurrentPage()
- *   - handleVisibilityChange()
- *   - isArkPathReady()
- *   - Download polling interval (500ms)
- * 
- * Data attributes:
- *   - [data-controller="download-status"]
- *   - Toolbar: #download-toolbar[data-docid][data-arkpath]
- *   - Buttons: #btn-download-img, #btn-download-page, #btn-download-full
- *   - Status display: #download-status
- * 
- * Note: Actual download functionality is handled by the buttons' href
- * and the backend API. This controller only manages polling and UI state.
+ * Manages download availability polling and button state updates.
+ * Replaces the inline script from document_component.html.erb.
  */
 export default class extends Controller {
-  static values = {
-    docId: String,
-    arkPath: String,
-    pollInterval: { type: Number, default: 500 },
-    maxRetries: { type: Number, default: 60 }, // ~30 seconds at 500ms interval
-  };
-
   connect() {
-    this.toolbar = this.element.querySelector("#download-toolbar");
+    this.toolbar = this.element.id === "download-toolbar" 
+      ? this.element 
+      : this.element.querySelector("#download-toolbar") || this.element;
+
     if (!this.toolbar) return;
 
     this.docId = this.toolbar.dataset.docid;
     this.arkPath = this.toolbar.dataset.arkpath;
 
+    this.fullBtn = this.element.querySelector("#btn-download-full");
+    this.pageBtn = this.element.querySelector("#btn-download-page");
+    this.pageImgBtn = this.element.querySelector("#btn-download-img");
+
     this.statusDisplay = this.element.querySelector("#download-status");
-    this.downloadButtons = this.element.querySelectorAll(
-      "#btn-download-img, #btn-download-page, #btn-download-full"
-    );
+    this.statusText = this.statusDisplay?.querySelector(".download-status-text");
+    this.statusSpinner = this.statusDisplay?.querySelector(".spinner-border");
 
-    this.pollRetryCount = 0;
-    this.abortController = new AbortController();
+    this.checkingText = "Checking download availability...";
+    this.unavailableText = "Not available for this page.";
+    this.pdfDisabledTooltip = "Searchable PDFs and text search are unavailable when no OCR (machine-readable text) exists.";
+    this.imgDisabledTooltip = "Image download is unavailable for this page.";
 
-    // Start polling
-    this.startPolling();
+    this.availabilityRun = 0;
+    this.abortController = null;
 
-    // Handle visibility changes - pause polling when tab not visible
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        this.stopPolling();
-      } else {
-        this.startPolling();
+    // Prevent click on disabled buttons
+    this.preventDisabledClick = (e) => {
+      const el = e.currentTarget;
+      if (!el || el.classList.contains("disabled") || el.getAttribute("aria-disabled") === "true") {
+        e.preventDefault();
       }
+    };
+
+    [this.fullBtn, this.pageBtn, this.pageImgBtn].forEach((btn) => {
+      if (btn) btn.addEventListener("click", this.preventDisabledClick);
     });
 
-    // Clean up on disconnect
-    this.cleanup = () => this.stopPolling();
+    // Start initial availability check
+    this.updateForCurrentPage();
+
+    // Listen for navigation events that may change the query string (e.g. Mirador page change)
+    this.onLocationChange = () => this.updateForCurrentPage();
+    window.addEventListener("popstate", this.onLocationChange);
+    window.addEventListener("hashchange", this.onLocationChange);
+
+    // Poll for pageNum changes (viewer navigation using pushState/replaceState)
+    this.lastSearch = window.location.search;
+    this.searchPollInterval = setInterval(() => {
+      if (window.location.search !== this.lastSearch) {
+        this.lastSearch = window.location.search;
+        this.onLocationChange();
+      }
+    }, 750);
   }
 
   disconnect() {
-    this.stopPolling();
+    if (this.searchPollInterval) {
+      clearInterval(this.searchPollInterval);
+      this.searchPollInterval = null;
+    }
+    if (this.onLocationChange) {
+      window.removeEventListener("popstate", this.onLocationChange);
+      window.removeEventListener("hashchange", this.onLocationChange);
+    }
+    if (this.abortController) {
+      this.abortController.abort();
+    }
+    [this.fullBtn, this.pageBtn, this.pageImgBtn].forEach((btn) => {
+      if (btn && this.preventDisabledClick) {
+        btn.removeEventListener("click", this.preventDisabledClick);
+      }
+    });
   }
 
-  startPolling() {
-    if (this.pollTimeout) return; // Already polling
-
-    this.poll();
+  currentPageNum() {
+    const p = parseInt(new URLSearchParams(window.location.search).get("pageNum") || "1", 10);
+    return Number.isFinite(p) && p > 0 ? p : 1;
   }
 
-  stopPolling() {
-    if (this.pollTimeout) {
-      clearTimeout(this.pollTimeout);
-      this.pollTimeout = null;
+  encodedArkPath() {
+    return String(this.arkPath || "")
+      .split("/")
+      .map(encodeURIComponent)
+      .join("/");
+  }
+
+  downloadDataUrl() {
+    const params = new URLSearchParams({
+      pageNum: String(this.currentPageNum()),
+      _: String(Date.now()),
+    });
+    return `/dl/${encodeURIComponent(this.docId)}/${this.encodedArkPath()}?${params.toString()}`;
+  }
+
+  disableLink(el, tooltip) {
+    if (!el) return;
+    el.classList.add("disabled");
+    el.setAttribute("aria-disabled", "true");
+    el.removeAttribute("href");
+    el.removeAttribute("download");
+    if (tooltip) {
+      el.setAttribute("title", tooltip);
+      const label = el.querySelector(".download-label")?.textContent || "";
+      el.setAttribute("aria-label", `${label}: ${tooltip}`.trim());
+      el.querySelectorAll("*").forEach((child) => child.setAttribute("title", tooltip));
     }
   }
 
-  async poll() {
-    if (!this.docId || !this.arkPath) {
-      this.updateStatus("error", "Missing document or ark path");
-      return;
+  enableLink(el, href) {
+    if (!el || !href) return;
+    el.href = href;
+    el.classList.remove("disabled");
+    el.removeAttribute("aria-disabled");
+    el.removeAttribute("title");
+    el.removeAttribute("aria-label");
+    el.querySelectorAll("*").forEach((child) => child.removeAttribute("title"));
+  }
+
+  setLinkState(el, href, tooltip) {
+    if (!el || !href) return this.disableLink(el, tooltip);
+    this.enableLink(el, href);
+  }
+
+  setStatus(message, loading) {
+    if (this.statusText) this.statusText.textContent = message || "";
+    if (this.statusSpinner) this.statusSpinner.hidden = !loading;
+  }
+
+  showFinalStatus() {
+    const anyEnabled = [this.fullBtn, this.pageBtn, this.pageImgBtn].some(
+      (el) => el && el.getAttribute("href") && !el.classList.contains("disabled")
+    );
+    this.setStatus(anyEnabled ? "" : this.unavailableText, false);
+  }
+
+  async updateForCurrentPage() {
+    if (!this.docId || !this.arkPath) return;
+
+    const run = ++this.availabilityRun;
+
+    this.setStatus(this.checkingText, true);
+    this.disableLink(this.fullBtn, this.pdfDisabledTooltip);
+    this.disableLink(this.pageBtn, this.pdfDisabledTooltip);
+    this.disableLink(this.pageImgBtn, this.imgDisabledTooltip);
+
+    if (this.abortController) {
+      this.abortController.abort();
     }
+    this.abortController = new AbortController();
 
     try {
-      // Check if files are ready
-      const isReady = await this.checkDownloadStatus();
+      const response = await fetch(this.downloadDataUrl(), {
+        credentials: "same-origin",
+        cache: "no-store",
+        signal: this.abortController.signal,
+      });
 
-      if (isReady) {
-        this.updateStatus("ready");
-        this.enableDownloadButtons();
-        this.stopPolling();
-        return;
-      }
+      if (!response.ok) throw new Error(`Download metadata failed: ${response.status}`);
+      const data = await response.json();
 
-      this.pollRetryCount++;
+      if (run !== this.availabilityRun) return;
 
-      if (this.pollRetryCount >= this.maxRetriesValue) {
-        // Timeout reached - still show as checking but allow manual retry
-        this.updateStatus(
-          "timeout",
-          "File generation taking longer than expected. Please try again."
-        );
-        this.disableDownloadButtons();
-        return;
-      }
-
-      // Schedule next poll
-      this.pollTimeout = setTimeout(() => this.poll(), this.pollIntervalValue);
-    } catch (error) {
-      console.error("Download status check failed:", error);
-      this.updateStatus("error", "Failed to check download status");
-
-      // Retry even on error
-      this.pollRetryCount++;
-      if (this.pollRetryCount < this.maxRetriesValue) {
-        this.pollTimeout = setTimeout(() => this.poll(), this.pollIntervalValue);
-      } else {
-        this.stopPolling();
-      }
+      this.setLinkState(this.fullBtn, data?.docPdfUri, this.pdfDisabledTooltip);
+      this.setLinkState(this.pageBtn, data?.pagePdfUri, this.pdfDisabledTooltip);
+      this.setLinkState(this.pageImgBtn, data?.pageImgUri, this.imgDisabledTooltip);
+      this.showFinalStatus();
+    } catch (_error) {
+      if (run !== this.availabilityRun) return;
+      this.disableLink(this.fullBtn, this.pdfDisabledTooltip);
+      this.disableLink(this.pageBtn, this.pdfDisabledTooltip);
+      this.disableLink(this.pageImgBtn, this.imgDisabledTooltip);
+      this.showFinalStatus();
     }
-  }
-
-  async checkDownloadStatus() {
-    const endpoint = `/dl/${this.docId}/${this.arkPath}`;
-
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-      signal: this.abortController.signal,
-      timeout: 7000,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Download check failed: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    // Response format: { ready: boolean, message?: string }
-    return data.ready === true;
-  }
-
-  updateStatus(state, message = null) {
-    if (!this.statusDisplay) return;
-
-    // Map states to user-friendly messages
-    const messages = {
-      ready: "✓ Files are ready for download",
-      checking: "Checking file availability...",
-      timeout: message || "File generation taking longer than expected",
-      error: message || "Error checking file availability",
-    };
-
-    const msg = messages[state] || state;
-    const spinnerHTML =
-      state === "checking"
-        ? '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>'
-        : state === "ready"
-          ? '<i class="bi bi-check-circle me-1"></i>'
-          : '<i class="bi bi-exclamation-circle me-1"></i>';
-
-    this.statusDisplay.innerHTML = `${spinnerHTML}<span class="download-status-text">${msg}</span>`;
-    this.statusDisplay.className = `text-muted small d-inline-flex align-items-center gap-1 status-${state}`;
-  }
-
-  enableDownloadButtons() {
-    this.downloadButtons.forEach((button) => {
-      button.classList.remove("disabled");
-      button.removeAttribute("aria-disabled");
-      button.removeAttribute("disabled");
-
-      // Update title/tooltip
-      const kind = button
-        .querySelector(".download-kind")
-        ?.textContent.toUpperCase();
-      if (kind) {
-        const tooltips = {
-          IMG: "Download image",
-          PAGE: "Download page as PDF",
-          FULL: "Download full document as PDF",
-        };
-        button.title = tooltips[kind] || "Download";
-      }
-    });
-  }
-
-  disableDownloadButtons() {
-    this.downloadButtons.forEach((button) => {
-      button.classList.add("disabled");
-      button.setAttribute("aria-disabled", "true");
-      button.disabled = true;
-      button.title = "Files not yet ready for download";
-    });
   }
 }

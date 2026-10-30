@@ -67,6 +67,40 @@ class DownloadsController < ApplicationController
     }
   end
 
+  # ========================================================================
+  # Phase 3: Download Status Endpoint
+  # ========================================================================
+  # JSON endpoint for download-status-controller polling
+  # Returns file availability status every 500ms
+  
+  def status
+    docid = params[:id].to_s
+    ark_path = params[:ark].to_s
+    
+    if docid.blank?
+      return render json: { ready: false, message: "Missing docid" }, status: 400
+    end
+    
+    if ark_path.blank?
+      return render json: { ready: false, message: "Missing ark path" }, status: 400
+    end
+    
+    file_ready = file_ready_for_download?(docid, ark_path)
+    status_msg = file_ready ? "File ready for download" : "File is preparing..."
+    
+    response_data = {
+      ready: file_ready,
+      message: status_msg
+    }
+    
+    response_data[:url] = download_url_for(docid, ark_path) if file_ready
+    
+    render json: response_data, status: 200
+  rescue => e
+    Rails.logger.error("Error checking download status for #{docid}/#{ark_path}: #{e.message}")
+    render json: { ready: false, message: "Error: #{e.message}" }, status: 500
+  end
+
   private
 
   def download_cache_record(manifest_id)
@@ -272,39 +306,7 @@ class DownloadsController < ApplicationController
   def safe_filename(filename)
     filename.to_s.gsub(%r{[\\/:*?"<>|]+}, '_')
   end
-  # ========================================================================
-  # Phase 3: Download Status Endpoint
-  # ========================================================================
-  # JSON endpoint for download-status-controller polling
-  # Returns file availability status every 500ms
-  
-  def status
-    docid = params[:id].to_s
-    ark_path = params[:ark].to_s
-    
-    if docid.blank?
-      return render json: { ready: false, message: "Missing docid" }, status: 400
-    end
-    
-    if ark_path.blank?
-      return render json: { ready: false, message: "Missing ark path" }, status: 400
-    end
-    
-    file_ready = file_ready_for_download?(docid, ark_path)
-    status_msg = file_ready ? "File ready for download" : "File is preparing..."
-    
-    response_data = {
-      ready: file_ready,
-      message: status_msg
-    }
-    
-    response_data[:url] = download_url_for(docid, ark_path) if file_ready
-    
-    render json: response_data, status: 200
-  rescue => e
-    Rails.logger.error("Error checking download status for #{docid}/#{ark_path}: #{e.message}")
-    render json: { ready: false, message: "Error: #{e.message}" }, status: 500
-  end
+
 
   private
 
