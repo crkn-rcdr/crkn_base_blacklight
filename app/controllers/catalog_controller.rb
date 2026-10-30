@@ -82,9 +82,7 @@ class CatalogController < ApplicationController
   TEXT_FIELDS_QF = TEXT_SEARCH_QF_FIELDS.join(' ').freeze
   TEXT_FIELDS_PF = TEXT_SEARCH_PF_FIELDS.join(' ').freeze
 
-  # Blacklight's track action is a redirect used for click tracking and may
-  # be invoked without an authenticity token. Skip CSRF verification for it.
-  skip_before_action :verify_authenticity_token, only: [:track]
+  # Keep default CSRF verification enabled for all actions.
   before_action :ensure_default_catalog_query, only: :index
 
   configure_blacklight do |config|
