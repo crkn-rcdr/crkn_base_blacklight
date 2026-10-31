@@ -522,6 +522,7 @@ class CatalogController < ApplicationController
   end
 
   private def ensure_default_catalog_query
+    return unless controller_name == 'catalog'
     return unless request.get?
     return unless request.format.html?
 
