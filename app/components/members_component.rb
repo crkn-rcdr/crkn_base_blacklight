@@ -276,7 +276,13 @@ class MembersComponent < ViewComponent::Base
   end
 
   def logo_asset(name)
-    LOGO_ASSETS[normalize_name(name)]
+    asset = LOGO_ASSETS[normalize_name(name)]
+    return unless asset
+
+    webp_asset = asset.sub(/\.png\z/i, '.webp')
+    return webp_asset if Rails.root.join('app/assets/images', webp_asset).exist?
+
+    asset
   end
 
   def member_url(member)
