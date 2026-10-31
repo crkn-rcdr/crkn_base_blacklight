@@ -81,8 +81,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     // Verify live region provides user feedback
     const feedback = page.locator('#iiif-copy-feedback');
     await expect(feedback).toBeVisible();
-    const feedbackText = await feedback.textContent();
-    expect(feedbackText).toMatch(/Copied to clipboard/i);
+    await expect(feedback).toContainText(/Copied to clipboard/i);
   });
 
   test('3. Document sidebar renders with resizable-sidebar Stimulus controller without inline scripts', async ({ page, baseURL }) => {
@@ -224,9 +223,305 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
       err.includes('syncCanadianaWorkGridHeights') ||
       err.includes('initPageSearch') ||
       err.includes('moveCatalogAppliedParams') ||
-      err.includes('adjustCatalogShowBreadcrumbActions')
+      err.includes('adjustCatalogShowBreadcrumbActions') ||
+      err.includes('initMembersSection') ||
+      err.includes('saveFacetAccordionState')
     );
 
     expect(criticalErrors).toEqual([]);
+  });
+
+  test('8. Members component renders with Stimulus members-filter controller and filters by tab', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    const membersSection = page.locator('#members-section[data-controller~="members-filter"]');
+    if (await membersSection.isVisible()) {
+      // Verify tabs exist and can switch
+      const associateTab = membersSection.locator('[data-members-tab="associate"]');
+      await expect(associateTab).toBeVisible();
+      await associateTab.click();
+      await expect(associateTab).toHaveClass(/active/);
+
+      // Verify associate panel is now visible
+      const associatePanel = membersSection.locator('#members-panel-associate');
+      await expect(associatePanel).not.toHaveClass(/d-none/);
+
+      // Verify 0 inline scripts inside members component
+      const inlineScripts = await membersSection.locator('script').count();
+      expect(inlineScripts).toBe(0);
+    }
+  });
+
+  test('9. Facet accordion Stimulus controller expands and collapses facet groups', async ({ page }) => {
+    await page.goto('/catalogue?q=*');
+    await page.waitForLoadState('networkidle');
+
+    const facetGroup = page.locator('.facets[data-controller~="facet-accordion"]').first();
+    await expect(facetGroup).toBeAttached();
+
+    const expandAllBtn = facetGroup.locator('#facet-expand-all-btn, button:has-text("Expand all")').first();
+    if (await expandAllBtn.isVisible()) {
+      await expandAllBtn.click();
+      // Check that facet collapses have 'show' class
+      const openCollapses = facetGroup.locator('.facet-content.collapse.show');
+      expect(await openCollapses.count()).toBeGreaterThan(0);
+
+      const collapseAllBtn = facetGroup.locator('#facet-collapse-all-btn, button:has-text("Collapse all")').first();
+      await collapseAllBtn.click();
+      const openAfterCollapse = facetGroup.locator('.facet-content.collapse.show');
+      expect(await openAfterCollapse.count()).toBe(0);
+    }
+  });
+
+  test('10. Serial collection items render with openseadragon-preview controller and load viewers', async ({ page, baseURL }) => {
+    // Only Canadiana has the sru serial record
+    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    if (!isCanadiana) return;
+
+    await page.goto('/catalogue/sru.00007?lang=en');
+    await page.waitForLoadState('networkidle');
+
+    const collectionList = page.locator('#collection-items-list[data-controller~="openseadragon-preview"]');
+    if (await collectionList.isVisible()) {
+      const viewers = collectionList.locator('.collection-item__viewer[data-ark-id]');
+      const count = await viewers.count();
+      if (count > 0) {
+        // Verify OpenSeadragon canvas is initialized inside viewer
+        const osdCanvas = viewers.first().locator('.openseadragon-canvas').first();
+        await expect(osdCanvas).toBeVisible({ timeout: 10000 });
+      }
+    }
+  });
+
+  test('11. Local OpenSeadragon asset is served without CDN dependencies and initializes', async ({ page }) => {
+    // Check that /assets/openseadragon.min.js responds with 200
+    const osdResponse = await page.request.get('/assets/openseadragon.min.js');
+    expect(osdResponse.status()).toBe(200);
+
+    await page.goto('/catalogue?q=*');
+    await page.waitForLoadState('networkidle');
+
+    // Verify OpenSeadragon script tag points to local asset, not CDN
+    const cdnScript = page.locator('script[src*="cdnjs.cloudflare.com/ajax/libs/openseadragon"]');
+    await expect(cdnScript).toHaveCount(0);
+
+    const localScript = page.locator('script[src*="/assets/openseadragon.min.js"]');
+    await expect(localScript).toHaveCount(1);
+
+    // Verify window.OpenSeadragon is defined
+    const hasOsd = await page.evaluate(() => typeof (window as any).OpenSeadragon !== 'undefined');
+    expect(hasOsd).toBe(true);
+  });
+
+  test('12. Download endpoints accept document IDs with underscores, dots, and hyphens', async ({ page, baseURL }) => {
+    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const docId = isCanadiana ? 'oon.00002_194801' : 'oocihm.lac_reel_h2971';
+    const arkPath = isCanadiana ? '69429/m20260000010001' : '69429/m0k35m90313z';
+
+    // Verify download status route recognizes ID with underscore
+    const statusResponse = await page.request.get(`/dl/${docId}/${arkPath}/status`);
+    expect(statusResponse.status()).toBe(200);
+    const json = await statusResponse.json();
+    expect(json).toHaveProperty('ready');
+
+    // Verify download file endpoint does not return 404 (routing error)
+    const dlResponse = await page.request.get(`/dl/${docId}/${arkPath}`);
+    expect(dlResponse.status()).not.toBe(404);
+  });
+
+  test('13. Search builder executes queries with identifiers, hyphens, and special syntax without Solr errors', async ({ page }) => {
+    // Test identifier with hyphens and dots
+    await page.goto('/catalogue?q=oocihm.lac_reel_h2971');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('#main-container, main').first()).toBeVisible();
+
+    // Test multi-token query with hyphens and quotes
+    await page.goto('/catalogue?q="Canadian+horticulturist"+1910');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('#main-container, main').first()).toBeVisible();
+
+    // No Solr 500 error page
+    const pageText = await page.locator('body').innerText();
+    expect(pageText).not.toContain('RSolr::Error::Http');
+    expect(pageText).not.toContain('Solr returned an error');
+  });
+
+  test('14. Search tracking action redirects smoothly to document show page', async ({ page }) => {
+    await page.goto('/catalogue?q=*');
+    await page.waitForLoadState('networkidle');
+
+    const firstDocLink = page.locator('#documents .document-title-heading a, #documents h3.index_title a').first();
+    await expect(firstDocLink).toBeVisible();
+
+    // Verify context tracking attribute is present
+    const contextHref = await firstDocLink.getAttribute('data-context-href');
+    expect(contextHref).toContain('/track');
+
+    // Click link and verify tracking request succeeds with 303 redirect to show page
+    const [trackResponse] = await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('/track')),
+      firstDocLink.click()
+    ]);
+
+    expect(trackResponse.status()).toBe(303);
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('#main-container, main').first()).toBeVisible();
+  });
+
+  test('15. Search controls: sorting, per-page counts, and search fields', async ({ page }) => {
+    // Test sorting by date
+    await page.goto('/catalogue?q=*&sort=pub_date_si+desc');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('#documents')).toBeVisible();
+
+    // Test per-page selection (20 items)
+    await page.goto('/catalogue?q=*&per_page=20');
+    await page.waitForLoadState('networkidle');
+    const docArticles = page.locator('#documents article, #documents .document');
+    expect(await docArticles.count()).toBeGreaterThan(0);
+
+    // Test specific search field (title search)
+    await page.goto('/catalogue?search_field=title&q=Canada');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('#documents')).toBeVisible();
+  });
+
+  test('16. Applied search constraints render below search hero and can be removed', async ({ page }) => {
+    await page.goto('/catalogue?q=Canada');
+    await page.waitForLoadState('networkidle');
+
+    // Applied constraints container is rendered
+    const appliedParams = page.locator('#appliedParams, .appliedFilter, .catalog-search-hero__applied');
+    await expect(appliedParams.first()).toBeVisible();
+
+    // Click remove constraint if present or navigate to clear
+    const removeBtn = page.locator('.btn-remove, .catalog-search-hero__applied-remove, .remove').first();
+    if (await removeBtn.isVisible()) {
+      await removeBtn.click();
+      await page.waitForLoadState('networkidle');
+      await expect(page.locator('#main-container, main').first()).toBeVisible();
+    }
+  });
+
+  test('17. Citation and Librarian/MARC metadata views render successfully', async ({ page, baseURL }) => {
+    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const docId = isCanadiana ? 'oon.00002_194801' : 'oocihm.lac_reel_h2971';
+
+    // Citation view
+    const citeResponse = await page.request.get(`/catalogue/${docId}/citation`);
+    expect(citeResponse.status()).toBe(200);
+    const citeHtml = await citeResponse.text();
+    expect(citeHtml).toContain('citation');
+
+    // Librarian / MARC view
+    const marcResponse = await page.request.get(`/catalogue/${docId}/librarian_view`);
+    expect(marcResponse.status()).toBe(200);
+    const marcHtml = await marcResponse.text();
+    expect(marcHtml).toContain('marc');
+  });
+
+  test('18. Bilingual internationalization switches between English and French', async ({ page }) => {
+    // French homepage
+    await page.goto('/?lang=fr');
+    await page.waitForLoadState('networkidle');
+    const frTitle = await page.title();
+    expect(frTitle).toBeTruthy();
+
+    // French catalogue search page
+    await page.goto('/catalogue?lang=fr&q=*');
+    await page.waitForLoadState('networkidle');
+    const filtersHeading = page.locator('.facets-heading, h2:has-text("recherche")').first();
+    await expect(filtersHeading).toBeVisible();
+
+    // English catalogue search page
+    await page.goto('/catalogue?lang=en&q=*');
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('.facets-heading').first()).toBeVisible();
+  });
+
+  test('19. Static informational pages load cleanly with 200 OK', async ({ page, baseURL }) => {
+    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const aboutPath = isCanadiana ? '/about/canadiana' : '/about/heritage';
+
+    const pages = [aboutPath, '/compare-collections', '/api-access', '/what-is-iiif', '/terms-of-service'];
+    for (const p of pages) {
+      const response = await page.request.get(p);
+      expect(response.status()).toBe(200);
+    }
+  });
+
+  test('20. Error handling and legacy URL redirects preserve compatibility', async ({ page, baseURL }) => {
+    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const docId = isCanadiana ? 'oon.00002_194801' : 'oocihm.lac_reel_h2971';
+
+    // Legacy /catalog/:id redirects to /catalogue/:id
+    const legacyResponse = await page.request.get(`/catalog/${docId}`, { maxRedirects: 0 });
+    expect(legacyResponse.status()).toBe(301);
+    expect(legacyResponse.headers()['location']).toContain(`/catalogue/${docId}`);
+
+    // Legacy /view/:id/:pageNum redirects to /catalogue/:id?pageNum=:pageNum
+    const viewResponse = await page.request.get(`/view/${docId}/3`, { maxRedirects: 0 });
+    expect(viewResponse.status()).toBe(301);
+    expect(viewResponse.headers()['location']).toContain(`pageNum=3`);
+
+    // 404 handler renders styled error page for nonexistent routes
+    const notFoundResponse = await page.request.get('/this-route-does-not-exist-xyz');
+    expect(notFoundResponse.status()).toBe(404);
+  });
+
+  test('21. Performance and SEO optimizations: deferred assets, non-blocking fonts, collection meta descriptions, and descriptive link text', async ({ page, baseURL }) => {
+    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const docPath = isCanadiana ? '/catalogue/oon.00002_194801' : '/catalogue/oocihm.lac_reel_h2971';
+
+    // 1. On homepage, Mirador assets (4.1MB) are NOT in the DOM
+    await page.goto('/?lang=en');
+    const homepageMiradorScript = await page.locator('script[src*="mirador"]').count();
+    const homepageMiradorCss = await page.locator('link[href*="mirador"]').count();
+    expect(homepageMiradorScript).toBe(0);
+    expect(homepageMiradorCss).toBe(0);
+
+    // 2. OpenSeadragon has defer
+    const osdScript = page.locator('script[src*="openseadragon.min.js"]');
+    await expect(osdScript).toHaveAttribute('defer', '');
+
+    // 3. Google Fonts uses non-blocking preload & print-swap
+    const fontPreload = page.locator('link[rel="preload"][as="style"][href*="fonts.googleapis.com"]');
+    expect(await fontPreload.count()).toBeGreaterThanOrEqual(1);
+
+    // 4. Collection-aware meta descriptions
+    const enMetaDesc = await page.locator('meta[name="description"]').getAttribute('content');
+    if (isCanadiana) {
+      expect(enMetaDesc).toContain('Canadiana provides open access');
+    } else {
+      expect(enMetaDesc).toContain('The Héritage Collection provides free access');
+    }
+
+    await page.goto('/?lang=fr');
+    const frMetaDesc = await page.locator('meta[name="description"]').getAttribute('content');
+    if (isCanadiana) {
+      expect(frMetaDesc).toContain('Canadiana offre un accès libre');
+    } else {
+      expect(frMetaDesc).toContain('La collection Héritage offre un accès libre');
+    }
+
+    // 5. On document show page, Mirador is loaded with defer
+    await page.goto(`${docPath}?lang=en`);
+    const docMiradorScript = page.locator('script[src*="mirador.min.js"]');
+    await expect(docMiradorScript).toHaveCount(1);
+    await expect(docMiradorScript).toHaveAttribute('defer', '');
+    const docMiradorCss = page.locator('link[href*="mirador.css"]');
+    await expect(docMiradorCss).toHaveCount(1);
+
+    // 6. Descriptive link text for Lighthouse SEO
+    await page.goto('/?lang=en');
+    const ctaLinks = page.locator('.home-split-card__cta, .home-resource-card__cta');
+    const count = await ctaLinks.count();
+    for (let i = 0; i < count; i++) {
+      const link = ctaLinks.nth(i);
+      const text = await link.innerText();
+      // Inner text includes the visually-hidden descriptive span (e.g. "Browse books and publications")
+      expect(text.trim().length).toBeGreaterThan('Browse'.length);
+    }
   });
 });
