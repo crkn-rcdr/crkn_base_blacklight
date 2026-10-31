@@ -28,7 +28,21 @@ function initMiradorViewer() {
   if (!pageViewer) return;
   pageViewer.setAttribute('data-lenis-prevent', '');
   if (typeof Mirador === 'undefined') {
-    if (!window.__miradorRetryCount || window.__miradorRetryCount < 20) {
+    if (!document.querySelector('script[src*="mirador.min.js"]')) {
+      if (!document.querySelector('link[href*="mirador.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/assets/mirador.css';
+        document.head.appendChild(link);
+      }
+      const script = document.createElement('script');
+      script.src = '/assets/mirador.min.js';
+      script.defer = true;
+      script.onload = () => initMiradorViewer();
+      document.head.appendChild(script);
+      return;
+    }
+    if (!window.__miradorRetryCount || window.__miradorRetryCount < 40) {
       window.__miradorRetryCount = (window.__miradorRetryCount || 0) + 1;
       setTimeout(initMiradorViewer, 50);
     }

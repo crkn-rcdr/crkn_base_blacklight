@@ -262,6 +262,10 @@
 
               <% if @document._source["is_serial"]&.first == "No" %>
                 <% if @document._source["ark"] %>
+                  <% content_for(:head) do %>
+                    <link rel="stylesheet" href="/assets/mirador.css">
+                    <script src="/assets/mirador.min.js" defer></script>
+                  <% end %>
                   <div id="my-mirador" data-lenis-prevent data-docid="<%= @document._source['ark'] %>"></div>
                   
                 <% else %>

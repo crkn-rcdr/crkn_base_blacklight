@@ -54,7 +54,7 @@
           <p class="home-canadiana-search__lede">
             Environ 31,7 millions de pages de publications qui illustrent comment les connaissances, les récits et les informations ont été partagés au fil du temps. Cette collection comprend des livres, des journaux, des magazines, des documents gouvernementaux, des cartes et d'autres documents datant d'environ 1500 à nos jours. Le contenu de Canadiana provient en grande partie de la série de microfiches de l'Institut canadien de microreproductions historiques (ICMH).
             <a class="home-inline-link home-inline-link--arrow home-canadiana-search__link" href="<%= about_canadiana_path(lang: I18n.locale) %>" aria-label="En savoir plus sur la collection Canadiana" title="En savoir plus sur la collection Canadiana">
-              En savoir plus
+              En savoir plus<span class="visually-hidden"> sur la collection Canadiana</span>
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
           </p>
@@ -98,7 +98,7 @@
                   <p class="home-split-card__text">Recherchez des œuvres originales couvrant des centaines d'années d'histoire canadienne, notamment des livres, des rapports, des brochures et bien plus encore.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Monographies&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les livres et publications" aria-label="Parcourir les livres et publications">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Monographies&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les livres et publications" aria-label="Parcourir les livres et publications">Parcourir<span class="visually-hidden"> les livres et publications</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -113,7 +113,7 @@
                   <p class="home-split-card__text">Découvrez la vie quotidienne, les histoires locales et les actualités communautaires des villes et villages du Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Publications+en+se%CC%81rie&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les journaux et magazines" aria-label="Parcourir les journaux et magazines">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Publications+en+se%CC%81rie&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les journaux et magazines" aria-label="Parcourir les journaux et magazines">Parcourir<span class="visually-hidden"> les journaux et magazines</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -128,7 +128,7 @@
                   <p class="home-split-card__text">Découvrez comment le Canada a été gouverné et façonné à travers les lois, les débats, les rapports et les traités élaborés par les administrations coloniales, provinciales et fédérales.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Publications+gouvernementales&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les publications gouvernementales" aria-label="Parcourir les publications gouvernementales">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Publications+gouvernementales&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les publications gouvernementales" aria-label="Parcourir les publications gouvernementales">Parcourir<span class="visually-hidden"> les publications gouvernementales</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -143,7 +143,7 @@
                   <p class="home-split-card__text">Consultez des cartes détaillées de chaque province et territoire, créées entre 1905 et 2012. Observez comment les lieux et les frontières du Canada ont évolué au fil du temps.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Cartes&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les cartes" aria-label="Parcourir les cartes">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.canadiana_catalogue_url %>?f%5Bcollectionfr_path%5D%5B%5D=Cartes&lang=fr&q=&search_field=all_fields" class="btn btn-sm home-split-card__cta" title="Parcourir les cartes" aria-label="Parcourir les cartes">Parcourir<span class="visually-hidden"> les cartes</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -169,7 +169,7 @@
             <a href="https://library-archives.canada.ca" target="_blank" rel="noopener" title="Bibliothèque et Archives Canada (ouvre dans une nouvelle fenêtre)" aria-label="Bibliothèque et Archives Canada (ouvre dans une nouvelle fenêtre)">Bibliothèque et Archives Canada</a>
             (BAC) visant à numériser et à rendre accessibles les riches ressources des microfilms d'archives détenus par BAC. Avec plus de 37,8 millions de pages de documents de première main, Héritage retrace l'histoire du Canada et de ses peuples d'environ 1500 aux années 1980. Héritage est une ressource inégalée qui soutient les chercheurs et les communautés à travers le Canada.
             <a class="home-inline-link home-inline-link--arrow home-heritage-search__link" href="<%= about_heritage_path(lang: I18n.locale) %>" aria-label="En savoir plus sur la collection Héritage" title="En savoir plus sur la collection Héritage">
-              En savoir plus
+              En savoir plus<span class="visually-hidden"> sur la collection Héritage</span>
               <i class="bi bi-arrow-right-short" aria-hidden="true"></i>
             </a>
           </p>
@@ -213,7 +213,7 @@
                   <p class="home-split-card__text">Des dossiers d'immigration, des registres paroissiaux, des registres fonciers, des histoires et documents familiaux, ainsi que des listes électorales.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Genealogy" class="btn btn-sm home-split-card__cta" title="Parcourir les documents généalogiques" aria-label="Parcourir les documents généalogiques">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Genealogy" class="btn btn-sm home-split-card__cta" title="Parcourir les documents généalogiques" aria-label="Parcourir les documents généalogiques">Parcourir<span class="visually-hidden"> les documents généalogiques</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -228,7 +228,7 @@
                   <p class="home-split-card__text">Une vaste documentation sur les communautés des Premières Nations, des Métis et des Inuits au Canada.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Indigenous+peoples" class="btn btn-sm home-split-card__cta" title="Parcourir les documents sur les peuples autochtones" aria-label="Parcourir les documents sur les peuples autochtones">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Indigenous+peoples" class="btn btn-sm home-split-card__cta" title="Parcourir les documents sur les peuples autochtones" aria-label="Parcourir les documents sur les peuples autochtones">Parcourir<span class="visually-hidden"> les documents sur les peuples autochtones</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -243,7 +243,7 @@
                   <p class="home-split-card__text">Des documents anciens provenant des Affaires indiennes, de l'Immigration, de la Santé, de l'Agriculture, des Chemins de fer et Canaux, des Pêches et des Ressources naturelles.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Government+records" class="btn btn-sm home-split-card__cta" title="Parcourir les services gouvernementaux" aria-label="Parcourir les services gouvernementaux">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Government+records" class="btn btn-sm home-split-card__cta" title="Parcourir les services gouvernementaux" aria-label="Parcourir les services gouvernementaux">Parcourir<span class="visually-hidden"> les services gouvernementaux</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -258,7 +258,7 @@
                   <p class="home-split-card__text">Des documents consacrés à la Guerre de 1812, à la Première Guerre mondiale, à la Seconde Guerre mondiale et à l'administration militaire en temps de paix.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Military+history" class="btn btn-sm home-split-card__cta" title="Parcourir l'histoire militaire" aria-label="Parcourir l'histoire militaire">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=Military+history" class="btn btn-sm home-split-card__cta" title="Parcourir l'histoire militaire" aria-label="Parcourir l'histoire militaire">Parcourir<span class="visually-hidden"> l'histoire militaire</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -273,7 +273,7 @@
                   <p class="home-split-card__text">Des documents provenant de premiers ministres, de gouverneurs généraux, de premiers ministres provinciaux, de ministres, d'explorateurs, de scientifiques, d'écrivains et d'artistes.</p>
                 </div>
                 <div class="home-split-card__actions">
-                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=People+and+Organizations" class="btn btn-sm home-split-card__cta" title="Parcourir les personnalités canadiennes" aria-label="Parcourir les personnalités canadiennes">Parcourir</a>
+                  <a href="<%= Rails.configuration.x.heritage_catalogue_url %>?lang=fr&q=&search_field=all_fields&f_inclusive%5Bsubject_ssim_str%5D%5B%5D=People+and+Organizations" class="btn btn-sm home-split-card__cta" title="Parcourir les personnalités canadiennes" aria-label="Parcourir les personnalités canadiennes">Parcourir<span class="visually-hidden"> les personnalités canadiennes</span></a>
                 </div>
               </div>
               <div class="home-split-card__media">
@@ -374,7 +374,7 @@
           </div>
           <h3>Comparer les collections</h3>
           <p>Le RCDR donne acces a deux grandes collections numeriques du patrimoine : Canadiana et Heritage.</p>
-          <a class="home-resource-card__cta" href="<%= compare_collections_path(lang: I18n.locale) %>" aria-label="En savoir plus sur la comparaison des collections Canadiana et Héritage" title="En savoir plus sur la comparaison des collections Canadiana et Héritage">En savoir plus</a>
+          <a class="home-resource-card__cta" href="<%= compare_collections_path(lang: I18n.locale) %>" aria-label="En savoir plus sur la comparaison des collections Canadiana et Héritage" title="En savoir plus sur la comparaison des collections Canadiana et Héritage">En savoir plus<span class="visually-hidden"> sur la comparaison des collections Canadiana et Héritage</span></a>
         </article>
 
         <article class="home-resource-card">
@@ -383,7 +383,7 @@
           </div>
           <h3>Parcourir les collections</h3>
           <p>Parcourez, recherchez et explorez plus facilement les collections Canadiana grace a ces conseils.</p>
-          <a class="home-resource-card__cta" href="<%= navigating_collections_path(lang: I18n.locale) %>" aria-label="En savoir plus sur l'exploration des collections Canadiana" title="En savoir plus sur l'exploration des collections Canadiana">En savoir plus</a>
+          <a class="home-resource-card__cta" href="<%= navigating_collections_path(lang: I18n.locale) %>" aria-label="En savoir plus sur l'exploration des collections Canadiana" title="En savoir plus sur l'exploration des collections Canadiana">En savoir plus<span class="visually-hidden"> sur l'exploration des collections Canadiana</span></a>
         </article>
 
         <article class="home-resource-card">
@@ -392,7 +392,7 @@
           </div>
           <h3>Guide de citation</h3>
           <p>Decouvrez comment citer facilement les documents de la collection Canadiana.</p>
-          <a class="home-resource-card__cta" href="<%= citation_guide_path(lang: I18n.locale) %>" aria-label="En savoir plus sur la façon de citer les documents de Canadiana" title="En savoir plus sur la façon de citer les documents de Canadiana">En savoir plus</a>
+          <a class="home-resource-card__cta" href="<%= citation_guide_path(lang: I18n.locale) %>" aria-label="En savoir plus sur la façon de citer les documents de Canadiana" title="En savoir plus sur la façon de citer les documents de Canadiana">En savoir plus<span class="visually-hidden"> sur la façon de citer les documents de Canadiana</span></a>
         </article>
 
         <article class="home-resource-card" hidden>
@@ -401,7 +401,7 @@
           </div>
           <h3>Acces aux API</h3>
           <p>Le RCDR offre un acces programmatique aux metadonnees de decouverte par l'entremise des API Canadiana.</p>
-          <a class="home-resource-card__cta" href="<%= api_access_path(lang: I18n.locale) %>" aria-label="En savoir plus sur l'accès aux API Canadiana" title="En savoir plus sur l'accès aux API Canadiana">En savoir plus</a>
+          <a class="home-resource-card__cta" href="<%= api_access_path(lang: I18n.locale) %>" aria-label="En savoir plus sur l'accès aux API Canadiana" title="En savoir plus sur l'accès aux API Canadiana">En savoir plus<span class="visually-hidden"> sur l'accès aux API Canadiana</span></a>
         </article>
 
       </div>

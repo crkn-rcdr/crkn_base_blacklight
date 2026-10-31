@@ -14,7 +14,11 @@
     <%= favicon_link_tag %>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+    </noscript>
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload"  %>
 
     <% if defined? Importmap %>
@@ -24,7 +28,20 @@
     <% end %>
 
     <%= csrf_meta_tags %>
-    <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : (I18n.locale.to_s.start_with?('fr') ? 'Canadiana offre un accès libre à plus de 69 millions de pages de documents historiques et de publications canadiennes numérisées.' : 'Canadiana provides open access to more than 69 million pages of digitized Canadian documentary heritage and historical publications.') %>">
+    <%
+      is_fr = I18n.locale.to_s.start_with?('fr')
+      is_heritage = t('blacklight.application_name').to_s.downcase.include?('héritage') ||
+                    t('blacklight.application_name').to_s.downcase.include?('heritage') ||
+                    ENV['SOLR_URL'].to_s.include?('heritage') ||
+                    ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage') ||
+                    ENV['BLACKLIGHT_HOST_ADDR'].to_s.include?('heritage')
+      default_meta_desc = if is_heritage
+        is_fr ? "La collection Héritage offre un accès libre à plus de 37,8 millions de pages de documents d'archives canadiennes et de microfilms de Bibliothèque et Archives Canada." : "The Héritage Collection provides free access to over 37.8 million pages of primary-source Canadian archival documents and microfilm from Library and Archives Canada."
+      else
+        is_fr ? "Canadiana offre un accès libre à plus de 69 millions de pages de documents historiques et de publications canadiennes numérisées." : "Canadiana provides open access to more than 69 million pages of digitized Canadian documentary heritage and historical publications."
+      end
+    %>
+    <meta name="description" content="<%= content_for?(:meta_description) ? yield(:meta_description) : default_meta_desc %>">
     <meta name="iiif-manifest-base" content="<%= Rails.configuration.x.iiif_manifest_base %>">
     <meta name="iiif-content-search-base" content="<%= Rails.configuration.x.iiif_content_search_base %>">
     <meta name="iiif-image-base" content="<%= Rails.configuration.x.iiif_image_base %>">
@@ -33,9 +50,7 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag 'application' %>
 
-    <script src="/assets/openseadragon.min.js"></script>
-    <link rel="stylesheet" href="/assets/mirador.css">
-    <script src="/assets/mirador.min.js"></script>
+    <script src="/assets/openseadragon.min.js" defer></script>
   </head>
   <body class="<%= render_body_class %>">
     <%= render blacklight_config.skip_link_component.new do %>
