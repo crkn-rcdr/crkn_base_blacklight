@@ -19,7 +19,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
 
   test('1. Checkbox facet component renders with Stimulus controller and handles facet selection', async ({ page }) => {
     await page.goto('/catalogue?q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify facet sidebar is present
     const sidebar = page.locator('.search-sidebar-inner, [role="complementary"]').first();
@@ -57,7 +57,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   test('2. IIIF component renders with copy-link Stimulus controller and provides live copy feedback', async ({ page, baseURL }) => {
     const docPath = baseURL?.includes('3010') ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
     await page.goto(docPath);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify toolbox card has data-controller="copy-link"
     const toolbox = page.locator('[data-controller~="copy-link"]');
@@ -87,7 +87,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   test('3. Document sidebar renders with resizable-sidebar Stimulus controller without inline scripts', async ({ page, baseURL }) => {
     const docPath = baseURL?.includes('3010') ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
     await page.goto(docPath);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify wrapper has resizable-sidebar controller
     const wrapper = page.locator('#document-togglable-content[data-controller~="resizable-sidebar"]');
@@ -117,7 +117,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     const docPath = isCanadiana ? '/catalogue/oon.00002_194801' : '/catalogue/oocihm.lac_reel_h2971';
 
     await page.goto(docPath);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify download toolbar has data-controller="download-status" and required datasets
     const toolbar = page.locator('#download-toolbar[data-controller~="download-status"]');
@@ -162,7 +162,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     }
 
     await page.goto('/catalogue?q=science');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify matching page chips are rendered directly by ViewComponent
     const pageChips = page.locator('.page-chip');
@@ -185,7 +185,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   test('6. Mirador 3 viewer initializes and renders canvas alongside refactored components', async ({ page, baseURL }) => {
     const docPath = baseURL?.includes('3010') ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
     await page.goto(docPath);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify Mirador viewer container is present
     const miradorContainer = page.locator('#my-mirador, .mirador-container, [data-testid="mirador"]').first();
@@ -209,7 +209,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     });
 
     await page.goto('/catalogue?q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify Vite production asset is loaded
     const viteScript = page.locator('script[src*="/vite/assets/application-"]');
@@ -233,7 +233,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
 
   test('8. Members component renders with Stimulus members-filter controller and filters by tab', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const membersSection = page.locator('#members-section[data-controller~="members-filter"]');
     if (await membersSection.isVisible()) {
@@ -255,7 +255,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
 
   test('9. Facet accordion Stimulus controller expands and collapses facet groups', async ({ page }) => {
     await page.goto('/catalogue?q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const facetGroup = page.locator('.facets[data-controller~="facet-accordion"]').first();
     await expect(facetGroup).toBeAttached();
@@ -280,7 +280,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     if (!isCanadiana) return;
 
     await page.goto('/catalogue/sru.00007?lang=en');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const collectionList = page.locator('#collection-items-list[data-controller~="openseadragon-preview"]');
     if (await collectionList.isVisible()) {
@@ -300,7 +300,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     expect(osdResponse.status()).toBe(200);
 
     await page.goto('/catalogue?q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Verify OpenSeadragon script tag points to local asset, not CDN
     const cdnScript = page.locator('script[src*="cdnjs.cloudflare.com/ajax/libs/openseadragon"]');
@@ -333,12 +333,12 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   test('13. Search builder executes queries with identifiers, hyphens, and special syntax without Solr errors', async ({ page }) => {
     // Test identifier with hyphens and dots
     await page.goto('/catalogue?q=oocihm.lac_reel_h2971');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('#main-container, main').first()).toBeVisible();
 
     // Test multi-token query with hyphens and quotes
     await page.goto('/catalogue?q="Canadian+horticulturist"+1910');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('#main-container, main').first()).toBeVisible();
 
     // No Solr 500 error page
@@ -349,7 +349,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
 
   test('14. Search tracking action redirects smoothly to document show page', async ({ page }) => {
     await page.goto('/catalogue?q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     const firstDocLink = page.locator('#documents .document-title-heading a, #documents h3.index_title a').first();
     await expect(firstDocLink).toBeVisible();
@@ -365,31 +365,31 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     ]);
 
     expect(trackResponse.status()).toBe(303);
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('#main-container, main').first()).toBeVisible();
   });
 
   test('15. Search controls: sorting, per-page counts, and search fields', async ({ page }) => {
     // Test sorting by date
     await page.goto('/catalogue?q=*&sort=pub_date_si+desc');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('#documents')).toBeVisible();
 
     // Test per-page selection (20 items)
     await page.goto('/catalogue?q=*&per_page=20');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     const docArticles = page.locator('#documents article, #documents .document');
     expect(await docArticles.count()).toBeGreaterThan(0);
 
     // Test specific search field (title search)
     await page.goto('/catalogue?search_field=title&q=Canada');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('#documents')).toBeVisible();
   });
 
   test('16. Applied search constraints render below search hero and can be removed', async ({ page }) => {
     await page.goto('/catalogue?q=Canada');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Applied constraints container is rendered
     const appliedParams = page.locator('#appliedParams, .appliedFilter, .catalog-search-hero__applied');
@@ -399,7 +399,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     const removeBtn = page.locator('.btn-remove, .catalog-search-hero__applied-remove, .remove').first();
     if (await removeBtn.isVisible()) {
       await removeBtn.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('domcontentloaded');
       await expect(page.locator('#main-container, main').first()).toBeVisible();
     }
   });
@@ -424,19 +424,19 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   test('18. Bilingual internationalization switches between English and French', async ({ page }) => {
     // French homepage
     await page.goto('/?lang=fr');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     const frTitle = await page.title();
     expect(frTitle).toBeTruthy();
 
     // French catalogue search page
     await page.goto('/catalogue?lang=fr&q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     const filtersHeading = page.locator('.facets-heading, h2:has-text("recherche")').first();
     await expect(filtersHeading).toBeVisible();
 
     // English catalogue search page
     await page.goto('/catalogue?lang=en&q=*');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('.facets-heading').first()).toBeVisible();
   });
 
