@@ -55,3 +55,8 @@ config/master.key
 .env*
 *.env.*
 scans
+# Secret keys and certs
+*.key
+*.pem
+*.p12
+*.pfx
