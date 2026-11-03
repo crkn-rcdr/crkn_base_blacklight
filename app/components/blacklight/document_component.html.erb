@@ -23,6 +23,7 @@
         <%
           is_fr = I18n.locale.to_s.start_with?('fr')
           is_heritage = (defined?(helpers.portal_heritage?) && helpers.portal_heritage?) ||
+                        (defined?(CatalogController) && CatalogController.heritage?(self)) ||
                         ENV['SOLR_URL'].to_s.include?('heritage') ||
                         ENV['DOWNLOAD_API_ENDPOINT'].to_s.include?('heritage') ||
                         ENV['BLACKLIGHT_HOST_ADDR'].to_s.include?('heritage')
@@ -84,7 +85,14 @@
         </nav>
         <div class="catalog-show-breadcrumb-row">
           <% if has_serial && parent_url.present? %>
-            <%= link_to (is_fr ? "Voir tous les num?ros de #{serial_title}" : "View all issues from #{serial_title}"),
+            <%
+              view_all_label = if is_heritage
+                is_fr ? "Afficher toutes les bobines de #{serial_title}" : "View all reels from #{serial_title}"
+              else
+                is_fr ? "Voir tous les numéros de #{serial_title}" : "View all issues from #{serial_title}"
+              end
+            %>
+            <%= link_to view_all_label,
                         parent_url,
                         class: 'btn btn-outline-secondary btn-sm view-all-issues-link' %>
           <% end %>
