@@ -173,7 +173,7 @@ module RightsStatementLabeler
   end
 
   def localized_label_for(text, locale = I18n.locale)
-    stmt = statements_for_text(text).first || statement_for_label(text)
+    stmt = statement_for_label(text) || statements_for_text(text).first
     if stmt
       locale.to_s.start_with?('fr') ? stmt[:label_fr] : stmt[:label_en]
     else
@@ -181,6 +181,8 @@ module RightsStatementLabeler
       if locale.to_s.start_with?('fr')
         case t
         when /no known copyright/i then "Aucun droit d'auteur connu"
+        when /educational use permitted/i then "Sous droit d'auteur - Utilisation éducative permise"
+        when /non-commercial use permitted/i then "Sous droit d'auteur - Utilisation non commerciale permise"
         when /in copyright|all rights reserved/i then "Protégé par le droit d'auteur"
         when /public domain/i then "Marque du domaine public 1.0"
         when /open government/i then "Licence du gouvernement ouvert - Canada"
@@ -206,6 +208,10 @@ module RightsStatementLabeler
       ['CC0 1.0 Universal']
     elsif t =~ /no known copyright/i
       ['No Known Copyright']
+    elsif t =~ /educational use permitted/i
+      ['In Copyright - Educational Use Permitted']
+    elsif t =~ /non-commercial use permitted/i
+      ['In Copyright - Non-Commercial Use Permitted']
     elsif t =~ /in copyright|all rights reserved|tous droits|copyright on each article|republication rights|rights retained|©/i
       ['In Copyright']
     elsif t.present?
@@ -217,6 +223,9 @@ module RightsStatementLabeler
   end
 
   def statements_for_text(text)
+    exact = statement_for_label(text)
+    return [exact] if exact
+
     t = text.to_s
     found = []
 
@@ -242,7 +251,11 @@ module RightsStatementLabeler
       found << STATEMENTS_BY_CODE['nkc']
     end
 
-    if t =~ /in copyright|protégé par le droit d'auteur|all rights reserved|tous droits réservés|copyright on each article|republication rights|rights retained|©/i
+    if t =~ /educational use permitted|utilisation éducative permise/i
+      found << STATEMENTS_BY_CODE['inc-edu']
+    elsif t =~ /non-commercial use permitted|utilisation non commerciale permise/i
+      found << STATEMENTS_BY_CODE['inc-nc']
+    elsif t =~ /in copyright|protégé par le droit d'auteur|all rights reserved|tous droits réservés|copyright on each article|republication rights|rights retained|©/i
       found << STATEMENTS_BY_CODE['inc']
     end
 
