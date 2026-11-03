@@ -28,3 +28,4 @@ class RightsStatementLabelerTest < ActiveSupport::TestCase
                  RightsStatementLabeler.canonical_url_for_label("In Copyright", :en)
   end
 end
+
