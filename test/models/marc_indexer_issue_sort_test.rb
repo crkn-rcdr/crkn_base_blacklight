@@ -1,5 +1,6 @@
 require "test_helper"
 require "marc"
+require "minitest/mock"
 
 class MarcIndexerIssueSortTest < Minitest::Test
   def setup
@@ -52,18 +53,32 @@ class MarcIndexerIssueSortTest < Minitest::Test
   end
 
   def test_collection_items_component_native_solr_pagination
-    comp = CollectionItemsComponent.new(documentId: "mw.00001", page: 1, per_page: 12)
-    assert_equal 43, comp.total_items
-    assert_equal 4, comp.total_pages
-    assert_equal 1, comp.page
-    assert_equal 12, comp.per_page
-    assert_equal 12, comp.collection_items.length
-    assert_equal "mw.00001_1", comp.collection_items.first["id"]
+    mock_rsolr = Object.new
+    mock_rsolr.define_singleton_method(:get) do |_path, params: {}|
+      start = params[:start] || params.dig(:params, :start) || 0
+      rows = params[:rows] || params.dig(:params, :rows) || 12
+      docs = (1..rows).map { |i| { "id" => "mw.00001_#{start + i}" } }
+      {
+        "response" => { "numFound" => 43, "docs" => docs },
+        "stats" => { "stats_fields" => { "{!ex=date_filter}pub_date_si" => { "min" => 1880, "max" => 1900, "count" => 43 } } },
+        "facet_counts" => { "facet_fields" => { "{!ex=date_filter}pub_date_si" => ["1880", 20, "1881", 23] } }
+      }
+    end
 
-    page2 = CollectionItemsComponent.new(documentId: "mw.00001", page: 2, per_page: 12)
-    assert_equal 43, page2.total_items
-    assert_equal 12, page2.collection_items.length
-    assert_equal "mw.00001_13", page2.collection_items.first["id"]
+    RSolr.stub :connect, mock_rsolr do
+      comp = CollectionItemsComponent.new(documentId: "mw.00001", page: 1, per_page: 12)
+      assert_equal 43, comp.total_items
+      assert_equal 4, comp.total_pages
+      assert_equal 1, comp.page
+      assert_equal 12, comp.per_page
+      assert_equal 12, comp.collection_items.length
+      assert_equal "mw.00001_1", comp.collection_items.first["id"]
+
+      page2 = CollectionItemsComponent.new(documentId: "mw.00001", page: 2, per_page: 12)
+      assert_equal 43, page2.total_items
+      assert_equal 12, page2.collection_items.length
+      assert_equal "mw.00001_13", page2.collection_items.first["id"]
+    end
   end
 
   def test_collection_items_component_blank_document_id
