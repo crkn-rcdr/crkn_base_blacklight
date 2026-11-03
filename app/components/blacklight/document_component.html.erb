@@ -92,9 +92,10 @@
                 is_fr ? "Voir tous les numéros de #{serial_title}" : "View all issues from #{serial_title}"
               end
             %>
-            <%= link_to view_all_label,
-                        parent_url,
-                        class: 'btn btn-outline-secondary btn-sm view-all-issues-link' %>
+            <%= link_to parent_url, class: 'btn btn-outline-secondary btn-sm view-all-issues-link' do %>
+              <i class="bi bi-arrow-left" aria-hidden="true"></i>
+              <span><%= view_all_label %></span>
+            <% end %>
           <% end %>
         </div>
       <% end %>
