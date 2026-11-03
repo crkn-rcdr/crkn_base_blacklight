@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Rails & Asset Tests
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      PARALLEL_WORKERS: 1
+      SECRET_KEY_BASE: dummy_secret_key_base_for_ci_testing_1234567890
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable Corepack & Install Frontend Dependencies
+        run: |
+          corepack enable
+          corepack prepare yarn@4.2.2 --activate
+          yarn install --immutable
+
+      - name: Prepare Test Database
+        run: bundle exec rails db:test:prepare
+
+      - name: Verify Assets Precompile
+        run: bundle exec rails assets:precompile
+
+      - name: Run Rails Test Suite
+        run: bundle exec rails test
