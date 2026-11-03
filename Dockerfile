@@ -33,7 +33,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install --immutable
 
 COPY . .
-RUN SECRET_KEY_BASE=${SECRET_KEY_BASE} bundle exec rails vite:build \
+RUN SECRET_KEY_BASE=${SECRET_KEY_BASE} bundle exec rails assets:precompile \
   && rm -rf node_modules tmp/cache log/*
 
 FROM base AS runtime
