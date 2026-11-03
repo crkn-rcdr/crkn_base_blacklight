@@ -16,6 +16,7 @@ jobs:
     env:
       RAILS_ENV: test
       PARALLEL_WORKERS: 1
+      SOLR_URL: http://127.0.0.1:8983/solr/test
       SECRET_KEY_BASE: dummy_secret_key_base_for_ci_testing_1234567890
 
     steps:

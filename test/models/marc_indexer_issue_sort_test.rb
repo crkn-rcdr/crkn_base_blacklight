@@ -65,6 +65,9 @@ class MarcIndexerIssueSortTest < Minitest::Test
       }
     end
 
+    old_solr_url = ENV["SOLR_URL"]
+    ENV["SOLR_URL"] = "http://127.0.0.1:8983/solr/test"
+
     RSolr.stub :connect, mock_rsolr do
       comp = CollectionItemsComponent.new(documentId: "mw.00001", page: 1, per_page: 12)
       assert_equal 43, comp.total_items
@@ -79,6 +82,8 @@ class MarcIndexerIssueSortTest < Minitest::Test
       assert_equal 12, page2.collection_items.length
       assert_equal "mw.00001_13", page2.collection_items.first["id"]
     end
+  ensure
+    ENV["SOLR_URL"] = old_solr_url
   end
 
   def test_collection_items_component_blank_document_id
