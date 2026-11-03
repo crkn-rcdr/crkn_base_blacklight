@@ -118,8 +118,11 @@
           <div class="item-unavailable-404-image-wrapper my-4">
             <img src="/assets/404.webp"
                  class="img-fluid rounded border shadow-sm not-found-icon"
-                 alt="<%= is_fr ? "Erreur 404 - Page introuvable" : "404 Error - Page Not Found" %>"
+                 alt="<%= is_fr ? "Erreur 404 - Page introuvable | oocihm.8_06911_57.1" : "404 Error - Page Not Found | oocihm.8_06911_57.1" %>"
                  style="max-width: 480px; width: 100%; height: auto;" />
+            <div class="mt-2 text-muted fst-italic small">
+              oocihm.8_06911_57.1
+            </div>
           </div>
 
           <div class="mt-5 pt-4 border-top mx-auto" style="max-width: 800px;">
@@ -266,7 +269,7 @@
                   <div id="my-mirador" data-lenis-prevent data-docid="<%= @document._source['ark'] %>"></div>
                   
                 <% else %>
-                  <img src="/assets/404.webp" class="not-found-icon" alt="<%= is_fr ? "Erreur 404 - Page introuvable" : "404 Error - Page Not Found" %>" />
+                  <img src="/assets/404.webp" class="not-found-icon" alt="<%= is_fr ? "Erreur 404 - Page introuvable | oocihm.8_06911_57.1" : "404 Error - Page Not Found | oocihm.8_06911_57.1" %>" />
                   <p>Sorry, there was a problem loading the images for this item.</p>
                 <% end %>
 
