@@ -24,7 +24,9 @@
     <div class="my-3">
       <img src="/404.webp" onerror="this.src='/assets/404.webp'" alt="<%= is_fr ? "Erreur 404 - Page introuvable | oocihm.8_06911_57.1" : "404 Error - Page Not Found | oocihm.8_06911_57.1" %>" class="img-fluid rounded border shadow-sm" style="max-width: 400px; width: 100%; height: auto;">
       <div class="text-muted small fst-italic mt-2">
-        oocihm.8_06911_57.1
+        <a href="<%= is_heritage ? "#{Rails.configuration.x.canadiana_catalogue_url}/oocihm.8_06911_57" : solr_document_path('oocihm.8_06911_57') %>" class="text-muted" target="_blank" rel="noopener noreferrer">
+          oocihm.8_06911_57.1 — The Canadian courier. : Vol. III. No. 4 (December 28th, 1907)
+        </a>
       </div>
     </div>
 
