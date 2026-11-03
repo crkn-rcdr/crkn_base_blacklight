@@ -23,6 +23,8 @@
     "vue": "^3.5.44"
   },
   "resolutions": {
-    "fsevents": "npm:2.3.3"
+    "fsevents": "npm:2.3.3",
+    "glob": "^14.0.3",
+    "minimatch": "^11.0.4"
   }
 }
