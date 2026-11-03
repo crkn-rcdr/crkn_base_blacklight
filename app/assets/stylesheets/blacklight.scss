@@ -1279,6 +1279,16 @@ button i {
     box-shadow: none !important;
 }
 
+/* Metadata paragraph formatting (Issue #87, Issue #103) */
+.metadata-paragraph {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.metadata-paragraph:last-child {
+    margin-bottom: 0;
+}
+
 /* Issue #87: Human-readable long metadata descriptions (collapsible fields, resize handle, and full-screen record view) */
 #toggle-menu {
     position: relative;

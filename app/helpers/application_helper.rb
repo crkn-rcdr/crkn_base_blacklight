@@ -235,7 +235,7 @@ module ApplicationHelper
     formatted_paragraphs = raw_paragraphs.map do |para|
       "<span class=\"metadata-paragraph\">#{auto_link_metadata_text(para)}</span>"
     end
-    full_html = formatted_paragraphs.join
+    full_html = formatted_paragraphs.join("\n")
 
     combined_plain = raw_paragraphs.join(' ')
     should_truncate = catalog_show_view? && (
