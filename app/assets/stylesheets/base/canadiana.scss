@@ -1620,14 +1620,25 @@ dialog#blacklight-modal,
   margin-top: 0 !important;
 }
 
-/* Catalog show: keep Start Over / Back to Search on the left and Prev/Next on the right */
-.blacklight-catalog-show #appliedParams {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.55rem;
-  margin-bottom: 0;
-  vertical-align: middle;
+/* Hide appliedParams component and pagination search if parent contains #document (e.g. show page) */
+:has(> #document) > #appliedParams,
+:has(> #document) > .pagination-search-widgets,
+:has(#document) > #appliedParams,
+:has(#document) > .pagination-search-widgets,
+#appliedParams:has(~ #document),
+.pagination-search-widgets:has(~ #document),
+#document ~ #appliedParams,
+#document ~ .pagination-search-widgets,
+.show-document > #appliedParams,
+.show-document > .pagination-search-widgets,
+.show-document #appliedParams,
+.show-document .pagination-search-widgets {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  border: none !important;
+  visibility: hidden !important;
 }
 
 .blacklight-catalog-show .pagination-search-widgets,
