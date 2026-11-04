@@ -41,6 +41,7 @@
       <tokenizer name="keyword" />
     </analyzer>
   </fieldType>
+  <fieldType name="external_float" class="solr.ExternalFileField" keyField="id" defVal="0.0" />
   <fieldType name="ignored" class="solr.StrField" indexed="false" stored="false" docValues="false" multiValued="true" />
   <fieldType name="location" class="solr.LatLonPointSpatialField" />
   <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType" geo="true" maxDistErr="0.001" distErrPct="0.025" distanceUnits="kilometers" />
@@ -511,6 +512,7 @@
   <field name="format" type="text_general" />
   <field name="full_title_ssm" type="text_general" />
   <field name="full_title_tsim" type="text_general" />
+  <field name="has_full_text_eff" type="external_float" indexed="false" stored="false" />
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true" />
   <field name="id_t" type="text_en_splitting" indexed="true" stored="true" multiValued="true" />
   <field name="is_issue" type="text_general" />

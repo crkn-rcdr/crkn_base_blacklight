@@ -268,15 +268,12 @@ class SearchBuilder < Blacklight::SearchBuilder
   def request_fulltext_indicator(solr_parameters)
     return unless solr_parameters
 
-    fulltext_join_query = '_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id}{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*"'
-
     raw_fl = solr_parameters[:fl] || solr_parameters['fl'] || '*'
     fl_list = raw_fl.is_a?(Array) ? raw_fl.dup : raw_fl.to_s.split(',').map(&:strip)
-    pseudo = 'has_ocr:query($fulltext_indicator_q,0)'
+    pseudo = 'has_ocr:field(has_full_text_eff)'
 
     fl_list << pseudo unless fl_list.include?(pseudo)
     solr_parameters[:fl] = fl_list.join(',')
-    solr_parameters[:fulltext_indicator_q] = fulltext_join_query
   end
 
 
@@ -290,7 +287,7 @@ class SearchBuilder < Blacklight::SearchBuilder
 
       solr_parameters[:defType] = 'lucene'
       if q == '*:*' || q == '*'
-        solr_parameters[:q] = '{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*'
+        solr_parameters[:q] = '{!frange l=1}has_full_text_eff'
       else
         solr_parameters[:fulltext_q] = q
         solr_parameters[:q] = '{!join from=manifestid to=manifestid_s fromIndex=content_search v=\'{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}\'}'

@@ -218,11 +218,11 @@ class CatalogController < ApplicationController
                            query: {
                              available: {
                                label: 'Available',
-                               fq: '_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id}{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*"'
+                               fq: '{!frange l=1}has_full_text_eff'
                              },
                              not_available: {
                                label: 'Not Available',
-                               fq: '(*:* -(_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id}{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*"))'
+                               fq: '{!frange u=0}has_full_text_eff'
                              }
                            }
 
