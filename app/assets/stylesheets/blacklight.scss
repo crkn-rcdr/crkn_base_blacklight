@@ -104,7 +104,19 @@ i {
 .blacklight-catalog-show .pagination-search-widgets,
 .blacklight-catalog-show #previousNextDocument,
 .blacklight-catalog-show .search-context.page-links,
-.blacklight-catalog-show .catalog-show-pagination-before-breadcrumb {
+.blacklight-catalog-show .catalog-show-pagination-before-breadcrumb,
+:has(> #document) > #appliedParams,
+:has(> #document) > .pagination-search-widgets,
+:has(#document) > #appliedParams,
+:has(#document) > .pagination-search-widgets,
+#appliedParams:has(~ #document),
+.pagination-search-widgets:has(~ #document),
+#document ~ #appliedParams,
+#document ~ .pagination-search-widgets,
+.show-document > #appliedParams,
+.show-document > .pagination-search-widgets,
+.show-document #appliedParams,
+.show-document .pagination-search-widgets {
     display: none !important;
     margin: 0 !important;
     padding: 0 !important;
