@@ -82,6 +82,34 @@ class CatalogController < ApplicationController
   TEXT_FIELDS_QF = TEXT_SEARCH_QF_FIELDS.join(' ').freeze
   TEXT_FIELDS_PF = TEXT_SEARCH_PF_FIELDS.join(' ').freeze
 
+  INDEX_VIEW_FL = %w[
+    id
+    ark
+    full_title_tsim
+    title_tsim
+    title_ssm
+    title_addl_tsim
+    author_tsim
+    author_ssm
+    published_ssm
+    dates_or_sequential_tsim
+    theme_ssim
+    subject_ssim
+    language_ssim
+    depositor_tsim
+    format
+    notes_tsim
+    original_version_note_tsim
+    access_note_tsim
+    date_added
+    is_issue
+    is_serial
+    parent_id
+    issue_count
+    has_full_text_eff
+    score
+  ].join(',').freeze
+
   # Keep default CSRF verification enabled for all actions.
   before_action :ensure_default_catalog_query, only: :index
 
@@ -90,6 +118,15 @@ class CatalogController < ApplicationController
 
     # Use the standard select handler
     config.solr_path = 'select'
+
+    # Performance optimization: Trim fields requested on search result lists (index views)
+    # to avoid loading and serializing megabytes of unneeded raw MARC / OCR text blobs.
+    config.default_solr_params = {
+      fl: INDEX_VIEW_FL
+    }
+    config.default_document_solr_params = {
+      fl: '*'
+    }
 
     # per-page options
     config.per_page = [10, 20, 50, 100]
