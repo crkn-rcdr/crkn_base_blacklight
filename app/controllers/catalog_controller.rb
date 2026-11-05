@@ -40,30 +40,13 @@ class CatalogController < ApplicationController
     tx_general_lang
     tx_indigenous
   ].freeze
+  # Phrase boost fields (pf): Focus phrase matching on the unified OCR text field
+  # (all_text_timv) plus primary language fields rather than evaluating positional
+  # phrase slop across 23 separate language fields on every multi-word query.
   TEXT_SEARCH_PF_FIELDS = %w[
     all_text_timv^10
     tx_gen^8
-    tx_hant^8
-    tx_cjk^8
-    tx_ja^8
-    tx_ko^8
-    tx_th^8
-    tx_indic^8
-    tx_cyrl^8
-    tx_he^8
-    tx_el^8
     tx_fr^8
-    tx_de^8
-    tx_nl^8
-    tx_da^8
-    tx_fi^8
-    tx_sv^8
-    tx_es^8
-    tx_it^8
-    tx_hu^8
-    tx_ga^8
-    tx_general_lang^8
-    tx_indigenous^8
   ].freeze
   ALL_FIELDS_QF = (
     %w[

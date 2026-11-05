@@ -92,11 +92,14 @@ class PageSearchComponent < ViewComponent::Base
     docs.each do |d|
       id = d['id'].to_s
       canvas_index = d['canvas_index']&.to_i
-      next unless canvas_index && canvas_index.positive?
+      next unless canvas_index && canvas_index >= 0
+
+      # Solr canvas_index is 0-based; UI/Mirador pageNum is 1-based (canvas_index + 1)
+      page_num = canvas_index + 1
 
       matched_path = sorted_paths.find { |p| id.start_with?(p) }
       if matched_path
-        prefetch_cache[matched_path] << canvas_index
+        prefetch_cache[matched_path] << page_num
       end
     end
 
@@ -119,7 +122,11 @@ class PageSearchComponent < ViewComponent::Base
       rows: 50
     })
     docs = res.dig('response', 'docs') || []
-    res_pages = docs.filter_map { |d| d['canvas_index']&.to_i }.select(&:positive?).uniq.sort
+    # Solr canvas_index is 0-based; UI/Mirador pageNum is 1-based (canvas_index + 1)
+    res_pages = docs.filter_map do |d|
+      idx = d['canvas_index']&.to_i
+      idx && idx >= 0 ? idx + 1 : nil
+    end.uniq.sort
     prefetch_cache[clean_path] = res_pages
     res_pages
   rescue => e
