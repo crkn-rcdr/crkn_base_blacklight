@@ -523,6 +523,7 @@
   <field name="lc_alpha_ssim" type="text_general" />
   <field name="lc_b4cutter_ssim" type="text_general" />
   <field name="lc_callnum_ssm" type="text_general" />
+  <field name="marc_ss" type="string" indexed="false" stored="true" multiValued="false" />
   <field name="material_type_ssm" type="text_general" />
   <field name="notes_tsim" type="text_general" />
   <field name="original_version_note_tsim" type="text_general" />
