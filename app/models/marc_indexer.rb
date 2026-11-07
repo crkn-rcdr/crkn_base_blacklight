@@ -196,50 +196,12 @@ class MarcIndexer < Blacklight::Marc::Indexer
     to_field 'author_si', marc_sortable_author
 
     # Subject fields
-    to_field 'subject_tsim' do |record, accumulator, context|
-      specs = %W(
-        600#{ATOZ}
-        610#{ATOZ}
-        611#{ATOZ}
-        630#{ATOZ}
-        647#{ATOZ}
-        648#{ATOZ}
-        650#{ATOZ}
-        651#{ATOZ}
-        654#{ATOZ}
-        655#{ATOZ}
-        656#{ATOZ}
-        657#{ATOZ}
-        658#{ATOZ}
-        662#{ATOZ}
-        688#{ATOZ}
-      )
-      specs << "653#{ATOZ}" unless heritage_portal?
-      extract_marc(specs.join(':')).call(record, accumulator, context)
+    to_field 'subject_tsim' do |record, accumulator|
+      accumulator.replace extract_subject_headings(record)
     end
 
-    to_field 'subject_ssim' do |record, accumulator, context|
-      specs = %W(
-        600#{ATOZ}
-        610#{ATOZ}
-        611#{ATOZ}
-        630#{ATOZ}
-        647#{ATOZ}
-        648#{ATOZ}
-        650#{ATOZ}
-        651#{ATOZ}
-        654#{ATOZ}
-        655#{ATOZ}
-        656#{ATOZ}
-        657#{ATOZ}
-        658#{ATOZ}
-        662#{ATOZ}
-        688#{ATOZ}
-      )
-      specs << "653#{ATOZ}" unless heritage_portal?
-      extract_marc(specs.join(':')).call(record, accumulator, context)
-      trim_punctuation.call(record, accumulator)
-      accumulator.map! { |v| v.to_s.strip.sub(/\.\z/, '').strip }.reject!(&:empty?)
+    to_field 'subject_ssim' do |record, accumulator|
+      accumulator.replace extract_subject_headings(record)
     end
 
     # MARC 653 - Themes (Heritage facet)
@@ -286,13 +248,7 @@ class MarcIndexer < Blacklight::Marc::Indexer
 
     # MARC 760..787 - Linking Entries
     to_field 'related_items_tsim' do |record, accumulator|
-      %w[760 762 765 767 770 772 773 774 775 776 777 780 785 786 787].each do |tag|
-        record.fields(tag).each do |field|
-          parts = field.subfields.reject { |s| %w[w 4 6 7 8].include?(s.code) }.map(&:value).map { |v| v.to_s.strip.sub(/\.\z/, '') }.reject(&:empty?)
-          accumulator << parts.join(' ') unless parts.empty?
-        end
-      end
-      accumulator.uniq!
+      accumulator.replace extract_linking_entries(record)
     end
 
     # Published statement (with fallback to 046 archival dates of creation when 260/264 is absent)
@@ -884,6 +840,142 @@ class MarcIndexer < Blacklight::Marc::Indexer
       ActiveSupport::Inflector.transliterate(str)
     end
   end
+  LINKING_RELATIONSHIPS_780 = {
+    '0' => { en: 'Continues', fr: 'Suite de' },
+    '1' => { en: 'Continues in part', fr: 'Fait suite en partie à' },
+    '2' => { en: 'Supersedes', fr: 'Remplace' },
+    '3' => { en: 'Supersedes in part', fr: 'Remplace en partie' },
+    '4' => { en: 'Formed by union of', fr: 'Fusion de' },
+    '5' => { en: 'Absorbed', fr: 'A absorbé' },
+    '6' => { en: 'Absorbed in part', fr: 'A absorbé en partie' },
+    '7' => { en: 'Separated from', fr: 'Séparé de' }
+  }.freeze
+
+  LINKING_RELATIONSHIPS_785 = {
+    '0' => { en: 'Continued by', fr: 'Continué par' },
+    '1' => { en: 'Continued in part by', fr: 'Continué en partie par' },
+    '2' => { en: 'Superseded by', fr: 'Remplacé par' },
+    '3' => { en: 'Superseded in part by', fr: 'Remplacé en partie par' },
+    '4' => { en: 'Absorbed by', fr: 'Absorbé par' },
+    '5' => { en: 'Absorbed in part by', fr: 'Absorbé en partie par' },
+    '6' => { en: 'Split into', fr: 'Scindé en' },
+    '7' => { en: 'Merged with to form', fr: 'Fusionné avec pour former' },
+    '8' => { en: 'Changed back to', fr: 'Redevenu' }
+  }.freeze
+
+  LINKING_TAG_LABELS = {
+    '760' => { en: 'Main series', fr: 'Collection principale' },
+    '762' => { en: 'Subseries', fr: 'Sous-collection' },
+    '765' => { en: 'Original version', fr: 'Version originale' },
+    '767' => { en: 'Translation of', fr: 'Traduction de' },
+    '770' => { en: 'Supplement', fr: 'Supplément' },
+    '772' => { en: 'Supplement to', fr: 'Supplément de' },
+    '773' => { en: 'Host item', fr: 'Document hôte' },
+    '774' => { en: 'Constituent unit', fr: 'Partie composante' },
+    '775' => { en: 'Other edition', fr: 'Autre édition' },
+    '776' => { en: 'Additional physical form', fr: 'Autre support' },
+    '777' => { en: 'Issued with', fr: 'Publié avec' },
+    '786' => { en: 'Data source', fr: 'Source des données' },
+    '787' => { en: 'Related item', fr: 'Document connexe' }
+  }.freeze
+
+  TERMINAL_PERIOD_PRESERVED_WORDS = %w[etc al ca ed op cit vol no rev].freeze
+
+  def strip_terminal_punct(str)
+    return '' if str.blank?
+    s = str.to_s.strip
+    if s =~ /\b(#{TERMINAL_PERIOD_PRESERVED_WORDS.join('|')})\.\z/i
+      s
+    else
+      s.sub(/[\.,;:]\z/, '').strip
+    end
+  end
+
+  def extract_subject_headings(record)
+    tags = %w[600 610 611 630 647 648 650 651 654 655 656 657 658 662 688]
+    tags << '653' unless heritage_portal?
+    subdivision_codes = %w[v x y z]
+    ignored_codes = %w[0 2 3 4 5 6 7 8]
+
+    headings = []
+    record.fields(tags).each do |field|
+      parts = []
+      field.subfields.each do |sf|
+        next if ignored_codes.include?(sf.code)
+        val = sf.value.to_s.strip
+        next if val.empty?
+
+        if subdivision_codes.include?(sf.code)
+          if parts.any?
+            parts[-1] = strip_terminal_punct(parts[-1].sub(/\s*--\s*\z/, ''))
+            parts << '--'
+          end
+          parts << strip_terminal_punct(val)
+        else
+          parts << val
+        end
+      end
+
+      next if parts.empty?
+      combined = parts.join(' ').gsub(/\s*--\s*/, ' -- ')
+      combined = strip_terminal_punct(combined)
+      headings << combined unless combined.empty?
+    end
+
+    headings.uniq
+  end
+
+  def extract_linking_entries(record)
+    is_fr = (record['040']&.subfields&.find { |s| s.code == 'b' }&.value.to_s.downcase == 'fre')
+    lang = is_fr ? :fr : :en
+
+    entries = []
+    %w[760 762 765 767 770 772 773 774 775 776 777 780 785 786 787].each do |tag|
+      record.fields(tag).each do |field|
+        # 1. Determine relationship prefix (subfield $i overrides indicator)
+        sub_i = field.subfields.find { |s| s.code == 'i' }&.value&.strip
+        prefix = if sub_i.present?
+          sub_i.sub(/[:\.\s]+\z/, '') + ':'
+        elsif tag == '780'
+          ind2 = field.indicator2.to_s
+          rel = LINKING_RELATIONSHIPS_780[ind2]&.fetch(lang, nil) || (is_fr ? 'Suite de' : 'Continues')
+          "#{rel}:"
+        elsif tag == '785'
+          ind2 = field.indicator2.to_s
+          rel = LINKING_RELATIONSHIPS_785[ind2]&.fetch(lang, nil) || (is_fr ? 'Continué par' : 'Continued by')
+          "#{rel}:"
+        elsif LINKING_TAG_LABELS[tag]
+          label = LINKING_TAG_LABELS[tag][lang]
+          "#{label}:"
+        else
+          nil
+        end
+
+        # 2. Main content subfields, excluding $i, $w, control codes
+        main_parts = field.subfields.reject { |s| %w[i w 4 6 7 8].include?(s.code) }
+                            .map { |s| s.value.to_s.strip.sub(/\.\z/, '') }
+                            .reject(&:empty?)
+
+        # 3. Control number / identifier subfield $w (requested by Natalie MacDonald in #97)
+        w_parts = field.subfields.select { |s| s.code == 'w' }
+                       .map { |s| s.value.to_s.strip.sub(/\.\z/, '') }
+                       .reject(&:empty?)
+
+        body_str = main_parts.join(' ')
+        if w_parts.present?
+          w_str = w_parts.map { |w| w.start_with?('(') ? w : "(#{w})" }.join(' ')
+          body_str = body_str.present? ? "#{body_str} #{w_str}" : w_parts.join(' ')
+        end
+
+        next if body_str.empty?
+
+        full_entry = prefix ? "#{prefix} #{body_str}" : body_str
+        entries << full_entry.strip
+      end
+    end
+    entries.uniq
+  end
+
   def heritage_portal?
     portal = ENV['PORTAL'].to_s.strip.downcase
     return true if portal == 'heritage'

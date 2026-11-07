@@ -249,23 +249,39 @@ class CatalogController < ApplicationController
     # Send facet field list to Solr
     config.add_facet_fields_to_solr_request!
 
-    # ----- INDEX (search results) FIELDS -----
+    # ----- INDEX (search results / stub records) FIELDS -----
+    # Issue #106: Staff decisions on stub records:
+    # Canadiana: remove everything under Identifier (notes, original version, access note, ark, date_added)
+    # Heritage: only keep dates, volumes, source institution, identifier, and notes
     config.add_index_field 'format', label: 'Format', helper_method: :format_icon
-    #config.add_index_field 'title_ssm',  label: ->(_f, _c) { I18n.t('blacklight.metadata.title.label') }, helper_method: :format_text
-    config.add_index_field 'author_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') }, helper_method: :format_facet
-    config.add_index_field 'published_ssm', label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
-    config.add_index_field 'dates_or_sequential_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.dates_or_sequential.label') }, helper_method: :format_text
-    config.add_index_field 'theme_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.theme.label', default: 'Themes') }, helper_method: :format_facet
-    config.add_index_field 'subject_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') }, helper_method: :format_facet
-    config.add_index_field 'language_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') }, helper_method: :format_facet
-    config.add_index_field 'depositor_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') }, helper_method: :format_facet
-    #config.add_index_field 'pub_date_ssim', label: ->(_f, _c) { I18n.t('blacklight.metadata.date.label') }
-    config.add_index_field 'id', label: ->(_f, _c) { I18n.t('blacklight.metadata.id.label') }, helper_method: :format_identifier
-    config.add_index_field 'notes_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.notes.label') }, helper_method: :format_text
-    config.add_index_field 'original_version_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.original_version_note.label') }, helper_method: :format_text
-    config.add_index_field 'access_note_tsim', label: ->(_f, _c) { I18n.t('blacklight.metadata.access_note.label') }, helper_method: :format_text
-    config.add_index_field 'ark', label: ->(_f, _c) { I18n.t('blacklight.metadata.persistent_url.label') }, helper_method: :value_link
-    config.add_index_field 'date_added', label: ->(_f, _c) { I18n.t('blacklight.metadata.date_added.label') }, helper_method: :format_date
+    config.add_index_field 'author_ssm',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') },
+                           helper_method: :format_facet,
+                           if: ->(context, _config, _doc = nil) { !CatalogController.heritage?(context) }
+    config.add_index_field 'published_ssm',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
+    config.add_index_field 'dates_or_sequential_tsim',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.dates_or_sequential.label') },
+                           helper_method: :format_text,
+                           if: ->(context, _config, _doc = nil) { CatalogController.heritage?(context) }
+    config.add_index_field 'subject_ssim',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') },
+                           helper_method: :format_facet,
+                           if: ->(context, _config, _doc = nil) { !CatalogController.heritage?(context) }
+    config.add_index_field 'language_ssim',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.language.label') },
+                           helper_method: :format_facet,
+                           if: ->(context, _config, _doc = nil) { !CatalogController.heritage?(context) }
+    config.add_index_field 'depositor_tsim',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.depositor.label') },
+                           helper_method: :format_facet
+    config.add_index_field 'id',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.id.label') },
+                           helper_method: :format_identifier
+    config.add_index_field 'notes_tsim',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.notes.label') },
+                           helper_method: :format_text,
+                           if: ->(context, _config, _doc = nil) { CatalogController.heritage?(context) }
 
     # ----- SHOW FIELDS -----
     #config.add_show_field 'title_ssm',  label: ->(_f, _c) { I18n.t('blacklight.metadata.title.label') }, helper_method: :format_text
@@ -598,10 +614,14 @@ class CatalogController < ApplicationController
   end
 
   def self.heritage?(context = nil)
+    return true if ENV['PORTAL']&.to_s&.downcase == 'heritage'
     return true if ENV['SOLR_URL']&.include?('heritage')
     return true if ENV['BLACKLIGHT_HOST_ADDR']&.include?('heritage')
+    return true if Dir.pwd.downcase.include?('heritage')
     if context.respond_to?(:request) && context.request
       return true if context.request.host.to_s.include?('heritage')
+    elsif context.respond_to?(:controller) && context.controller&.respond_to?(:request)
+      return true if context.controller.request&.host.to_s.include?('heritage')
     end
     false
   end

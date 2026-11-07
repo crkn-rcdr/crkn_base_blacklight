@@ -131,8 +131,10 @@
               </h3>
             <% end %>
 
-            <% if collection_item['pub_date_si'] %>
-              <p class="card-text"><%= collection_item['pub_date_si'][0] %></p>
+            <% unless CatalogController.heritage?(self) %>
+              <% if collection_item['pub_date_si'] %>
+                <p class="card-text"><%= collection_item['pub_date_si'][0] %></p>
+              <% end %>
             <% end %>
             <% if collection_item['collection_tsim'] %>
                 <p class="card-text"><%= collection_item['collection_tsim'].last %></p>
