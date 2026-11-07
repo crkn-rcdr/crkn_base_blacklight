@@ -13,9 +13,13 @@
                    class: ["btn", "btn-outline-custom", "btn-sm", "d-inline-flex", "align-items-center", "gap-2", "fs-6", "copy-link-btn", (has_manifest ? nil : "disabled")].compact.join(' '),
                    title: t('blacklight.tools.copy_tooltip'),
                    disabled: (has_manifest ? nil : true),
-                   aria: (has_manifest ? {} : { disabled: true }) do %>
+                   aria: (has_manifest ? {} : { disabled: true }),
+                   data: {
+                     copied_text: t('blacklight.tools.copied_to_clipboard', default: 'Copied to clipboard!')
+                   } do %>
       <i class="bi bi-link-45deg" aria-hidden="true"></i>
       <span><%= t('blacklight.tools.copy_manifest_link') %></span>
+      <span id="iiif-copy-feedback" class="visually-hidden" aria-live="polite"></span>
     <% end %>
 
     <% crop_classes = ["btn", "btn-outline-custom", "btn-md", "d-inline-flex", "align-items-center", "gap-2", "fs-6", (has_manifest ? nil : "disabled")] %>
@@ -83,6 +87,5 @@
   </div>
 
   <a id="iiif-manifest-url" href="<%= manifest_url %>" class="visually-hidden"><%= manifest_url %></a>
-  <span id="iiif-copy-feedback" class="visually-hidden" aria-live="polite"></span>
 </div>
 

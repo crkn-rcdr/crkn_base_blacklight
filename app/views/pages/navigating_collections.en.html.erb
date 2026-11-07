@@ -22,7 +22,7 @@
           <h2 class="api-toc__title">On this page</h2>
           <a href="#nav-search">Searching the Collections</a>
           <a href="#nav-downloads">Downloading PDFs</a>
-          <a href="#nav-purl">Persistent URLs</a>
+          <a href="#nav-purl">Stable Links</a>
           <a href="#nav-heritage">Navigating the Héritage Collection and Reference Guides</a>
         </aside>
 
@@ -76,12 +76,7 @@
 
             <h3>Searching for Maps:</h3>
             <p>
-              To search for maps within the Canadiana collection, users may consult the collection page
-              <a href="https://www.canadiana.ca/collection-maps?usrlang=en" target="_blank" rel="noopener">(Maps - Canadiana)</a>
-              to browse by Province/Territory or to browse the collection as a whole.
-            </p>
-            <p>
-              Additionally, maps can be found by their National Topographic System (NTS) number. To locate the relevant NTS number
+              Maps in the 1:50,000 scale National Topographic Series from McGill University Library can be found by their National Topographic System (NTS) number. To locate the relevant NTS number
               and general information about how to use the National Topographic System, please consult the
               <a href="https://www.nrcan.gc.ca/earth-sciences/geography/topographic-information/maps/9765" target="_blank" rel="noopener">National Topographic System Index Maps</a>,
               which are provided by Natural Resources Canada.
@@ -111,7 +106,7 @@
               <li class="navigating-downloads-inline">
                 <strong>Single image download:</strong>
                 <span class="navigating-download-option">
-                  <span class="navigating-download-option__text">in the <strong>Details</strong> section on the left-hand side of the page, click <code>IMG</code> to download the image.</span>
+                  <span class="navigating-download-option__text">in the <strong>About</strong> section on the left-hand side of the page, click <code>IMG</code> to download the image.</span>
                   <%= image_tag 'navigating-download-button-img.png',
                                 class: 'img-fluid rounded border navigating-download-option__img',
                                 alt: 'JPG button example for single image download.' %>
@@ -120,7 +115,7 @@
               <li class="navigating-downloads-inline">
                 <strong>Single PDF page download:</strong>
                 <span class="navigating-download-option">
-                  <span class="navigating-download-option__text">in the <strong>Details</strong> section on the left-hand side of the page, click <code>PAGE</code> to download the current page as a PDF. This will generate a text-based PDF file of the page currently being viewed, and whose text can be searched using most common PDF readers.</span>
+                  <span class="navigating-download-option__text">in the <strong>About</strong> section on the left-hand side of the page, click <code>PAGE</code> to download the current page as a PDF. This will generate a text-based PDF file of the page currently being viewed, and whose text can be searched using most common PDF readers.</span>
                   <%= image_tag 'navigating-download-button-page.png',
                                 class: 'img-fluid rounded border navigating-download-option__img',
                                 alt: 'PDF button example for single-page PDF download.' %>
@@ -129,7 +124,7 @@
               <li class="navigating-downloads-inline">
                 <strong>Multi-page PDF download:</strong>
                 <span class="navigating-download-option">
-                  <span class="navigating-download-option__text">in the <strong>Details</strong> section on the left-hand side of the page, click <code>FULL</code>, if available. This will generate a text-based PDF file of the entire item in question. The PDF text can be searched using most common PDF readers. Note that very large PDF files may not open properly on all computers or in all PDF readers.</span>
+                  <span class="navigating-download-option__text">in the <strong>About</strong> section on the left-hand side of the page, click <code>FULL</code>, if available. This will generate a text-based PDF file of the entire item in question. The PDF text can be searched using most common PDF readers. Note that very large PDF files may not open properly on all computers or in all PDF readers.</span>
                   <%= image_tag 'navigating-download-button-full.png',
                                 class: 'img-fluid rounded border navigating-download-option__img',
                                 alt: 'Multi-page PDF button example.' %>
@@ -178,34 +173,34 @@
           </section>
 
           <section id="nav-purl" class="api-card">
-            <h2>Persistent URLs</h2>
+            <h2>Stable Links</h2>
             <p>
-              CRKN has implemented persistent URLs, a type of
+              CRKN has implemented stable links, a type of
               <a href="https://www.crkn-rcdr.ca/en/persistent-identifiers" target="_blank" rel="noopener">persistent identifier</a>,
-              for all items in the collections on Canadiana portals. Persistent URLs are links that remain stable over time,
+              for all items in the collections on Canadiana portals. Stable links are links that remain stable over time,
               meaning that they will continue to lead you to the same content even if changes are made to the item record or to the portal.
-              This current implementation of persistent URLs is at the item level, but in the future, we will implement persistent URLs for the individual images in all collections.
+              This current implementation of stable links is at the item level, but in the future, we will implement stable links for the individual images in all collections.
             </p>
-            <p>Persistent URLs are now available in the <strong>Details</strong> section on the left-hand side of each document record (see example below).</p>
+            <p>Stable links are now available in the <strong>About</strong> section on the left-hand side of each document record (see example below).</p>
             <figure class="mt-3 mb-3">
               <%= image_tag 'navigating-persistent-url-example-en.png',
                             class: 'img-fluid rounded border',
-                            alt: 'Example document record with the Persistent URL highlighted in the Details panel.' %>
+                            alt: 'Example document record with the Stable Link highlighted in the About panel.' %>
             </figure>
             <p>
               CRKN commits to preserving existing URLs whenever possible, meaning you can continue to use the URLs in your browser for everyday purposes.
               However, these links may occasionally break if CRKN needs to correct an item record or
               <a href="https://www.crkn-rcdr.ca/en/canadiana-infrastructure-updates" target="_blank" rel="noopener">update Canadiana's infrastructure</a>.
-              For this reason, we recommend using persistent URLs for citations and for keeping long-term links to Canadiana materials.
+              For this reason, we recommend using stable links for citations and for keeping long-term links to Canadiana materials.
               See more in our
-              <a href="https://www.crkn-rcdr.ca/en/canadiana-citation-guide" target="_blank" rel="noopener">Canadiana Citation Guide</a>.
+              <a href="<%= citation_guide_path(lang: I18n.locale) %>">Canadiana Citation Guide</a>.
             </p>
           </section>
 
           <section id="nav-heritage" class="api-card">
             <h2>Navigating the Héritage Collection and Reference Guides</h2>
             <p>
-              Clicking on the About tab of an individual series and reading the notes in the Description field can provide hints on how those documents and reels are arranged and whether or not a finding aid or index has been created for it.
+              The About section of a collection or individual reel in Héritage provides hints on how those documents and reels are arranged and whether or not a finding aid or index has been created for it.
             </p>
             <p>
               <strong>Finding aids:</strong> The collections in Héritage are digital versions of microfilm collections held at Library and Archives Canada (LAC).
@@ -223,6 +218,7 @@
               <li><a href="https://www.crkn-rcdr.ca/en/c-5694-index" target="_blank" rel="noopener">C-5694 Index</a></li>
               <li><a href="https://www.crkn-rcdr.ca/en/chinese-immigration-records-ci-44-forms-and-index-cards-rg76-d2j" target="_blank" rel="noopener">Chinese immigration records: C.I. 44 forms and index cards (RG76 D2j)</a></li>
               <li><a href="https://www.crkn-rcdr.ca/en/chinese-times-research-guide" target="_blank" rel="noopener">Chinese Times Research Guide</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/en/haldimand-papers-mg-21" target="_blank" rel="noopener">Haldimand Papers (MG 21)</a></li>
               <li><a href="https://www.crkn-rcdr.ca/en/reference-guide-heir-and-devisee-commission-1777-1854" target="_blank" rel="noopener">The Heir and Devisee Commission</a></li>
               <li><a href="https://www.crkn-rcdr.ca/en/jacques-henri-fabien-collection-mg-25-g231" target="_blank" rel="noopener">Jacques-Henri Fabien Collection (MG 25 G231)</a></li>
               <li><a href="https://www.crkn-rcdr.ca/en/juvenile-inspection-reports-rg76-c4c" target="_blank" rel="noopener">Juvenile Inspection Reports (RG 76 C4c)</a></li>

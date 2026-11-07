@@ -525,15 +525,19 @@ button i {
         margin: 0 !important;
         padding: 0 !important;
         width: 100%;
+        display: flex !important;
+        flex-direction: column !important;
     }
     /* viewer height on small screens */
     #doc-main #my-mirador {
-        min-height: 480px !important;
-        height: 65vh !important;
-        max-height: 560px !important;
+        min-height: 520px !important;
+        height: 70vh !important;
+        max-height: 650px !important;
         width: 100% !important;
         margin-bottom: 1.5rem !important;
-        margin-bottom: 1.5rem !important;
+        position: relative !important;
+        overflow: hidden !important;
+        border-radius: 8px;
     }
     #doc-main .mirador-osd-container {
         min-height: unset !important;
@@ -541,9 +545,10 @@ button i {
         margin-bottom: 0 !important;
     }
     .toolbox-card {
-        margin-top: 1rem !important;
+        margin-top: 1.5rem !important;
         clear: both !important;
         position: relative !important;
+        width: 100% !important;
     }
     /* ensure inner mirador wrappers stretch full width */
     #doc-main .mirador-viewer,

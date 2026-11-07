@@ -56,6 +56,7 @@ fr:
       edit_manifest_tooltip: Ouvrir une copie du manifeste IIIF dans l'éditeur
       copy_manifest_link: Copier le lien du manifeste
       copy_tooltip: Copier l'URL du manifeste IIIF
+      copied_to_clipboard: Copié dans le presse-papiers !
       copied_js: Copié !
       copy_failed_js: Échec de la copie dans le presse‑papiers.
       what_is_iiif: Qu'est‑ce que IIIF ?
@@ -479,5 +480,5 @@ fr:
     URL_SYSTEM: "https://www.crkn-rcdr.ca/fr/status"
     URL_TERMS: "http://www.canadiana.ca/conditions"
     URL_CITATION_GUIDE: "https://www.crkn-rcdr.ca/fr/guide-de-citation-canadiana"
-    URL_CITATION_GUIDE_HERITAGE: "https://bibliotheque-archives.canada.ca/fra/services/public/utiliser-documents-bac/crediting-citing-material/Pages/citation-documents.aspx"
+    URL_CITATION_GUIDE_HERITAGE: "https://www.canada.ca/fr/bibliotheque-archives/services/public/utiliser-documents/citation.html"
     URL_DOWNLOAD_DOCS: "https://www.crkn-rcdr.ca/fr/parcourir-les-collections"

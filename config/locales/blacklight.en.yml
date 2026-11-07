@@ -56,6 +56,7 @@ en:
       edit_manifest_tooltip: Open a copy of the IIIF manifest in editor
       copy_manifest_link: Copy Manifest Link
       copy_tooltip: Copy IIIF manifest URL to clipboard
+      copied_to_clipboard: Copied to clipboard!
       copied_js: Copied!
       copy_failed_js: Failed to copy to clipboard.
       what_is_iiif: What is IIIF?
@@ -495,5 +496,5 @@ en:
     URL_SYSTEM: "https://www.crkn-rcdr.ca/en/status"
     URL_TERMS: "http://www.canadiana.ca/terms"
     URL_CITATION_GUIDE: "https://www.crkn-rcdr.ca/en/canadiana-citation-guide"
-    URL_CITATION_GUIDE_HERITAGE: "https://library-archives.canada.ca/eng/services/public/using-lac-material/crediting-citing-material/Pages/credit-citing-material.aspx"
+    URL_CITATION_GUIDE_HERITAGE: "https://www.canada.ca/en/library-archives/services/public/using-material/crediting-citing.html"
     URL_DOWNLOAD_DOCS: "https://www.crkn-rcdr.ca/en/navigating-collections"

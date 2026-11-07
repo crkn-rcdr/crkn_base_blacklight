@@ -22,7 +22,7 @@
           <h2 class="api-toc__title">Sur cette page</h2>
           <a href="#nav-search">Rechercher dans les collections</a>
           <a href="#nav-downloads">Télécharger des PDF</a>
-          <a href="#nav-purl">URLs pérennes</a>
+          <a href="#nav-purl">Liens stables</a>
           <a href="#nav-heritage">Parcourir la collection Héritage et guides de référence</a>
         </aside>
 
@@ -78,15 +78,10 @@
 
             <h3>Recherche de cartes:</h3>
             <p>
-              Pour rechercher des cartes dans la collection Canadiana, les utilisateurs peuvent consulter la page de la collection
-              <a href="https://www.canadiana.ca/collection-maps?usrlang=fr" target="_blank" rel="noopener">(Cartes - Canadiana)</a>
-              pour parcourir par province/territoire ou pour parcourir la collection dans son ensemble.
-            </p>
-            <p>
-              De plus, les cartes peuvent être trouvées par leur numéro du Système national de référence cartographique (SNRC).
+              Les cartes de la Série cartographique nationale au 1/50 000 de la Bibliothèque de l’Université McGill peuvent être trouvées par leur numéro du Système national de référence cartographique (SNRC).
               Pour trouver le numéro SNRC pertinent et des renseignements généraux sur la façon d'utiliser le Système national de référence cartographique,
               veuillez consulter
-              <a href="https://ressources-naturelles.canada.ca/sciences-terre/geographie/information-topographique/cartes/9766" target="_blank" rel="noopener">consulter l'index des cartes du Système national de référence cartographique</a>,
+              <a href="https://ressources-naturelles.canada.ca/sciences-terre/geographie/information-topographique/cartes/9766" target="_blank" rel="noopener">l'index des cartes du Système national de référence cartographique</a>,
               qui est fourni par Ressources naturelles Canada.
             </p>
             <p>
@@ -115,7 +110,7 @@
               <li class="navigating-downloads-inline">
                 <strong>Téléchargement d'une seule image :</strong>
                 <span class="navigating-download-option">
-                  <span class="navigating-download-option__text">dans la section <strong>Détails</strong>, du côté gauche de la page, appuyez sur <code>IMG</code> pour télécharger l'image.</span>
+                  <span class="navigating-download-option__text">dans la section <strong>À propos de</strong>, du côté gauche de la page, appuyez sur <code>IMG</code> pour télécharger l'image.</span>
                   <%= image_tag 'navigating-download-button-img-fr.png',
                                 class: 'img-fluid navigating-download-option__img',
                                 alt: 'Exemple du bouton JPG.' %>
@@ -124,7 +119,7 @@
               <li class="navigating-downloads-inline">
                 <strong>Téléchargement d'une seule page PDF :</strong>
                 <span class="navigating-download-option">
-                  <span class="navigating-download-option__text">dans la section <strong>Détails</strong>, du côté gauche de la page, appuyez sur <code>PAGE</code> pour télécharger la page courante au format PDF. Cette opération génère un fichier PDF textuel de la page en cours de visualisation, dont le texte peut être recherché à l'aide des lecteurs PDF les plus courants.</span>
+                  <span class="navigating-download-option__text">dans la section <strong>À propos de</strong>, du côté gauche de la page, appuyez sur <code>PAGE</code> pour télécharger la page courante au format PDF. Cette opération génère un fichier PDF textuel de la page en cours de visualisation, dont le texte peut être recherché à l'aide des lecteurs PDF les plus courants.</span>
                   <%= image_tag 'navigating-download-button-page-fr.png',
                                 class: 'img-fluid navigating-download-option__img',
                                 alt: 'Exemple du bouton PDF page.' %>
@@ -133,7 +128,7 @@
               <li class="navigating-downloads-inline">
                 <strong>Téléchargement d'un fichier PDF à plusieurs pages :</strong>
                 <span class="navigating-download-option">
-                  <span class="navigating-download-option__text">dans la section <strong>Détails</strong>, du côté gauche de la page, appuyez sur <code>FULL</code>, le cas échéant. Cette opération génère un fichier PDF textuel de l'ensemble de l'article en question. Le texte du PDF peut être consulté à l'aide des lecteurs de PDF les plus courants. Notez que les fichiers PDF très volumineux peuvent ne pas s'ouvrir correctement sur tous les ordinateurs ou dans tous les lecteurs PDF.</span>
+                  <span class="navigating-download-option__text">dans la section <strong>À propos de</strong>, du côté gauche de la page, appuyez sur <code>FULL</code>, le cas échéant. Cette opération génère un fichier PDF textuel de l'ensemble de l'article en question. Le texte du PDF peut être consulté à l'aide des lecteurs de PDF les plus courants. Notez que les fichiers PDF très volumineux peuvent ne pas s'ouvrir correctement sur tous les ordinateurs ou dans tous les lecteurs PDF.</span>
                   <%= image_tag 'navigating-download-button-full-fr.png',
                                 class: 'img-fluid navigating-download-option__img',
                                 alt: 'Exemple du bouton PDF multipage.' %>
@@ -179,36 +174,34 @@
           </section>
 
           <section id="nav-purl" class="api-card">
-            <h2>URLs pérennes</h2>
+            <h2>Liens stables</h2>
             <p>
-              Le RCDR a mis en place des URL pérennes, un type
+              Le RCDR a mis en place des liens stables, un type
               <a href="https://www.crkn-rcdr.ca/fr/identifiants-perennes" target="_blank" rel="noopener">d'identifiant pérenne</a>,
-              pour tous les éléments des collections des portails Canadiana. Les URL pérennes sont des liens qui restent stables dans le temps,
+              pour tous les éléments des collections des portails Canadiana. Les liens stables sont des liens qui restent stables dans le temps,
               ce qui signifie qu'ils continueront à vous conduire au même contenu même si des changements sont apportés à la fiche de l'article ou au portail.
-              La mise en œuvre actuelle des URL pérennes se fait au niveau de l'article, mais à l'avenir, nous mettrons en œuvre des URL pérennes pour les images individuelles dans toutes les collections.
+              La mise en œuvre actuelle des liens stables se fait au niveau de l'article, mais à l'avenir, nous mettrons en œuvre des liens stables pour les images individuelles dans toutes les collections.
             </p>
-            <p>Les URL pérennes sont désormais disponibles dans la section <strong>Détails</strong>, du côté gauche de chaque notice bibliographique du document (voir l'exemple ci-dessous) :</p>
+            <p>Les liens stables sont désormais disponibles dans la section <strong>À propos de</strong>, du côté gauche de chaque notice bibliographique du document (voir l'exemple ci-dessous) :</p>
             <figure class="mt-3 mb-3">
               <%= image_tag 'navigating-persistent-url-example-fr.png',
                             class: 'img-fluid rounded border',
-                            alt: 'Exemple de notice avec l URL pérenne surlignée dans le panneau Détails.' %>
+                            alt: 'Exemple de notice avec le lien stable surligné dans le panneau À propos de.' %>
             </figure>
             <p>
               Le RCDR s'engage à préserver les URL existantes dans la mesure du possible, ce qui signifie que vous pouvez continuer à utiliser les URL dans votre navigateur pour vos besoins quotidiens.
               Cependant, ces liens peuvent parfois se rompre si le RCDR doit corriger une notice ou
               <a href="https://www.crkn-rcdr.ca/fr/mises-jour-de-linfrastructure-de-canadiana" target="_blank" rel="noopener">mettre à jour l'infrastructure de Canadiana</a>.
-              C'est pourquoi nous recommandons d'utiliser des URL pérennes pour les citations et pour conserver des liens à long terme vers les documents de Canadiana.
+              C'est pourquoi nous recommandons d'utiliser des liens stables pour les citations et pour conserver des liens à long terme vers les documents de Canadiana.
               Pour en savoir plus, consultez notre
-              <a href="https://www.crkn-rcdr.ca/fr/guide-de-citation-canadiana" target="_blank" rel="noopener">Guide de citation Canadiana</a>.
+              <a href="<%= citation_guide_path(lang: I18n.locale) %>">Guide de citation Canadiana</a>.
             </p>
           </section>
 
           <section id="nav-heritage" class="api-card">
             <h2>Parcourir la collection Héritage et guides de référence</h2>
             <p>
-              En cliquant sur l'onglet « À propos » d'une série individuelle, et en lisant les notes dans le champ Description,
-              vous pouvez obtenir des indications sur la façon dont ces documents et bobines sont disposés et savoir si
-              un instrument de recherche ou un index a été créé pour cette série.
+              La section À propos de d’une collection ou d’une bobine individuelle sur Héritage comprend des indications sur la façon dont ces documents et bobines sont disposés et savoir si un instrument de recherche ou un index a été créé pour cette série.
             </p>
             <p>
               <strong>Instruments de recherche :</strong> Les collections Héritage sont des versions numérisées de microfilms conservées à Bibliothèque et Archives Canada (BAC).
@@ -231,6 +224,7 @@
               <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-recherche-pour-le-chinese-times" target="_blank" rel="noopener">Guide de recherche pour le Chinese Times</a></li>
               <li><a href="https://www.crkn-rcdr.ca/fr/index-c-5694" target="_blank" rel="noopener">Index C-5694</a></li>
               <li><a href="https://www.crkn-rcdr.ca/fr/index-des-manifestes-1906-1920-index-des-listes-de-passagers-1906-1920" target="_blank" rel="noopener">Index des manifests, 1906-1920 (Index des listes de passangers, 1906-1920)</a></li>
+              <li><a href="https://www.crkn-rcdr.ca/fr/papiers-haldimand-mg-21" target="_blank" rel="noopener">Papiers Haldimand (MG 21)</a></li>
               <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-journaux-de-guerre-deuxieme-guerre-mondiale" target="_blank" rel="noopener">Journaux de guerre - Deuxième Guerre mondiale</a></li>
               <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-les-upper-canada-land-books-1787-1841" target="_blank" rel="noopener">Les Upper Canada Land Books</a></li>
               <li><a href="https://www.crkn-rcdr.ca/fr/guide-de-reference-les-upper-canada-sundries-1766-1841" target="_blank" rel="noopener">Les Upper Canada Sundries</a></li>

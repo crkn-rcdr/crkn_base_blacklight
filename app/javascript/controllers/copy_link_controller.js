@@ -4,16 +4,14 @@ import { Controller } from "@hotwired/stimulus";
  * Copy Link Controller
  * 
  * Handles copying the IIIF manifest URL to clipboard when the copy button
- * is clicked.
- * 
- * Replaces inline script function:
- *   - copyManifestUrl() (180+ LOC including fallback logic)
+ * is clicked, displaying confirmation feedback directly inside the button
+ * for an extended duration (6 seconds).
  * 
  * Data attributes:
  *   - [data-controller="copy-link"]
  *   - Button: .copy-link-btn
  *   - Manifest URL link: #iiif-manifest-url
- *   - Feedback display: #iiif-copy-feedback
+ *   - Feedback element: #iiif-copy-feedback
  */
 export default class extends Controller {
   static targets = ["button", "feedback"];
@@ -21,10 +19,21 @@ export default class extends Controller {
   connect() {
     this.button = this.element.querySelector(".copy-link-btn");
     this.manifestLink = this.element.querySelector("#iiif-manifest-url");
-    this.feedback = this.element.querySelector("#iiif-copy-feedback");
 
-    if (this.button && this.manifestLink) {
-      this.button.addEventListener("click", (e) => this.handleCopyClick(e));
+    if (this.button) {
+      this.originalButtonHtml = this.button.innerHTML;
+      this.boundCopyClick = (e) => this.handleCopyClick(e);
+      this.button.addEventListener("click", this.boundCopyClick);
+    }
+  }
+
+  disconnect() {
+    if (this.resetTimeout) {
+      clearTimeout(this.resetTimeout);
+      this.resetTimeout = null;
+    }
+    if (this.button && this.boundCopyClick) {
+      this.button.removeEventListener("click", this.boundCopyClick);
     }
   }
 
@@ -42,22 +51,22 @@ export default class extends Controller {
       return;
     }
 
+    const successMessage =
+      this.button?.dataset?.copiedText || "Copied to clipboard!";
+
     try {
-      // Try modern navigator.clipboard API first
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(url);
-        this.showFeedback("success", "Copied to clipboard!");
+        this.showFeedback("success", successMessage);
       } else {
-        // Fallback for older browsers or non-secure contexts
         this.copyTextFallback(url);
-        this.showFeedback("success", "Copied to clipboard!");
+        this.showFeedback("success", successMessage);
       }
     } catch (err) {
       console.error("Failed to copy:", err);
-      // Try fallback even if navigator.clipboard failed
       try {
         this.copyTextFallback(url);
-        this.showFeedback("success", "Copied to clipboard!");
+        this.showFeedback("success", successMessage);
       } catch (fallbackErr) {
         console.error("Fallback copy also failed:", fallbackErr);
         this.showFeedback("error", "Failed to copy to clipboard");
@@ -66,7 +75,6 @@ export default class extends Controller {
   }
 
   copyTextFallback(text) {
-    // Create a temporary textarea element
     const textarea = document.createElement("textarea");
     textarea.value = text;
     textarea.style.position = "fixed";
@@ -77,7 +85,7 @@ export default class extends Controller {
 
     try {
       textarea.select();
-      textarea.setSelectionRange(0, 99999); // For mobile devices
+      textarea.setSelectionRange(0, 99999);
       const success = document.execCommand("copy");
 
       if (!success) {
@@ -89,29 +97,35 @@ export default class extends Controller {
   }
 
   showFeedback(type, message) {
-    if (!this.feedback) return;
+    if (!this.button) return;
 
-    // Clear existing feedback
-    this.feedback.innerHTML = "";
-    this.feedback.className =
-      "visually-hidden text-muted small d-inline-flex align-items-center gap-1";
+    if (this.resetTimeout) {
+      clearTimeout(this.resetTimeout);
+    }
 
-    // Add type-specific class and content
-    const prefix =
-      type === "success"
-        ? "✓"
-        : type === "error"
-          ? "✗"
-          : "ℹ";
+    const iconClass = type === "success" ? "bi-check2" : "bi-exclamation-circle";
+    const textClass = type === "success" ? "text-success fw-semibold" : "text-danger";
 
-    this.feedback.innerHTML = `<span class="copy-feedback-${type}">${prefix} ${message}</span>`;
-    this.feedback.style.display = "inline-flex";
-    this.feedback.classList.remove("visually-hidden");
+    this.button.innerHTML = `
+      <i class="bi ${iconClass} ${textClass}" aria-hidden="true"></i>
+      <span id="iiif-copy-feedback" class="copy-feedback-${type} ${textClass}" aria-live="polite">${message}</span>
+    `;
 
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-      this.feedback.classList.add("visually-hidden");
-      this.feedback.innerHTML = "";
-    }, 3000);
+    if (type === "success") {
+      this.button.classList.add("is-copied", "border-success");
+      this.button.classList.remove("is-error", "border-danger");
+    } else {
+      this.button.classList.add("is-error", "border-danger");
+      this.button.classList.remove("is-copied", "border-success");
+    }
+
+    // Auto-restore button after 6 seconds (show longer as requested)
+    this.resetTimeout = setTimeout(() => {
+      if (this.button && this.originalButtonHtml) {
+        this.button.innerHTML = this.originalButtonHtml;
+        this.button.classList.remove("is-copied", "is-error", "border-success", "border-danger");
+      }
+      this.resetTimeout = null;
+    }, 6000);
   }
 }
