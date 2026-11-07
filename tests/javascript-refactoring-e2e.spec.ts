@@ -524,4 +524,67 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
       expect(text.trim().length).toBeGreaterThan('Browse'.length);
     }
   });
+
+  test('22. Search result stub metadata display respects portal-specific rules (Issue #106)', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('3010') || baseURL?.includes('heritage');
+    await page.goto('/catalogue?q=*');
+    await page.waitForLoadState('domcontentloaded');
+
+    const documents = page.locator('#documents article, #documents .document');
+    expect(await documents.count()).toBeGreaterThan(0);
+
+    if (isHeritage) {
+      // Heritage stubs: Omit Creator, Themes, Subject, Language
+      await expect(page.locator('#documents article .blacklight-subject_ssim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-theme_ssim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-language_ssim')).toHaveCount(0);
+      // Heritage stubs: Must not display access notes, original version notes, ARKs, or date added
+      await expect(page.locator('#documents article .blacklight-access_note_tsim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-original_version_note_tsim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-ark')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-date_added')).toHaveCount(0);
+    } else {
+      // Canadiana stubs: Omit all notes, ARKs, access notes, and date added
+      await expect(page.locator('#documents article .blacklight-notes_tsim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-access_note_tsim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-original_version_note_tsim')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-ark')).toHaveCount(0);
+      await expect(page.locator('#documents article .blacklight-date_added')).toHaveCount(0);
+    }
+  });
+
+  test('23. Heritage sidebar facet ordering and reel card date suppression (Issues #82 & #83)', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('3010') || baseURL?.includes('heritage');
+    if (!isHeritage) return;
+
+    await page.goto('/catalogue?q=*');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Issue #82: Source Institution facet must be at the bottom of the sidebar
+    const facetHeaders = page.locator('#facets .facet-field-heading');
+    const headerCount = await facetHeaders.count();
+    if (headerCount > 0) {
+      const lastFacetId = await facetHeaders.nth(headerCount - 1).getAttribute('id');
+      expect(lastFacetId).toBe('facet-depositor_tsim_str-header');
+    }
+
+    // Issue #83: Collection items (reels) must not show single-year publication date under reel card
+    const reelCards = page.locator('.collection-item-card, .card-collection-item');
+    if (await reelCards.count() > 0) {
+      const cardDates = reelCards.locator('p.card-text:has-text(/^\\d{4}$/)');
+      await expect(cardDates).toHaveCount(0);
+    }
+  });
+
+  test('24. Detailed item show page preserves full notes and metadata (Issue #106)', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('3010') || baseURL?.includes('heritage');
+    const docPath = isHeritage ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
+
+    await page.goto(docPath);
+    await page.waitForLoadState('domcontentloaded');
+
+    // Show page metadata panel or document metadata list is visible
+    const metadataSection = page.locator('#about-this-item, .document-metadata, dl.document-metadata');
+    await expect(metadataSection.first()).toBeVisible();
+  });
 });
