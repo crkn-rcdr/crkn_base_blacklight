@@ -527,10 +527,23 @@ button i {
         width: 100%;
     }
     /* viewer height on small screens */
-    #doc-main #my-mirador,
-    .mirador-osd-container {
-        min-height: 60vh;
+    #doc-main #my-mirador {
+        min-height: 480px !important;
+        height: 65vh !important;
+        max-height: 560px !important;
         width: 100% !important;
+        margin-bottom: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    #doc-main .mirador-osd-container {
+        min-height: unset !important;
+        height: 100% !important;
+        margin-bottom: 0 !important;
+    }
+    .toolbox-card {
+        margin-top: 1rem !important;
+        clear: both !important;
+        position: relative !important;
     }
     /* ensure inner mirador wrappers stretch full width */
     #doc-main .mirador-viewer,

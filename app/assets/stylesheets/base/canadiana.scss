@@ -1728,7 +1728,9 @@ dialog#blacklight-modal,
   }
   .iiif-tools-list,
   .toolbox-card {
-    margin-top: 0.75rem;
+    margin-top: 3.5rem !important;
+    clear: both !important;
+    position: relative !important;
   }
 }
 
@@ -11797,8 +11799,11 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   bottom: 0;
   left: 0;
   right: 0;
-  width: 100%;
-  z-index: 1040;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  z-index: 999999 !important;
   background-color: #000000 !important;
   color: #ffffff;
   border-top: 3px solid var(--theme-primary, #1d808b);
@@ -11809,17 +11814,24 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
 
   &__inner {
     max-width: 1220px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.25rem;
+    box-sizing: border-box;
+    min-width: 0;
   }
 
   &__text {
     flex: 1 1 auto;
+    min-width: 0;
     color: #f8fafc;
     margin: 0;
+    white-space: normal !important;
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 
   &__link {
@@ -11847,9 +11859,18 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   }
 
   @media (max-width: 768px) {
-    padding: 0.6rem 0.85rem;
-    font-size: 0.86rem;
-    line-height: 1.4;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.85rem;
+    line-height: 1.35;
+
+    &__inner {
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    &__close {
+      margin-top: 0.15rem;
+    }
   }
 }
 
@@ -11859,7 +11880,7 @@ body.has-feedback-banner {
 
 @media (max-width: 576px) {
   body.has-feedback-banner {
-    padding-bottom: 5.25rem;
+    padding-bottom: 6rem;
   }
 }
 

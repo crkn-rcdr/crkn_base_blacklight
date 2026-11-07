@@ -80,7 +80,7 @@ function initMiradorViewer() {
   let contentSearch = {};
   const params = new URLSearchParams(window.location.search);
   if (params.has("q")) contentSearch = { query: params.get("q") };
-  const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www-iiif-pres.canadiana.ca/manifest";
+  const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www2-iiif-pres.canadiana.ca/manifest";
   let normalizedBase = manifestBase.endsWith('/') ? manifestBase : manifestBase + '/';
   let cleanDocId = documentId.replace(/^https?:\/\/[^/]+\//, '').replace(/^ark:?\/?/, '').replace(/^\/+/, '');
   let manifest = `${normalizedBase}${cleanDocId}`;

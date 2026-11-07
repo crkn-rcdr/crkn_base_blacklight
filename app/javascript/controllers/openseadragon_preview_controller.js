@@ -117,7 +117,7 @@ export default class extends Controller {
       (async () => {
         const manifestBase =
           document.querySelector('meta[name="iiif-manifest-base"]')?.getAttribute("content")?.replace(/\/+$/, "") ||
-          "https://www-iiif-pres.canadiana.ca/manifest";
+          "https://www2-iiif-pres.canadiana.ca/manifest";
         const imageBase =
           document.querySelector('meta[name="iiif-image-base"]')?.getAttribute("content")?.replace(/\/+$/, "") ||
           "https://image-tor.canadiana.ca/iiif/2";

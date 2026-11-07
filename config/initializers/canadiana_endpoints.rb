@@ -1,6 +1,6 @@
 # Centralize configurable external endpoints and read from ENV.
-Rails.configuration.x.iiif_manifest_base = ENV.fetch('IIIF_MANIFEST_BASE', 'https://www-iiif-pres.canadiana.ca/manifest')
-Rails.configuration.x.iiif_content_search_base = ENV.fetch('IIIF_CONTENT_SEARCH_BASE', 'https://www-iiif-search.canadiana.ca/search')
+Rails.configuration.x.iiif_manifest_base = ENV.fetch('IIIF_MANIFEST_BASE', 'https://www2-iiif-pres.canadiana.ca/manifest')
+Rails.configuration.x.iiif_content_search_base = ENV.fetch('IIIF_CONTENT_SEARCH_BASE', 'https://www2-iiif-search.canadiana.ca/search')
 Rails.configuration.x.iiif_image_base = ENV.fetch('IIIF_IMAGE_BASE', 'https://image-tor.canadiana.ca/iiif/2')
 Rails.configuration.x.canadiana_catalogue_url = ENV.fetch('CANADIANA_CATALOGUE_URL', 'https://www2-beta.canadiana.ca/catalogue')
 Rails.configuration.x.heritage_catalogue_url = ENV.fetch('HERITAGE_CATALOGUE_URL', 'https://heritage-beta.canadiana.ca/catalogue')

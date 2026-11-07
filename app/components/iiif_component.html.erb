@@ -54,7 +54,8 @@
 
     <% edit_classes = ["btn", "btn-outline-custom", "btn-md", "d-inline-flex", "align-items-center", "gap-2", "fs-6", (has_manifest ? nil : "disabled")] %>
     <% if has_manifest %>
-      <%= link_to "https://manifest-editor.digirati.services/share?iiif-content=#{manifest_url}",
+      <% edit_copy_url = "https://manifest-editor.digirati.services/share?action=preview&resource-type=Manifest&iiif-content=#{ERB::Util.url_encode(manifest_url)}&selected-tab=%40manifest-editor%2Fdescriptive-properties&selected-id=#{ERB::Util.url_encode(manifest_url)}&selected-type=Manifest" %>
+      <%= link_to edit_copy_url,
                   { class: edit_classes.compact.join(' '),
                     title: t('blacklight.tools.edit_manifest_tooltip'),
                     target: "_blank",
