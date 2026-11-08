@@ -331,3 +331,27 @@
         }
     }
 }
+
+/* Mobile safeguard: ensure table of contents and side menu button never display on mobile */
+@media screen and (max-width: 991px) {
+    #my-mirador .mirador-window-sidebar-toggle-btn,
+    #my-mirador button[aria-label="Toggle sidebar"],
+    #my-mirador button[aria-label="Afficher le menu latéral"],
+    #my-mirador button[aria-label*="sidebar" i],
+    #my-mirador button[aria-label*="menu latéral" i],
+    #my-mirador .mirador-companion-area-left,
+    #my-mirador [class*="companion-area-left"],
+    #my-mirador [class*="CompanionArea-root"][class*="left"],
+    #my-mirador [class*="CompanionArea-container"][class*="left"],
+    #my-mirador .mirador-companion-window-left,
+    #my-mirador [class*="companion-window-left"],
+    #my-mirador .mirador-window-sidebar,
+    #my-mirador [class*="WindowSideBar-root"] {
+        display: none !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}

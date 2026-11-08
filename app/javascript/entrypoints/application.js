@@ -117,7 +117,7 @@ function initMiradorViewer() {
       allowFullscreen: true,
       allowMaximize: false,
       allowTopMenuButton: true,
-      allowWindowSideBar: true,
+      allowWindowSideBar: false, // Default false; side menu is only shown if item has table of contents
       authNewWindowCenter: "parent",
       sideBarPanel: "canvas",
       defaultSidebarPanelHeight: 201,
