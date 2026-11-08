@@ -60,29 +60,27 @@
   --bs-font-monospace: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 /* Global typography */
-html,
-body {
+html {
   font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
 
-html,
 body {
+  font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
+  position: relative;
 }
 
-#main-container {
-  max-width: 100%;
-  overflow-x: clip;
-}
-
+#main-container,
 .home-page {
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+  overflow-x: hidden;
+  position: relative;
 }
 
 #skip-link {
@@ -2470,6 +2468,8 @@ dialog#blacklight-modal,
 }
 
 .members-marquee-row {
+  position: relative;
+  contain: paint;
   overflow: hidden;
   margin-top: 25px;
   margin-bottom: 25px;
@@ -3000,6 +3000,8 @@ dialog#blacklight-modal,
 }
 
 .home-page .home-slider__viewport {
+  position: relative;
+  contain: paint;
   flex: 1 1 auto;
   min-width: 0 !important;
   max-width: 100% !important;

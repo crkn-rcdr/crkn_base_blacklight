@@ -1406,7 +1406,7 @@ button i {
     width: 6px;
     cursor: col-resize;
     background: transparent;
-    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    border-right: none;
     transition: background-color 0.15s ease, border-color 0.15s ease;
     z-index: 10;
 }
