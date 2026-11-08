@@ -33,6 +33,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install --immutable
 
 COPY . .
+RUN mkdir -p public/assets && cp -f app/assets/javascripts/mirador* public/assets/ 2>/dev/null || true
 RUN SECRET_KEY_BASE=${SECRET_KEY_BASE} bundle exec rails assets:precompile \
   && rm -rf node_modules tmp/cache log/*
 
