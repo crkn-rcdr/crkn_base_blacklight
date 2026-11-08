@@ -68,10 +68,21 @@ body {
   overflow-x: hidden;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+#main-container {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 .home-page {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 #skip-link {
@@ -2983,11 +2994,17 @@ dialog#blacklight-modal,
   align-items: center;
   gap: 0.75rem;
   margin-top: 0.35rem;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .home-page .home-slider__viewport {
   flex: 1 1 auto;
-  overflow-x: auto;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow-x: auto !important;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -4435,6 +4452,14 @@ dialog#blacklight-modal,
 }
 
 .blacklight-pages-home {
+  #main-container > .row.base-first-row {
+    --bs-gutter-x: 0;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
   .base-first-row > section {
     padding: 0 !important;
   }
@@ -5656,7 +5681,10 @@ html[lang="fr"] .home-page .home-hero__title {
   }
 
   .home-page .home-hero__cta {
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
     flex-basis: auto;
     justify-content: flex-start;
     font-size: 0.86rem;
@@ -5866,8 +5894,10 @@ html[lang="fr"] .home-page .home-hero__title {
   }
 
   .home-page .home-statement-media {
-    margin-left: 0;
-    max-width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
     margin: 0 auto;
     min-height: clamp(220px, 44vw, 420px);
     justify-content: center;
@@ -7746,11 +7776,17 @@ html[lang="fr"] .home-page .home-hero__title {
 .home-page .home-explore-heritage .home-slider {
   gap: clamp(0.8rem, 1.3vw, 1rem);
   margin-top: 0;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .home-page .home-explore-canadiana .home-slider__viewport,
 .home-page .home-explore-heritage .home-slider__viewport {
   padding: 0.1rem 0 0.2rem;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .home-page .home-explore-canadiana .home-slider__nav,
@@ -7919,6 +7955,16 @@ html[lang="fr"] .home-page .home-hero__title {
   .home-page .home-explore-canadiana .home-slider,
   .home-page .home-explore-heritage .home-slider {
     gap: 0.55rem;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .home-page .home-explore-canadiana .home-slider__viewport,
+  .home-page .home-explore-heritage .home-slider__viewport {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
   .home-page .home-explore-canadiana .home-slider__nav,
@@ -7936,6 +7982,7 @@ html[lang="fr"] .home-page .home-hero__title {
   .home-page .home-explore-canadiana .home-split-grid--slider .home-split-card,
   .home-page .home-explore-heritage .home-split-grid--slider .home-split-card {
     width: calc(100vw - 2rem);
+    max-width: 320px;
   }
 
   .home-page .home-explore-canadiana .home-split-card,
@@ -11848,7 +11895,7 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
     margin: 0;
     white-space: normal !important;
     word-break: normal;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
   }
 
   &__link {
@@ -11876,17 +11923,17 @@ html[lang="fr"] .blacklight-pages-about_heritage .about-heritage-hero__title {
   }
 
   @media (max-width: 768px) {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.82rem;
     line-height: 1.35;
 
     &__inner {
-      align-items: flex-start;
+      align-items: center;
       gap: 0.5rem;
     }
 
     &__close {
-      margin-top: 0.15rem;
+      margin-top: 0;
     }
   }
 }
