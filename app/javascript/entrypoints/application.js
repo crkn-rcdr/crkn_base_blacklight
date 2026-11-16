@@ -36,7 +36,7 @@ function initMiradorViewer() {
         document.head.appendChild(link);
       }
       const script = document.createElement('script');
-      script.src = '/assets/mirador.min.js?v=20261107-2200';
+      script.src = '/assets/mirador.min.js?v=20261116-1300';
       script.defer = true;
       script.onload = () => initMiradorViewer();
       document.head.appendChild(script);
@@ -83,7 +83,8 @@ function initMiradorViewer() {
   const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www2-iiif-pres.canadiana.ca/manifest";
   let normalizedBase = manifestBase.endsWith('/') ? manifestBase : manifestBase + '/';
   let cleanDocId = documentId.replace(/^https?:\/\/[^/]+\//, '').replace(/^ark:?\/?/, '').replace(/^\/+/, '');
-  let manifest = `${normalizedBase}${cleanDocId}`;
+  const manifestParam = params.get("manifest");
+  let manifest = manifestParam || (documentId.startsWith("http://") || documentId.startsWith("https://") ? documentId : `${normalizedBase}${cleanDocId}`);
   const manifestList = {};
   manifestList[manifest] = { "provider": "Canadian Research Knowledge Network" };
 
