@@ -281,17 +281,29 @@ class SearchBuilder < Blacklight::SearchBuilder
     return unless solr_parameters
 
     search_field = (blacklight_params[:search_field] || blacklight_params['search_field'])&.to_s
-    if search_field == 'tx_gen'
-      q = (solr_parameters[:q] || blacklight_params[:q] || blacklight_params['q'])&.to_s&.strip
-      return if q.blank?
+    raw_q = (solr_parameters[:q] || blacklight_params[:q] || blacklight_params['q'])&.to_s&.strip
+    return if raw_q.blank?
 
+    if search_field == 'tx_gen'
       solr_parameters[:defType] = 'lucene'
-      if q == '*:*' || q == '*'
+      if raw_q == '*:*' || raw_q == '*'
         solr_parameters[:q] = '{!frange l=1}has_full_text_eff'
       else
-        solr_parameters[:fulltext_q] = q
-        solr_parameters[:q] = '{!join from=manifestid to=manifestid_s fromIndex=content_search v=\'{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}\'}'
+        solr_parameters[:fulltext_q] = raw_q
+        solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'
+        solr_parameters[:q] = '_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v=\'{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}\'}"'
       end
+    elsif search_field.blank? || search_field == 'all_fields'
+      return if raw_q == '*:*' || raw_q == '*'
+
+      meta_q = (solr_parameters[:q] || raw_q).to_s.strip
+      solr_parameters[:defType] = 'lucene'
+      solr_parameters[:q_meta] = meta_q
+      solr_parameters[:fulltext_q] = (blacklight_params[:q] || blacklight_params['q'] || raw_q).to_s.strip
+      solr_parameters[:all_fields_qf] ||= (solr_parameters[:qf] || CatalogController::ALL_FIELDS_QF)
+      solr_parameters[:all_fields_pf] ||= (solr_parameters[:pf] || CatalogController::ALL_FIELDS_PF)
+      solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'
+      solr_parameters[:q] = '_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf v=$q_meta}"^2 OR _query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v=\'{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}\'}"'
     end
   end
 

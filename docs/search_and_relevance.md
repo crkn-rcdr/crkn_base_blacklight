@@ -115,27 +115,34 @@ The following syntax features are supported in both portals, as outlined in the 
 | **Exact Phrase** | `"quebec city"` | Matches the exact words in that specific order. |
 | **Negation / Exclusion** | `paris -france` | Excludes documents containing `france`. |
 | **Alternate Terms (OR)** | `ontario york \| toronto` | Matches `ontario` and either `york` or `toronto`. |
+| **Field Dropdown: All Fields (Global)** | Select *All Fields* (Default) | Unified global search: evaluates catalog metadata in `blacklight_marc` (boosted `^2`) alongside OCR canvas text in `content_search` via cross-core join, including parent series/periodicals. |
 | **Field Dropdown: Title** | Select *Title* | Targets `full_title_tsim`. |
 | **Field Dropdown: Creator** | Select *Author/Creator* | Targets `author_tsim`. |
 | **Field Dropdown: Subject** | Select *Subject* | Targets `subject_tsim`. |
-| **Field Dropdown: Full Text** | Select *Full Text* | Queries OCR canvas transcripts in `content_search` dynamically via cross-core join (`{!join from=manifestid to=manifestid_s fromIndex=content_search}`). |
+| **Field Dropdown: Full Text** | Select *Full Text* | Queries OCR canvas transcripts in `content_search` dynamically via cross-core join (`{!join from=manifestid to=manifestid_s fromIndex=content_search}`) and parent serials. |
 | **Date Range Limiting** | From `YYYY` To `YYYY` | Filters results via `pub_date_ssim:[FROM TO TO]`. |
 | **Has Full Text Filter** | Check *Full text available* | Filters results via dynamic cross-core join (`{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*`). |
 
 ---
 
 
-### 5.1 Full-Text Search via Cross-Core Solr Join (`content_search`)
+### 5.1 Full-Text Search and Global Search via Cross-Core Solr Join (`content_search`)
 
 Full-text search queries execute against the dedicated `content_search` Solr core, which indexes OCR text and word bounding boxes at the individual canvas level. 
 
 Instead of duplicating full-text inside `blacklight_marc`, Blacklight links the catalog record to its OCR transcripts using Solr's native cross-core join parser:
 
 - **Linking Key**: `manifestid_s` in `blacklight_marc` (derived from the record's ARK) joins to `manifestid` in `content_search`.
-- **Fielded Full-Text Search**: When a user selects **Full Text** from the search dropdown (`search_field=tx_gen`), `SearchBuilder#apply_fulltext_join` constructs a cross-core join query:
+- **Fielded Full-Text Search (`search_field=tx_gen`)**: When a user selects **Full Text** from the search dropdown, `SearchBuilder#apply_fulltext_join` constructs a cross-core join query for item-level records and parent serials:
   ```solr
-  q={!join from=manifestid to=manifestid_s fromIndex=content_search v='{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'}
+  q=_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}'}"
   ```
+- **Global Search across All Fields (Issue #109)**: When users search **All Fields** (or leave `search_field` empty), `SearchBuilder#apply_fulltext_join` constructs a unified global search combining metadata and OCR full-text:
+  ```solr
+  q=_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf v=$q_meta}"^2 OR _query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}'}"
+  ```
+  - Metadata matches in `blacklight_marc` receive a `^2` boost multiplier to prioritize title, creator, subject, and identifier hits at the top of search results.
+  - Documents and parent serials containing the search terms exclusively in page OCR text are seamlessly retrieved instead of returning 0 results.
 - **Full-Text Availability Faceting**: In the facet sidebar, the **Full Text Search** facet dynamically counts records matching:
   - *Available*: `_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*'}"`
   - *Not Available*: `(*:* -(_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search}*:*'}"))`
