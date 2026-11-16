@@ -84,7 +84,7 @@ function initMiradorViewer() {
   let normalizedBase = manifestBase.endsWith('/') ? manifestBase : manifestBase + '/';
   let cleanDocId = documentId.replace(/^https?:\/\/[^/]+\//, '').replace(/^ark:?\/?/, '').replace(/^\/+/, '');
   const manifestParam = params.get("manifest");
-  let manifest = manifestParam || (documentId.startsWith("http://") || documentId.startsWith("https://") ? documentId : `${normalizedBase}${cleanDocId}`);
+  let manifest = manifestParam || (documentId.includes("/manifest/") ? documentId : `${normalizedBase}${cleanDocId}`);
   const manifestList = {};
   manifestList[manifest] = { "provider": "Canadian Research Knowledge Network" };
 
