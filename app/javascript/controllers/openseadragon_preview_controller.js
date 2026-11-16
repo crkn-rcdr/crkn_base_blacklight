@@ -115,9 +115,23 @@ export default class extends Controller {
       const overlay = container.querySelector(".featured-item__activate, .collection-item__activate");
 
       (async () => {
-        const manifestBase =
+        let manifestBase =
           document.querySelector('meta[name="iiif-manifest-base"]')?.getAttribute("content")?.replace(/\/+$/, "") ||
           "https://www2-iiif-pres.canadiana.ca/manifest";
+        try {
+          const url = new URL(manifestBase, window.location.origin);
+          if (url.hostname.includes("-dev.canadiana.ca") || url.hostname.endsWith(".local") || window.location.hostname.includes("-dev.canadiana.ca")) {
+            if (window.location.hostname.startsWith("www-") && url.hostname.startsWith("www2-")) {
+              url.hostname = url.hostname.replace("www2-", "www-");
+            } else if (window.location.hostname.startsWith("www2-") && url.hostname.startsWith("www-")) {
+              url.hostname = url.hostname.replace("www-", "www2-");
+            }
+            if (window.location.port && !url.port) {
+              url.port = window.location.port;
+            }
+            manifestBase = url.toString().replace(/\/+$/, "");
+          }
+        } catch (e) {}
         const imageBase =
           document.querySelector('meta[name="iiif-image-base"]')?.getAttribute("content")?.replace(/\/+$/, "") ||
           "https://image-tor.canadiana.ca/iiif/2";

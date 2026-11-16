@@ -80,7 +80,21 @@ function initMiradorViewer() {
   let contentSearch = {};
   const params = new URLSearchParams(window.location.search);
   if (params.has("q")) contentSearch = { query: params.get("q") };
-  const manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www2-iiif-pres.canadiana.ca/manifest";
+  let manifestBase = document.querySelector('meta[name="iiif-manifest-base"]')?.content || "https://www2-iiif-pres.canadiana.ca/manifest";
+  try {
+    const url = new URL(manifestBase, window.location.origin);
+    if (url.hostname.includes("-dev.canadiana.ca") || url.hostname.endsWith(".local") || window.location.hostname.includes("-dev.canadiana.ca")) {
+      if (window.location.hostname.startsWith("www-") && url.hostname.startsWith("www2-")) {
+        url.hostname = url.hostname.replace("www2-", "www-");
+      } else if (window.location.hostname.startsWith("www2-") && url.hostname.startsWith("www-")) {
+        url.hostname = url.hostname.replace("www-", "www2-");
+      }
+      if (window.location.port && !url.port) {
+        url.port = window.location.port;
+      }
+      manifestBase = url.toString();
+    }
+  } catch (e) {}
   let normalizedBase = manifestBase.endsWith('/') ? manifestBase : manifestBase + '/';
   let cleanDocId = documentId.replace(/^https?:\/\/[^/]+\//, '').replace(/^ark:?\/?/, '').replace(/^\/+/, '');
   const manifestParam = params.get("manifest");
