@@ -68,9 +68,15 @@
 }
 
 #my-mirador .mirador-osd-container .openseadragon-canvas + div {
-    top: 50% !important;
+    top: 12px !important;
+    left: 12px !important;
     bottom: auto !important;
-    transform: translateY(-50%) !important;
+    transform: none !important;
+
+    @media (max-width: 768px) {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+    }
 }
 
 #my-mirador .mirador-osd-container .openseadragon-canvas + div,
