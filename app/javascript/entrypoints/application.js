@@ -36,7 +36,7 @@ function initMiradorViewer() {
         document.head.appendChild(link);
       }
       const script = document.createElement('script');
-      script.src = '/assets/mirador.min.js?v=20261116-1335';
+      script.src = '/assets/mirador.min.js?v=20261116-1445';
       script.defer = true;
       script.onload = () => initMiradorViewer();
       document.head.appendChild(script);

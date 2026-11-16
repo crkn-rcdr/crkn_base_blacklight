@@ -530,14 +530,17 @@ button i {
     }
     /* viewer height on small screens */
     #doc-main #my-mirador {
-        min-height: 400px !important;
-        height: 60svh !important;
-        max-height: 540px !important;
+        min-height: 360px !important;
+        height: 55svh !important;
+        max-height: 480px !important;
         width: 100% !important;
-        margin-bottom: 1.5rem !important;
+        margin-bottom: 2rem !important;
         position: relative !important;
         overflow: hidden !important;
         border-radius: 8px;
+    }
+    body.has-feedback-banner #doc-main #my-mirador {
+        margin-bottom: 6rem !important;
     }
     #doc-main .mirador-osd-container {
         min-height: unset !important;
