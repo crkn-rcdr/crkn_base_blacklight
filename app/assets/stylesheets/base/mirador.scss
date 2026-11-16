@@ -5,11 +5,16 @@
     height: 75vh;
 }
 
+#my-mirador > .fullscreen {
+    height: 100%;
+    min-height: 0;
+}
+
 #my-mirador > .fullscreen > div {
     position: initial !important;
     width: 100% !important;
-    height: 100vh !important;
-    min-height: 600px;
+    height: 100% !important;
+    min-height: 0;
     background: white !important;
 }
 #my-mirador > .fullscreen-enabled > div {
@@ -60,6 +65,12 @@
 
 #my-mirador .mosaic-root > .mosaic-tile:not(:first-child) {
     z-index: 1 !important;
+}
+
+#my-mirador .mirador-osd-container .openseadragon-canvas + div {
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
 }
 
 #my-mirador .mirador-osd-container .openseadragon-canvas + div,
