@@ -530,9 +530,9 @@ button i {
     }
     /* viewer height on small screens */
     #doc-main #my-mirador {
-        min-height: 520px !important;
-        height: 70vh !important;
-        max-height: 650px !important;
+        min-height: 400px !important;
+        height: 60svh !important;
+        max-height: 540px !important;
         width: 100% !important;
         margin-bottom: 1.5rem !important;
         position: relative !important;

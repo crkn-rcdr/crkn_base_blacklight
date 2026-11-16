@@ -106,6 +106,37 @@
         font-size: 0.85rem !important;
     }
 
+    @media (pointer: coarse) {
+        bottom: max(0.5rem, env(safe-area-inset-bottom)) !important;
+        right: max(0.5rem, env(safe-area-inset-right)) !important;
+    }
+
+    @media screen and (max-width: 480px) {
+        bottom: max(0.5rem, env(safe-area-inset-bottom)) !important;
+        right: max(0.5rem, env(safe-area-inset-right)) !important;
+        max-width: calc(100% - 8px) !important;
+
+        .mirador-osd-navigation {
+            .MuiAutocomplete-root {
+                flex: 0 0 105px !important;
+                width: 105px !important;
+                min-width: 105px !important;
+                max-width: 105px !important;
+                margin-right: 0.4rem !important;
+            }
+
+            .MuiInputBase-input {
+                padding-left: 8px !important;
+                padding-right: 22px !important;
+                font-size: 0.85rem !important;
+            }
+        }
+
+        .mirador-osd-info {
+            font-size: 0.8rem !important;
+        }
+    }
+
     /* Remove blue outline when clicking index number or dropdown arrow */
     input,
     input:focus,

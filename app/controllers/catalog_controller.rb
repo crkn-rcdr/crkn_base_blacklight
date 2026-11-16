@@ -250,19 +250,22 @@ class CatalogController < ApplicationController
     config.add_facet_fields_to_solr_request!
 
     # ----- INDEX (search results / stub records) FIELDS -----
-    # Issue #106: Staff decisions on stub records:
-    # Canadiana: remove everything under Identifier (notes, original version, access note, ark, date_added)
-    # Heritage: only keep dates, volumes, source institution, identifier, and notes
+    # Staff decisions on stub records:
+    # Canadiana: format, creator, published, subject, language, source institution, identifier
+    # Heritage: format, creator, dates/volumes, themes, source institution, identifier, notes
     config.add_index_field 'format', label: 'Format', helper_method: :format_icon
     config.add_index_field 'author_ssm',
                            label: ->(_f, _c) { I18n.t('blacklight.metadata.creator.label') },
-                           helper_method: :format_facet,
-                           if: ->(context, _config, _doc = nil) { !CatalogController.heritage?(context) }
+                           helper_method: :format_facet
     config.add_index_field 'published_ssm',
                            label: ->(_f, _c) { I18n.t('blacklight.metadata.published.label') }
     config.add_index_field 'dates_or_sequential_tsim',
                            label: ->(_f, _c) { I18n.t('blacklight.metadata.dates_or_sequential.label') },
                            helper_method: :format_text,
+                           if: ->(context, _config, _doc = nil) { CatalogController.heritage?(context) }
+    config.add_index_field 'theme_ssim',
+                           label: ->(_f, _c) { I18n.t('blacklight.metadata.theme.label', default: 'Themes') },
+                           helper_method: :format_facet,
                            if: ->(context, _config, _doc = nil) { CatalogController.heritage?(context) }
     config.add_index_field 'subject_ssim',
                            label: ->(_f, _c) { I18n.t('blacklight.metadata.subject.label') },
