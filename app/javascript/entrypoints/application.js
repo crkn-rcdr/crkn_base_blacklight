@@ -32,11 +32,11 @@ function initMiradorViewer() {
       if (!document.querySelector('link[href*="mirador.css"]')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = '/assets/mirador.css?v=20261116-1335';
+        link.href = '/assets/mirador.css?v=20261116-2245';
         document.head.appendChild(link);
       }
       const script = document.createElement('script');
-      script.src = '/assets/mirador.min.js?v=20261116-1600';
+      script.src = '/assets/mirador.min.js?v=20261116-2245';
       script.defer = true;
       script.onload = () => initMiradorViewer();
       document.head.appendChild(script);

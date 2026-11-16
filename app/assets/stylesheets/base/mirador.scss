@@ -224,20 +224,47 @@
     color: #6b7280 !important;
 }
 
-/* Disabled next/prev should look disabled */
+/* Disabled next/prev and search nav should look disabled with deactivated cursor */
 #my-mirador .mirador-canvas-nav [class*="previous-canvas-button"].Mui-disabled,
 #my-mirador .mirador-canvas-nav [class*="next-canvas-button"].Mui-disabled,
 #my-mirador .mirador-canvas-nav [class*="previous-canvas-button"][disabled],
-#my-mirador .mirador-canvas-nav [class*="next-canvas-button"][disabled] {
-    opacity: 1 !important;
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"][disabled],
+#my-mirador button[aria-label="Previous result"].Mui-disabled,
+#my-mirador button[aria-label="Next result"].Mui-disabled,
+#my-mirador button[aria-label="Previous result"][disabled],
+#my-mirador button[aria-label="Next result"][disabled],
+#my-mirador button[aria-label*="Previous"].Mui-disabled,
+#my-mirador button[aria-label*="Next"].Mui-disabled,
+#my-mirador button[aria-label*="Previous"][disabled],
+#my-mirador button[aria-label*="Next"][disabled],
+#my-mirador button[aria-label*="précédent"].Mui-disabled,
+#my-mirador button[aria-label*="suivant"].Mui-disabled,
+#my-mirador button[aria-label*="précédent"][disabled],
+#my-mirador button[aria-label*="suivant"][disabled] {
+    opacity: 0.38 !important;
     color: #b7bcc4 !important;
+    cursor: not-allowed !important;
+    pointer-events: auto !important;
 }
 
 #my-mirador .mirador-canvas-nav [class*="previous-canvas-button"].Mui-disabled i,
 #my-mirador .mirador-canvas-nav [class*="next-canvas-button"].Mui-disabled i,
 #my-mirador .mirador-canvas-nav [class*="previous-canvas-button"][disabled] i,
-#my-mirador .mirador-canvas-nav [class*="next-canvas-button"][disabled] i {
+#my-mirador .mirador-canvas-nav [class*="next-canvas-button"][disabled] i,
+#my-mirador button[aria-label="Previous result"].Mui-disabled i,
+#my-mirador button[aria-label="Next result"].Mui-disabled i,
+#my-mirador button[aria-label="Previous result"][disabled] i,
+#my-mirador button[aria-label="Next result"][disabled] i,
+#my-mirador button[aria-label*="Previous"].Mui-disabled i,
+#my-mirador button[aria-label*="Next"].Mui-disabled i,
+#my-mirador button[aria-label*="Previous"][disabled] i,
+#my-mirador button[aria-label*="Next"][disabled] i,
+#my-mirador button[aria-label*="précédent"].Mui-disabled i,
+#my-mirador button[aria-label*="suivant"].Mui-disabled i,
+#my-mirador button[aria-label*="précédent"][disabled] i,
+#my-mirador button[aria-label*="suivant"][disabled] i {
     color: #b7bcc4 !important;
+    cursor: not-allowed !important;
 }
 
 /* Swap rotate-left / rotate-right icon visuals without changing behavior */
