@@ -329,6 +329,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@playwright/test@npm:1.48.0":
+  version: 1.48.0
+  resolution: "@playwright/test@npm:1.48.0"
+  dependencies:
+    playwright: "npm:1.48.0"
+  bin:
+    playwright: cli.js
+  checksum: 10c0/595a5db99f75d1ffce11df2980ca0dd20523a0a20dd962e4256e536dddccca0138883ae2e9c82aaa26094fb50def73062badc14c001d20fb62a3a0b2df18ebca
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-commonjs@npm:^28.0.2":
   version: 28.0.9
   resolution: "@rollup/plugin-commonjs@npm:28.0.9"
@@ -939,6 +950,7 @@ __metadata:
   resolution: "crkn_canadiana_blacklight@workspace:."
   dependencies:
     "@hotwired/stimulus": "npm:^3.2.2"
+    "@playwright/test": "npm:1.48.0"
     "@rollup/plugin-commonjs": "npm:^28.0.2"
     "@vitejs/plugin-vue": "npm:^5.2.1"
     blacklight-range-limit: "npm:^9.0.0"
@@ -1513,6 +1525,30 @@ __metadata:
   version: 4.0.7
   resolution: "picomatch@npm:4.0.7"
   checksum: 10c0/beb6ae02c43ae44e84883b90830196d9046b1726ead292adcf7f57945e0bb0d992d68563d87e03b484b6f3c9a5c6defda7523477f047d7f0e663f126cc01787f
+  languageName: node
+  linkType: hard
+
+"playwright-core@npm:1.48.0":
+  version: 1.48.0
+  resolution: "playwright-core@npm:1.48.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/b5a94f02445cb2fdad95e832d13a68448875ac627700a45f8df87c6e60890390651556aae3f5d6961c3a147f9ed6408fd44541fafe0a9f15c637e2c7c404fcfc
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.48.0":
+  version: 1.48.0
+  resolution: "playwright@npm:1.48.0"
+  dependencies:
+    fsevents: "npm:2.3.2"
+    playwright-core: "npm:1.48.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 10c0/4c18b06f7de87442c697c5df5b1e1e4027c5d9f05c07679aca0135dcf18e69a4424ec7a0c91a323487ea4a92fb5146fc80c04329479426722ea742fd5eff1afa
   languageName: node
   linkType: hard
 

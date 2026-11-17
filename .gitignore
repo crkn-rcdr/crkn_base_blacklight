@@ -60,3 +60,6 @@ scans
 *.pem
 *.p12
 *.pfx
+
+test-results/
+playwright-report/

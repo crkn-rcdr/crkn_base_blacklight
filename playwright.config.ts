@@ -6,7 +6,7 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://www2-beta-dev.canadiana.ca:8088',
     headless: true,
   },
   projects: [
@@ -14,14 +14,14 @@ export default defineConfig({
       name: 'canadiana',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000',
+        baseURL: process.env.BASE_URL || 'http://www2-beta-dev.canadiana.ca:8088',
       },
     },
     {
       name: 'heritage',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3010',
+        baseURL: process.env.BASE_URL_HERITAGE || 'http://heritage-beta-dev.canadiana.ca:8088',
       },
     },
   ],
