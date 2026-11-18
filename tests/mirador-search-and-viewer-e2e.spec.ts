@@ -169,4 +169,26 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     await page.waitForTimeout(300);
   });
 
+  test('6. Breadcrumb root link constructs return search URL directly from query parameters without search_id', async ({ page }) => {
+    // Navigate with query parameters and legacy/simulated search_id
+    await page.goto('/catalogue/oocihm.8_06959_1015?lang=en&q=chocolate+chip&search_id=829&pageNum=24');
+    await page.waitForLoadState('domcontentloaded');
+
+    const rootBreadcrumb = page.locator('.collection-breadcrumbs__root a').first();
+    await expect(rootBreadcrumb).toBeVisible({ timeout: 10000 });
+
+    const rootHref = await rootBreadcrumb.getAttribute('href');
+    expect(rootHref).toBeTruthy();
+
+    // Must preserve active search query and language
+    expect(rootHref).toContain('q=chocolate+chip');
+    expect(rootHref).toContain('lang=en');
+
+    // Must strictly strip search_id, pageNum, and document id
+    expect(rootHref).not.toContain('search_id');
+    expect(rootHref).not.toContain('829');
+    expect(rootHref).not.toContain('pageNum');
+    expect(rootHref).not.toContain('oocihm.8_06959_1015');
+  });
+
 });

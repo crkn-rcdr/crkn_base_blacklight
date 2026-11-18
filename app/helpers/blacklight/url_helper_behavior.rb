@@ -28,16 +28,23 @@ module Blacklight::UrlHelperBehavior
               field_or_opts
             end
 
-    # Build href explicitly so it always carries q/lang and search_id if available
-    doc_params = {
-      lang: params[:lang].presence,
-      q: params[:q].presence
-    }
-    if respond_to?(:current_search_session) && current_search_session&.id.present?
-      doc_params[:search_id] = current_search_session.id
-    elsif respond_to?(:search_session) && search_session['id'].present?
-      doc_params[:search_id] = search_session['id']
-    end
+    # Build href explicitly so it carries active search query, filters, language,
+    # page, per_page, sort directly from query parameters without search_id.
+    search_params = if respond_to?(:search_state) && search_state.present?
+                      search_state.params_for_search.except(:id, :search_id, :counter, :pageNum, :commit, :utf8)
+                    else
+                      request.query_parameters.except('id', 'search_id', 'counter', 'pageNum', 'commit', 'utf8')
+                    end
+    doc_params = search_params.to_h.with_indifferent_access
+    lang = respond_to?(:current_ui_language_param) ? current_ui_language_param : (params[:lang].presence || I18n.locale.to_s)
+    doc_params[:lang] ||= lang if lang.present?
+    doc_params[:q] = params[:q].presence if params[:q].present?
+    doc_params[:search_field] = params[:search_field].presence if params[:search_field].present?
+    doc_params[:f] = params[:f].respond_to?(:to_unsafe_h) ? params[:f].to_unsafe_h : params[:f] if params[:f].present?
+    doc_params[:page] = params[:page].presence if params[:page].present?
+    doc_params[:per_page] = params[:per_page].presence if params[:per_page].present?
+    doc_params[:sort] = params[:sort].presence if params[:sort].present?
+    doc_params.delete(:search_id)
 
     href = solr_document_path(doc, doc_params.compact)
 
@@ -76,11 +83,13 @@ module Blacklight::UrlHelperBehavior
   # @example
   #   session_tracking_params(SolrDocument.new(id: 123), 7)
   #   => { data: { context_href: '/catalog/123/track?counter=7&search_id=999' } }
-  def session_tracking_params document, counter, per_page: search_session['per_page'], search_id: current_search_session&.id
-    path_params = { per_page: params.fetch(:per_page, per_page), counter: counter, search_id: search_id }
+  def session_tracking_params document, counter, per_page: search_session['per_page'], search_id: nil
+    # Search tracking via SQLite is disabled to prevent cross-server search_id collisions.
+    return {} unless blacklight_config.track_search_session.storage
+
+    path_params = { per_page: params.fetch(:per_page, per_page), counter: counter }
     if blacklight_config.track_search_session.storage == 'server'
       path_params[:document_id] = document&.id
-      path_params[:search_id] = search_id
     end
     path = session_tracking_path(document, path_params)
     return {} if path.nil?
@@ -113,28 +122,18 @@ module Blacklight::UrlHelperBehavior
   #
 
   # Constructs the URL to return to the catalog search results with all search filters,
-  # facets, search fields, and pagination preserved from the active search session.
+  # facets, search fields, and pagination preserved directly from the request query parameters,
+  # without relying on un-synchronized multi-server SQLite search IDs.
   def back_to_search_url
-    query_params = if respond_to?(:current_search_session) && current_search_session.try(:query_params).present?
-                     search_state.reset(current_search_session.query_params).to_hash
-                   else
-                     request.query_parameters.except('pageNum', 'id').to_h
-                   end
+    query_params = request.query_parameters.to_h.with_indifferent_access
 
-    query_params = query_params.with_indifferent_access
-
-    if respond_to?(:search_session) && search_session['counter']
-      per_page = (search_session['per_page'] || blacklight_config.default_per_page).to_i
-      counter = search_session['counter'].to_i
-
-      query_params[:per_page] = per_page unless search_session['per_page'].to_i == blacklight_config.default_per_page
-      query_params[:page] = ((counter - 1) / per_page) + 1
-    end
-
+    # Strip document/viewer-specific parameters and any incoming search_id
     query_params.delete(:id)
+    query_params.delete(:search_id)
     query_params.delete(:pageNum)
     query_params.delete(:utf8)
     query_params.delete(:commit)
+    query_params.delete(:counter)
 
     lang = respond_to?(:current_ui_language_param) ? current_ui_language_param : (params[:lang].presence || I18n.locale.to_s)
     query_params[:lang] ||= lang if lang.present?

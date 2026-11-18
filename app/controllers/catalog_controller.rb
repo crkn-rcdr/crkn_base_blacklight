@@ -360,6 +360,17 @@ class CatalogController < ApplicationController
     # keep params tidy and preserve custom parameters across search state
     config.filter_search_state_fields = true
     config.search_state_fields.concat([:include_issues, :lang]) if config.respond_to?(:search_state_fields) && config.search_state_fields.is_a?(Array)
+
+    # Disable server-side search session persistence in SQLite to eliminate
+    # cross-server ID collisions across load-balanced portal servers.
+    config.track_search_session.storage = false
+  end
+
+  # Override Blacklight's track action to eliminate reliance on server-side SQLite search_id.
+  # Search parameters (q, lang, f, page, sort, etc.) are preserved directly without search_id.
+  def track
+    doc_params = request.query_parameters.except('id', 'search_id', 'counter', 'commit', 'utf8')
+    redirect_to solr_document_path(params[:id], doc_params)
   end
 
   def tx_gen
