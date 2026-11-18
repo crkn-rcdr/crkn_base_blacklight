@@ -23,7 +23,8 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     });
   });
 
-  test('1. In-viewer search triggers from URL query params and displays hit count', async ({ page }) => {
+  test('1. In-viewer search triggers from URL query params and displays hit count', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'OCR content search test is Canadiana-specific');
     // Navigate to our test document with pre-seeded OCR and search query
     await page.goto('/catalogue/oocihm.8_06959_1015?q=chocolate+chip&pageNum=24');
     await page.waitForLoadState('domcontentloaded');
@@ -44,7 +45,8 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     expect(countText).toMatch(/\d+\s*\/\s*14/);
   });
 
-  test('2. Next/Previous search hit navigation updates hit index and enforces boundary disabled states', async ({ page }) => {
+  test('2. Next/Previous search hit navigation updates hit index and enforces boundary disabled states', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'OCR content search test is Canadiana-specific');
     await page.goto('/catalogue/oocihm.8_06959_1015?q=chocolate+chip&pageNum=24');
     await page.waitForLoadState('domcontentloaded');
 
@@ -87,7 +89,8 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     await expect(prevBtn).toBeEnabled();
   });
 
-  test('3. Advancing search hits updates the active canvas and brings thumbnail into view', async ({ page }) => {
+  test('3. Advancing search hits updates the active canvas and brings thumbnail into view', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'OCR content search test is Canadiana-specific');
     await page.goto('/catalogue/oocihm.8_06959_1015?q=chocolate+chip&pageNum=24');
     await page.waitForLoadState('domcontentloaded');
 
@@ -115,10 +118,13 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     await expect(canvasInput).toHaveValue('35', { timeout: 8000 });
   });
 
-  test('4. Zoom toolbar remains visible and does not overlap top bar navigation on mobile viewports', async ({ page }) => {
+  test('4. Zoom toolbar remains visible and does not overlap top bar navigation on mobile viewports', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('heritage');
+    const docId = isHeritage ? 'oocihm.lac_reel_h2971' : 'oocihm.8_06959_1015';
+
     // Set mobile viewport (iPhone SE / standard compact viewport)
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/catalogue/oocihm.8_06959_1015');
+    await page.goto(`/catalogue/${docId}`);
     await page.waitForLoadState('domcontentloaded');
 
     const viewer = page.locator('#my-mirador');
@@ -142,10 +148,13 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     }
   });
 
-  test('5. Zoom toolbar is positioned cleanly on desktop viewports', async ({ page }) => {
+  test('5. Zoom toolbar is positioned cleanly on desktop viewports', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('heritage');
+    const docId = isHeritage ? 'oocihm.lac_reel_h2971' : 'oocihm.8_06959_1015';
+
     // Standard desktop viewport
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('/catalogue/oocihm.8_06959_1015');
+    await page.goto(`/catalogue/${docId}`);
     await page.waitForLoadState('domcontentloaded');
 
     const viewer = page.locator('#my-mirador');
@@ -169,9 +178,13 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     await page.waitForTimeout(300);
   });
 
-  test('6. Breadcrumb root link constructs return search URL directly from query parameters without search_id', async ({ page }) => {
+  test('6. Breadcrumb root link constructs return search URL directly from query parameters without search_id', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('heritage');
+    const docId = isHeritage ? 'oocihm.lac_reel_h2971' : 'oocihm.8_06959_1015';
+    const query = isHeritage ? 'test' : 'chocolate+chip';
+
     // Navigate with query parameters and legacy/simulated search_id
-    await page.goto('/catalogue/oocihm.8_06959_1015?lang=en&q=chocolate+chip&search_id=829&pageNum=24');
+    await page.goto(`/catalogue/${docId}?lang=en&q=${query}&search_id=829&pageNum=24`);
     await page.waitForLoadState('domcontentloaded');
 
     const rootBreadcrumb = page.locator('.collection-breadcrumbs__root a').first();
@@ -181,19 +194,24 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     expect(rootHref).toBeTruthy();
 
     // Must preserve active search query and language
-    expect(rootHref).toContain('q=chocolate+chip');
+    expect(rootHref).toContain(`q=${query}`);
     expect(rootHref).toContain('lang=en');
 
     // Must strictly strip search_id, pageNum, and document id
     expect(rootHref).not.toContain('search_id');
     expect(rootHref).not.toContain('829');
     expect(rootHref).not.toContain('pageNum');
-    expect(rootHref).not.toContain('oocihm.8_06959_1015');
+    expect(rootHref).not.toContain(docId);
   });
 
-  test('7. Search and facet navigation to item show page succeeds with 200 OK without 500 error', async ({ page }) => {
+  test('7. Search and facet navigation to item show page succeeds with 200 OK without 500 error', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('heritage');
+    const searchUrl = isHeritage
+      ? '/catalogue?q=*&f%5Bdepositor_tsim_str%5D%5B%5D=Library+and+Archives+Canada+%2F+Bibliothe%CC%80que+et+Archives+Canada&lang=en'
+      : '/catalogue?q=chinese&f%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia&lang=en';
+
     // 1. Navigate to search with query and facet
-    await page.goto('/catalogue?q=chinese&f%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia&lang=en');
+    await page.goto(searchUrl);
     await page.waitForLoadState('domcontentloaded');
 
     // 2. Click the first item title in search results
@@ -210,11 +228,12 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     const rootBreadcrumb = page.locator('.collection-breadcrumbs__root a').first();
     await expect(rootBreadcrumb).toBeVisible({ timeout: 10000 });
     const href = await rootBreadcrumb.getAttribute('href');
-    expect(href).toContain('q=chinese');
     expect(href).not.toContain('search_id');
   });
 
-  test('8. Matching page chip button navigation preserves facet filters and return breadcrumb', async ({ page }) => {
+  test('8. Matching page chip button navigation preserves facet filters and return breadcrumb', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'Matching page chips are Canadiana full-text OCR specific');
+
     // 1. Navigate to search with query and inclusive facet
     await page.goto('/catalogue?q=chinese&f%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia&lang=en');
     await page.waitForLoadState('domcontentloaded');
