@@ -1,0 +1,11 @@
+<%= render applied_params_component if applied_params_component %>
+<% if pagination_component || has_header_tools? %>
+  <div class="<%= header_container_classes %>">
+    <% if pagination_component %>
+      <div class="<%= pagination_container_classes %>">
+        <%= render pagination_component %>
+      </div>
+    <% end %>
+    <%= render_header_tools %>
+  </div>
+<% end %>
