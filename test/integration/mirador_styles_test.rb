@@ -22,7 +22,9 @@ class MiradorStylesTest < ActionDispatch::IntegrationTest
   test 'zoom toolbar is centered within the canvas without clipping its top buttons' do
     css = Rails.application.assets['application.css'].to_s
 
-    assert css.match?(/#my-mirador\s+\.mirador-osd-container\s+\.openseadragon-canvas\s*\+\s*div\s*\{[^}]*top:\s*50%\s*!important;[^}]*bottom:\s*auto\s*!important;[^}]*transform:\s*translateY\(-50%\)\s*!important[;}]/m),
-           'Zoom toolbar must be centered within the canvas'
+    assert css.match?(/#my-mirador\s+\.mirador-osd-container\s+\.openseadragon-canvas\s*\+\s*div\s*\{[^}]*top:\s*12px\s*!important/m),
+           'Zoom toolbar must have desktop top positioning'
+    assert css.match?(/#my-mirador\s+\.mirador-osd-container\s+\.openseadragon-canvas\s*\+\s*div\s*\{[^}]*top:\s*50%\s*!important;[^}]*transform:\s*translateY\(-50%\)\s*!important/m),
+           'Zoom toolbar must be centered on mobile viewports'
   end
 end
