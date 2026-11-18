@@ -191,4 +191,27 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     expect(rootHref).not.toContain('oocihm.8_06959_1015');
   });
 
+  test('7. Search and facet navigation to item show page succeeds with 200 OK without 500 error', async ({ page }) => {
+    // 1. Navigate to search with query and facet
+    await page.goto('/catalogue?q=chinese&f%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia&lang=en');
+    await page.waitForLoadState('domcontentloaded');
+
+    // 2. Click the first item title in search results
+    const firstResultLink = page.locator('#documents .documentHeader a, .document-title-heading a, h3.index_title a').first();
+    await expect(firstResultLink).toBeVisible({ timeout: 10000 });
+    await firstResultLink.click();
+    await page.waitForLoadState('domcontentloaded');
+
+    // 3. Verify no 500 error and viewer mounts
+    await expect(page.locator('text=500 Internal Server Error')).not.toBeVisible();
+    await expect(page.locator('#my-mirador')).toBeVisible({ timeout: 15000 });
+
+    // 4. Verify breadcrumb root contains return query parameters without search_id
+    const rootBreadcrumb = page.locator('.collection-breadcrumbs__root a').first();
+    await expect(rootBreadcrumb).toBeVisible({ timeout: 10000 });
+    const href = await rootBreadcrumb.getAttribute('href');
+    expect(href).toContain('q=chinese');
+    expect(href).not.toContain('search_id');
+  });
+
 });
