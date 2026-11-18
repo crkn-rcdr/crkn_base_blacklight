@@ -7,15 +7,25 @@ module ApplicationHelper
   # This overrides Blacklight's helper in the view context.
   def url_for_document(document, options = {})
     opts = options.symbolize_keys
-    opts[:q] = params[:q] if params[:q].present? && !opts.key?(:q)
-    opts[:lang] = params[:lang] if params[:lang].present? && !opts.key?(:lang)
-    opts[:search_field] = params[:search_field] if params[:search_field].present? && !opts.key?(:search_field)
-    opts[:f] = params[:f].respond_to?(:to_unsafe_h) ? params[:f].to_unsafe_h : params[:f] if params[:f].present? && !opts.key?(:f)
-    opts[:page] = params[:page] if params[:page].present? && !opts.key?(:page)
-    opts[:per_page] = params[:per_page] if params[:per_page].present? && !opts.key?(:per_page)
-    opts[:sort] = params[:sort] if params[:sort].present? && !opts.key?(:sort)
-    opts.delete(:search_id)
-    solr_document_path(document, opts.compact)
+    raw_query = if respond_to?(:request) && request.present? && request.query_parameters.present?
+                  request.query_parameters
+                elsif respond_to?(:params) && params.present?
+                  params.to_unsafe_h
+                else
+                  {}
+                end
+    query_params = raw_query.to_h.with_indifferent_access
+    query_params.delete(:id)
+    query_params.delete(:search_id)
+    query_params.delete(:counter)
+    query_params.delete(:pageNum)
+    query_params.delete(:commit)
+    query_params.delete(:utf8)
+
+    merged = query_params.merge(opts)
+    merged.delete(:search_id)
+
+    solr_document_path(document, merged.compact)
   end
 
   # Constructs the URL to return to the catalog search results with all search filters,

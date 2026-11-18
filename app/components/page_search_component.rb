@@ -36,6 +36,32 @@ class PageSearchComponent < ViewComponent::Base
     end
   end
 
+  def page_link_url(page_num)
+    query_params = if respond_to?(:helpers) && helpers.respond_to?(:request) && helpers.request&.query_parameters
+                     helpers.request.query_parameters.to_h
+                   elsif respond_to?(:params)
+                     params.to_unsafe_h
+                   else
+                     {}
+                   end.with_indifferent_access
+
+    # Strip document/context params and search_id
+    query_params.delete(:id)
+    query_params.delete(:search_id)
+    query_params.delete(:counter)
+    query_params.delete(:commit)
+    query_params.delete(:utf8)
+
+    query_params[:pageNum] = page_num
+    query_params[:q] ||= @term if @term.present?
+
+    if respond_to?(:helpers) && helpers.respond_to?(:solr_document_path)
+      helpers.solr_document_path(@document_id, query_params)
+    else
+      "/catalogue/#{ERB::Util.url_encode(@document_id)}?#{query_params.to_query}"
+    end
+  end
+
   private
 
   def prefetch_cache

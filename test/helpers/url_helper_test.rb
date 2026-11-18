@@ -92,4 +92,47 @@ class UrlHelperTest < ActionView::TestCase
     refute_includes html, 'search_id'
     refute_includes html, '829'
   end
+
+  test 'url_for_document preserves f_inclusive facet selections' do
+    doc = SolrDocument.new('id' => 'sfu.00001_19800811')
+    request.env['action_dispatch.request.query_parameters'] = {
+      'q' => 'chinese',
+      'lang' => 'en',
+      'search_field' => 'all_fields',
+      'f_inclusive' => { 'depositor_tsim_str' => ['University of British Columbia'] }
+    }
+    params[:q] = 'chinese'
+    params[:lang] = 'en'
+    params[:f_inclusive] = { 'depositor_tsim_str' => ['University of British Columbia'] }
+
+    url = url_for_document(doc)
+
+    assert_includes url, 'q=chinese'
+    assert_includes url, 'f_inclusive%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia'
+  end
+
+  test 'PageSearchComponent#page_link_url preserves full search context and f_inclusive' do
+    request.env['action_dispatch.request.query_parameters'] = {
+      'q' => 'chinese',
+      'lang' => 'en',
+      'search_field' => 'all_fields',
+      'f_inclusive' => { 'depositor_tsim_str' => ['University of British Columbia'] }
+    }
+
+    comp = PageSearchComponent.new(
+      docId: 'sfu.00001_19800811',
+      arkUrl: '69429/m00001',
+      term: 'chinese'
+    )
+    # Bind view context helpers
+    comp.instance_variable_set(:@view_context, self)
+
+    url = comp.page_link_url(2)
+
+    assert_includes url, '/catalogue/sfu.00001_19800811'
+    assert_includes url, 'pageNum=2'
+    assert_includes url, 'q=chinese'
+    assert_includes url, 'f_inclusive%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia'
+    refute_includes url, 'search_id'
+  end
 end

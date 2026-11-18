@@ -49,6 +49,28 @@ class SearchAndShowIntegrationTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, 'search_id'
   end
 
+  test 'page chip navigation preserves f_inclusive facets and breadcrumb return' do
+    # 1. User performs search with inclusive facet
+    get search_catalog_path, params: search_params
+    follow_redirect! if response.redirect?
+    assert_response :success
+
+    # 2. User clicks page chip link (e.g. page 2) with full search context
+    chip_params = show_params.merge(pageNum: 2)
+    get solr_document_path(target_doc_id), params: chip_params
+    assert_response :success
+
+    # 3. Breadcrumb return link must carry f_inclusive or search filter
+    assert_includes response.body, 'collection-breadcrumbs__root'
+    if heritage_portal?
+      assert_includes response.body, 'q=reel'
+    else
+      assert_includes response.body, 'q=chinese'
+      assert_includes response.body, 'University+of+British+Columbia'
+    end
+    assert_not_includes response.body, 'search_id'
+  end
+
   test 'direct show page navigation with search parameters succeeds with 200 OK' do
     get solr_document_path(target_doc_id), params: show_params
 

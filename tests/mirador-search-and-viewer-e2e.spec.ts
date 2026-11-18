@@ -214,4 +214,28 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     expect(href).not.toContain('search_id');
   });
 
+  test('8. Matching page chip button navigation preserves facet filters and return breadcrumb', async ({ page }) => {
+    // 1. Navigate to search with query and inclusive facet
+    await page.goto('/catalogue?q=chinese&f%5Bdepositor_tsim_str%5D%5B%5D=University+of+British+Columbia&lang=en');
+    await page.waitForLoadState('domcontentloaded');
+
+    // 2. Click a matching page chip button (e.g. page 2, 4, or 11)
+    const pageChip = page.locator('.page-chip-list a.page-chip').first();
+    if (await pageChip.isVisible()) {
+      await pageChip.click();
+      await page.waitForLoadState('domcontentloaded');
+
+      // 3. Verify on item show page with viewer
+      await expect(page.locator('#my-mirador')).toBeVisible({ timeout: 15000 });
+
+      // 4. Verify breadcrumb root retains both query and facet filter
+      const rootBreadcrumb = page.locator('.collection-breadcrumbs__root a').first();
+      await expect(rootBreadcrumb).toBeVisible({ timeout: 10000 });
+      const href = await rootBreadcrumb.getAttribute('href');
+      expect(href).toContain('q=chinese');
+      expect(href).toContain('depositor_tsim_str');
+      expect(href).not.toContain('search_id');
+    }
+  });
+
 });

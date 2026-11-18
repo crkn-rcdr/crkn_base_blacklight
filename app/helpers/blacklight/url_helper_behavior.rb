@@ -30,23 +30,25 @@ module Blacklight::UrlHelperBehavior
 
     # Build href explicitly so it carries active search query, filters, language,
     # page, per_page, sort directly from query parameters without search_id.
-    search_params = if respond_to?(:search_state) && search_state.present?
-                      search_state.params_for_search.except(:id, :search_id, :counter, :pageNum, :commit, :utf8)
+    search_params = if respond_to?(:request) && request.present? && request.query_parameters.present?
+                      request.query_parameters.to_h.with_indifferent_access
+                    elsif respond_to?(:search_state) && search_state.present?
+                      search_state.params_for_search.to_h.with_indifferent_access
                     else
-                      request.query_parameters.except('id', 'search_id', 'counter', 'pageNum', 'commit', 'utf8')
+                      params.to_unsafe_h.with_indifferent_access
                     end
-    doc_params = search_params.to_h.with_indifferent_access
-    lang = respond_to?(:current_ui_language_param) ? current_ui_language_param : (params[:lang].presence || I18n.locale.to_s)
-    doc_params[:lang] ||= lang if lang.present?
-    doc_params[:q] = params[:q].presence if params[:q].present?
-    doc_params[:search_field] = params[:search_field].presence if params[:search_field].present?
-    doc_params[:f] = params[:f].respond_to?(:to_unsafe_h) ? params[:f].to_unsafe_h : params[:f] if params[:f].present?
-    doc_params[:page] = params[:page].presence if params[:page].present?
-    doc_params[:per_page] = params[:per_page].presence if params[:per_page].present?
-    doc_params[:sort] = params[:sort].presence if params[:sort].present?
-    doc_params.delete(:search_id)
 
-    href = solr_document_path(doc, doc_params.compact)
+    search_params.delete(:id)
+    search_params.delete(:search_id)
+    search_params.delete(:counter)
+    search_params.delete(:pageNum)
+    search_params.delete(:commit)
+    search_params.delete(:utf8)
+
+    lang = respond_to?(:current_ui_language_param) ? current_ui_language_param : (params[:lang].presence || I18n.locale.to_s)
+    search_params[:lang] ||= lang if lang.present?
+
+    href = solr_document_path(doc, search_params.compact)
 
     link_to label, href, document_link_params(doc, opts)
   end
