@@ -15,6 +15,10 @@ import { test, expect } from '@playwright/test';
  * 7. Clean Vite Production Asset Pipeline (zero legacy inline script errors)
  */
 
+function isHeritagePortal(baseURL?: string): boolean {
+  return Boolean(baseURL && (baseURL.includes('3010') || baseURL.toLowerCase().includes('heritage')));
+}
+
 test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
 
   test('1. Checkbox facet component renders with Stimulus controller and handles facet selection', async ({ page }) => {
@@ -55,7 +59,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('2. IIIF component renders with copy-link Stimulus controller and provides live copy feedback', async ({ page, baseURL }) => {
-    const docPath = baseURL?.includes('3010') ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
+    const docPath = isHeritagePortal(baseURL) ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
     await page.goto(docPath);
     await page.waitForLoadState('domcontentloaded');
 
@@ -85,7 +89,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('3. Document sidebar renders with resizable-sidebar Stimulus controller without inline scripts', async ({ page, baseURL }) => {
-    const docPath = baseURL?.includes('3010') ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
+    const docPath = isHeritagePortal(baseURL) ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
     await page.goto(docPath);
     await page.waitForLoadState('domcontentloaded');
 
@@ -113,7 +117,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('4. Server-rendered DownloadToolbarComponent pre-populates signed download URLs', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     const docPath = isCanadiana ? '/catalogue/oon.00002_194801' : '/catalogue/oocihm.lac_reel_h2971';
 
     await page.goto(docPath);
@@ -148,14 +152,18 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
       const spinner = toolbar.locator('.spinner-border');
       await expect(spinner).toBeHidden();
     } else {
-      // Unseeded Heritage reel gracefully displays unavailable status without breaking
-      const statusText = page.locator('#download-status .download-status-text');
-      await expect(statusText).toContainText(/Not available/i, { timeout: 6000 });
+      // Heritage reel without OCR: image download is pre-populated via IIIF, while PDF buttons are cleanly disabled
+      await expect(pageImgBtn).toHaveAttribute('href', /iiif/i);
+      await expect(pageImgBtn).not.toHaveClass(/disabled/);
+      await expect(pageBtn).toHaveClass(/disabled/);
+      await expect(fullBtn).toHaveClass(/disabled/);
+      const spinner = toolbar.locator('.spinner-border');
+      await expect(spinner).toBeHidden();
     }
   });
 
   test('5. Server-rendered PageSearchComponent delivers instant search hit chips from Solr', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     if (!isCanadiana) {
       // Heritage test data does not have full text OCR queries
       return;
@@ -183,7 +191,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('6. Mirador 3 viewer initializes and renders canvas alongside refactored components', async ({ page, baseURL }) => {
-    const docPath = baseURL?.includes('3010') ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
+    const docPath = isHeritagePortal(baseURL) ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
     await page.goto(docPath);
     await page.waitForLoadState('domcontentloaded');
 
@@ -276,7 +284,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
 
   test('10. Serial collection items render with openseadragon-preview controller and load viewers', async ({ page, baseURL }) => {
     // Only Canadiana has the sru serial record
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     if (!isCanadiana) return;
 
     await page.goto('/catalogue/sru.00007?lang=en');
@@ -315,7 +323,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('12. Download endpoints accept document IDs with underscores, dots, and hyphens', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     const docId = isCanadiana ? 'oon.00002_194801' : 'oocihm.lac_reel_h2971';
     const arkPath = isCanadiana ? '69429/m20260000010001' : '69429/m0k35m90313z';
 
@@ -347,24 +355,27 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     expect(pageText).not.toContain('Solr returned an error');
   });
 
-  test('14. Search tracking action redirects smoothly to document show page', async ({ page }) => {
+  test('14. Stateless document links navigate directly to show page without /track redirect', async ({ page }) => {
     await page.goto('/catalogue?q=*');
     await page.waitForLoadState('domcontentloaded');
 
     const firstDocLink = page.locator('#documents .document-title-heading a, #documents h3.index_title a').first();
     await expect(firstDocLink).toBeVisible();
 
-    // Verify context tracking attribute is present
+    // Stateless search sessions (track_search_session.storage = false) omit data-context-href /track
     const contextHref = await firstDocLink.getAttribute('data-context-href');
-    expect(contextHref).toContain('/track');
+    expect(contextHref).toBeNull();
 
-    // Click link and verify tracking request succeeds with 303 redirect to show page
-    const [trackResponse] = await Promise.all([
-      page.waitForResponse(resp => resp.url().includes('/track')),
+    const href = await firstDocLink.getAttribute('href');
+    expect(href).toMatch(/\/catalogue\/[^/?]+/);
+
+    // Click link and verify direct navigation to show page succeeds with 200 OK
+    const [showResponse] = await Promise.all([
+      page.waitForResponse(resp => resp.url().includes('/catalogue/') && resp.request().resourceType() === 'document'),
       firstDocLink.click()
     ]);
 
-    expect(trackResponse.status()).toBe(303);
+    expect(showResponse.status()).toBe(200);
     await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('#main-container, main').first()).toBeVisible();
   });
@@ -405,7 +416,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('17. Citation and Librarian/MARC metadata views render successfully', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     const docId = isCanadiana ? 'oon.00002_194801' : 'oocihm.lac_reel_h2971';
 
     // Citation view
@@ -441,7 +452,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('19. Static informational pages load cleanly with 200 OK', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     const aboutPath = isCanadiana ? '/about/canadiana' : '/about/heritage';
 
     const pages = [aboutPath, '/compare-collections', '/api-access', '/what-is-iiif', '/terms-of-service'];
@@ -452,7 +463,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('20. Error handling and legacy URL redirects preserve compatibility', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     const docId = isCanadiana ? 'oon.00002_194801' : 'oocihm.lac_reel_h2971';
 
     // Legacy /catalog/:id redirects to /catalogue/:id
@@ -471,7 +482,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('21. Performance and SEO optimizations: deferred assets, non-blocking fonts, collection meta descriptions, and descriptive link text', async ({ page, baseURL }) => {
-    const isCanadiana = baseURL?.includes('3000') || !baseURL?.includes('3010');
+    const isCanadiana = !isHeritagePortal(baseURL);
     const docPath = isCanadiana ? '/catalogue/oon.00002_194801' : '/catalogue/oocihm.lac_reel_h2971';
 
     // 1. On homepage, Mirador assets (4.1MB) are NOT in the DOM
@@ -526,7 +537,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('22. Search result stub metadata display respects portal-specific rules (Issue #106)', async ({ page, baseURL }) => {
-    const isHeritage = baseURL?.includes('3010') || baseURL?.includes('heritage');
+    const isHeritage = isHeritagePortal(baseURL);
     await page.goto('/catalogue?q=*');
     await page.waitForLoadState('domcontentloaded');
 
@@ -534,17 +545,17 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
     expect(await documents.count()).toBeGreaterThan(0);
 
     if (isHeritage) {
-      // Heritage stubs: Omit Creator, Themes, Subject, Language
+      // Heritage stubs: Display format, creator, dates/volumes, themes, source institution, identifier, notes
+      // Omit Subject, Language, access notes, original version notes, ARKs, and date added
       await expect(page.locator('#documents article .blacklight-subject_ssim')).toHaveCount(0);
-      await expect(page.locator('#documents article .blacklight-theme_ssim')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-language_ssim')).toHaveCount(0);
-      // Heritage stubs: Must not display access notes, original version notes, ARKs, or date added
       await expect(page.locator('#documents article .blacklight-access_note_tsim')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-original_version_note_tsim')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-ark')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-date_added')).toHaveCount(0);
     } else {
-      // Canadiana stubs: Omit all notes, ARKs, access notes, and date added
+      // Canadiana stubs: Omit Themes, notes, access notes, original version notes, ARKs, and date added
+      await expect(page.locator('#documents article .blacklight-theme_ssim')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-notes_tsim')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-access_note_tsim')).toHaveCount(0);
       await expect(page.locator('#documents article .blacklight-original_version_note_tsim')).toHaveCount(0);
@@ -554,7 +565,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('23. Heritage sidebar facet ordering and reel card date suppression (Issues #82 & #83)', async ({ page, baseURL }) => {
-    const isHeritage = baseURL?.includes('3010') || baseURL?.includes('heritage');
+    const isHeritage = isHeritagePortal(baseURL);
     if (!isHeritage) return;
 
     await page.goto('/catalogue?q=*');
@@ -577,7 +588,7 @@ test.describe('Blacklight Architecture & ViewComponent Refactoring E2E', () => {
   });
 
   test('24. Detailed item show page preserves full notes and metadata (Issue #106)', async ({ page, baseURL }) => {
-    const isHeritage = baseURL?.includes('3010') || baseURL?.includes('heritage');
+    const isHeritage = isHeritagePortal(baseURL);
     const docPath = isHeritage ? '/catalogue/oocihm.lac_reel_h2971' : '/catalogue/oon.00002_194801';
 
     await page.goto(docPath);

@@ -1,5 +1,21 @@
 import { Controller } from "@hotwired/stimulus";
 
+const TRANSPARENT_NAV_IMAGE =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+const TRANSPARENT_NAV_IMAGES = Object.fromEntries(
+  ["zoomIn", "zoomOut", "home", "fullpage", "rotateleft", "rotateright", "flip", "previous", "next"].map(
+    (name) => [
+      name,
+      {
+        DOWN: TRANSPARENT_NAV_IMAGE,
+        GROUP: TRANSPARENT_NAV_IMAGE,
+        HOVER: TRANSPARENT_NAV_IMAGE,
+        REST: TRANSPARENT_NAV_IMAGE,
+      },
+    ]
+  )
+);
+
 let globalActiveViewerState = null;
 
 export default class extends Controller {
@@ -189,7 +205,8 @@ export default class extends Controller {
 
           const viewer = osd({
             element: container,
-            prefixUrl: "/assets/",
+            prefixUrl: "",
+            navImages: TRANSPARENT_NAV_IMAGES,
             sequenceMode: true,
             tileSources: tileSources,
             immediateRender: true,

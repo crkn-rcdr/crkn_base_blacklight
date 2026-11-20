@@ -14,8 +14,17 @@ class SearchBuilder < Blacklight::SearchBuilder
     :request_fulltext_indicator
   ]
 
+  def id_fetch_query?(solr_parameters)
+    raw_param_q = blacklight_params[:q] || blacklight_params['q']
+    return true if raw_param_q.is_a?(Hash) || (defined?(ActionController::Parameters) && raw_param_q.is_a?(ActionController::Parameters))
+
+    solr_q = (solr_parameters[:q] || solr_parameters['q']).to_s
+    solr_q.start_with?('{!lucene}id:', '{!terms f=id}')
+  end
+
   def normalize_boolean_query_operators(solr_parameters)
     return unless solr_parameters
+    return if id_fetch_query?(solr_parameters)
 
     q = (solr_parameters[:q] || blacklight_params[:q] || blacklight_params['q'])&.to_s
     return if q.blank?
@@ -78,6 +87,7 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   def filter_individual_issues(solr_parameters)
     return unless solr_parameters
+    return if id_fetch_query?(solr_parameters)
 
     val = blacklight_params[:include_issues] || blacklight_params['include_issues']
     if val.nil? && scope.respond_to?(:params)
@@ -182,6 +192,7 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   def boost_and_expand_id_queries(solr_parameters)
     return unless solr_parameters
+    return if id_fetch_query?(solr_parameters)
 
     search_field = (blacklight_params[:search_field] || blacklight_params['search_field'])&.to_s
     return if search_field.present? && search_field != 'all_fields'
@@ -268,6 +279,15 @@ class SearchBuilder < Blacklight::SearchBuilder
   def request_fulltext_indicator(solr_parameters)
     return unless solr_parameters
 
+    # Internal Blacklight ID fetches (e.g. citation, librarian_view, bookmarks)
+    # require full document fields including marc_ss for MARC citation exporters.
+    if id_fetch_query?(solr_parameters)
+      solr_parameters[:fl] = '*'
+      solr_parameters[:facet] = false
+      solr_parameters[:stats] = false
+      return
+    end
+
     raw_fl = solr_parameters[:fl] || solr_parameters['fl'] || '*'
     fl_list = raw_fl.is_a?(Array) ? raw_fl.dup : raw_fl.to_s.split(',').map(&:strip)
     pseudo = 'has_ocr:field(has_full_text_eff)'
@@ -279,10 +299,17 @@ class SearchBuilder < Blacklight::SearchBuilder
 
   def apply_fulltext_join(solr_parameters)
     return unless solr_parameters
+    return if id_fetch_query?(solr_parameters)
 
     search_field = (blacklight_params[:search_field] || blacklight_params['search_field'])&.to_s
     raw_q = (solr_parameters[:q] || blacklight_params[:q] || blacklight_params['q'])&.to_s&.strip
     return if raw_q.blank?
+
+    # Cross-core join score computation (score=max) is only needed when sorting
+    # by relevance. For date/field sorts, score=none avoids computing and merging
+    # relevance scores across millions of OCR pages whose scores are discarded.
+    active_sort = (solr_parameters[:sort] || solr_parameters['sort']).to_s
+    join_score = (active_sort.blank? || active_sort.include?('score')) ? 'max' : 'none'
 
     if search_field == 'tx_gen'
       solr_parameters[:defType] = 'lucene'
@@ -291,7 +318,7 @@ class SearchBuilder < Blacklight::SearchBuilder
       else
         solr_parameters[:fulltext_q] = raw_q
         solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'
-        solr_parameters[:q] = '_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v=\'{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}\'}"'
+        solr_parameters[:q] = %(_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}'}")
       end
     elsif search_field.blank? || search_field == 'all_fields'
       return if raw_q == '*:*' || raw_q == '*'
@@ -303,7 +330,7 @@ class SearchBuilder < Blacklight::SearchBuilder
       solr_parameters[:all_fields_qf] ||= (solr_parameters[:qf] || CatalogController::ALL_FIELDS_QF)
       solr_parameters[:all_fields_pf] ||= (solr_parameters[:pf] || CatalogController::ALL_FIELDS_PF)
       solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'
-      solr_parameters[:q] = '_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf v=$q_meta}"^2 OR _query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v=\'{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}\'}"'
+      solr_parameters[:q] = %(_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf v=$q_meta}"^2 OR _query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}'}")
     end
   end
 

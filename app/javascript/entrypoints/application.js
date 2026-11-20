@@ -1,5 +1,6 @@
 import Lenis from 'lenis'
 import { application } from '../controllers/index.js'
+import '../styles/search_loading.css'
 
 // If using a TypeScript entrypoint file:
 //     <%= vite_typescript_tag 'application' %>
@@ -163,7 +164,8 @@ function initMiradorViewer() {
       }
     },
     osdConfig: {
-      prefixUrl: "/assets/",
+      // Omit prefixUrl so Mirador's OpenSeadragonViewer uses inline data-URI
+      // TRANSPARENT_NAV_IMAGES instead of requesting missing /assets/*_*.png files.
       showNavigationControl: 1
     },
     workspace: {
@@ -828,4 +830,137 @@ function initFacetSuggestHandler() {
 }
 
 initFacetSuggestHandler();
+
+// Immediate loading feedback when users change sort order, per-page size,
+// facets, or pagination so full-page navigation never feels unresponsive.
+function initSearchNavigationLoading() {
+  if (window.__searchNavLoadingInitialized) return;
+  window.__searchNavLoadingInitialized = true;
+
+  const NAV_LINK_SELECTOR = [
+    '#sort-dropdown .dropdown-item[href]',
+    '#per_page-dropdown .dropdown-item[href]',
+    '.pagination .page-item:not(.disabled) a.page-link[href]',
+    '.facets-collapse a.facet-select[href]',
+    '.applied-filter a.remove[href]'
+  ].join(', ');
+
+  const isFrench = () => {
+    const lang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+    return lang.startsWith('fr');
+  };
+
+  const getOrCreateStatusBanner = (documentsEl) => {
+    let banner = document.getElementById('search-loading-status');
+    if (!banner && documentsEl && documentsEl.parentNode) {
+      banner = document.createElement('div');
+      banner.id = 'search-loading-status';
+      banner.className = 'search-loading-status';
+      banner.setAttribute('role', 'status');
+      banner.setAttribute('aria-live', 'polite');
+      banner.hidden = true;
+
+      const progress = document.createElement('progress');
+      progress.className = 'search-loading-spinner search-loading-spinner--md';
+      progress.setAttribute('aria-label', isFrench() ? 'Chargement' : 'Loading');
+
+      const label = document.createElement('span');
+      label.className = 'search-loading-status__text';
+
+      banner.appendChild(progress);
+      banner.appendChild(label);
+      documentsEl.parentNode.insertBefore(banner, documentsEl);
+    }
+    return banner;
+  };
+
+  const clearLoadingState = () => {
+    const documentsEl = document.getElementById('documents');
+    if (documentsEl) {
+      documentsEl.classList.remove('is-search-loading');
+    }
+
+    const banner = document.getElementById('search-loading-status');
+    if (banner) {
+      banner.hidden = true;
+    }
+
+    document.querySelectorAll('#sort-dropdown .dropdown-toggle.is-search-loading, #per_page-dropdown .dropdown-toggle.is-search-loading').forEach((btn) => {
+      if (btn.dataset.originalHtml) {
+        btn.innerHTML = btn.dataset.originalHtml;
+        delete btn.dataset.originalHtml;
+      }
+      btn.classList.remove('is-search-loading');
+      btn.removeAttribute('aria-disabled');
+    });
+  };
+
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+
+    const link = e.target.closest(NAV_LINK_SELECTOR);
+    if (!link) return;
+
+    const href = (link.getAttribute('href') || '').trim();
+    if (!href || href === '#' || href.startsWith('javascript:')) return;
+    if (link.target && link.target !== '_self') return;
+
+    const fr = isFrench();
+    const isSortClick = Boolean(link.closest('#sort-dropdown'));
+    const isPerPageClick = Boolean(link.closest('#per_page-dropdown'));
+
+    // Update the clicked dropdown toggle immediately so the user sees their selection took effect
+    const dropdown = link.closest('#sort-dropdown, #per_page-dropdown');
+    if (dropdown) {
+      const toggleBtn = dropdown.querySelector('.dropdown-toggle');
+      if (toggleBtn) {
+        if (!toggleBtn.dataset.originalHtml) {
+          toggleBtn.dataset.originalHtml = toggleBtn.innerHTML;
+        }
+        const selectedLabel = (link.textContent || '').replace(/\s+/g, ' ').trim();
+        const spinner = document.createElement('progress');
+        spinner.className = 'search-loading-spinner search-loading-spinner--sm';
+        spinner.setAttribute('aria-hidden', 'true');
+
+        const textSpan = document.createElement('span');
+        textSpan.textContent = selectedLabel
+          ? (isSortClick ? (fr ? `Tri : ${selectedLabel}…` : `Sorting: ${selectedLabel}…`) : `${selectedLabel}…`)
+          : (fr ? 'Chargement…' : 'Loading…');
+
+        toggleBtn.replaceChildren(spinner, textSpan);
+        toggleBtn.classList.add('is-search-loading');
+        toggleBtn.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    const documentsEl = document.getElementById('documents');
+    if (documentsEl) {
+      documentsEl.classList.add('is-search-loading');
+      const banner = getOrCreateStatusBanner(documentsEl);
+      if (banner) {
+        const textEl = banner.querySelector('.search-loading-status__text');
+        if (textEl) {
+          if (isSortClick) {
+            const selectedLabel = (link.textContent || '').replace(/\s+/g, ' ').trim();
+            textEl.textContent = selectedLabel
+              ? (fr ? `Tri des résultats par « ${selectedLabel} »…` : `Sorting results by ${selectedLabel}…`)
+              : (fr ? 'Tri des résultats en cours…' : 'Sorting results…');
+          } else if (isPerPageClick) {
+            textEl.textContent = fr ? 'Mise à jour du nombre de résultats…' : 'Updating results per page…';
+          } else {
+            textEl.textContent = fr ? 'Mise à jour des résultats…' : 'Updating results…';
+          }
+        }
+        banner.hidden = false;
+      }
+    }
+  }, true);
+
+  window.addEventListener('pageshow', clearLoadingState);
+  document.addEventListener('turbo:load', clearLoadingState);
+}
+
+initSearchNavigationLoading();
 

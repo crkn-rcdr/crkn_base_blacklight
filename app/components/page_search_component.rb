@@ -1,10 +1,15 @@
 require 'cgi'
+require 'digest'
 
 class CurrentPageSearch < ActiveSupport::CurrentAttributes
   attribute :cache
 end
 
 class PageSearchComponent < ViewComponent::Base
+  BATCH_MAX_ROWS = 150
+  SINGLE_MAX_ROWS = 50
+  CACHE_TTL = 10.minutes
+
   def initialize(docId:, arkUrl:, term:)
     @document_id = docId
     @ark_url = arkUrl.to_s
@@ -69,6 +74,11 @@ class PageSearchComponent < ViewComponent::Base
     CurrentPageSearch.cache[@term] ||= {}
   end
 
+  def rails_cache_key(clean_path)
+    term_digest = Digest::SHA256.hexdigest(@term.strip.downcase)[0, 16]
+    "page_search:v1:#{term_digest}:#{clean_path}"
+  end
+
   def batch_prefetch_page_documents!
     return if CurrentPageSearch.cache&.dig(@term, :__batch_prefetched)
     prefetch_cache[:__batch_prefetched] = true
@@ -83,7 +93,7 @@ class PageSearchComponent < ViewComponent::Base
 
     return if docs_on_page.blank?
 
-    paths_by_doc = {}
+    candidate_paths = []
     docs_on_page.each do |doc|
       raw_ark = (doc.try(:_source)&.dig('ark') || (doc['ark'] rescue nil) || (doc[:ark] rescue nil))
       next if raw_ark.blank?
@@ -91,11 +101,29 @@ class PageSearchComponent < ViewComponent::Base
       path = CGI.unescape(raw_ark.to_s).sub(%r{^https?://n2t\.net/ark:/}i, '').sub(%r{^ark:/}i, '').sub(%r{\A/+}, '')
       next if path.blank? || path.start_with?('69429/s')
 
-      paths_by_doc[path] = []
+      candidate_paths << path
       prefetch_cache[path] = []
     end
 
-    return if paths_by_doc.empty?
+    candidate_paths.uniq!
+    return if candidate_paths.empty?
+
+    # Reuse per-(term, manifest) cached page lists across sort/page switches
+    uncached_paths = candidate_paths
+    if defined?(Rails) && Rails.respond_to?(:cache) && Rails.cache
+      key_by_path = candidate_paths.index_with { |p| rails_cache_key(p) }
+      cached_map = Rails.cache.read_multi(*key_by_path.values)
+      uncached_paths = []
+      key_by_path.each do |path, cache_key|
+        if cached_map.key?(cache_key) && cached_map[cache_key].is_a?(Array)
+          prefetch_cache[path] = cached_map[cache_key]
+        else
+          uncached_paths << path
+        end
+      end
+    end
+
+    return if uncached_paths.empty?
 
     base_uri = Blacklight.default_index.connection.uri.to_s rescue nil
     return if base_uri.blank?
@@ -103,17 +131,20 @@ class PageSearchComponent < ViewComponent::Base
     cs_url = base_uri.sub('blacklight_marc', 'content_search')
     rsolr = RSolr.connect(url: cs_url)
 
-    id_clauses = paths_by_doc.keys.map { |p| "id:#{RSolr.solr_escape(p)}*" }.join(' OR ')
     solr_term = RSolr.solr_escape(@term)
 
+    # Use exact {!terms f=manifestid} filter (inverted index lookup, zero FieldCache)
+    # instead of multi-wildcard id:69429/...* scans, and bound rows to reduce .fdt
+    # stored-field decompression overhead.
     res = rsolr.get('select', params: {
-      q: "(#{id_clauses}) AND ocrtext:#{solr_term}",
+      q: "ocrtext:#{solr_term}",
+      fq: "{!terms f=manifestid}#{uncached_paths.join(',')}",
       fl: 'id,canvas_index',
-      rows: 500
+      rows: BATCH_MAX_ROWS
     })
 
     docs = res.dig('response', 'docs') || []
-    sorted_paths = paths_by_doc.keys.sort_by { |p| -p.length }
+    sorted_paths = uncached_paths.sort_by { |p| -p.length }
 
     docs.each do |d|
       id = d['id'].to_s
@@ -129,23 +160,36 @@ class PageSearchComponent < ViewComponent::Base
       end
     end
 
-    paths_by_doc.each_key do |p|
-      prefetch_cache[p] = prefetch_cache[p].uniq.sort
+    uncached_paths.each do |p|
+      pages = prefetch_cache[p].uniq.sort
+      prefetch_cache[p] = pages
+      if defined?(Rails) && Rails.respond_to?(:cache) && Rails.cache
+        Rails.cache.write(rails_cache_key(p), pages, expires_in: CACHE_TTL)
+      end
     end
   rescue => e
     Rails.logger.warn("PageSearchComponent batch prefetch error: #{e.message}") if defined?(Rails)
   end
 
   def fetch_single_matching_pages(clean_path)
+    if defined?(Rails) && Rails.respond_to?(:cache) && Rails.cache
+      cached = Rails.cache.read(rails_cache_key(clean_path))
+      if cached.is_a?(Array)
+        prefetch_cache[clean_path] = cached
+        return cached
+      end
+    end
+
     base_uri = Blacklight.default_index.connection.uri.to_s rescue nil
     return [] if base_uri.blank?
 
     cs_url = base_uri.sub('blacklight_marc', 'content_search')
     rsolr = RSolr.connect(url: cs_url)
     res = rsolr.get('select', params: {
-      q: "id:#{clean_path}* AND ocrtext:#{RSolr.solr_escape(@term)}",
+      q: "ocrtext:#{RSolr.solr_escape(@term)}",
+      fq: "{!terms f=manifestid}#{clean_path}",
       fl: 'canvas_index',
-      rows: 50
+      rows: SINGLE_MAX_ROWS
     })
     docs = res.dig('response', 'docs') || []
     # Solr canvas_index is 0-based; UI/Mirador pageNum is 1-based (canvas_index + 1)
@@ -154,6 +198,9 @@ class PageSearchComponent < ViewComponent::Base
       idx && idx >= 0 ? idx + 1 : nil
     end.uniq.sort
     prefetch_cache[clean_path] = res_pages
+    if defined?(Rails) && Rails.respond_to?(:cache) && Rails.cache
+      Rails.cache.write(rails_cache_key(clean_path), res_pages, expires_in: CACHE_TTL)
+    end
     res_pages
   rescue => e
     Rails.logger.warn("PageSearchComponent query error for #{clean_path}: #{e.message}") if defined?(Rails)
@@ -167,4 +214,3 @@ class PageSearchComponent < ViewComponent::Base
     true
   end
 end
-

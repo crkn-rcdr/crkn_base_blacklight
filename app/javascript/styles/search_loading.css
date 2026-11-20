@@ -1,0 +1,184 @@
+/* Search navigation loading feedback (Sort / Per-Page / Facets / Pagination).
+ * Uses native indeterminate <progress> elements styled per modern-web-guidance
+ * spinner best practices: conic-gradient ring with border-area + mask-image
+ * fallback, forced-colors support, and prefers-reduced-motion handling.
+ */
+
+@property --arc-start {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --arc-end {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --progress-dash-animation {
+  syntax: "*";
+  inherits: false;
+  initial-value: , search-spinner-dash 3s ease-in-out infinite;
+}
+
+/* Hide default browser progress bar tracks (separate rules per engine) */
+progress.search-loading-spinner:indeterminate::-webkit-progress-bar {
+  display: none;
+  background: none;
+}
+
+progress.search-loading-spinner:indeterminate::-webkit-progress-value {
+  display: none;
+  background: none;
+}
+
+progress.search-loading-spinner:indeterminate::-moz-progress-bar {
+  display: none;
+  background: none;
+}
+
+progress.search-loading-spinner:indeterminate::slider-fill {
+  display: none;
+  background: none;
+}
+
+progress.search-loading-spinner:indeterminate {
+  --_from: calc(90deg + var(--arc-start, 0deg));
+  --_to: calc(90deg + var(--arc-end, 158deg));
+  --size: 16px;
+  --thickness: 2px;
+  --spinner-color: currentColor;
+  --track-color: rgba(128, 128, 128, 0.25);
+  --spinner-duration: 1.1s;
+  --_used-spinner-duration: var(--spinner-duration);
+
+  display: inline-block;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  background: conic-gradient(
+      from var(--_from),
+      var(--spinner-color) calc(var(--_to) - var(--_from)),
+      transparent 0
+    )
+    var(--track-color);
+
+  animation:
+    search-spinner-spin var(--_used-spinner-duration) linear infinite
+    var(--progress-dash-animation, );
+}
+
+@supports (background-clip: border-area) {
+  progress.search-loading-spinner:indeterminate {
+    background-clip: border-area;
+    border: var(--thickness) solid transparent;
+    background-origin: border-box;
+  }
+}
+
+@supports not (background-clip: border-area) {
+  progress.search-loading-spinner:indeterminate {
+    --clip-boundary: calc(100% - var(--thickness));
+    mask-image: radial-gradient(
+      farthest-side,
+      transparent var(--clip-boundary),
+      black var(--clip-boundary)
+    );
+    border: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  progress.search-loading-spinner:indeterminate {
+    forced-color-adjust: none;
+    --spinner-color: CanvasText;
+    --track-color: Canvas;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  progress.search-loading-spinner:indeterminate {
+    --_used-spinner-duration: 6s;
+    --progress-dash-animation: ;
+    --arc-end: 158deg;
+  }
+}
+
+progress.search-loading-spinner--sm:indeterminate {
+  --size: 15px;
+  --thickness: 2px;
+}
+
+progress.search-loading-spinner--md:indeterminate {
+  --size: 20px;
+  --thickness: 2.5px;
+  --spinner-color: #1d4ed8;
+  --track-color: rgba(29, 78, 216, 0.18);
+}
+
+@keyframes search-spinner-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@keyframes search-spinner-dash {
+  from {
+    --arc-start: 0deg;
+    --arc-end: 3deg;
+  }
+  50% {
+    --arc-start: 100deg;
+    --arc-end: 358deg;
+  }
+  to {
+    --arc-start: 360deg;
+    --arc-end: 363deg;
+  }
+}
+
+/* Dropdown button inline loading state */
+#sort-dropdown .dropdown-toggle.is-search-loading,
+#per_page-dropdown .dropdown-toggle.is-search-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: progress;
+  opacity: 0.9;
+}
+
+/* Search results dimming during navigation */
+#documents.is-search-loading {
+  opacity: 0.52;
+  pointer-events: none;
+  cursor: progress;
+  transition: opacity 120ms ease;
+}
+
+/* Polite live status banner above #documents */
+.search-loading-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.95rem;
+  margin-bottom: 0.85rem;
+  border-radius: 6px;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.search-loading-status[hidden] {
+  display: none !important;
+}
