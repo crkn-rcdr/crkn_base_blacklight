@@ -99,8 +99,10 @@ class CatalogController < ApplicationController
   configure_blacklight do |config|
     config.search_builder_class = SearchBuilder
 
-    # Use the standard select handler
+    # Use the standard select handler via POST so long pasted titles/queries
+    # never trigger RSolr::Error::Http 414 Request-URI Too Long.
     config.solr_path = 'select'
+    config.http_method = :post
 
     # Performance optimization: Trim fields requested on search result lists (index views)
     # to avoid loading and serializing megabytes of unneeded raw MARC / OCR text blobs.

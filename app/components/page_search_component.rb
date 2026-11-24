@@ -76,7 +76,28 @@ class PageSearchComponent < ViewComponent::Base
 
   def rails_cache_key(clean_path)
     term_digest = Digest::SHA256.hexdigest(@term.strip.downcase)[0, 16]
-    "page_search:v1:#{term_digest}:#{clean_path}"
+    "page_search:v2:#{term_digest}:#{clean_path}"
+  end
+
+  def normalized_query_term
+    q = @term.to_s.strip
+    q.include?('|') ? q.gsub(/\s*\|\s*/, ' OR ') : q
+  end
+
+  def content_search_params(fq:, fl:, rows:)
+    q = normalized_query_term
+    params = {
+      defType: 'edismax',
+      qf: 'ocrtext ocrtext_general ocrtext_en ocrtext_fr',
+      qs: 0,
+      hl: false,
+      q: q,
+      fq: fq,
+      fl: fl,
+      rows: rows
+    }
+    params[:mm] = 1 if q =~ /\bOR\b/
+    params
   end
 
   def batch_prefetch_page_documents!
@@ -131,17 +152,14 @@ class PageSearchComponent < ViewComponent::Base
     cs_url = base_uri.sub('blacklight_marc', 'content_search')
     rsolr = RSolr.connect(url: cs_url)
 
-    solr_term = RSolr.solr_escape(@term)
-
     # Use exact {!terms f=manifestid} filter (inverted index lookup, zero FieldCache)
-    # instead of multi-wildcard id:69429/...* scans, and bound rows to reduce .fdt
-    # stored-field decompression overhead.
-    res = rsolr.get('select', params: {
-      q: "ocrtext:#{solr_term}",
+    # and edismax with qs=0 (matching SearchBuilder) so quoted phrases and boolean OR
+    # queries highlight only pages that actually match the user's query.
+    res = rsolr.post('select', data: content_search_params(
       fq: "{!terms f=manifestid}#{uncached_paths.join(',')}",
       fl: 'id,canvas_index',
       rows: BATCH_MAX_ROWS
-    })
+    ))
 
     docs = res.dig('response', 'docs') || []
     sorted_paths = uncached_paths.sort_by { |p| -p.length }
@@ -185,12 +203,11 @@ class PageSearchComponent < ViewComponent::Base
 
     cs_url = base_uri.sub('blacklight_marc', 'content_search')
     rsolr = RSolr.connect(url: cs_url)
-    res = rsolr.get('select', params: {
-      q: "ocrtext:#{RSolr.solr_escape(@term)}",
+    res = rsolr.post('select', data: content_search_params(
       fq: "{!terms f=manifestid}#{clean_path}",
       fl: 'canvas_index',
       rows: SINGLE_MAX_ROWS
-    })
+    ))
     docs = res.dig('response', 'docs') || []
     # Solr canvas_index is 0-based; UI/Mirador pageNum is 1-based (canvas_index + 1)
     res_pages = docs.filter_map do |d|

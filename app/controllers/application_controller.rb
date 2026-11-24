@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
   private
 
   def set_locale
-    I18n.locale = params[:lang] ||
-                  session[:locale] ||
+    I18n.locale = extract_locale_from_params ||
+                  validated_locale(session[:locale]) ||
                   extract_locale_from_header ||
                   I18n.default_locale
 
@@ -31,6 +31,30 @@ class ApplicationController < ActionController::Base
       same_site: :lax,
       httponly: false
     }
+  end
+
+  def extract_locale_from_params
+    raw = params[:lang].to_s.strip
+    return nil if raw.blank?
+
+    # Recover from legacy cached OpenSearch URLs that produced `?lang=en?q=term`
+    if raw.include?('?')
+      lang_part, trailing_query = raw.split('?', 2)
+      if params[:q].blank? && trailing_query.present?
+        recovered_q = Rack::Utils.parse_query(trailing_query)['q']
+        params[:q] = recovered_q if recovered_q.present?
+      end
+      raw = lang_part
+    end
+
+    validated_locale(raw)
+  end
+
+  def validated_locale(candidate)
+    return nil if candidate.blank?
+
+    normalized = candidate.to_s.downcase.strip
+    normalized if I18n.available_locales.map(&:to_s).include?(normalized)
   end
 
   def extract_locale_from_header

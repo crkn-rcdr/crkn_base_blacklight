@@ -17,7 +17,9 @@ class SearchBuilderTest < ActiveSupport::TestCase
     assert_equal "chocolate chip", params[:fulltext_q]
     assert_includes params[:q], '_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}"'
     assert_includes params[:q], '_query_:"{!join from=serial_key_s to=id v=\'{!join from=manifestid to=manifestid_s fromIndex=content_search score=max v=$q_fulltext}\'}"'
-    assert_includes params[:q], '_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf v=$q_meta}"^2'
+    assert_includes params[:q], '_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf qs=0 v=$q_meta}"^2'
+    assert_includes params[:q_fulltext], 'qs=0'
+    assert_equal 0, params[:qs]
   end
 
   test "apply_fulltext_join transforms blank search_field query into lucene with fulltext joins" do
@@ -88,5 +90,38 @@ class SearchBuilderTest < ActiveSupport::TestCase
     assert_equal false, params[:facet]
     assert_nil params[:fulltext_q]
     assert_nil params[:q_meta]
+  end
+
+  test "quoted phrase queries enforce exact phrase slop qs=0 across all_fields, tx_gen, and title" do
+    %w[all_fields tx_gen title].each do |field|
+      @controller.params = ActionController::Parameters.new({ q: '"Barbara Howard"', search_field: field })
+      builder = SearchBuilder.new(@controller).with({ q: '"Barbara Howard"', search_field: field })
+      params = builder.processed_parameters
+
+      assert_equal 0, params[:qs], "Expected qs=0 for search_field=#{field}"
+      if field == "all_fields" || field == "tx_gen"
+        assert_equal '"Barbara Howard"', params[:fulltext_q]
+        assert_includes params[:q_fulltext], "qs=0"
+      end
+    end
+  end
+
+  test "long 40-word historical titles are preserved intact without truncation" do
+    title_q = Array.new(40) { |i| "titleword#{i}" }.join(' ')
+    @controller.params = ActionController::Parameters.new({ q: title_q, search_field: "all_fields" })
+    builder = SearchBuilder.new(@controller).with({ q: title_q, search_field: "all_fields" })
+    params = builder.processed_parameters
+
+    assert_equal 40, params[:fulltext_q].split(/\s+/).length
+  end
+
+  test "very long pasted queries are safely capped to MAX_QUERY_WORDS with balanced quotes" do
+    long_q = '"' + Array.new(80) { |i| "word#{i}" }.join(' ') + '"'
+    @controller.params = ActionController::Parameters.new({ q: long_q, search_field: "all_fields" })
+    builder = SearchBuilder.new(@controller).with({ q: long_q, search_field: "all_fields" })
+    params = builder.processed_parameters
+
+    assert_equal SearchBuilder::MAX_QUERY_WORDS, params[:fulltext_q].split(/\s+/).length
+    assert_equal 0, params[:fulltext_q].count('"') % 2
   end
 end

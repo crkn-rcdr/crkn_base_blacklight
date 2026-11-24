@@ -4,6 +4,8 @@ class SearchBuilder < Blacklight::SearchBuilder
   include BlacklightRangeLimit::RangeLimitBuilder
 
 
+  MAX_QUERY_WORDS = 64
+
   self.default_processor_chain += [
     :add_inclusive_facet_fq_to_solr,
     :tag_and_exclude_facets,
@@ -29,11 +31,28 @@ class SearchBuilder < Blacklight::SearchBuilder
     q = (solr_parameters[:q] || blacklight_params[:q] || blacklight_params['q'])&.to_s
     return if q.blank?
 
+    # Enforce exact phrase matching (qs=0) for user-quoted phrases across all search fields
+    # while preserving explicit proximity syntax (e.g. "Barbara Howard"~2) and ps phrase boosts.
+    solr_parameters[:qs] = 0
+
+    # Prevent Lucene TooManyNestedClauses (maxClauseCount=1024 across ~32 qf fields)
+    # when patrons paste very long titles/abstracts into the search box.
+    words = q.strip.split(/\s+/)
+    if words.length > MAX_QUERY_WORDS
+      q = words.first(MAX_QUERY_WORDS).join(' ')
+      q = "#{q}\"" if q.count('"').odd?
+      solr_parameters[:q] = q
+    end
+
     # If the user used the documented '|' alternate term operator, replace with ' OR '
     if q.include?('|')
       q = q.gsub(/\s*\|\s*/, ' OR ')
       solr_parameters[:q] = q
     end
+
+    # Track the normalized/capped user query for apply_fulltext_join before
+    # boost_and_expand_id_queries wraps single-token IDs into `(tok) OR id:...`.
+    @normalized_user_q = q.strip
 
     # If query contains explicit boolean OR, relax minimum match so Solr doesn't require 100% of terms
     if q =~ /\bOR\b/
@@ -221,11 +240,10 @@ class SearchBuilder < Blacklight::SearchBuilder
       end
     else
       # Multi-word query (e.g. "MIKAN 117878", "reel H2971", "CIHM 72118")
-      tokens = raw_q.scan(/[a-zA-Z0-9_\-\.]+/)
+      # Only expand tokens that actually contain digits (real ID/reel/mikan candidates)
+      # so long prose titles don't generate hundreds of useless `id:"oocihm.word"^50000` bq clauses.
+      tokens = raw_q.scan(/[a-zA-Z0-9_\-\.]+/).select { |t| t.length >= 3 && t.length <= 50 && t.match?(/\d/) }.uniq.first(5)
       tokens.each do |tok|
-        next if tok.length < 3 || tok.length > 50
-        next if tok =~ /\A(?:the|and|for|from|with|dans|avec|pour)\z/i
-
         candidates = generate_id_candidates(tok)
         candidates.each do |cid|
           escaped_id = RSolr.solr_escape(cid)
@@ -317,7 +335,7 @@ class SearchBuilder < Blacklight::SearchBuilder
         solr_parameters[:q] = '{!frange l=1}has_full_text_eff'
       else
         solr_parameters[:fulltext_q] = raw_q
-        solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'
+        solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" qs=0 v=$fulltext_q}'
         solr_parameters[:q] = %(_query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}'}")
       end
     elsif search_field.blank? || search_field == 'all_fields'
@@ -326,11 +344,11 @@ class SearchBuilder < Blacklight::SearchBuilder
       meta_q = (solr_parameters[:q] || raw_q).to_s.strip
       solr_parameters[:defType] = 'lucene'
       solr_parameters[:q_meta] = meta_q
-      solr_parameters[:fulltext_q] = (blacklight_params[:q] || blacklight_params['q'] || raw_q).to_s.strip
+      solr_parameters[:fulltext_q] = (@normalized_user_q.presence || raw_q).to_s.strip
       solr_parameters[:all_fields_qf] ||= (solr_parameters[:qf] || CatalogController::ALL_FIELDS_QF)
       solr_parameters[:all_fields_pf] ||= (solr_parameters[:pf] || CatalogController::ALL_FIELDS_PF)
-      solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" v=$fulltext_q}'
-      solr_parameters[:q] = %(_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf v=$q_meta}"^2 OR _query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}'}")
+      solr_parameters[:q_fulltext] = '{!edismax qf="ocrtext ocrtext_general ocrtext_en ocrtext_fr" qs=0 v=$fulltext_q}'
+      solr_parameters[:q] = %(_query_:"{!edismax qf=$all_fields_qf pf=$all_fields_pf qs=0 v=$q_meta}"^2 OR _query_:"{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}" OR _query_:"{!join from=serial_key_s to=id v='{!join from=manifestid to=manifestid_s fromIndex=content_search score=#{join_score} v=$q_fulltext}'}")
     end
   end
 

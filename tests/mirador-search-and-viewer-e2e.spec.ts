@@ -257,4 +257,48 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     }
   });
 
+  test('9. Selecting a different page from Gallery view after navigating search results stays on the chosen page (Issue #115)', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'OCR content search test is Canadiana-specific');
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/catalogue/oocihm.8_06959_1015?q=chocolate+chip&pageNum=24');
+    await page.waitForLoadState('domcontentloaded');
+
+    const viewer = page.locator('#my-mirador');
+    await expect(viewer.locator('.openseadragon-canvas')).toBeVisible({ timeout: 15000 });
+
+    const nextBtn = viewer.locator('button[aria-label*="Next result"]').first();
+    const countLabel = viewer.locator('span.count').first();
+    await expect(countLabel).toBeVisible({ timeout: 15000 });
+
+    // Navigate to the 3rd search result so selectedAnnotationId is active on page 24
+    await nextBtn.click();
+    await expect(countLabel).toHaveText(/2\s*\/\s*14/, { timeout: 5000 });
+    await nextBtn.click();
+    await expect(countLabel).toHaveText(/3\s*\/\s*14/, { timeout: 5000 });
+
+    const canvasInput = viewer.locator('.mirador-canvas-nav input, .mirador-canvas-nav .MuiAutocomplete-input').first();
+    await expect(canvasInput).toHaveValue('24', { timeout: 5000 });
+
+    // Switch to Gallery view (unmounts OpenSeadragonViewer)
+    const galleryBtn = viewer.getByRole('button', { name: /Gallery view/i }).first();
+    await expect(galleryBtn).toBeVisible({ timeout: 10000 });
+    await galleryBtn.click();
+    await expect(viewer.locator('.openseadragon-canvas')).toBeHidden({ timeout: 5000 });
+
+    // Pick a different page thumbnail in Gallery view (not page 24)
+    const targetThumb = viewer.locator('[role="button"]').filter({ hasText: /Image\s+20\b/i }).first();
+    await expect(targetThumb).toBeVisible({ timeout: 10000 });
+    await targetThumb.click();
+
+    // Viewer should switch back to Page + thumbnails and STAY on page 20 (not snap back to page 24)
+    await expect(viewer.locator('.openseadragon-canvas')).toBeVisible({ timeout: 15000 });
+    await expect(canvasInput).toHaveValue('20', { timeout: 8000 });
+
+    // Wait briefly to confirm OpenSeadragonViewer mount effects do not hijack back to page 24
+    await page.waitForTimeout(1200);
+    await expect(canvasInput).toHaveValue('20');
+    expect(page.url()).toContain('pageNum=20');
+  });
+
 });
