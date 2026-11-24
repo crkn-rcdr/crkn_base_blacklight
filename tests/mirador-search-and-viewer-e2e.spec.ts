@@ -301,4 +301,65 @@ test.describe('Mirador In-Viewer Search & Viewer Experience E2E', () => {
     expect(page.url()).toContain('pageNum=20');
   });
 
+  test('10. Thumbnail size +/- slider stays aligned without clipping and avoids full/max requests at fit size', async ({ page, baseURL }) => {
+    const isHeritage = baseURL?.includes('heritage') ?? false;
+    const docId = isHeritage ? 'oocihm.lac_reel_h2971' : 'oocihm.8_06959_1015';
+
+    const fullMaxRequests: string[] = [];
+    page.on('request', (req) => {
+      if (req.url().includes('/full/max/')) fullMaxRequests.push(req.url());
+    });
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(`/catalogue/${docId}?lang=en&pageNum=1`);
+    await page.waitForLoadState('domcontentloaded');
+
+    const viewer = page.locator('#my-mirador');
+    await expect(viewer.locator('.openseadragon-canvas')).toBeVisible({ timeout: 15000 });
+
+    const minusBtn = viewer.locator('button[aria-label*="Smaller"]').first();
+    const plusBtn = viewer.locator('button[aria-label*="Larger"]').first();
+    await expect(minusBtn).toBeVisible({ timeout: 10000 });
+    await expect(plusBtn).toBeVisible({ timeout: 10000 });
+
+    // Click + until we reach max (fit) size so + becomes disabled
+    for (let i = 0; i < 4; i++) {
+      if (await plusBtn.isEnabled()) {
+        await plusBtn.click();
+        await page.waitForTimeout(150);
+      }
+    }
+    await expect(plusBtn).toBeDisabled();
+
+    // Both - and + buttons must keep identical compact dimensions (not 48x48 when disabled)
+    // and sit strictly inside the thumbnail strip bar (no left-edge clipping)
+    const layout = await page.evaluate(() => {
+      const minus = document.querySelector('#my-mirador button[aria-label*="Smaller"]');
+      const plus = document.querySelector('#my-mirador button[aria-label*="Larger"]');
+      const bar = minus?.closest('div')?.parentElement;
+      const thumbImg = Array.from(document.querySelectorAll('#my-mirador [role="button"]'))
+        .find((el) => /Image\s+1\b/.test(el.textContent || ''))
+        ?.querySelector('img');
+      return {
+        minus: minus?.getBoundingClientRect().toJSON(),
+        plus: plus?.getBoundingClientRect().toJSON(),
+        bar: bar?.getBoundingClientRect().toJSON(),
+        thumbW: thumbImg?.getBoundingClientRect().width || 0,
+        thumbH: thumbImg?.getBoundingClientRect().height || 0,
+      };
+    });
+
+    expect(layout.minus && layout.plus && layout.bar).toBeTruthy();
+    expect(Math.abs(layout.minus.width - layout.plus.width)).toBeLessThanOrEqual(1);
+    expect(Math.abs(layout.minus.height - layout.plus.height)).toBeLessThanOrEqual(1);
+    expect(layout.minus.left).toBeGreaterThanOrEqual(layout.bar.left - 1);
+    expect(layout.plus.right).toBeLessThanOrEqual(layout.bar.right + 1);
+
+    // Thumbnail must reserve real non-collapsed dimensions (never 1x1 placeholder dot)
+    expect(layout.thumbW).toBeGreaterThan(50);
+    expect(layout.thumbH).toBeGreaterThan(50);
+    // Thumbnails must NEVER request full-resolution /full/max/ archival scans
+    expect(fullMaxRequests).toEqual([]);
+  });
+
 });
