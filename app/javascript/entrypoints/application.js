@@ -791,9 +791,15 @@ function initFacetSuggestHandler() {
       try {
         const url = new URL(facetSearchContext, window.location.origin);
         url.searchParams.delete('facet.page');
+        url.searchParams.delete('query_fragment');
+        url.searchParams.delete('only_values');
         facetSearchParams = url.searchParams.toString();
       } catch (_err) {
-        facetSearchParams = window.location.search.replace(/^\?/, '');
+        const fallbackParams = new URLSearchParams(window.location.search);
+        fallbackParams.delete('facet.page');
+        fallbackParams.delete('query_fragment');
+        fallbackParams.delete('only_values');
+        facetSearchParams = fallbackParams.toString();
       }
 
       const urlToFetch = queryFragment

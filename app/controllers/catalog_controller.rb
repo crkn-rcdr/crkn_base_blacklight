@@ -591,6 +591,12 @@ class CatalogController < ApplicationController
       defaults_added = true
     end
 
+    if query_params.key?('query_fragment') || query_params.key?('only_values')
+      query_params.delete('query_fragment')
+      query_params.delete('only_values')
+      defaults_added = true
+    end
+
     redirect_to search_catalog_path(query_params) if defaults_added
   end
 
@@ -598,7 +604,7 @@ class CatalogController < ApplicationController
     @facet = blacklight_config.facet_fields[params[:id]]
     raise ActionController::RoutingError, 'Not Found' unless @facet
 
-    @response = if params[:query_fragment].present?
+    @response = if params[:only_values].present? && params[:query_fragment].present?
                   search_service.facet_suggest_response(@facet.key, params[:query_fragment])
                 else
                   search_service.facet_field_response(@facet.key)

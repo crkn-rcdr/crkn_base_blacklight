@@ -268,4 +268,82 @@ test.describe('Real-Patron Journeys E2E', () => {
       await expect(page.locator('text=500 Internal Server Error')).not.toBeVisible();
     }
   });
+
+  test('10. Subject modal suggest -> apply -> reopen -> clear -> reopen never leaks query_fragment or drops modal chrome', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'Subject facet modal with >10 seeded values is tested on Canadiana');
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/catalogue?lang=en&q=&search_field=all_fields');
+    await page.waitForLoadState('domcontentloaded');
+
+    const openSubjectModal = async () => {
+      const subjectSection = page.locator('.blacklight-subject_ssim_str').first();
+      await expect(subjectSection).toBeVisible({ timeout: 10000 });
+      const toggleBtn = subjectSection.locator('button[data-bs-toggle="collapse"]').first();
+      if ((await toggleBtn.count()) > 0 && (await toggleBtn.getAttribute('aria-expanded')) === 'false') {
+        await toggleBtn.click();
+      }
+      const moreLink = subjectSection.locator('a[data-checkbox-facet-more="true"]').first();
+      await expect(moreLink).toBeVisible({ timeout: 10000 });
+      await moreLink.click();
+
+      const modal = page.locator('#blacklight-modal');
+      await expect(modal).toBeVisible({ timeout: 10000 });
+      await expect(modal.locator('.modal-header')).toBeVisible({ timeout: 10000 });
+      await expect(modal.locator('.facet-suggest')).toBeVisible({ timeout: 10000 });
+      return modal;
+    };
+
+    // Step 1: Open Subject "more" modal, search for "Police", wait for facet_suggest AJAX response, check, and Apply
+    const modal1 = await openSubjectModal();
+    const suggestInput = modal1.locator('.facet-suggest');
+    const suggestResponsePromise = page.waitForResponse(
+      (res) => res.url().includes('/catalogue/facet_suggest/subject_ssim_str/Police') && res.status() === 200
+    );
+    await suggestInput.fill('Police');
+    await suggestResponsePromise;
+    await expect(modal1.locator('.facet-extended-list.facet-suggestions')).toBeVisible({ timeout: 10000 });
+
+    const policeOption = modal1.locator('.checkbox-facet-option', { hasText: /Police -- Canada -- Periodicals/i }).first();
+    await expect(policeOption).toBeVisible({ timeout: 10000 });
+    await policeOption.locator('input[type="checkbox"]').check();
+
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+      modal1.locator('.checkbox-facet-apply').click(),
+    ]);
+
+    // URL must contain the applied subject filter and must NOT leak query_fragment
+    const appliedUrl = new URL(page.url());
+    expect(appliedUrl.searchParams.has('query_fragment'), `Unexpected query_fragment in URL: ${page.url()}`).toBe(false);
+    expect(appliedUrl.searchParams.getAll('f_inclusive[subject_ssim_str][]')).toContain('Police -- Canada -- Periodicals');
+
+    // Step 2: Reopen Subject "more" modal and click Clear
+    const modal2 = await openSubjectModal();
+    const clearLink = modal2.locator('.checkbox-facet-clear');
+    await expect(clearLink).toBeVisible({ timeout: 10000 });
+
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+      clearLink.click(),
+    ]);
+
+    // URL after Clear must not contain query_fragment or the cleared subject filter
+    const clearedUrl = new URL(page.url());
+    expect(clearedUrl.searchParams.has('query_fragment'), `Unexpected query_fragment after Clear: ${page.url()}`).toBe(false);
+    expect(clearedUrl.searchParams.getAll('f_inclusive[subject_ssim_str][]')).toEqual([]);
+
+    // Step 3: Reopen Subject "more" modal again — must render full modal with header, suggest input, and unfiltered subjects
+    const modal3 = await openSubjectModal();
+    await expect(modal3.locator('.facet-suggest')).toHaveValue('');
+    expect(await modal3.locator('.checkbox-facet-option').count()).toBeGreaterThan(2);
+    await modal3.locator('.modal-header button.btn-close, .modal-header [data-bs-dismiss="modal"]').first().click();
+
+    // Step 4: Even if a user lands on a stale URL with ?query_fragment=Police, opening Subject "more" still renders full modal
+    await page.goto('/catalogue?lang=en&q=&query_fragment=Police&search_field=all_fields');
+    await page.waitForLoadState('domcontentloaded');
+    const modal4 = await openSubjectModal();
+    await expect(modal4.locator('.facet-suggest')).toHaveValue('');
+    expect(await modal4.locator('.checkbox-facet-option').count()).toBeGreaterThan(2);
+  });
 });

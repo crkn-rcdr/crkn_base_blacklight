@@ -44,7 +44,7 @@ class CheckboxFacetComponent < Blacklight::Component
       params[filter_param]&.delete(facet_key)
       params.delete(filter_param) if params[filter_param].blank?
     end
-    helpers.search_action_path(params)
+    helpers.search_action_path(params.merge('query_fragment' => nil, 'only_values' => nil))
   end
 
   def more_path
@@ -52,7 +52,7 @@ class CheckboxFacetComponent < Blacklight::Component
     return if @facet_field.respond_to?(:modal_path) && @facet_field.modal_path.blank?
     return if @facet_field.paginator.blank? || @facet_field.paginator.last_page?
 
-    helpers.search_facet_path(modal_params.merge(id: facet_key))
+    helpers.search_facet_path(modal_params.merge(id: facet_key, query_fragment: nil, only_values: nil))
   end
 
   def modal_pagination
@@ -160,7 +160,7 @@ class CheckboxFacetComponent < Blacklight::Component
       params = helpers.params.to_unsafe_h.deep_dup
       params.except!(
         'action', 'authenticity_token', 'button', 'commit', 'controller',
-        'id', 'only_values', 'page', 'utf8',
+        'id', 'only_values', 'page', 'query_fragment', 'utf8',
         'facet.page', 'facet.sort', 'facet.prefix'
       )
       params
