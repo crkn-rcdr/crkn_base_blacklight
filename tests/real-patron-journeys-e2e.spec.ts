@@ -346,4 +346,61 @@ test.describe('Real-Patron Journeys E2E', () => {
     await expect(modal4.locator('.facet-suggest')).toHaveValue('');
     expect(await modal4.locator('.checkbox-facet-option').count()).toBeGreaterThan(2);
   });
+
+  test('11. Subject modal keeps selections across pagination + suggest search + cleared search, and Apply applies all of them', async ({ page, baseURL }) => {
+    test.skip(baseURL?.includes('heritage') ?? false, 'Needs a subject facet with 2+ modal pages (seeded on Canadiana)');
+
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/catalogue?lang=en&q=&search_field=all_fields');
+    await page.waitForLoadState('domcontentloaded');
+
+    const subjectSection = page.locator('.blacklight-subject_ssim_str').first();
+    await expect(subjectSection).toBeVisible({ timeout: 10000 });
+    const toggleBtn = subjectSection.locator('button[data-bs-toggle="collapse"]').first();
+    if ((await toggleBtn.count()) > 0 && (await toggleBtn.getAttribute('aria-expanded')) === 'false') {
+      await toggleBtn.click();
+    }
+    await subjectSection.locator('a[data-checkbox-facet-more="true"]').first().click();
+
+    const modal = page.locator('#blacklight-modal');
+    await expect(modal.locator('.facet-suggest')).toBeVisible({ timeout: 10000 });
+
+    // A: select the first subject on page 1
+    const firstInput = modal.locator('.checkbox-facet-input').first();
+    const valueA = await firstInput.getAttribute('value');
+    await firstInput.check();
+
+    // Go to page 2 and remember its first subject
+    const page1First = await modal.locator('.checkbox-facet-label').first().innerText();
+    await modal.locator('.facet-pagination a', { hasText: /Next/i }).first().click();
+    await expect(modal.locator('.checkbox-facet-label').first()).not.toHaveText(page1First, { timeout: 10000 });
+
+    // B: search for "Police" and select a result
+    const suggestResponse = page.waitForResponse(
+      (res) => res.url().includes('/catalogue/facet_suggest/subject_ssim_str/Police') && res.status() === 200
+    );
+    await modal.locator('.facet-suggest').fill('Police');
+    await suggestResponse;
+    const policeInput = modal.locator('.checkbox-facet-option', { hasText: /Police -- Canada -- Periodicals/i }).locator('input[type="checkbox"]').first();
+    await expect(policeInput).toBeVisible({ timeout: 10000 });
+    const valueB = await policeInput.getAttribute('value');
+    await policeInput.check();
+
+    // Erase the search; the unfiltered list comes back
+    const clearedResponse = page.waitForResponse(
+      (res) => res.url().includes('/catalogue/facet_suggest/subject_ssim_str') && !res.url().includes('/Police') && res.status() === 200
+    );
+    await modal.locator('.facet-suggest').fill('');
+    await clearedResponse;
+    await expect(modal.locator('.checkbox-facet-option').first()).toBeVisible({ timeout: 10000 });
+
+    // Apply: both A (previous page) and B (search result) must be applied
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+      modal.locator('.checkbox-facet-apply').click(),
+    ]);
+    const applied = new URL(page.url()).searchParams.getAll('f_inclusive[subject_ssim_str][]');
+    expect(applied, `Applied URL: ${page.url()}`).toContain(valueA);
+    expect(applied, `Applied URL: ${page.url()}`).toContain(valueB);
+  });
 });

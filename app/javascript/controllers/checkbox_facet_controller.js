@@ -2,11 +2,44 @@ import { Controller } from "@hotwired/stimulus";
 
 /**
  * Checkbox Facet Controller
- * 
- * Manages synchronization between sidebar facet checkboxes and modal
- * checkboxes when facets are displayed in a modal dialog.
- * Replaces the inline script from checkbox_facet_component.html.erb.
+ *
+ * Keeps sidebar facet checkboxes and the "more »" modal in sync.
+ *
+ * The modal never shows every value at once: patrons page through it
+ * (facet.page), search inside it (facet_suggest swaps the list via innerHTML) and
+ * clear that search again. Each of those replaces the rendered checkboxes, so the
+ * DOM alone cannot remember what was ticked. Instead, one module-level store holds the
+ * patron's selections for the facet while the modal is open:
+ *
+ *   - seeded on first load from the sidebar (or the server-rendered modal),
+ *   - updated on every checkbox change,
+ *   - re-applied to every freshly rendered modal list, and
+ *   - written into hidden `f_inclusive[...]` inputs for values that are not on screen,
+ *     so "Apply" submits every selection.
+ *
+ * The store is dropped when the modal closes or a sidebar "more »" link is clicked.
  */
+const modalSelection = { facetKey: null, values: null };
+
+function resetModalSelection() {
+  modalSelection.facetKey = null;
+  modalSelection.values = null;
+}
+
+if (typeof document !== "undefined" && !window.__checkboxFacetStoreBound) {
+  window.__checkboxFacetStoreBound = true;
+  document.addEventListener("hidden.bs.modal", resetModalSelection);
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (e.target && e.target.closest && e.target.closest("[data-checkbox-facet-more]")) {
+        resetModalSelection();
+      }
+    },
+    true
+  );
+}
+
 export default class extends Controller {
   connect() {
     this.form = this.element.classList?.contains("checkbox-facet-form")
@@ -16,7 +49,24 @@ export default class extends Controller {
     if (!this.form) return;
 
     this.facetKey = this.getFacetKey(this.form);
-    this.setupEventListeners();
+    this.onChange = (e) => {
+      if (e.target && e.target.matches && e.target.matches(".checkbox-facet-input")) {
+        this.handleCheckboxChange(e);
+      }
+    };
+    this.form.addEventListener("change", this.onChange);
+
+    if (this.isInModal()) this.initModalSelection();
+  }
+
+  disconnect() {
+    if (this.form && this.onChange) {
+      this.form.removeEventListener("change", this.onChange);
+    }
+  }
+
+  isInModal() {
+    return !!this.form.closest(".modal");
   }
 
   getFacetKey(form) {
@@ -32,44 +82,14 @@ export default class extends Controller {
     return null;
   }
 
-  setupEventListeners() {
-    // Set up checkbox change listeners
-    const checkboxes = this.form.querySelectorAll(".checkbox-facet-input");
-    checkboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", (e) => this.handleCheckboxChange(e));
-    });
-
-    // Handle modal open/load events across Blacklight and Bootstrap
-    this.onModalLoaded = () => this.syncModalFromSidebar();
-    document.addEventListener("loaded.blacklight.blacklight-modal", this.onModalLoaded);
-    document.addEventListener("blacklight:modal:loaded", this.onModalLoaded);
-    document.addEventListener("show.bs.modal", this.onModalLoaded);
-    document.addEventListener("shown.bs.modal", this.onModalLoaded);
+  inputName(facetKey = this.facetKey) {
+    return `f_inclusive[${facetKey}][]`;
   }
 
-  disconnect() {
-    if (this.onModalLoaded) {
-      document.removeEventListener("loaded.blacklight.blacklight-modal", this.onModalLoaded);
-      document.removeEventListener("blacklight:modal:loaded", this.onModalLoaded);
-      document.removeEventListener("show.bs.modal", this.onModalLoaded);
-      document.removeEventListener("shown.bs.modal", this.onModalLoaded);
-    }
-  }
-
-  isInModal() {
-    return !!this.form.closest(".modal");
-  }
-
-  handleCheckboxChange(event) {
-    const checkbox = event.target;
-    const value = checkbox.value;
-    const isNowChecked = checkbox.checked;
-
-    if (!this.isInModal()) {
-      this.syncCheckboxToOpenModal(value, isNowChecked);
-    } else {
-      this.syncCheckboxToSidebar(value, isNowChecked);
-    }
+  checkboxesIn(form, facetKey = this.facetKey) {
+    return Array.from(
+      form.querySelectorAll(`input[type="checkbox"][name="${CSS.escape(this.inputName(facetKey))}"]`)
+    );
   }
 
   findSidebarForm(facetKey) {
@@ -77,127 +97,107 @@ export default class extends Controller {
     const forms = Array.from(document.querySelectorAll("form.checkbox-facet-form")).filter(
       (f) => !f.closest(".modal")
     );
-    return (
-      forms.find(
-        (f) =>
-          this.getFacetKey(f) === facetKey ||
-          f.querySelector(`input[name="f_inclusive[${CSS.escape(facetKey)}][]"]`)
-      ) || null
-    );
+    return forms.find((f) => this.getFacetKey(f) === facetKey) || null;
   }
 
-  syncCheckboxToOpenModal(value, isChecked) {
-    const modalForm = document.querySelector(".modal form.checkbox-facet-form");
-    if (!modalForm) return;
+  // ---------------------------------------------------------------- modal side
 
-    const modalFacetKey = this.getFacetKey(modalForm);
-    if (modalFacetKey !== this.facetKey) return;
+  initModalSelection() {
+    if (!this.facetKey) return;
 
-    const modalCheckbox = modalForm.querySelector(
-      `.checkbox-facet-input[value="${CSS.escape(value)}"]`
-    );
-    if (modalCheckbox && modalCheckbox.checked !== isChecked) {
-      modalCheckbox.checked = isChecked;
+    if (modalSelection.facetKey !== this.facetKey || !modalSelection.values) {
+      modalSelection.facetKey = this.facetKey;
+      modalSelection.values = this.seedSelection();
     }
-    this.syncOffpageSelections(modalForm);
+    this.applyStoreToModal();
   }
 
-  syncCheckboxToSidebar(value, isChecked) {
+  // Sidebar state wins (it holds applied filters plus any not-yet-applied toggles);
+  // otherwise fall back to whatever the server rendered inside the modal.
+  seedSelection() {
     const sidebarForm = this.findSidebarForm(this.facetKey);
-    if (!sidebarForm) return;
-
-    const sidebarCheckbox = sidebarForm.querySelector(
-      `.checkbox-facet-input[value="${CSS.escape(value)}"]`
-    );
-    if (sidebarCheckbox && sidebarCheckbox.checked !== isChecked) {
-      sidebarCheckbox.checked = isChecked;
+    if (sidebarForm) {
+      return new Set(
+        this.checkboxesIn(sidebarForm)
+          .filter((cb) => cb.checked && !cb.disabled)
+          .map((cb) => cb.value)
+      );
     }
-  }
 
-  syncModalFromSidebar() {
-    const modalForm = document.querySelector(".modal form.checkbox-facet-form");
-    if (!modalForm) return;
-
-    const facetKey = this.getFacetKey(modalForm);
-    if (!facetKey || facetKey !== this.facetKey) return;
-
-    const sidebarForm = this.findSidebarForm(facetKey);
-    if (!sidebarForm) return;
-
-    const checkedInSidebar = new Set(
-      Array.from(
-        sidebarForm.querySelectorAll(
-          `input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`
-        )
-      )
-        .filter((cb) => cb.checked && !cb.disabled)
+    const values = new Set(
+      this.checkboxesIn(this.form)
+        .filter((cb) => cb.checked)
         .map((cb) => cb.value)
     );
-
-    Array.from(
-      modalForm.querySelectorAll(
-        `input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`
-      )
-    ).forEach((mCb) => {
-      mCb.checked = checkedInSidebar.has(mCb.value);
-    });
-
-    this.syncOffpageSelections(modalForm);
+    this.form.querySelectorAll("input.js-modal-offpage-selection").forEach((inp) => values.add(inp.value));
+    return values;
   }
 
-  syncOffpageSelections(modalForm) {
-    if (!modalForm || !modalForm.closest(".modal")) return;
-    const facetKey = this.getFacetKey(modalForm);
-    if (!facetKey) return;
+  applyStoreToModal() {
+    const store = modalSelection.values;
+    if (!store) return;
 
-    const sidebarForm = this.findSidebarForm(facetKey);
-    if (!sidebarForm) return;
+    const rendered = new Set();
+    this.checkboxesIn(this.form).forEach((cb) => {
+      rendered.add(cb.value);
+      cb.checked = store.has(cb.value);
+    });
 
-    const sidebarChecked = Array.from(
-      sidebarForm.querySelectorAll(
-        `input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`
-      )
-    )
-      .filter((cb) => cb.checked && !cb.disabled)
-      .map((cb) => cb.value);
+    this.writeOffpageInputs(Array.from(store).filter((v) => !rendered.has(v)));
+  }
 
-    const modalRendered = new Set(
-      Array.from(
-        modalForm.querySelectorAll(
-          `input[type="checkbox"][name="f_inclusive[${CSS.escape(facetKey)}][]"]`
-        )
-      ).map((cb) => cb.value)
-    );
-
-    const desiredOffpage = sidebarChecked.filter((val) => !modalRendered.has(val));
-
-    let box = modalForm.querySelector(".js-modal-offpage-selections");
+  writeOffpageInputs(values) {
+    let box = this.form.querySelector(".js-modal-offpage-selections");
     if (!box) {
       box = document.createElement("div");
       box.className = "js-modal-offpage-selections";
       box.hidden = true;
-      modalForm.insertBefore(box, modalForm.firstChild);
-    }
-
-    const currentOffpage = Array.from(
-      box.querySelectorAll("input.js-modal-offpage-selection")
-    ).map((inp) => inp.value);
-
-    if (
-      currentOffpage.length === desiredOffpage.length &&
-      currentOffpage.every((v, idx) => v === desiredOffpage[idx])
-    ) {
-      return;
+      this.form.insertBefore(box, this.form.firstChild);
     }
 
     box.innerHTML = "";
-    desiredOffpage.forEach((val) => {
+    values.forEach((val) => {
       const hidden = document.createElement("input");
       hidden.type = "hidden";
       hidden.className = "js-modal-offpage-selection";
-      hidden.name = `f_inclusive[${facetKey}][]`;
+      hidden.name = this.inputName();
       hidden.value = val;
       box.appendChild(hidden);
     });
+  }
+
+  // --------------------------------------------------------------- change sync
+
+  handleCheckboxChange(event) {
+    const { value, checked } = event.target;
+
+    if (this.isInModal()) {
+      this.initStoreIfMissing();
+      if (checked) modalSelection.values.add(value);
+      else modalSelection.values.delete(value);
+      this.applyStoreToModal();
+      this.setCheckbox(this.findSidebarForm(this.facetKey), value, checked);
+    } else if (modalSelection.facetKey === this.facetKey && modalSelection.values) {
+      // Sidebar toggled while the modal for the same facet is open.
+      if (checked) modalSelection.values.add(value);
+      else modalSelection.values.delete(value);
+      const modalForm = document.querySelector(".modal form.checkbox-facet-form");
+      if (modalForm && this.getFacetKey(modalForm) === this.facetKey) {
+        this.setCheckbox(modalForm, value, checked);
+      }
+    }
+  }
+
+  initStoreIfMissing() {
+    if (modalSelection.facetKey !== this.facetKey || !modalSelection.values) {
+      modalSelection.facetKey = this.facetKey;
+      modalSelection.values = this.seedSelection();
+    }
+  }
+
+  setCheckbox(form, value, checked) {
+    if (!form) return;
+    const cb = this.checkboxesIn(form, this.getFacetKey(form)).find((c) => c.value === value);
+    if (cb && cb.checked !== checked) cb.checked = checked;
   }
 }
