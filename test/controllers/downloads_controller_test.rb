@@ -85,6 +85,55 @@ class DownloadsControllerTest < ActionDispatch::IntegrationTest
     image_params = Rack::Utils.parse_query(image.query)
     assert_equal "/iiif/2/69429%2Fcanvas2/full/max/0/default.jpg", image.path
     assert_equal 'attachment; filename="oocihm.13566.2.jpg"', image_params["response-content-disposition"]
+
+    page_ocr = URI(payload["pageOcrUri"])
+    page_ocr_params = Rack::Utils.parse_query(page_ocr.query)
+    assert_equal "/download", page_ocr.path
+    assert_equal "oocihm.13566.2", page_ocr_params["slug"]
+    assert_equal "69429/canvas2", page_ocr_params["noid"]
+    assert_equal "OCR", page_ocr_params["type"]
+    expected_page_sig = OpenSSL::HMAC.hexdigest(
+      "SHA256",
+      "test-secret",
+      ["v2", "oocihm.13566.2", "69429/canvas2", "OCR", "", page_ocr_params["expires"]].join("\n")
+    )
+    assert_equal expected_page_sig, page_ocr_params["sig"]
+
+    doc_ocr = URI(payload["docOcrUri"])
+    doc_ocr_pairs = URI.decode_www_form(doc_ocr.query)
+    doc_ocr_params = Rack::Utils.parse_query(doc_ocr.query)
+    canvas_noids = doc_ocr_pairs.select { |k, _| k == "canvas_noid" }.map(&:last)
+    assert_equal "/download", doc_ocr.path
+    assert_equal "oocihm.13566", doc_ocr_params["slug"]
+    assert_equal "69429/m0c824b31w5q", doc_ocr_params["noid"]
+    assert_equal "OCR", doc_ocr_params["type"]
+    assert_equal ["69429/canvas1", "69429/canvas2"], canvas_noids
+    expected_doc_sig = OpenSSL::HMAC.hexdigest(
+      "SHA256",
+      "test-secret",
+      ["v2", "oocihm.13566", "69429/m0c824b31w5q", "OCR", "69429/canvas1\n69429/canvas2", doc_ocr_params["expires"]].join("\n")
+    )
+    assert_equal expected_doc_sig, doc_ocr_params["sig"]
+  end
+
+  test "omits docOcrUri when canvas count exceeds MAX_DOC_OCR_ZIP_CANVASES while keeping pageOcrUri" do
+    cache_key = "download:manifest:69429/m0huge"
+    many_canvases = (1..(DownloadsController::MAX_DOC_OCR_ZIP_CANVASES + 1)).map { |i| "69429/c#{i}" }
+    set_download_cache(
+      cache_key => {
+        schema: "crkn-download-cache-v4",
+        full_pdf_available: false,
+        page_pdf_available: false,
+        canvas_noids: many_canvases
+      }.to_json
+    )
+
+    get "/dl/oocihm.huge/69429/m0huge", params: { pageNum: 1 }
+
+    assert_response :success
+    payload = JSON.parse(response.body)
+    assert_equal "", payload["docOcrUri"]
+    assert_match %r{/download\?.*type=OCR}, payload["pageOcrUri"]
   end
 
   test "uses per-page PDF routes when present" do

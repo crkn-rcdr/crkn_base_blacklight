@@ -20,11 +20,15 @@ class DownloadsController < ApplicationController
                    end
     page_pdf_uri = canvas_noid.present? ? controller.send(:page_pdf_uri_for, record, canvas_noid, slug, p_num) : ''
     page_img_uri = canvas_noid.present? ? controller.send(:image_download_uri, canvas_noid, slug, p_num) : ''
+    page_ocr_uri = canvas_noid.present? ? controller.send(:page_ocr_uri_for, canvas_noid, slug, p_num) : ''
+    doc_ocr_uri = controller.send(:doc_ocr_uri_for, slug, manifest_id, canvas_noids)
 
     {
       "docPdfUri" => full_pdf_uri,
       "pagePdfUri" => page_pdf_uri,
       "pageImgUri" => page_img_uri,
+      "pageOcrUri" => page_ocr_uri,
+      "docOcrUri" => doc_ocr_uri,
       "pageNum" => p_num,
       "pageCount" => canvas_noids.length,
       "cacheHit" => record.present?
@@ -35,6 +39,7 @@ class DownloadsController < ApplicationController
   end
 
   MAX_TOKEN_TTL = 30 * 60
+  MAX_DOC_OCR_ZIP_CANVASES = 150
 
   class << self
     attr_writer :download_cache_pool
@@ -85,11 +90,15 @@ class DownloadsController < ApplicationController
                      ''
                    end
     page_pdf_uri = canvas_noid.present? ? page_pdf_uri_for(record, canvas_noid, slug, page_num) : ''
+    page_ocr_uri = canvas_noid.present? ? page_ocr_uri_for(canvas_noid, slug, page_num) : ''
+    doc_ocr_uri = doc_ocr_uri_for(slug, manifest_id, canvas_noids)
 
     render json: {
       "docPdfUri" => full_pdf_uri,
       "pagePdfUri" => page_pdf_uri,
       "pageImgUri" => canvas_noid.present? ? image_download_uri(canvas_noid, slug, page_num) : '',
+      "pageOcrUri" => page_ocr_uri,
+      "docOcrUri" => doc_ocr_uri,
       "pageNum" => page_num,
       "pageCount" => canvas_noids.length,
       "cacheHit" => record.present?
@@ -252,18 +261,37 @@ class DownloadsController < ApplicationController
   end
 
   def signed_item_pdf_uri(slug, noid)
+    signed_item_uri(slug, noid, 'PDF')
+  end
+
+  def page_ocr_uri_for(canvas_noid, slug, page_num)
+    return '' if canvas_noid.blank? || slug.blank?
+
+    signed_item_uri("#{slug}.#{page_num}", canvas_noid, 'OCR')
+  end
+
+  def doc_ocr_uri_for(slug, manifest_id, canvas_noids)
+    return '' if slug.blank? || manifest_id.blank? || canvas_noids.blank?
+    return '' if canvas_noids.length > MAX_DOC_OCR_ZIP_CANVASES
+
+    signed_item_uri(slug, manifest_id, 'OCR', canvas_noids)
+  end
+
+  def signed_item_uri(slug, noid, file_type, canvas_noids = [])
     return '' if slug.blank? || noid.blank? || download_token_secret.blank?
 
     expires = token_expires
-    query = {
-      slug: slug,
-      noid: noid,
-      type: 'PDF',
-      expires: expires,
-      sig: item_signature(slug, noid, 'PDF', [], expires)
-    }
+    normalized_type = file_type.to_s.upcase
+    params_list = [
+      ['slug', slug],
+      ['noid', noid],
+      ['type', normalized_type]
+    ]
+    canvas_noids.each { |canvas_noid| params_list << ['canvas_noid', canvas_noid] }
+    params_list << ['expires', expires]
+    params_list << ['sig', item_signature(slug, noid, normalized_type, canvas_noids, expires)]
 
-    "#{download_endpoint}?#{URI.encode_www_form(query)}"
+    "#{download_endpoint}?#{URI.encode_www_form(params_list)}"
   end
 
   def signed_access_pdf_uri(object_path, filename)
